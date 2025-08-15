@@ -55,7 +55,7 @@ const CreateAccountPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: data.email,
-          password: data.password,
+          password: data.password, 
           firstname: data.firstName, // Changed from full_name to firstname
           lastname: data.lastName,
           telephone: data.telephone,
