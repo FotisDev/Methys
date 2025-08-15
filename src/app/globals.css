@@ -1,21 +1,27 @@
 @import "tailwindcss";
 
+
+@tailwind utilities;
+
 :root {
+  --font-poppins: 'Poppins', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
   --background: #ffffff;
   --foreground: #171717;
+  
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+   --color-sahara:#eba10e;
+   --color-graySand:#312e2e;
+   --color-myCyan:#008394;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1a1a1a; /* Fixed to a dark color */
     --foreground: #ededed;
+    --peach-yellow: #008394;
   }
 }
 
@@ -23,4 +29,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.react-datepicker-popper {
+  z-index: 9999;
 }
