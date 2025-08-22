@@ -39,11 +39,13 @@ export type Params = {
 };
 export type Database = unknown;
 
-export type Category = {
-  id: string;
+export interface Category {
+  id: number;
   category_name: string;
-  image_url?: string;
-};
+  parent_id?: number;
+  image_url?: string; // optional now
+}
+
 
 export type CategoryParams = {
   params:{

@@ -1,24 +1,54 @@
 import { z } from "zod";
 
-//product Entry schema
-
-
-
+// Improved Product Entry Schema
 export const productSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
-  price: z.coerce.number().min(0.01, "Price must be greater than 0"),
-  category: z.string().min(1, "Category is required"),
+  name: z
+    .string()
+    .min(1, "Product name is required")
+    .min(2, "Product name must be at least 2 characters")
+    .max(100, "Product name cannot exceed 100 characters")
+    .transform(str => str.trim()),
+  
+  description: z
+    .string()
+    .max(500, "Description cannot exceed 500 characters")
+    .optional()
+    .transform(str => str?.trim()),
+  
+  price: z
+    .number({
+      required_error: "Price is required",
+      invalid_type_error: "Price must be a valid number"
+    })
+    .min(0.01, "Price must be greater than 0")
+    .max(999999.99, "Price cannot exceed 999,999.99"),
+  
+  category_id: z
+    .string()
+    .min(1, "Category is required"),
+  
   imageFile: z
-    .custom<FileList>((files) => files instanceof FileList, {
-      message: "Invalid file input",
-    })
-    .refine((files) => files.length === 0 || files[0]?.type.startsWith("image/"), {
-      message: "Must be an image",
-    })
-    .optional(),
+    .any()
+    .optional()
+    .refine((files) => {
+      if (!files || files.length === 0) return true;
+      return files[0] instanceof File;
+    }, "Invalid file")
+    .refine((files) => {
+      if (!files || files.length === 0) return true;
+      const file = files[0];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      return file.size <= maxSize;
+    }, "File size must be less than 5MB")
+    .refine((files) => {
+      if (!files || files.length === 0) return true;
+      const file = files[0];
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      return allowedTypes.includes(file.type);
+    }, "Only JPG, PNG, and WebP files are allowed"),
+  
+  is_offer: z.boolean().default(false),
 });
-
 
 // Sign In Schema
 export const signInSchema = z.object({
@@ -69,7 +99,6 @@ export const resetPasswordSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
-
 
 // Contact Form Schema
 export const contactFormSchema = z.object({

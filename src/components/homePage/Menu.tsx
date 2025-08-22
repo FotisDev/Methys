@@ -61,7 +61,7 @@ const Menu = () => {
       <div>
         {/* Main Menu */}
         <div
-          className="fixed font-sans font-semibold top-0 z-20 flex items-center opacity-70 aspect-[55/2] bg-white backdrop-blur-xl justify-between w-full  px-4 lg:px-6 text-xs shadow-md"
+          className="fixed font-sans font-semibold top-0 z-50 flex items-center opacity-70 aspect-[55/2] bg-white backdrop-blur-xl justify-between w-full  px-4 lg:px-6 text-xs shadow-md"
           ref={menuRef}
           style={{ zIndex: 1000 }} // Ensure it stays above other content
         >
@@ -99,7 +99,7 @@ const Menu = () => {
               <Link
                 href="/login"
                 aria-label="SignUpPage"
-                className="w-[130px] h-[40px] text-[14px] font-medium text-white bg-cyan-900 py-2 rounded-lg flex items-center justify-center"
+                className="w-[130px] h-[40px] text-[14px] font-medium text-black bg-none py-2 rounded-lg flex items-center justify-center"
               >
                 Sign Up/Sign In
               </Link>
@@ -145,9 +145,26 @@ const Menu = () => {
       )}
 
       {/* Clothes Dropdown */}
+      {/* Clothes Dropdown */}
       {showClothes && (
-        <div className="absolute top-full z-50 w-full bg-white  px-4 py-6 shadow-md transition-all duration-300 ease-in-out">
-          <ClotheCards />
+        <div
+          className={`fixed top-0 left-0 z-50 h-full w-auto bg-white shadow-md rounded-r-3xl transition-transform duration-300 ${
+            showClothes ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          {/* Close Button */}
+          <button
+            type="button"
+            className="absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full"
+            onClick={() => setShowClothes(false)}
+            aria-label="Close Clothes Menu"
+          >
+            &times;
+          </button>
+
+          <div className="p-6 overflow-y-auto h-full">
+            <ClotheCards />
+          </div>
         </div>
       )}
     </div>

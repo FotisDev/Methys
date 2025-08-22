@@ -309,10 +309,12 @@ export interface Product {
 }
 
 export interface Category {
-  id: string;
+  id: number;
   category_name: string;
-  image_url: string;
+  parent_id?: number;
+  image_url?: string; // optional now
 }
+
 
 export interface ContactPageProps {
     Contact: {
@@ -320,3 +322,4 @@ export interface ContactPageProps {
         Email: string
     }
 }
+

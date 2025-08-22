@@ -10,7 +10,10 @@ const nextConfig = {
         pathname: '/storage/v1/object/public/product-images/**',
       },
     ],
-    domains:['supabase'], //for local static images.
+     domains: [
+    "mpnjvzyymmtvgsrfgjjc.supabase.co",
+    "via.placeholder.com"
+  ], 
   },
 };
 

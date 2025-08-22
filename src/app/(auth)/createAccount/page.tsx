@@ -1,8 +1,10 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { supabase } from "@/_lib/supabaseClient";
 import SignUpPage from "../login/page";
 import Logo from "../../../svgs/logo";
 
@@ -10,7 +12,6 @@ import {
   createAccountSchema,
   type CreateAccountForm,
 } from "../../../_lib/utils/zod";
-
 
 const CreateAccountPage = () => {
   const [showSignUpPage, setShowSignUpPage] = useState(false);
@@ -47,36 +48,32 @@ const CreateAccountPage = () => {
     setSuccess(null);
     setLoading(true);
 
-    
-
     try {
-      const res = await fetch("/api/create-account", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password, 
-          firstname: data.firstName, // Changed from full_name to firstname
-          lastname: data.lastName,
-          telephone: data.telephone,
-          birthday: data.birthday,
-        }),
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            first_name: data.firstName,
+            last_name: data.lastName,
+            telephone: data.telephone,
+            birthdate: data.birthday,
+            is_member: true, // Set to true by default on signup
+          },
+        },
       });
 
-      const result = await res.json();
-
-      if (!res.ok) {
-        setError(result.error || "Failed to create account.");
+      if (signUpError) {
+        setError(signUpError.message);
       } else {
-        setSuccess("Account created successfully!");
+        setSuccess("Account created successfully! Check your email to verify.");
         reset();
       }
-    } catch (error) {
-      console.log(error);
-      
+    } catch (err) {
       setError("Something went wrong.");
+    } finally {
       setLoading(false);
-    } 
+    }
   };
 
   if (showSignUpPage) {
@@ -177,7 +174,7 @@ const CreateAccountPage = () => {
               {...register("birthday")}
               type="date"
               max={new Date().toISOString().split("T")[0]}
-              className={`w-full h-12  rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                 errors.birthday ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -193,7 +190,7 @@ const CreateAccountPage = () => {
               {...register("email")}
               type="email"
               placeholder="Email Address"
-              className={`w-full h-12  rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                 errors.email ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -209,7 +206,7 @@ const CreateAccountPage = () => {
               {...register("telephone")}
               type="tel"
               placeholder="Telephone"
-              className={`w-full h-12  rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                 errors.telephone ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -241,7 +238,7 @@ const CreateAccountPage = () => {
                 {...register("repeatPassword")}
                 type="password"
                 placeholder="Repeat Password"
-                className={`w-full h-12  rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                   errors.repeatPassword ? "border-red-500" : "border-gray-300"
                 }`}
               />

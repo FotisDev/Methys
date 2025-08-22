@@ -1,4 +1,5 @@
 "use client";
+
 import myImageLoader from "@/_lib/utils/myImageLoader";
 import Image from "next/image";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { supabase } from "@/_lib/supabaseClient";
 
 import Logo from "../../../svgs/logo";
 import CreateAccountPage from "../createAccount/page";
@@ -53,50 +55,52 @@ const SignUpPage = () => {
   };
 
   const onSubmit = async (data: SignInForm) => {
-    setError(null);
-    setLoading(true);
+  setError(null);
+  setLoading(true);
 
-    try {
-      const res = await fetch("/api/admin-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
+  try {
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
 
-      const result = await res.json();
+    if (signInError) {
+      setError(signInError.message);
+      return;
+    }
 
-      if (!res.ok || !result.success) {
-        setError(result.message || "Invalid credentials");
+    // Παίρνουμε τον χρήστη που μόλις έκανε login
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+      // Τώρα πάμε στον πίνακα profiles για να βρούμε το ρόλο
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError) {
+        setError("Δεν βρέθηκε ρόλος χρήστη");
         return;
       }
 
-      // Redirect based on role
-      if (result.role === "admin") {
-        router.push("/admin/product-entry");
+      if (profile.role === "admin") {
+        router.push("/product-entry");
       } else {
-        router.push("/admin/product-entry");
+        router.push("/offers");
       }
-    } catch (err) {
-      console.log(err)
-      setError("Something went wrong");
-      setLoading(false);
     }
-  };
-
-  if (showCreateAccount) {
-    return <CreateAccountPage />;
+  } catch (err) {
+    setError("Something went wrong");
+  } finally {
+    setLoading(false);
   }
+};
 
-  if (forgotPassword) {
-    return <ForgotPasswordPage />;
-  }
 
   return (
-    <div className="flex flex-col md:flex-row  h-screen w-full">
+    <div className="flex flex-col md:flex-row h-screen w-full">
       {/* Left Section */}
       <div className="relative w-full sm:w-auto md:w-1/2 h-[150vh] md:h-full flex flex-col justify-between">
         <div
@@ -125,7 +129,7 @@ const SignUpPage = () => {
 
       {/* Right Section */}
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-white relative py-8 px-6 md:px-12">
-        <div className="absolute top-6  right-6 md:top-28 md:right-24 text-sm md:text-lg font-poppins">
+        <div className="absolute top-6 right-6 md:top-28 md:right-24 text-sm md:text-lg font-poppins">
           <label htmlFor="remember-me" className="text-gray-900 mr-1">
             New user?
           </label>
@@ -146,17 +150,16 @@ const SignUpPage = () => {
             Sign in
           </h1>
 
-          {/* Google & Facebook */}
+          {/* Google & Facebook placeholders (implement actual OAuth if needed) */}
           <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-            {/* Google */}
             <div
               onMouseEnter={() => handleMouseEnter("google")}
               onMouseLeave={handleMouseLeave}
-              className={`flex items-center justify-start gap-4 px-4 py-2 cursor-pointer  ${
+              className={`flex items-center justify-start gap-4 px-4 py-2 cursor-pointer ${
                 onMouseOver === "google"
                   ? "scale-105 shadow-2xl shadow-cyan-800"
                   : ""
-              } transition-all  rounded-3xl w-full`}
+              } transition-all rounded-3xl w-full`}
             >
               <Image
                 src="google.jpg"
@@ -170,16 +173,14 @@ const SignUpPage = () => {
                 Sign in with Google
               </p>
             </div>
-
-            {/* Facebook */}
             <div
               onMouseEnter={() => handleMouseEnter("facebook")}
               onMouseLeave={handleMouseLeave}
-              className={`flex items-center justify-start gap-4 px-4 py-2 cursor-pointer  ${
+              className={`flex items-center justify-start gap-4 px-4 py-2 cursor-pointer ${
                 onMouseOver === "facebook"
                   ? "scale-105 shadow-2xl shadow-cyan-800"
                   : ""
-              } transition-all  rounded-3xl w-full`}
+              } transition-all rounded-3xl w-full`}
             >
               <Image
                 src="facebook.png"
@@ -195,12 +196,10 @@ const SignUpPage = () => {
             </div>
           </div>
 
-          {/* Email login */}
           <div className="text-center text-gray-500 text-sm font-poppins">
             or sign in using email
           </div>
 
-          {/* Fields */}
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-poppins text-black">
@@ -241,7 +240,6 @@ const SignUpPage = () => {
             </div>
           </div>
 
-          {/* Remember me / Forgot password */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 text-sm">
             <label className="flex items-center gap-2 text-gray-900">
               <input
@@ -260,7 +258,6 @@ const SignUpPage = () => {
             </a>
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
@@ -269,7 +266,6 @@ const SignUpPage = () => {
             {loading ? "Signing in..." : "Sign in"}
           </button>
 
-          {/* Error */}
           {error && (
             <p className="text-red-600 font-semibold text-center text-sm">
               {error}

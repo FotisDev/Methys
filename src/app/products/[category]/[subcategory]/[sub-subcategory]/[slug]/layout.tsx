@@ -8,7 +8,7 @@ export default function CategoryLayout({
   return (
     <>
       {children}
-      {modal}
+        {modal}
     </>
   );
 }

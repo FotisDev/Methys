@@ -9,6 +9,7 @@ import HowItWork from "@/components/homePage/HowItWork/HowItWork";
 import ThreeButtonsInRow from "@/components/homePage/ThreeButtonsInRow";
 import ThreeIcons from "@/components/homePage/ThreeIcons";
 import VideoSection from "@/components/homePage/VideoSection";
+import PhotoGallery from "@/components/sections/photoAndVideoGallery";
 import type { Metadata } from "next";
 import React, { Suspense } from "react";
 
@@ -25,12 +26,13 @@ export default async function Home() {
       <HeaderProvider>
         <Hero />
         <Suspense>
-          {/* <ClothesCategories /> */}
-          {/* <ThreeButtonsInRow /> */}
-          {/* <VideoSection /> */}
-          {/* <BookNow /> */}
-          {/* <HowItWork /> */}
-          {/* <ThreeIcons /> */}
+          <PhotoGallery/>
+          {/* <ClothesCategories />
+          <ThreeButtonsInRow />
+          <VideoSection />
+          <BookNow />
+          <HowItWork />
+          <ThreeIcons /> */}
           <Footer/>
         </Suspense>
       </HeaderProvider>
