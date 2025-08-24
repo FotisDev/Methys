@@ -53,22 +53,32 @@ export default function Footer() {
               <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-sahara">
                 Download the App
               </h3>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+              <Link
+                href="https://play.google.com/store"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Image
-                  src="/google-play-badge.png"
+                  src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
                   alt="Google Play"
                   width={150}
                   height={50}
-                  className="w-36 h-auto"
+                  className="w-44  h-auto"
                 />
+              </Link>
+              <Link
+                href="https://www.apple.com/app-store"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Image
-                  src="/app-store-badge.png"
+                  src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
                   alt="App Store"
                   width={150}
                   height={50}
-                  className="w-36 h-auto"
+                  className="w-38 ml-3 h-auto"
                 />
-              </div>
+              </Link>
             </div>
 
             {/* Follow Us */}
@@ -129,7 +139,9 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-gray-700 gap-4">
             {/* Left */}
             <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
-              <span className="font-bold text-lg sm:text-xl text-myCyan">UrbanValor</span>
+              <span className="font-bold text-lg sm:text-xl text-myCyan">
+                UrbanValor
+              </span>
               <span className="text-sm text-gray-300">
                 © 2025 All rights reserved
               </span>
