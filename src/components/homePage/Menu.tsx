@@ -6,6 +6,7 @@ import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
 
 import BulletButton from "./BulletButton";
+
 import ClotheCards from "./ClothesCards";
 
 const Menu = () => {
@@ -16,7 +17,7 @@ const Menu = () => {
 
   const navLinks = [
     { href: PAGE_URLS.ABOUT, label: "About" },
-    { href: PAGE_URLS.PRODUCTS, label: "Products" },
+    { href: PAGE_URLS.PRODUCTS, label: "SHOP" },
     { href: PAGE_URLS.BLOG, label: "Blog" },
     { href: PAGE_URLS.OFFERS, label: "Offers" },
     { href: PAGE_URLS.HELP, label: "Help" },
@@ -40,7 +41,7 @@ const Menu = () => {
   }, []);
 
   const handleMouseEnter = (label: string) => {
-    if (label === "Products") {
+    if (label === "SHOP") {
       setShowClothes(true);
     } else {
       setShowClothes(false);
@@ -48,7 +49,7 @@ const Menu = () => {
   };
 
   const handleMobileClick = (label: string) => {
-    if (label === "Products") {
+    if (label === "SHOP") {
       setShowClothes((prev) => !prev);
     } else {
       setShowClothes(false);
@@ -57,17 +58,38 @@ const Menu = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative items-center justify-center">
       <div>
         {/* Main Menu */}
         <div
-          className="fixed font-sans font-semibold top-0 z-50 flex items-center opacity-70 aspect-[55/2] bg-white backdrop-blur-xl justify-between w-full  px-4 lg:px-6 text-xs shadow-md"
+          className="fixed font-sans font-semibold top-0 z-50 grid grid-cols-3 items-center opacity-70 aspect-[55/2] bg-white backdrop-blur-xl w-full px-4 lg:px-6 text-xs shadow-md"
           ref={menuRef}
-          style={{ zIndex: 1000 }} // Ensure it stays above other content
+          style={{ zIndex: 1000 }}
         >
-          <div className="flex items-center ml-4 gap-6 w-full justify-start">
-            {/* Logo */}
+          {/* Left Section - Desktop Nav */}
+          <div className="flex items-center justify-start">
+            <div className="hidden lg:flex gap-4 items-center ml-4">
+              {navLinks.map(({ href, label }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="text-black uppercase hover:underline"
+                  onMouseEnter={() => handleMouseEnter(label)}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Center Section - Logo */}
+          <div className="flex justify-center">
             <Link href={PAGE_URLS.HOMEPAGE} passHref>
+              <p className="font-serif">Aether</p>  
+            </Link>
+          </div>
+           {/* <Link href={PAGE_URLS.HOMEPAGE} passHref>
               <Image
                 src="/horizontal.png"
                 alt="Company Logo"
@@ -76,24 +98,10 @@ const Menu = () => {
                 priority
                 className="h-12 w-24 rounded-2xl"
               />
-            </Link>
+            </Link> */}
 
-            {/* Desktop Nav */}
-            <div className="hidden lg:flex gap-4 items-center">
-              {navLinks.map(({ href, label }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="text-black  uppercase  hover:underline"
-                  onMouseEnter={() => handleMouseEnter(label)}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div>
+          {/* Right Section - Desktop Buttons & Mobile Burger */}
+          <div className="flex items-center justify-end">
             {/* Desktop Buttons */}
             <div className="hidden lg:flex items-center gap-4">
               <Link
@@ -105,19 +113,20 @@ const Menu = () => {
               </Link>
               <BulletButton />
             </div>
+
+            {/* Mobile Burger Button */}
+            <button
+              ref={toggleButtonRef}
+              aria-label="Open Mobile Menu"
+              className="lg:hidden text-black text-3xl"
+              onClick={() => {
+                setShowBulletMenu(!showBulletMenu);
+                setShowClothes(false);
+              }}
+            >
+              ☰
+            </button>
           </div>
-          {/* Mobile Burger Button */}
-          <button
-            ref={toggleButtonRef}
-            aria-label="Open Mobile Menu"
-            className="lg:hidden text-black text-3xl"
-            onClick={() => {
-              setShowBulletMenu(!showBulletMenu);
-              setShowClothes(false);
-            }}
-          >
-            ☰
-          </button>
         </div>
       </div>
 
@@ -145,7 +154,6 @@ const Menu = () => {
       )}
 
       {/* Clothes Dropdown */}
-      {/* Clothes Dropdown */}
       {showClothes && (
         <div
           className={`fixed top-0 left-0 z-50 h-full w-auto bg-white shadow-md rounded-r-3xl transition-transform duration-300 ${
@@ -163,7 +171,7 @@ const Menu = () => {
           </button>
 
           <div className="p-6 overflow-y-auto h-full">
-            <ClotheCards />
+            <ClotheCards /> 
           </div>
         </div>
       )}
