@@ -6,13 +6,14 @@ import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
 
 import BulletButton from "./BulletButton";
-
-import ClotheCards from "./ClothesCards";
+import ClotheCards from "./DropDownMenu";
+import DropDownMenu from "./DropDownMenu";
 
 const Menu = () => {
   const [showClothes, setShowClothes] = useState(false);
   const [showBulletMenu, setShowBulletMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const clothesModalRef = useRef<HTMLDivElement | null>(null); // Add ref for clothes modal
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const navLinks = [
@@ -26,26 +27,53 @@ const Menu = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      
+      // Check if click is outside the mobile menu
       if (
+        showBulletMenu &&
         menuRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
+        !menuRef.current.contains(target) &&
         toggleButtonRef.current &&
-        !toggleButtonRef.current.contains(event.target as Node)
+        !toggleButtonRef.current.contains(target)
       ) {
-        setShowClothes(false);
         setShowBulletMenu(false);
       }
+
+      // Check if click is outside the clothes modal
+      if (
+        showClothes &&
+        clothesModalRef.current &&
+        !clothesModalRef.current.contains(target)
+      ) {
+        // Don't close if clicking on the SHOP link in the menu
+        const shopLink = Array.from(menuRef.current?.querySelectorAll('a') || [])
+          .find(link => link.textContent?.includes('SHOP'));
+        
+        if (shopLink && shopLink.contains(target)) {
+          return; // Don't close when clicking SHOP link
+        }
+        
+        setShowClothes(false);
+      }
     };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showClothes, showBulletMenu]);
 
   const handleMouseEnter = (label: string) => {
     if (label === "SHOP") {
       setShowClothes(true);
     } else {
-      setShowClothes(false);
+      setShowClothes(false); // This ensures hovering other items closes the clothes menu
     }
+  };
+
+  const handleMouseLeave = () => {
+    // Optional: Add a small delay before closing to prevent accidental closes
+    // You can uncomment this if you want the menu to stay open when moving mouse between elements
+    // setTimeout(() => setShowClothes(false), 150);
   };
 
   const handleMobileClick = (label: string) => {
@@ -86,19 +114,9 @@ const Menu = () => {
           {/* Center Section - Logo */}
           <div className="flex justify-center">
             <Link href={PAGE_URLS.HOMEPAGE} passHref>
-              <p className="font-serif">Aether</p>  
+              <p className="font-roboto text-lg">Methys</p>  
             </Link>
           </div>
-           {/* <Link href={PAGE_URLS.HOMEPAGE} passHref>
-              <Image
-                src="/horizontal.png"
-                alt="Company Logo"
-                width={160}
-                height={50}
-                priority
-                className="h-12 w-24 rounded-2xl"
-              />
-            </Link> */}
 
           {/* Right Section - Desktop Buttons & Mobile Burger */}
           <div className="flex items-center justify-end">
@@ -156,22 +174,24 @@ const Menu = () => {
       {/* Clothes Dropdown */}
       {showClothes && (
         <div
-          className={`fixed top-0 left-0 z-50 h-full w-auto bg-white shadow-md rounded-r-3xl transition-transform duration-300 ${
-            showClothes ? "translate-x-0" : "-translate-x-full"
-          }`}
+          ref={clothesModalRef}
+          className="fixed top-16 left-0 z-40 h-auto max-h-[calc(100vh-4rem)] w-auto bg-white shadow-lg rounded-r-3xl transition-transform duration-300 transform translate-x-0"
+          style={{ 
+            transform: showClothes ? 'translateX(0)' : 'translateX(-100%)',
+            minWidth: '320px'
+          }}
         >
           {/* Close Button */}
           <button
             type="button"
-            className="absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full"
+            className="absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
             onClick={() => setShowClothes(false)}
             aria-label="Close Clothes Menu"
           >
             &times;
           </button>
-
-          <div className="p-6 overflow-y-auto h-full">
-            <ClotheCards /> 
+          <div className="p-6 h-full overflow-y-auto">
+            <DropDownMenu /> 
           </div>
         </div>
       )}
