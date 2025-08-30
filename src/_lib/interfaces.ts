@@ -308,11 +308,11 @@ export interface Product {
   }[];
 }
 
-export interface Category {
+export interface CategoryBackendType {
   id: number;
   category_name: string;
   parent_id?: number;
-  image_url?: string; // optional now
+  image_url?: string | undefined; // optional now
 }
 
 
@@ -322,4 +322,8 @@ export interface ContactPageProps {
         Email: string
     }
 }
-
+export interface CategoryPageProps {
+  params: Promise<{
+    category: string;
+  }>;
+}

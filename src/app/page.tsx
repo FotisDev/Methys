@@ -1,4 +1,5 @@
 
+import ShowSubCategories from "@/components/homePage/categories/ShowSubCategories";
 import Footer from "@/components/footer/Footer";
 import Newsletter from "@/components/footer/NewsLeter";
 import BookNow from "@/components/homePage/BookNow";
@@ -27,12 +28,14 @@ export default async function Home() {
         <Hero />
         <Suspense>
           <PhotoGallery/>
+          <ShowSubCategories/>
           {/* <ClothesCategories />
           <ThreeButtonsInRow />
           <VideoSection />
           <BookNow />
           <HowItWork />
-          <ThreeIcons /> */}
+          */}
+           <ThreeIcons />
           <Footer/>
         </Suspense>
       </HeaderProvider>

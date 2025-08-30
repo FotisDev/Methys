@@ -22,7 +22,7 @@ const HeroSection = () => {
 
         {/* Content Container */}
         <div className="relative z-10 flex flex-col w-full px-3 sm:px-4 md:px-6 lg:px-12 xl:px-24 mt-8 sm:mt-12 md:mt-16 lg:mt-20 gap-4 sm:gap-6">
-          <div className="flex flex-col xl:flex-row xl:justify-between items-center xl:items-start gap-6 sm:gap-8 md:gap-10 lg:gap-12">
+          <div className="flex flex-col xl:flex-row xl:justify-center items-center xl:items-center gap-6 sm:gap-8 md:gap-10 lg:gap-12">
 
             {/* Text Section */}
             <div className="flex flex-col text-center xl:text-left space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-11 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl">
@@ -30,7 +30,7 @@ const HeroSection = () => {
               {/* Semantic heading */}
               <h1
                 id="hero-heading"
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight text-black"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-6xl font-bold leading-tight text-black"
               >
                 Dress Beyond Limits.
               </h1>
@@ -43,9 +43,9 @@ const HeroSection = () => {
               <div className="flex justify-center xl:justify-start pt-2 sm:pt-4">
                 <Link
                   href="/products"
-                  className="px-4  bg-black/5 h-9 text-white font-light text-sm sm:text-base md:text-lg rounded transition text-center flex items-center justify-center  "
+                  className="px-4  bg-black h-9 text-white font-light text-sm sm:text-base md:text-lg rounded transition text-center flex items-center justify-center  "
                 >
-                  Explore Our Collection
+                  Explore Our Collection{'->'}
                 </Link>
               </div>
             </div>

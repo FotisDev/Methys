@@ -4,12 +4,9 @@ import { useState, useEffect, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getCategoryByName, getSubcategories, fetchProducts, Category, Product } from "@/_lib/helpers";
+import { CategoryPageProps } from "@/_lib/interfaces";
 
-interface CategoryPageProps {
-  params: Promise<{
-    category: string;
-  }>;
-}
+
 
 export default function CategoryPage({ params }: CategoryPageProps) {
   const [category, setCategory] = useState<Category | null>(null);
