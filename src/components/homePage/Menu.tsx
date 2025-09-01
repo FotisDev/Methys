@@ -7,7 +7,9 @@ import { PAGE_URLS } from "@/_lib/constants";
 
 import BulletButton from "./BulletButton";
 import ClotheCards from "./DropDownMenu";
-import DropDownMenu from "./DropDownMenu";
+// import DropDownMenu from "./DropDownMenu";
+// import ShowSubCategories from "./categories/DropDownMainPageSubCat";
+import DropDownMainPageSubCat from "./categories/DropDownMainPageSubCat";
 
 const Menu = () => {
   const [showClothes, setShowClothes] = useState(false);
@@ -19,10 +21,10 @@ const Menu = () => {
   const navLinks = [
     { href: PAGE_URLS.ABOUT, label: "About" },
     { href: PAGE_URLS.PRODUCTS, label: "SHOP" },
-    { href: PAGE_URLS.BLOG, label: "Blog" },
-    { href: PAGE_URLS.OFFERS, label: "Offers" },
-    { href: PAGE_URLS.HELP, label: "Help" },
-    { href: PAGE_URLS.CONTACT, label: "Contact Us" },
+    // { href: PAGE_URLS.BLOG, label: "Blog" },
+    // { href: PAGE_URLS.OFFERS, label: "Offers" },
+    // { href: PAGE_URLS.HELP, label: "Help" },
+    // { href: PAGE_URLS.CONTACT, label: "Contact Us" },
   ];
 
   useEffect(() => {
@@ -190,8 +192,9 @@ const Menu = () => {
           >
             &times;
           </button>
-          <div className="p-6 h-full overflow-y-auto">
-            <DropDownMenu /> 
+          <div className="">
+            {/* <DropDownMenu />  */}
+            <DropDownMainPageSubCat/>
           </div>
         </div>
       )}

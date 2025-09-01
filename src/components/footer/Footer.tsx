@@ -2,6 +2,7 @@ import Logo from "@/svgs/logo";
 import Link from "next/link";
 import Newsletter from "./NewsLeter";
 import Image from "next/image";
+import { PAGE_URLS } from "@/_lib/constants";
 
 export default function Footer() {
   const paymentMethods = [
@@ -23,20 +24,29 @@ export default function Footer() {
     {
       category: "Legal Policy",
       items: [
-        { name: "Terms & Conditions", url: "/" },
-        { name: "Privacy Policy", url: "/" },
-        { name: "Legal Notice", url: "/" },
-        { name: "Accessibility", url: "/" },
+        { name: "Terms & Conditions", href: "/termsAndConditions" },
+        { name: "Privacy Policy", href: "/privacyAndPolicy" },
+        { name: "Legal Notice", href: "/legalNotice" },
+        { name: "FAQ", href: "/faq" },
       ],
     },
     {
       category: "Quick Links",
       items: [
-        { name: "Home", url: "/" },
-        { name: "About Us", url: "/about" },
-        { name: "Blog", url: "/blog" },
-        { name: "Join Our Network", url: "/offerPage" },
+        { name: "Home", href: "/" },
+        { name: "About", href: "/about" },
+        { name: "Blog", href: "/blog" },
+        { name: "Offers", href: "/offers" },
+        { name: "Help", href: "/help" },
       ],
+    },
+    {
+      category: "Payment Methods",
+      items: [], // Empty items array for payment methods
+    },
+    {
+      category: "Contact Us",
+      items: [], // Empty items array for contact info
     },
   ];
 
@@ -44,7 +54,7 @@ export default function Footer() {
     <>
       <Newsletter />
 
-      <footer className="bg-black w-full text-white  text-sm sm:text-base font-poppins">
+      <footer className="bg-black w-full text-white text-sm sm:text-base font-poppins">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-40 sm:pt-36 lg:pt-32">
           {/* ROW 1: App Download + Socials */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
@@ -53,32 +63,36 @@ export default function Footer() {
               <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-sahara">
                 Download the App
               </h3>
-              <Link
-                href="https://play.google.com/store"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                  alt="Google Play"
-                  width={150}
-                  height={50}
-                  className="w-44  h-auto"
-                />
-              </Link>
-              <Link
-                href="https://www.apple.com/app-store"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
-                  alt="App Store"
-                  width={150}
-                  height={50}
-                  className="w-38 ml-3 h-auto"
-                />
-              </Link>
+              <div className="flex flex-col ">
+                <Link
+                  href="https://play.google.com/store"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <Image
+                    src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                    alt="Google Play"
+                    width={150}
+                    height={50}
+                    className="w-44 h-auto"
+                  />
+                </Link>
+                <Link
+                  href="https://www.apple.com/app-store"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <Image
+                    src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
+                    alt="App Store"
+                    width={150}
+                    height={50}
+                    className="w-38 h-auto ml-3"
+                  />
+                </Link>
+              </div>
             </div>
 
             {/* Follow Us */}
@@ -93,7 +107,7 @@ export default function Footer() {
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors">
                   YT
                 </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibant hover:bg-gray-200 transition-colors">
                   In
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors">
@@ -119,18 +133,53 @@ export default function Footer() {
                 <h4 className="text-sahara font-semibold text-base sm:text-lg">
                   {column.category}
                 </h4>
-                <ul className="space-y-2">
-                  {column.items.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.url}
-                        className="hover:underline hover:text-sahara transition-colors text-sm sm:text-base"
+                
+                {/* Regular navigation links */}
+                {column.items.length > 0 && (
+                  <ul className="space-y-2">
+                    {column.items.map((item, index) => (
+                      <li key={`${column.category}-${index}`}>
+                        <Link
+                          href={item.href}
+                          className="hover:underline hover:text-sahara transition-colors text-sm sm:text-base"
+                          aria-label={`Learn more about ${item.name}`}
+                        >
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                
+                {/* Payment Methods Content */}
+                {column.category === "Payment Methods" && (
+                  <div className="flex flex-col gap-3">
+                    {paymentMethods.map((method) => (
+                      <div 
+                        key={method.name}
+                        className="bg-white text-black py-2 px-4 rounded-md text-center font-medium"
+                        style={{ width: method.width }}
                       >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                        {method.name}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Contact Info Content */}
+                {column.category === "Contact Us" && (
+                  <div className="space-y-2">
+                    <p className="text-sm sm:text-base">
+                      Email: support@Methys.com
+                    </p>
+                    <p className="text-sm sm:text-base">
+                      Phone: +30 (695) 144-2347
+                    </p>
+                    <p className="text-sm sm:text-base">
+                      Hours: Mon-Fri 9AM-5PM
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -150,14 +199,16 @@ export default function Footer() {
             {/* Right */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-center">
               <Link
-                href="/terms"
-                className="hover:underline hover:text-yellow-400 transition-colors"
+                href={PAGE_URLS.TERMS_AND_CONDITIONS}
+                className="hover:underline hover:text-sahara transition-colors"
+                aria-label="Read our Terms and Conditions"
               >
                 Terms & Conditions
               </Link>
               <Link
-                href="/privacy"
-                className="hover:underline hover:text-yellow-400 transition-colors"
+                href={PAGE_URLS.PRIVACY_POLICY}
+                className="hover:underline hover:text-sahara transition-colors"
+                aria-label="Read our Privacy Policy"
               >
                 Privacy Policy
               </Link>

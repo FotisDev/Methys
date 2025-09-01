@@ -4,6 +4,10 @@ export const PAGE_URLS = {
     CONTACT: '/contact',
     PRODUCTS: '/products',
     BLOG: '/blog',
-    OFFERS:'/offers',
-    HELP:'/help',
+    OFFERS: '/offers',
+    HELP: '/help',
+    TERMS_AND_CONDITIONS: '/termsAndConditions', 
+    PRIVACY_POLICY: '/privacyAndPolicy',
+    LEGAL_NOTICE: '/legalNotice',
+    FAQ: '/faq', 
 } as const;

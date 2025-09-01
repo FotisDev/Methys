@@ -45,7 +45,7 @@ export default function ThreeIcons() {
       {iconsData.map((iconData, index) => (
         <div
           key={index}
-          className="relative w-80 h-64 bg-white overflow-hidden  shadow-gray-500 shadow-xl rounded group cursor-pointer"
+          className="relative w-80 h-64 bg-white overflow-hidden   rounded group cursor-pointer"
         >
           {/* SVG icon */}
           <div

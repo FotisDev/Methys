@@ -8,7 +8,7 @@ import Link from "next/link";
 // Extend Category to include image field
 type CategoryWithImage = CategoryBackendType & { image: string };
 
-const ShowSubCategories = (): JSX.Element => {
+const CategoriesMainPage = (): JSX.Element => {
   const [subcategories, setSubCategories] = useState<CategoryWithImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,35 +20,44 @@ const ShowSubCategories = (): JSX.Element => {
   useEffect(() => {
     const fetchSubCategories = async () => {
       try {
+        // Updated to use the correct table name and column name
         const { data, error } = await supabase
-          .from("CategoriesForMen")
-          .select("id, category_name")
+          .from("categoriesformen")
+          .select("id, name")
           .eq("parent_id", 1);
 
         if (error) throw error;
 
-        // Map images manually based on category_name using the provided file names
+        // Map images manually based on name using the provided file names
         const mapped: CategoryWithImage[] = (data || []).map((cat) => {
           let imageName = "";
-          const name = cat.category_name.toLowerCase();
+          const name = cat.name.toLowerCase();
           
-          if (name === "tshirt") imageName = "tshirt.jpg";
+          if (name === "t-shirt") imageName = "tshirt.jpg";
           else if (name === "shirts") imageName = "shirts.avif";
           else if (name === "jackets") imageName = "jackets.jpg";
           else if (name === "hoodies") imageName = "hoodies.jpg";
           else if (name === "socks") imageName = "socks.webp";
           else if (name === "jeans") imageName = "jeans.jpg";
           else if (name === "custome pants") imageName = "customePants.webp";
+          else if (name === "custom") imageName = "customePants.webp"; // Added mapping for 'custom'
+          else if (name === "pants") imageName = "customePants.webp"; // Added mapping for 'pants'
           else if (name === "shorts") imageName = "shorts.jpg";
           else if (name === "accessories") imageName = "accessories.webp";
           else if (name === "shoes") imageName = "shoes.jpg";
+          else if (name === "knitwear") imageName = "knitwear.webp"; // Added mapping for 'knitwear'
           else {
             const nameSlug = name.replace(/\s+/g, "-");
             imageName = `${nameSlug}.jpg`;
           }
 
           const fullUrl = `${supabaseUrl}/storage/v1/object/public/product-images/${imageName}`;
-          return { ...cat, image: fullUrl };
+          // Map the data to match your interface - using name as category_name
+          return { 
+            id: cat.id, 
+            category_name: cat.name, // Map name to category_name for compatibility
+            image: fullUrl 
+          };
         });
 
         setSubCategories(mapped);
@@ -247,4 +256,4 @@ useEffect(() => {
   );
 };
 
-export default ShowSubCategories;
+export default CategoriesMainPage;
