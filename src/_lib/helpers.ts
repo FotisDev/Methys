@@ -1,9 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 
 // Define interfaces
-export interface Category {
+export interface CategoryBackendType {
   id: number;
-  category_name: string;
+ name: string;
   parent_id?: number | null;
   image_url?: string;
   slug?:string;
@@ -16,10 +16,10 @@ export interface Product {
   price: number;
   created_at: string;
   image_url: string;
-  category_id: number;
+  category_men_id: number;
   slug: string;
   is_offer?: boolean;
-  categories?: Category | Category[] | null;
+  categories?: CategoryBackendType | CategoryBackendType[] | null;
 }
 
 export interface User {
@@ -36,10 +36,10 @@ export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export async function fetchCategories(): Promise<Category[] | null> {
+export async function fetchCategories(): Promise<CategoryBackendType[] | null> {
   const { data, error } = await supabase
-    .from("categories")
-    .select("id, category_name, parent_id")
+    .from("categoriesformen")
+    .select("id, name, parent_id")
     .order("id", { ascending: true });
 
   if (error || !data) {
@@ -47,13 +47,13 @@ export async function fetchCategories(): Promise<Category[] | null> {
     return null;
   }
 
-  return data as Category[];
+  return data as CategoryBackendType[];
 }
 
 export async function fetchProducts(): Promise<Product[] | null> {
   const { data, error } = await supabase
     .from("products")
-    .select("id, name, description, price, created_at, image_url, category_id, slug, is_offer")
+    .select("id, name, description, price, created_at, image_url, category_men_id, slug, is_offer")
     .order("created_at", { ascending: false });
 
   if (error || !data) {
@@ -65,10 +65,10 @@ export async function fetchProducts(): Promise<Product[] | null> {
 }
 
 // Get main categories (level 1: Mens, Womens, Kids)
-export async function getMainCategories(): Promise<Category[]> {
+export async function getMainCategories(): Promise<CategoryBackendType[]> {
   const { data, error } = await supabase
-    .from("categories")
-    .select("id, category_name, parent_id")
+    .from("categoriesformen")
+    .select("id, name, parent_id")
     .is("parent_id", null)
     .order("id", { ascending: true });
 
@@ -77,14 +77,14 @@ export async function getMainCategories(): Promise<Category[]> {
     return [];
   }
 
-  return data as Category[];
+  return data as CategoryBackendType[];
 }
 
 // Get subcategories for a parent category
-export async function getSubcategories(parentId: number): Promise<Category[]> {
+export async function getSubcategories(parentId: number): Promise<CategoryBackendType[]> {
   const { data, error } = await supabase
-    .from("categories")
-    .select("id, category_name, parent_id")
+    .from("categoriesformen")
+    .select("id,name, parent_id")
     .eq("parent_id", parentId)
     .order("id", { ascending: true });
 
@@ -93,15 +93,15 @@ export async function getSubcategories(parentId: number): Promise<Category[]> {
     return [];
   }
 
-  return data as Category[];
+  return data as CategoryBackendType[];
 }
 
 // Find category by name (case insensitive)
-export async function getCategoryByName(categoryName: string , parentId: number | null = null): Promise<Category | null> {
+export async function getCategoryByName(categoryName: string , parentId: number | null = null): Promise<CategoryBackendType | null> {
   const { data, error } = await supabase
-    .from("categories")
-    .select("id, category_name, parent_id")
-    .ilike("category_name", categoryName)
+    .from("categoriesformen")
+    .select("id, name, parent_id")
+    .ilike("name", categoryName)
     .maybeSingle();
 
   if (error || !data) {
@@ -109,14 +109,14 @@ export async function getCategoryByName(categoryName: string , parentId: number 
     return null;
   }
 
-  return data as Category;
+  return data as CategoryBackendType;
 }
 
 // Get category by ID
-export async function getCategoryById(categoryId: number): Promise<Category | null> {
+export async function getCategoryById(categoryId: number): Promise<CategoryBackendType | null> {
   const { data, error } = await supabase
-    .from("categories")
-    .select("id, category_name, parent_id")
+    .from("categoriesformen")
+    .select("id,name, parent_id")
     .eq("id", categoryId)
     .maybeSingle();
 
@@ -125,15 +125,15 @@ export async function getCategoryById(categoryId: number): Promise<Category | nu
     return null;
   }
 
-  return data as Category;
+  return data as CategoryBackendType;
 }
 
 // Get products by category ID (for final level categories)
 export async function getProductsByCategory(categoryId: number): Promise<Product[]> {
   const { data, error } = await supabase
     .from("products")
-    .select("id, name, description, price, created_at, image_url, category_id, slug, is_offer")
-    .eq("category_id", categoryId)
+    .select("id, name, description, price, created_at, image_url, category_men_id, slug, is_offer")
+    .eq("categoriesformen", categoryId)
     .order("created_at", { ascending: false });
 
   if (error || !data) {
@@ -145,8 +145,8 @@ export async function getProductsByCategory(categoryId: number): Promise<Product
 }
 
 // Get full category path (breadcrumb)
-export async function getCategoryPath(categoryId: number): Promise<Category[]> {
-  const path: Category[] = [];
+export async function getCategoryPath(categoryId: number): Promise<CategoryBackendType[]> {
+  const path: CategoryBackendType[] = [];
   let currentId = categoryId;
 
   while (currentId) {
@@ -163,7 +163,7 @@ export async function getCategoryPath(categoryId: number): Promise<Category[]> {
 // Check if category has subcategories
 export async function hasSubcategories(categoryId: number): Promise<boolean> {
   const { data, error } = await supabase
-    .from("categories")
+    .from("categoriesformen")
     .select("id")
     .eq("parent_id", categoryId)
     .limit(1);
@@ -176,7 +176,7 @@ export async function hasProducts(categoryId: number): Promise<boolean> {
   const { data, error } = await supabase
     .from("products")
     .select("id")
-    .eq("category_id", categoryId)
+    .eq("category_men_id", categoryId)
     .limit(1);
 
   return !error && data && data.length > 0;
@@ -197,18 +197,24 @@ export async function fetchProductBySlug(
         image_url,
         slug,
         created_at,
-        category_id,
+        category_men_id,
         is_offer
       `)
       .eq("slug", slug)
-      .eq("category_id", categoryId)
+      .eq("category_men_id", categoryId)
       .maybeSingle();
 
-    if (error || !data) {
-      console.error("Error fetching product by slug:", error?.message);
+    if (error) {
+      console.error("Error fetching product by slug:", error.message);
       return null;
     }
 
+    if (!data) {
+      console.error(`Product with slug "${slug}" and category_men_id "${categoryId}" not found`);
+      return null;
+    }
+
+    console.log("Fetched product:", data);
     return data as Product;
   } catch (error) {
     console.error("Unexpected error fetching product by slug:", error);
@@ -229,7 +235,7 @@ export async function fetchProductsByCategory(categoryName: string): Promise<Pro
   return await getProductsByCategory(category.id);
 }
 
-export async function getCategoryHierarchy(categoryId: number): Promise<Category[]> {
+export async function getCategoryHierarchy(categoryId: number): Promise<CategoryBackendType[]> {
   return await getCategoryPath(categoryId);
 }
 

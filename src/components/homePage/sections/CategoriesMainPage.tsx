@@ -36,16 +36,14 @@ const CategoriesMainPage = (): JSX.Element => {
           if (name === "t-shirt") imageName = "tshirt.jpg";
           else if (name === "shirts") imageName = "shirts.avif";
           else if (name === "jackets") imageName = "jackets.jpg";
-          else if (name === "hoodies") imageName = "hoodies.jpg";
           else if (name === "socks") imageName = "socks.webp";
-          else if (name === "jeans") imageName = "jeans.jpg";
+          else if (name === "jeans | pants") imageName = "jeans.jpg";
           else if (name === "custome pants") imageName = "customePants.webp";
           else if (name === "custom") imageName = "customePants.webp"; // Added mapping for 'custom'
-          else if (name === "pants") imageName = "customePants.webp"; // Added mapping for 'pants'
           else if (name === "shorts") imageName = "shorts.jpg";
           else if (name === "accessories") imageName = "accessories.webp";
           else if (name === "shoes") imageName = "shoes.jpg";
-          else if (name === "knitwear") imageName = "knitwear.webp"; // Added mapping for 'knitwear'
+          else if (name === "knitwear | hoodies") imageName = "knitwear.webp"; // Added mapping for 'knitwear'
           else {
             const nameSlug = name.replace(/\s+/g, "-");
             imageName = `${nameSlug}.jpg`;
@@ -161,7 +159,7 @@ useEffect(() => {
       {/* Shop Now Button */}
       <Link 
         href='/products' 
-        className="absolute right-3 top-0 h-12 flex items-center justify-center bg-none text-black underline w-40 px-6 pb-5  z-10 font-poppins"
+        className="absolute right-1 top-0 h-12 flex items-center justify-center bg-none text-black underline w-40 px-6 pb-5  z-10 font-poppins"
       >
         SHOP NOW
       </Link>

@@ -5,14 +5,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { supabase, fetchCategories, Category } from "@/_lib/helpers";
+import { supabase, fetchCategories, CategoryBackendType } from "@/_lib/helpers";
 
 // Define the form data type
 interface ProductFormData {
   name: string;
   description?: string;
   price: number;
-  category_id: number;
+  category_men_id: number;
   imageFile?: FileList;
   is_offer: boolean;
 }
@@ -39,7 +39,7 @@ const productSchema = z.object({
     .min(0.01, "Price must be greater than 0")
     .max(999999.99, "Price cannot exceed 999,999.99"),
   
-  category_id: z
+  category_men_id: z
     .number({
       required_error: "Category is required",
       invalid_type_error: "Category must be a valid number",
@@ -92,12 +92,12 @@ export default function ProductEntryPage() {
       name: "",
       description: "",
       price: 0,
-      category_id: 0,
+      category_men_id: 0,
       is_offer: false,
     },
   });
 
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryBackendType[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -218,7 +218,7 @@ export default function ProductEntryPage() {
         name: data.name.trim(),
         description: data.description?.trim() || null,
         price: parseFloat(data.price.toString()),
-        category_id: data.category_id,
+        category_men_id: data.category_men_id,
         image_url: fileUrl || "/placeholder.png",
         is_offer: data.is_offer || false,
         slug,
@@ -237,7 +237,7 @@ export default function ProductEntryPage() {
         name: "",
         description: "",
         price: 0,
-        category_id: 0,
+        category_men_id: 0,
         is_offer: false,
       });
       setImagePreview(null);
@@ -328,19 +328,19 @@ export default function ProductEntryPage() {
             </label>
             <select
               id="category_id"
-              {...register("category_id", { valueAsNumber: true })}
+              {...register("category_men_id", { valueAsNumber: true })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={clearMessages}
             >
               <option value="0">-- Select a category --</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
-                  {cat.category_name}
+                  {cat.name}
                 </option>
               ))}
             </select>
-            {errors.category_id && (
-              <p className="mt-1 text-sm text-red-600">{errors.category_id.message}</p>
+            {errors.category_men_id && (
+              <p className="mt-1 text-sm text-red-600">{errors.category_men_id.message}</p>
             )}
             {categories.length === 0 && (
               <p className="mt-1 text-sm text-red-600">No categories available. Please add categories in Supabase.</p>

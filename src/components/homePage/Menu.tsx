@@ -9,7 +9,7 @@ import BulletButton from "./BulletButton";
 import ClotheCards from "./DropDownMenu";
 // import DropDownMenu from "./DropDownMenu";
 // import ShowSubCategories from "./categories/DropDownMainPageSubCat";
-import DropDownMainPageSubCat from "./categories/DropDownMainPageSubCat";
+import DropDownMainPageSubCat from "./DropDownMainPageSubCat";
 
 const Menu = () => {
   const [showClothes, setShowClothes] = useState(false);

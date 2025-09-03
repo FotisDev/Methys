@@ -3,14 +3,14 @@
 import { useState, useEffect, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getCategoryByName, getSubcategories, fetchProducts, Category, Product } from "@/_lib/helpers";
+import { getCategoryByName, getSubcategories, fetchProducts, CategoryBackendType, Product } from "@/_lib/helpers";
 import { CategoryPageProps } from "@/_lib/interfaces";
 
 
 
 export default function CategoryPage({ params }: CategoryPageProps) {
-  const [category, setCategory] = useState<Category | null>(null);
-  const [subcategories, setSubcategories] = useState<Category[]>([]);
+  const [category, setCategory] = useState<CategoryBackendType | null>(null);
+  const [subcategories, setSubcategories] = useState<CategoryBackendType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,7 +37,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         
         // Map images to subcategories
         const subcategoriesWithImages = subcategoriesData.map(subcat => {
-          const product = allProducts?.find(p => p.category_id === subcat.id);
+          const product = allProducts?.find(p => p.category_men_id === subcat.id);
           return {
             ...subcat,
             image_url: product?.image_url || " "
@@ -89,15 +89,15 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           Products
         </Link>
         <span className="mx-2">/</span>
-        <span className="capitalize font-medium">{category.category_name}</span>
+        <span className="capitalize font-medium">{category.name}</span>
       </nav>
 
       <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 capitalize">
-        {category.category_name}
+        {category.name}
       </h1>
       
       <p className="text-center text-gray-600 mb-12 text-lg">
-        Choose a subcategory to explore our {category.category_name.toLowerCase()} collection
+        Choose a subcategory to explore our {category.name.toLowerCase()} collection
       </p>
 
       {subcategories.length === 0 ? (
@@ -111,7 +111,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {subcategories.map((subcategory) => {
-            const href = `/products/${resolvedParams.category}/${subcategory.category_name
+            const href = `/products/${resolvedParams.category}/${subcategory.name
               .replace(/\s+/g, "-")
               .toLowerCase()}`;
 
@@ -133,14 +133,14 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                  <div className="absolute inset-0 rounded-xl overflow-hidden">
                 <img
                   src={subcategory.image_url ?? ''}
-                  alt={`${subcategory.category_name} category image`}
+                  alt={`${subcategory.name} category image`}
                   className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <h3 className="text-lg font-semibold capitalize mb-1">
-                    {subcategory.category_name}
+                    {subcategory.name}
                   </h3>
                   <p className="text-sm text-gray-200">
                     Explore collection →

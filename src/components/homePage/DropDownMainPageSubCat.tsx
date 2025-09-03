@@ -100,7 +100,7 @@ export default function DropDownMainPageSubCat() {
   }
 
   return (
-    <div className="fixed left-0 right-0 w-screen bg-white z-50 shadow-lg border-t">
+    <div className="fixed left-0 right-0 w-screen bg-white z-50 ">
       <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
           {mainCategories.map((mainCat) => (
@@ -111,7 +111,7 @@ export default function DropDownMainPageSubCat() {
               </h3>
               
               {/* Subcategories */}
-              <div className="flex flex-col items-center space-y-2">
+              <div className="flex flex-col items-center ">
                 {mainCat.subcategories.length > 0 ? (
                   mainCat.subcategories.map((subCat) => (
                     <button

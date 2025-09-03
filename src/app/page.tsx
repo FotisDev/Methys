@@ -1,16 +1,15 @@
 
 import Footer from "@/components/footer/Footer";
-import BookNow from "@/components/homePage/BookNow";
+import BookNow from "@/components/homePage/sections/BookNow";
 import { HeaderProvider } from "@/components/homePage/Header";
 import Hero from "@/components/homePage/Hero";
-import HowItWork from "@/components/homePage/HowItWork/HowItWork";
 import ThreeButtonsInRow from "@/components/homePage/ThreeButtonsInRow";
 import ThreeIcons from "@/components/homePage/ThreeIcons";
 import VideoSection from "@/components/homePage/VideoSection";
-import PhotoGallery from "@/components/sections/photoAndVideoGallery";
+import PhotoGallery from "@/components/homePage/sections/photoAndVideoGallery";
 import type { Metadata } from "next";
 import React, { Suspense } from "react";
-import CategoriesMainPage from "@/components/homePage/categories/CategoriesMainPage";
+import CategoriesMainPage from "@/components/homePage/sections/CategoriesMainPage";
 
 export const metadata: Metadata = {
   title: "UrbanValor",
@@ -29,7 +28,6 @@ export default async function Home() {
           <ThreeButtonsInRow />
           <VideoSection />
           <BookNow />
-          <HowItWork />
           */}
           <ThreeIcons />
           <Footer />
