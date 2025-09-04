@@ -117,6 +117,17 @@ export default function Footer() {
                   TT
                 </div>
               </div>
+              <div className="flex flex-col items-center justify-end ml-[450px]">
+              
+                <Link
+                  href="/login"
+                  aria-label="SignUpPage"
+                  className="w-[130px] h-[40px] text-[14px]  bg-sahara text-gray-100  px-4 py-2 rounded"
+                >
+                  Sign Up/Sign In
+                </Link>
+                <span className=" text-white">For special Offers</span>
+              </div>
             </div>
           </div>
 
@@ -133,7 +144,7 @@ export default function Footer() {
                 <h4 className="text-sahara font-semibold text-base sm:text-lg">
                   {column.category}
                 </h4>
-                
+
                 {/* Regular navigation links */}
                 {column.items.length > 0 && (
                   <ul className="space-y-2">
@@ -150,12 +161,12 @@ export default function Footer() {
                     ))}
                   </ul>
                 )}
-                
+
                 {/* Payment Methods Content */}
                 {column.category === "Payment Methods" && (
                   <div className="flex flex-col gap-3">
                     {paymentMethods.map((method) => (
-                      <div 
+                      <div
                         key={method.name}
                         className="bg-white text-black py-2 px-4 rounded-md text-center font-medium"
                         style={{ width: method.width }}
@@ -165,7 +176,7 @@ export default function Footer() {
                     ))}
                   </div>
                 )}
-                
+
                 {/* Contact Info Content */}
                 {column.category === "Contact Us" && (
                   <div className="space-y-2">
@@ -189,7 +200,7 @@ export default function Footer() {
             {/* Left */}
             <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
               <span className="font-bold text-lg sm:text-xl text-myCyan">
-                UrbanValor
+                Methys
               </span>
               <span className="text-sm text-gray-300">
                 © 2025 All rights reserved
@@ -198,20 +209,7 @@ export default function Footer() {
 
             {/* Right */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-center">
-              <Link
-                href={PAGE_URLS.TERMS_AND_CONDITIONS}
-                className="hover:underline hover:text-sahara transition-colors"
-                aria-label="Read our Terms and Conditions"
-              >
-                Terms & Conditions
-              </Link>
-              <Link
-                href={PAGE_URLS.PRIVACY_POLICY}
-                className="hover:underline hover:text-sahara transition-colors"
-                aria-label="Read our Privacy Policy"
-              >
-                Privacy Policy
-              </Link>
+              {/* add here if you want to be at the right side of the end of the footer */}
             </div>
           </div>
         </div>

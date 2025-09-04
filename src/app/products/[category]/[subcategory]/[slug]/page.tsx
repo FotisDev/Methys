@@ -1,5 +1,10 @@
 "use client";
-
+import {
+  addToWishlist,
+  removeFromWishlist,
+  isInWishlist,
+} from "@/_lib/utils/whishListUtils";
+import HeartIcon from "@/svgs/whishListSvg";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,13 +23,20 @@ export default function ProductDetailPage({
 }: {
   params: Promise<{ category: string; subcategory: string; slug: string }>;
 }) {
-  const [unwrappedParams, setUnwrappedParams] = useState<{ category: string; subcategory: string; slug: string } | null>(null);
-  const [parentCategory, setParentCategory] = useState<CategoryBackendType | null>(null);
-  const [currentCategory, setCurrentCategory] = useState<CategoryBackendType | null>(null);
+  const [unwrappedParams, setUnwrappedParams] = useState<{
+    category: string;
+    subcategory: string;
+    slug: string;
+  } | null>(null);
+  const [parentCategory, setParentCategory] =
+    useState<CategoryBackendType | null>(null);
+  const [currentCategory, setCurrentCategory] =
+    useState<CategoryBackendType | null>(null);
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [isAddedToCart, setIsAddedToCart] = useState(false); // Track if item was added
+  const [isInWishlistState, setIsInWishlistState] = useState(false);
   // Unwrap the params promise
   useEffect(() => {
     const unwrapParams = async () => {
@@ -41,15 +53,53 @@ export default function ProductDetailPage({
     unwrapParams();
   }, [params]);
 
+  useEffect(() => {
+    if (product) {
+      setIsInWishlistState(isInWishlist(product.id));
+    }
+  }, [product]);
+
+  // Add this function to handle wishlist toggle
+  const handleWishlistToggle = () => {
+    if (!product) return;
+
+    if (isInWishlistState) {
+      // Remove from wishlist
+      const success = removeFromWishlist(product.id);
+      if (success) {
+        setIsInWishlistState(false);
+      }
+    } else {
+      // Add to wishlist
+      const success = addToWishlist(product);
+      if (success) {
+        setIsInWishlistState(true);
+      } else {
+        alert("Item already in wishlist!");
+      }
+    }
+  };
+
   // Extract and decode parameters once unwrapped
   const categorySlug = decodeURIComponent(unwrappedParams?.category || "");
-  const subcategorySlug = decodeURIComponent(unwrappedParams?.subcategory || "");
+  const subcategorySlug = decodeURIComponent(
+    unwrappedParams?.subcategory || ""
+  );
   const productSlug = decodeURIComponent(unwrappedParams?.slug || "");
   const categoryName = categorySlug.replace(/-/g, " ").toLowerCase().trim();
-  const subcategoryName = subcategorySlug.replace(/-/g, " ").toLowerCase().trim();
+  const subcategoryName = subcategorySlug
+    .replace(/-/g, " ")
+    .toLowerCase()
+    .trim();
 
   console.log("ProductDetailPage - Unwrapped Params:", unwrappedParams);
-  console.log("ProductDetailPage - Processed Params:", { categorySlug, subcategorySlug, productSlug, categoryName, subcategoryName });
+  console.log("ProductDetailPage - Processed Params:", {
+    categorySlug,
+    subcategorySlug,
+    productSlug,
+    categoryName,
+    subcategoryName,
+  });
 
   useEffect(() => {
     const loadProductData = async () => {
@@ -60,7 +110,10 @@ export default function ProductDetailPage({
           throw new Error("Missing required URL parameters");
         }
 
-        console.log("ProductDetailPage - Searching for parent category:", categoryName);
+        console.log(
+          "ProductDetailPage - Searching for parent category:",
+          categoryName
+        );
         const parentData = await getCategoryByName(categoryName);
         if (!parentData) {
           throw new Error(`Parent category "${categoryName}" not found`);
@@ -68,31 +121,49 @@ export default function ProductDetailPage({
         console.log("ProductDetailPage - Found parent category:", parentData);
         setParentCategory(parentData);
 
-        console.log("ProductDetailPage - Fetching subcategories under parent ID:", parentData.id);
+        console.log(
+          "ProductDetailPage - Fetching subcategories under parent ID:",
+          parentData.id
+        );
         const subcategories = await getSubcategories(parentData.id);
         console.log("ProductDetailPage - Found subcategories:", subcategories);
 
-        // Improved matching logic that handles URL encoding and special characters
         const currentData = subcategories.find(
           (subcat) =>
-            (subcat.slug && decodeURIComponent(subcat.slug) === subcategorySlug) || // Match decoded slug
-            subcat.name.toLowerCase().trim() === subcategoryName || // Exact name match
-            (subcat.slug && subcat.slug === subcategorySlug) || // Original slug match
-            subcat.name.toLowerCase().includes(subcategoryName) || // Partial name match
-            subcategoryName.includes(subcat.name.toLowerCase()) // Reverse partial match
+            (subcat.slug &&
+              decodeURIComponent(subcat.slug) === subcategorySlug) ||
+            subcat.name.toLowerCase().trim() === subcategoryName ||
+            (subcat.slug && subcat.slug === subcategorySlug) ||
+            subcat.name.toLowerCase().includes(subcategoryName) ||
+            subcategoryName.includes(subcat.name.toLowerCase())
         );
-        
+
         if (!currentData) {
-          console.log("ProductDetailPage - No exact match for subcategory. Available subcategories:", subcategories.map((sub) => sub.name));
-          throw new Error(`Subcategory "${subcategoryName}" not found under "${categoryName}"`);
+          console.log(
+            "ProductDetailPage - No exact match for subcategory. Available subcategories:",
+            subcategories.map((sub) => sub.name)
+          );
+          throw new Error(
+            `Subcategory "${subcategoryName}" not found under "${categoryName}"`
+          );
         }
         console.log("ProductDetailPage - Found subcategory:", currentData);
         setCurrentCategory(currentData);
 
-        console.log("ProductDetailPage - Fetching product with category ID:", currentData.id, "and slug:", productSlug);
-        const productData = await fetchProductBySlug(currentData.id, productSlug);
+        console.log(
+          "ProductDetailPage - Fetching product with category ID:",
+          currentData.id,
+          "and slug:",
+          productSlug
+        );
+        const productData = await fetchProductBySlug(
+          currentData.id,
+          productSlug
+        );
         if (!productData) {
-          throw new Error(`Product with slug "${productSlug}" not found in ${subcategoryName}`);
+          throw new Error(
+            `Product with slug "${productSlug}" not found in ${subcategoryName}`
+          );
         }
         console.log("ProductDetailPage - Found product:", productData);
         setProduct(productData);
@@ -105,7 +176,42 @@ export default function ProductDetailPage({
     };
 
     loadProductData();
-  }, [unwrappedParams, categoryName, subcategoryName, productSlug, categorySlug, subcategorySlug]);
+  }, [
+    unwrappedParams,
+    categoryName,
+    subcategoryName,
+    productSlug,
+    categorySlug,
+    subcategorySlug,
+  ]);
+
+  // Function to add product to cart
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    // Get existing cart from localStorage
+    const savedCart = localStorage.getItem("cartItems");
+    const existingCart = savedCart ? JSON.parse(savedCart) : [];
+
+    // Check if product is already in cart
+    const existingItem = existingCart.find(
+      (item: Product) => item.id === product.id
+    );
+    if (existingItem) {
+      if (existingItem.quantityInCart < product.quantity) {
+        existingItem.quantityInCart += 1;
+      } else {
+        alert("Cannot add more than available stock!");
+        return;
+      }
+    } else {
+      existingCart.push({ ...product, quantityInCart: 1 });
+    }
+
+    // Save updated cart to localStorage
+    localStorage.setItem("cartItems", JSON.stringify(existingCart));
+    setIsAddedToCart(true); // Show success message
+  };
 
   if (isLoading) {
     return (
@@ -120,13 +226,17 @@ export default function ProductDetailPage({
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
-        <p className="text-gray-600 mb-8">{error || `Product "${productSlug}" not found`}</p>
+        <p className="text-gray-600 mb-8">
+          {error || `Product "${productSlug}" not found`}
+        </p>
         {subcategorySlug && (
           <Link
-            href={`/products/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subcategorySlug)}`}
+            href={`/products/${encodeURIComponent(
+              categorySlug
+            )}/${encodeURIComponent(subcategorySlug)}`}
             className="px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
           >
-            Back to {subcategoryName.replace(/-/g, " ") || 'Products'}
+            Back to {subcategoryName.replace(/-/g, " ") || "Products"}
           </Link>
         )}
       </div>
@@ -137,7 +247,10 @@ export default function ProductDetailPage({
     <div className="container mx-auto px-4 py-12">
       {/* Breadcrumb Navigation */}
       <nav className="mb-8 text-sm text-gray-600">
-        <Link href="/products" className="hover:text-amber-600 transition-colors">
+        <Link
+          href="/products"
+          className="hover:text-amber-600 transition-colors"
+        >
           Products
         </Link>
         <span className="mx-2">/</span>
@@ -149,7 +262,9 @@ export default function ProductDetailPage({
         </Link>
         <span className="mx-2">/</span>
         <Link
-          href={`/products/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subcategorySlug)}`}
+          href={`/products/${encodeURIComponent(
+            categorySlug
+          )}/${encodeURIComponent(subcategorySlug)}`}
           className="hover:text-amber-600 transition-colors capitalize"
         >
           {currentCategory?.name || subcategoryName}
@@ -185,7 +300,9 @@ export default function ProductDetailPage({
               {product.name}
             </h1>
             <div className="flex items-center space-x-4 mb-6">
-              <span className="text-3xl font-bold text-amber-600">${product.price}</span>
+              <span className="text-3xl font-bold text-amber-600">
+                ${product.price}
+              </span>
               {product.is_offer && (
                 <span className="bg-red-100 text-red-800 text-sm font-semibold px-3 py-1 rounded-full">
                   On Sale
@@ -195,17 +312,26 @@ export default function ProductDetailPage({
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Description</h3>
-            <p className="text-gray-700 leading-relaxed">{product.description}</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              Description
+            </h3>
+            <p className="text-gray-700 leading-relaxed">
+              {product.description}
+            </p>
           </div>
 
           {/* Product Info */}
           <div className="border-t pt-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Information</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Product Information
+            </h3>
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-gray-600">Category:</span>
-                <span className="font-medium">{parentCategory?.name || categoryName} → {currentCategory?.name || subcategoryName}</span>
+                <span className="font-medium">
+                  {parentCategory?.name || categoryName} →{" "}
+                  {currentCategory?.name || subcategoryName}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Product ID:</span>
@@ -217,25 +343,54 @@ export default function ProductDetailPage({
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Added:</span>
-                <span className="font-medium">{new Date(product.created_at).toLocaleDateString()}</span>
+                <span className="font-medium">
+                  {new Date(product.created_at).toLocaleDateString()}
+                </span>
               </div>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="space-y-4 pt-6">
-            <button className="w-full bg-amber-500 text-white font-semibold py-4 px-8 rounded-lg hover:bg-amber-600 transition-colors duration-200 text-lg">
-              Add to Cart
+            <button
+              onClick={handleAddToCart}
+              className="w-full bg-amber-500 text-white font-semibold py-4 px-8 rounded-lg hover:bg-amber-600 transition-colors duration-200 text-lg"
+            >
+              {isAddedToCart ? "Added to Cart!" : "Add to Cart"}
             </button>
-            <button className="w-full border-2 border-amber-500 text-amber-500 font-semibold py-4 px-8 rounded-lg hover:bg-amber-50 transition-colors duration-200 text-lg">
-              Add to Wishlist
+            <button
+              onClick={handleWishlistToggle}
+              className={`w-full border-2 font-semibold py-4 px-8 rounded-lg transition-colors duration-200 text-lg flex items-center justify-center space-x-2 ${
+                isInWishlistState
+                  ? "border-red-500 bg-red-50 text-red-600 hover:bg-red-100"
+                  : "border-amber-500 text-amber-500 hover:bg-amber-50"
+              }`}
+            >
+              <HeartIcon
+                filled={isInWishlistState}
+                className={`w-5 h-5 ${
+                  isInWishlistState ? "text-red-600" : "text-amber-500"
+                }`}
+              />
+              <span>
+                {isInWishlistState ? "Remove from Wishlist" : "Add to Wishlist"}
+              </span>
             </button>
+            {isAddedToCart && (
+              <Link href="/cart">
+                <button className="w-full bg-green-500 text-white font-semibold py-4 px-8 rounded-lg hover:bg-green-600 transition-colors duration-200 text-lg mt-2">
+                  Go to Cart
+                </button>
+              </Link>
+            )}
           </div>
 
           {/* Back Navigation */}
           <div className="pt-6 border-t">
             <Link
-              href={`/products/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subcategorySlug)}`}
+              href={`/products/${encodeURIComponent(
+                categorySlug
+              )}/${encodeURIComponent(subcategorySlug)}`}
               className="inline-flex items-center text-amber-600 hover:text-amber-700 font-medium transition-colors"
             >
               ← Back to {currentCategory?.name || subcategoryName}

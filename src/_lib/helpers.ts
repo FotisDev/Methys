@@ -9,17 +9,18 @@ export interface CategoryBackendType {
   slug?:string;
 }
 
+// lib/supabase.ts
 export interface Product {
   id: number;
   name: string;
   description: string;
-  price: number;
-  created_at: string;
+  price: number; 
   image_url: string;
-  category_men_id: number;
+  created_at: string; 
+  is_offer: boolean;
   slug: string;
-  is_offer?: boolean;
-  categories?: CategoryBackendType | CategoryBackendType[] | null;
+  quantity: number;
+  category_men_id:number;
 }
 
 export interface User {
@@ -260,3 +261,4 @@ export const getValidImage = (url?: string | null) => {
     return "/Casual.jpg";
   }
 };
+
