@@ -271,6 +271,7 @@ const CartPage = () => {
                     Continue Shopping
                   </button>
                 </Link>
+                <Link href={'/'}>back to home...</Link>
               </div>
 
               {/* Security Badge */}

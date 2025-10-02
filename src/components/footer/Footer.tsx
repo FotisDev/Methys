@@ -6,18 +6,9 @@ import { PAGE_URLS } from "@/_lib/constants";
 
 export default function Footer() {
   const paymentMethods = [
-    {
-      name: "VISA",
-      width: "122px",
-    },
-    {
-      name: "MASTERCARD",
-      width: "122px",
-    },
-    {
-      name: "AMERICAN EXPRESS",
-      width: "155px",
-    },
+    { name: "VISA", width: "122px" },
+    { name: "MASTERCARD", width: "122px" },
+    { name: "AMERICAN EXPRESS", width: "155px" },
   ];
 
   const columnsData = [
@@ -40,14 +31,8 @@ export default function Footer() {
         { name: "Help", href: "/help" },
       ],
     },
-    {
-      category: "Payment Methods",
-      items: [], // Empty items array for payment methods
-    },
-    {
-      category: "Contact Us",
-      items: [], // Empty items array for contact info
-    },
+    { category: "Payment Methods", items: [] },
+    { category: "Contact Us", items: [] },
   ];
 
   return (
@@ -63,7 +48,7 @@ export default function Footer() {
               <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-sahara">
                 Download the App
               </h3>
-              <div className="flex flex-col ">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
                 <Link
                   href="https://play.google.com/store"
                   target="_blank"
@@ -89,7 +74,7 @@ export default function Footer() {
                     alt="App Store"
                     width={150}
                     height={50}
-                    className="w-38 h-auto ml-3"
+                    className="w-38 h-auto"
                   />
                 </Link>
               </div>
@@ -100,33 +85,15 @@ export default function Footer() {
               <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold">
                 Follow Us
               </h3>
-              <div className="flex gap-4 justify-center lg:justify-end">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors">
-                  Fb
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors">
-                  YT
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibant hover:bg-gray-200 transition-colors">
-                  In
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors">
-                  IG
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors">
-                  TT
-                </div>
-              </div>
-              <div className="flex flex-col items-center justify-end ml-[450px]">
-              
-                <Link
-                  href="/login"
-                  aria-label="SignUpPage"
-                  className="w-[130px] h-[40px] text-[14px]  bg-sahara text-gray-100  px-4 py-2 rounded"
-                >
-                  Sign Up/Sign In
-                </Link>
-                <span className=" text-white">For special Offers</span>
+              <div className="flex gap-4 justify-center lg:justify-end flex-wrap">
+                {["Fb", "YT", "In", "IG", "TT"].map((social) => (
+                  <div
+                    key={social}
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors"
+                  >
+                    {social}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -145,7 +112,6 @@ export default function Footer() {
                   {column.category}
                 </h4>
 
-                {/* Regular navigation links */}
                 {column.items.length > 0 && (
                   <ul className="space-y-2">
                     {column.items.map((item, index) => (
@@ -162,9 +128,8 @@ export default function Footer() {
                   </ul>
                 )}
 
-                {/* Payment Methods Content */}
                 {column.category === "Payment Methods" && (
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3 items-center sm:items-start">
                     {paymentMethods.map((method) => (
                       <div
                         key={method.name}
@@ -177,18 +142,11 @@ export default function Footer() {
                   </div>
                 )}
 
-                {/* Contact Info Content */}
                 {column.category === "Contact Us" && (
-                  <div className="space-y-2">
-                    <p className="text-sm sm:text-base">
-                      Email: support@Methys.com
-                    </p>
-                    <p className="text-sm sm:text-base">
-                      Phone: +30 (695) 144-2347
-                    </p>
-                    <p className="text-sm sm:text-base">
-                      Hours: Mon-Fri 9AM-5PM
-                    </p>
+                  <div className="space-y-2 text-sm sm:text-base">
+                    <p>Email: support@Methys.com</p>
+                    <p>Phone: +30 (695) 144-2347</p>
+                    <p>Hours: Mon-Fri 9AM-5PM</p>
                   </div>
                 )}
               </div>
@@ -196,7 +154,7 @@ export default function Footer() {
           </div>
 
           {/* ROW 3: Bottom Line */}
-          <div className="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-gray-700 gap-4">
+          <div className="flex flex-col lg:flex-row justify-between items-center pt-8 border-t border-gray-700 gap-6">
             {/* Left */}
             <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
               <span className="font-bold text-lg sm:text-xl text-myCyan">
@@ -208,8 +166,15 @@ export default function Footer() {
             </div>
 
             {/* Right */}
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-center">
-              {/* add here if you want to be at the right side of the end of the footer */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-center">
+              <span className="text-white">For special <span className="text-red-500">Offers</span> make sure to </span>
+              <Link
+                href="/login"
+                aria-label="SignUpPage"
+                className="w-[130px] h-[40px] text-[14px] bg-sahara text-white px-2 py-2 font-bold rounded text-center"
+              >
+                Sign Up / Sign In
+              </Link>
             </div>
           </div>
         </div>

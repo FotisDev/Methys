@@ -9,26 +9,45 @@ import BulletButton from "./BulletButton";
 import ClotheCards from "./DropDownMenu";
 import DropDownMainPageSubCat from "./DropDownMainPageSubCat";
 import CartSvg from "@/svgs/cartSvg";
+import WishlistSidebar from "../SideBars/wishListSideBar";
+import { useWishlist } from "../hooks/wishList";
 
 const Menu = () => {
   const [showClothes, setShowClothes] = useState(false);
   const [showBulletMenu, setShowBulletMenu] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
-  const [wishlistItemCount, setWishlistItemCount] = useState(0);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
+  // Use the wishlist hook
+  const { isWishlistOpen, wishlistCount, toggleWishlist, closeWishlist } = useWishlist();
 
   const navLinks = [
     { href: PAGE_URLS.ABOUT, label: "About" },
     { href: PAGE_URLS.PRODUCTS, label: "SHOP" },
   ];
 
-  // Update counts from localStorage
+  // Helper function for getting valid images
+  const getValidImage = (imageUrl: string) => {
+    if (!imageUrl || imageUrl === 'null' || imageUrl === 'undefined') {
+      return '/images/placeholder.jpg';
+    }
+    
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    }
+    
+    if (imageUrl.startsWith('/')) {
+      return imageUrl;
+    }
+    
+    return `/images/${imageUrl}`;
+  };
+
+  // Update cart count from localStorage
   useEffect(() => {
-    const updateCounts = () => {
-      // Update cart count
+    const updateCartCount = () => {
       const savedCart = localStorage.getItem("cartItems");
       if (savedCart) {
         const cartItems = JSON.parse(savedCart);
@@ -37,30 +56,16 @@ const Menu = () => {
       } else {
         setCartItemCount(0);
       }
-
-      // Update wishlist count
-      const savedWishlist = localStorage.getItem("wishlistItems");
-      if (savedWishlist) {
-        const wishlistItems = JSON.parse(savedWishlist);
-        setWishlistItemCount(wishlistItems.length);
-      } else {
-        setWishlistItemCount(0);
-      }
     };
 
-    // Initial load
-    updateCounts();
+    updateCartCount();
 
-    // Listen for events
-    window.addEventListener('storage', updateCounts);
-    window.addEventListener('cartUpdated', updateCounts);
-    window.addEventListener('wishlistUpdated', updateCounts);
+    window.addEventListener('storage', updateCartCount);
+    window.addEventListener('cartUpdated', updateCartCount);
 
-    // Cleanup
     return () => {
-      window.removeEventListener('storage', updateCounts);
-      window.removeEventListener('cartUpdated', updateCounts);
-      window.removeEventListener('wishlistUpdated', updateCounts);
+      window.removeEventListener('storage', updateCartCount);
+      window.removeEventListener('cartUpdated', updateCartCount);
     };
   }, []);
 
@@ -150,11 +155,11 @@ const Menu = () => {
           {/* Right - Icons */}
           <div className="flex items-center justify-end">
             <div className="hidden lg:flex items-center gap-4">
-              {/* Wishlist Icon */}
-              <Link 
-                href={PAGE_URLS.WISHLIST} 
+              {/* Wishlist Icon - Now opens sidebar */}
+              <button
+                onClick={toggleWishlist}
                 className="relative group"
-                aria-label={`Wishlist with ${wishlistItemCount} items`}
+                aria-label={`Wishlist with ${wishlistCount} items`}
               >
                 <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
                   <svg 
@@ -170,13 +175,13 @@ const Menu = () => {
                       d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                     />
                   </svg>
-                  {wishlistItemCount > 0 && (
+                  {wishlistCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
-                      {wishlistItemCount > 99 ? '99+' : wishlistItemCount}
+                      {wishlistCount > 99 ? '99+' : wishlistCount}
                     </span>
                   )}
                 </div>
-              </Link>
+              </button>
 
               {/* Cart Icon */}
               <Link 
@@ -227,19 +232,21 @@ const Menu = () => {
               </Link>
             ))}
             
-            {/* Mobile Wishlist */}
-            <Link
-              href={PAGE_URLS.WISHLIST}
-              onClick={() => setShowBulletMenu(false)}
+            {/* Mobile Wishlist - Now opens sidebar */}
+            <button
+              onClick={() => {
+                toggleWishlist();
+                setShowBulletMenu(false);
+              }}
               className="flex items-center justify-between text-left text-black font-medium py-2 border-b border-gray-200"
             >
               <span>Wishlist</span>
-              {wishlistItemCount > 0 && (
+              {wishlistCount > 0 && (
                 <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1 min-w-[24px] text-center">
-                  {wishlistItemCount > 99 ? '99+' : wishlistItemCount}
+                  {wishlistCount > 99 ? '99+' : wishlistCount}
                 </span>
               )}
-            </Link>
+            </button>
 
             {/* Mobile Cart */}
             <Link
@@ -288,6 +295,13 @@ const Menu = () => {
           </div>
         </div>
       )}
+
+      {/* Wishlist Sidebar */}
+      <WishlistSidebar
+        isOpen={isWishlistOpen}
+        onClose={closeWishlist}
+        getValidImage={getValidImage}
+      />
     </div>
   );
 };

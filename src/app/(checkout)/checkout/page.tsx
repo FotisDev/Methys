@@ -268,6 +268,7 @@ const Checkout = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <Link href={'/'} className="bg-black w-12 h-12"></Link>
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-gray-50 rounded-xl p-6 sticky top-6">

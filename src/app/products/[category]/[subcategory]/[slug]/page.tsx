@@ -66,9 +66,6 @@ export default function ProductDetailPage({
     if (isInWishlistState) {
       // Remove from wishlist
       const success = removeFromWishlist(product.id);
-      if (success) {
-        setIsInWishlistState(false);
-      }
     } else {
       // Add to wishlist
       const success = addToWishlist(product);
