@@ -16,12 +16,15 @@ const Menu = () => {
   const [showClothes, setShowClothes] = useState(false);
   const [showBulletMenu, setShowBulletMenu] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [isNavbarHovered, setIsNavbarHovered] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
   // Use the wishlist hook
-  const { isWishlistOpen, wishlistCount, toggleWishlist, closeWishlist } = useWishlist();
+  const { isWishlistOpen, wishlistCount, toggleWishlist, closeWishlist } =
+    useWishlist();
 
   const navLinks = [
     { href: PAGE_URLS.ABOUT, label: "About" },
@@ -30,18 +33,18 @@ const Menu = () => {
 
   // Helper function for getting valid images
   const getValidImage = (imageUrl: string) => {
-    if (!imageUrl || imageUrl === 'null' || imageUrl === 'undefined') {
-      return '/images/placeholder.jpg';
+    if (!imageUrl || imageUrl === "null" || imageUrl === "undefined") {
+      return "/images/placeholder.jpg";
     }
-    
-    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+
+    if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
       return imageUrl;
     }
-    
-    if (imageUrl.startsWith('/')) {
+
+    if (imageUrl.startsWith("/")) {
       return imageUrl;
     }
-    
+
     return `/images/${imageUrl}`;
   };
 
@@ -51,7 +54,10 @@ const Menu = () => {
       const savedCart = localStorage.getItem("cartItems");
       if (savedCart) {
         const cartItems = JSON.parse(savedCart);
-        const totalCartItems = cartItems.reduce((sum: number, item: any) => sum + (item.quantityInCart || 1), 0);
+        const totalCartItems = cartItems.reduce(
+          (sum: number, item: any) => sum + (item.quantityInCart || 1),
+          0
+        );
         setCartItemCount(totalCartItems);
       } else {
         setCartItemCount(0);
@@ -60,19 +66,29 @@ const Menu = () => {
 
     updateCartCount();
 
-    window.addEventListener('storage', updateCartCount);
-    window.addEventListener('cartUpdated', updateCartCount);
+    window.addEventListener("storage", updateCartCount);
+    window.addEventListener("cartUpdated", updateCartCount);
 
     return () => {
-      window.removeEventListener('storage', updateCartCount);
-      window.removeEventListener('cartUpdated', updateCartCount);
+      window.removeEventListener("storage", updateCartCount);
+      window.removeEventListener("cartUpdated", updateCartCount);
     };
+  }, []);
+
+  // Handle scroll for navbar opacity
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      
+
       if (
         showBulletMenu &&
         menuRef.current &&
@@ -88,13 +104,14 @@ const Menu = () => {
         clothesModalRef.current &&
         !clothesModalRef.current.contains(target)
       ) {
-        const shopLink = Array.from(menuRef.current?.querySelectorAll('a') || [])
-          .find(link => link.textContent?.includes('SHOP'));
-        
+        const shopLink = Array.from(
+          menuRef.current?.querySelectorAll("a") || []
+        ).find((link) => link.textContent?.includes("SHOP"));
+
         if (shopLink && shopLink.contains(target)) {
           return;
         }
-        
+
         setShowClothes(false);
       }
     };
@@ -120,13 +137,45 @@ const Menu = () => {
     setShowBulletMenu(false);
   };
 
+  const isOpaque = isNavbarHovered || showClothes || isScrolled;
+
+  const navbarClasses = [
+    "fixed",
+    "font-sans",
+    "font-semibold",
+    "top-0",
+    "z-50",
+    "grid",
+    "grid-cols-3",
+    "items-center",
+    "aspect-[55/2]",
+    "w-full",
+    "px-4",
+    "lg:px-6",
+    "text-xs",
+    "transition-all",
+    "duration-300",
+  ];
+
+  if (isOpaque) {
+    navbarClasses.push("bg-white", "shadow-md", "text-black");
+  } else {
+    navbarClasses.push("text-white");
+  }
+
   return (
     <div className="relative items-center justify-center">
       <div>
         <div
-          className="fixed font-sans font-semibold top-0 z-50 grid grid-cols-3 items-center opacity-70 aspect-[55/2] bg-white backdrop-blur-xl w-full px-4 lg:px-6 text-xs shadow-md"
+          className={navbarClasses.join(" ")}
           ref={menuRef}
           style={{ zIndex: 1000 }}
+          onMouseEnter={() => setIsNavbarHovered(true)}
+          onMouseLeave={() => {
+            if (!showClothes) {
+              setIsNavbarHovered(false);
+            }
+          }}
         >
           {/* Left - Navigation */}
           <div className="flex items-center justify-start">
@@ -136,7 +185,7 @@ const Menu = () => {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="text-black uppercase hover:underline"
+                  className="uppercase hover:underline"
                   onMouseEnter={() => handleMouseEnter(label)}
                 >
                   {label}
@@ -148,7 +197,7 @@ const Menu = () => {
           {/* Center - Logo */}
           <div className="flex justify-center">
             <Link href={PAGE_URLS.HOMEPAGE} passHref>
-              <p className="font-roboto text-lg">Methys</p>  
+              <p className="font-roboto text-lg">Methys</p>
             </Link>
           </div>
 
@@ -162,38 +211,38 @@ const Menu = () => {
                 aria-label={`Wishlist with ${wishlistCount} items`}
               >
                 <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
-                  <svg 
-                    className="w-6 h-6 text-gray-700 group-hover:text-red-500 transition-colors" 
-                    fill="none" 
-                    stroke="currentColor" 
+                  <svg
+                    className="w-6 h-6 group-hover:text-red-500 transition-colors"
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth="2" 
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                     />
                   </svg>
                   {wishlistCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
-                      {wishlistCount > 99 ? '99+' : wishlistCount}
+                      {wishlistCount > 99 ? "99+" : wishlistCount}
                     </span>
                   )}
                 </div>
               </button>
 
               {/* Cart Icon */}
-              <Link 
-                href={PAGE_URLS.CART} 
+              <Link
+                href={PAGE_URLS.CART}
                 className="relative group"
                 aria-label={`Cart with ${cartItemCount} items`}
               >
                 <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
-                  <CartSvg className="w-6 h-6 text-gray-700 group-hover:text-black transition-colors" />
+                  <CartSvg className="w-6 h-6 group-hover:text-gray-900 transition-colors" />
                   {cartItemCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
-                      {cartItemCount > 99 ? '99+' : cartItemCount}
+                      {cartItemCount > 99 ? "99+" : cartItemCount}
                     </span>
                   )}
                 </div>
@@ -205,7 +254,7 @@ const Menu = () => {
             <button
               ref={toggleButtonRef}
               aria-label="Open Mobile Menu"
-              className="lg:hidden text-black text-3xl"
+              className="lg:hidden text-3xl"
               onClick={() => {
                 setShowBulletMenu(!showBulletMenu);
                 setShowClothes(false);
@@ -231,7 +280,7 @@ const Menu = () => {
                 {label}
               </Link>
             ))}
-            
+
             {/* Mobile Wishlist - Now opens sidebar */}
             <button
               onClick={() => {
@@ -243,7 +292,7 @@ const Menu = () => {
               <span>Wishlist</span>
               {wishlistCount > 0 && (
                 <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1 min-w-[24px] text-center">
-                  {wishlistCount > 99 ? '99+' : wishlistCount}
+                  {wishlistCount > 99 ? "99+" : wishlistCount}
                 </span>
               )}
             </button>
@@ -257,16 +306,9 @@ const Menu = () => {
               <span>Cart</span>
               {cartItemCount > 0 && (
                 <span className="bg-amber-500 text-white text-xs font-bold rounded-full px-2 py-1 min-w-[24px] text-center">
-                  {cartItemCount > 99 ? '99+' : cartItemCount}
+                  {cartItemCount > 99 ? "99+" : cartItemCount}
                 </span>
               )}
-            </Link>
-
-            <Link
-              href="/login"
-              className="text-center mt-2 text-white bg-cyan-900 py-2 rounded"
-            >
-              Sign Up/Sign In
             </Link>
           </div>
         </div>
@@ -277,9 +319,9 @@ const Menu = () => {
         <div
           ref={clothesModalRef}
           className="fixed top-16 left-0 z-40 h-auto max-h-[calc(100vh-4rem)] w-auto bg-white shadow-lg rounded-r-3xl transition-transform duration-300 transform translate-x-0"
-          style={{ 
-            transform: showClothes ? 'translateX(0)' : 'translateX(-100%)',
-            minWidth: '320px'
+          style={{
+            transform: showClothes ? "translateX(0)" : "translateX(-100%)",
+            minWidth: "320px",
           }}
         >
           <button
@@ -291,7 +333,7 @@ const Menu = () => {
             &times;
           </button>
           <div className="">
-            <DropDownMainPageSubCat/>
+            <DropDownMainPageSubCat />
           </div>
         </div>
       )}

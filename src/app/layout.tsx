@@ -29,7 +29,7 @@ export default function RootLayout({
       <head />
       <body
         id="mainHTML"
-        className="bg-[url('/wallpaper.jpg')] bg-cover bg-center  bg-no-repeat min-h-screen  "
+        className=" "
       >
         <BackToTop />
         <main>{children}</main>
