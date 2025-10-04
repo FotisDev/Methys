@@ -147,8 +147,8 @@ const CategoriesMainPage = (): JSX.Element => {
   if (subcategories.length === 0) {
     return (
       <div className="w-full flex flex-col relative">
-        <div className="pt-10">
-          <div className="flex flex-col lg:flex-row h-[80vh] bg-cover justify-center items-center pb-10">
+        <div className="">
+          <div className="flex flex-col lg:flex-row h-[80vh] bg-cover justify-center items-center ">
             <div className="w-full flex items-center justify-center">
               <p className="text-gray-600">No categories found.</p>
             </div>
@@ -175,7 +175,7 @@ const CategoriesMainPage = (): JSX.Element => {
         SHOP NOW
       </Link>
 
-      <div className="pt-10">
+      <div className="">
         {/* Carousel Container */}
         <div className="relative w-full h-[85vh] sm:h-[95vh]">
           <div

@@ -96,9 +96,9 @@ export default function DropDownMainPageSubCat() {
   }
 
   return (
-    <div className="fixed left-0 right-0 w-screen items-start justify-start bg-white z-50 ">
-      <div className="w-full py-2">
-        <div className="mt-10 flex flex-col sm:flex-row gap-12 items-start">
+    <div className="fixed left-0 right-0 w-screen bg-white z-50">
+      <div className="w-full ">
+        <div className="py-6 flex flex-col sm:flex-row gap-12">
           {/* Left side links column */}
           <div className="flex flex-col space-y-3 min-w-[200px] pl-8">
             <Link
@@ -121,54 +121,70 @@ export default function DropDownMainPageSubCat() {
             </Link>
           </div>
 
-          {/* Categories columns */}
-          <div className="flex flex-1 gap-8 justify-center">
-          {mainCategories.map((mainCat) => {
-            let href = "#";
+          {/* Categories and Images section */}
+          <div className="flex-1 flex justify-center">
+            <div>
+              {/* Categories row */}
+              <div className="flex gap-4 justify-start">
+                {mainCategories.map((mainCat) => (
+                  <div key={mainCat.id} className="w-96 flex flex-col items-start">
+                    {/* Main Category Header */}
+                    <h3 className="font-semibold text-gray-800  text-lg capitalize">
+                      {mainCat.name}
+                    </h3>
 
-            if (mainCat.name.toLowerCase() === "clothing") {
-              href = "/products/clothing";
-            } else if (mainCat.name.toLowerCase() === "accessories") {
-              href = "/products/accessories";
-            }
-
-            return (
-              <div key={mainCat.id} className="flex flex-col">
-                {/* Main Category Header */}
-                <h3 className="font-semibold text-gray-800 mb-4 text-lg capitalize">
-                  {mainCat.name}
-                </h3>
-
-                {/* Subcategories */}
-                <div className="flex flex-col items-start mb-4">
-                  {mainCat.subcategories.length > 0 ? (
-                    mainCat.subcategories.map((subCat) => (
-                      <button
-                        key={subCat.id}
-                        className=" py-1 font-mono text-gray-700 text-sm hover:text-gray-900 hover:underline transition-colors whitespace-nowrap capitalize"
-                        onClick={() => handleNavigate(subCat, mainCat.name)}
-                      >
-                        {subCat.name}
-                      </button>
-                    ))
-                  ) : (
-                    <p className="text-gray-500 text-sm">No subcategories</p>
-                  )}
-                </div>
-
-                {/* Category Image */}
-                {mainCat.image_url && (
-                  <Link href={href}>
-                    <img
-                      src={mainCat.image_url}
-                      alt={mainCat.name}
-                      className="w-full h-60 object-cover  shadow-md cursor-pointer hover:opacity-90 transition"
-                    />
-                  </Link>
-                )}
+                    {/* Subcategories */}
+                    <div className="flex flex-col items-start mb-4">
+                      {mainCat.subcategories.length > 0 ? (
+                        mainCat.subcategories.map((subCat) => (
+                          <button
+                            key={subCat.id}
+                            className="py-1 font-mono text-gray-700 text-sm hover:text-gray-900 hover:underline transition-colors whitespace-nowrap capitalize"
+                            onClick={() => handleNavigate(subCat, mainCat.name)}
+                          >
+                            {subCat.name}
+                          </button>
+                        ))
+                      ) : (
+                        <p className="text-gray-500 text-sm">
+                          No subcategories
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-            );
-          })}
+
+              {/* Images row */}
+              <div className="flex gap-2 justify-start mt-4">
+                {mainCategories.map((mainCat) => {
+                  let href = "#";
+
+                  if (mainCat.name.toLowerCase() === "clothing") {
+                    href = "/products/clothing";
+                  } else if (mainCat.name.toLowerCase() === "accessories") {
+                    href = "/products/accessories";
+                  } else if (mainCat.name.toLowerCase() === "kids") {
+                    href = "/products/kids";
+                  }
+
+                  return (
+                    <div key={mainCat.id} className="w-96">
+                      {/* Category Image */}
+                      {mainCat.image_url && (
+                        <Link href={href}>
+                          <img
+                            src={mainCat.image_url}
+                            alt={mainCat.name}
+                            className="w-full h-80 object-cover shadow-md cursor-pointer hover:opacity-90 transition"
+                          />
+                        </Link>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
         {mainCategories.length === 0 && (

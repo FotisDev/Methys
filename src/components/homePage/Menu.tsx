@@ -11,8 +11,10 @@ import DropDownMainPageSubCat from "./DropDownMainPageSubCat";
 import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
+import { useHeaderContext } from "./Header";
 
 const Menu = () => {
+  const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
   const [showClothes, setShowClothes] = useState(false);
   const [showBulletMenu, setShowBulletMenu] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -137,7 +139,7 @@ const Menu = () => {
     setShowBulletMenu(false);
   };
 
-  const isOpaque = isNavbarHovered || showClothes || isScrolled;
+  const isOpaque =  forceOpaqueFromContext || isNavbarHovered || showClothes || isScrolled;
 
   const navbarClasses = [
     "fixed",
@@ -158,7 +160,7 @@ const Menu = () => {
   ];
 
   if (isOpaque) {
-    navbarClasses.push("bg-white", "shadow-md", "text-black");
+    navbarClasses.push("bg-white", "text-black");
   } else {
     navbarClasses.push("text-white");
   }

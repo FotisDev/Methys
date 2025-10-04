@@ -81,11 +81,11 @@ export default function Footer() {
             </div>
 
             {/* Follow Us */}
-            <div className="space-y-6 text-center lg:text-right">
+            <div className="space-y-6 text-center lg:text-center">
               <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold">
                 Follow Us
               </h3>
-              <div className="flex gap-4 justify-center lg:justify-end flex-wrap">
+              <div className="flex gap-4 justify-start lg:justify-center flex-wrap">
                 {["Fb", "YT", "In", "IG", "TT"].map((social) => (
                   <div
                     key={social}

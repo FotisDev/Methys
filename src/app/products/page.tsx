@@ -12,9 +12,10 @@ import {
 
 // Debug component
 
-
 export default function ProductList() {
-  const [categories, setCategories] = useState<CategoryBackendType[] | null>(null);
+  const [categories, setCategories] = useState<CategoryBackendType[] | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,14 +44,18 @@ export default function ProductList() {
         }
 
         // Map image_url from products
-        const mappedCategories: CategoryBackendType[] = categoriesData.map((cat) => {
-          const product = productsData.find((p) => p.category_men_id === cat.id);
-          return {
-            ...cat,
-            image_url: product?.image_url || " ",
-            parent_id: cat.parent_id ?? null,
-          };
-        });
+        const mappedCategories: CategoryBackendType[] = categoriesData.map(
+          (cat) => {
+            const product = productsData.find(
+              (p) => p.category_men_id === cat.id
+            );
+            return {
+              ...cat,
+              image_url: product?.image_url || " ",
+              parent_id: cat.parent_id ?? null,
+            };
+          }
+        );
         console.log(mappedCategories);
 
         setCategories(mappedCategories);
@@ -75,7 +80,7 @@ export default function ProductList() {
     return (
       categories?.filter(
         (c) =>
-          [1, 2].includes(c.id) &&
+          [1, 2, 30].includes(c.id) &&
           (c.parent_id === null || c.parent_id === undefined)
       ) || []
     );
