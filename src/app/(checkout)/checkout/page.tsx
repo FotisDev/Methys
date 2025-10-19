@@ -12,6 +12,7 @@ interface CartItem extends Product {
 
 const Checkout = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [products, setProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);

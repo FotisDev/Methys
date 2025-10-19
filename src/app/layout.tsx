@@ -6,14 +6,11 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
-  display: "swap",
 });
-
 const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["400", "500", "700"],
   variable: "--font-roboto",
-  display: "swap",
 });
 
 export default function RootLayout({
@@ -27,10 +24,7 @@ export default function RootLayout({
       className={`scroll-smooth ${poppins.variable} ${roboto.variable}`}
     >
       <head />
-      <body
-        id="mainHTML"
-        className=" "
-      >
+      <body id="mainHTML" className=" ">
         <BackToTop />
         <main>{children}</main>
       </body>

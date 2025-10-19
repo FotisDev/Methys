@@ -165,7 +165,7 @@ export default function SubcategoryPage() {
           <div className="text-6xl mb-4">📦</div>
           <h2 className="text-2xl font-semibold mb-4">No products found</h2>
           <p className="text-gray-600 mb-8">
-            We're working on adding products to this category. Check back soon!
+            We are working on adding products to this category. Check back soon!
           </p>
         </div>
       ) : (
@@ -184,14 +184,16 @@ export default function SubcategoryPage() {
                 className="group relative w-full bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 <div className="relative aspect-[3/4] overflow-hidden">
-                  <img
-                    src={product.image_url || "/placeholder-product.jpg"}
+                  <Image
+                    src={product.image_url || "/AuthClothPhoto.jpg"}
                     alt={product.name}
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
-                      target.src = "/placeholder-product.jpg";
+                      target.src = "/AuthClothPhoto.jpg";
                     }}
+                    fill
+                    unoptimized
                   />
 
                   {/* Price badge */}

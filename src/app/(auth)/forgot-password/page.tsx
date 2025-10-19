@@ -40,7 +40,8 @@ const ForgotPasswordPage = () => {
       } else {
         setSubmitted(true);
       }
-    } catch (err) {
+    } catch {
+
       setErrorMsg("An unexpected error occurred. Please try again.");
     }
   };
@@ -65,7 +66,7 @@ const ForgotPasswordPage = () => {
             console.log("Session set for user:", session.user.email);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setErrorMsg("Failed to set session. Please try the reset link again.");
         });
     }

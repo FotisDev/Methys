@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const EXAMPLES = {
   recommended: {
@@ -28,6 +29,7 @@ export default function ThreeButtonsInRow() {
 
   const handleButtonClick = (button: keyof typeof EXAMPLES) => {
     setSelectedButton(button);
+    setFirstSelected(false);
   };
 
   // Always get content since we now always have a selection
@@ -66,7 +68,7 @@ export default function ThreeButtonsInRow() {
           >
             <h2 className="text-2xl text-black font-bold mb-4">{selectedContent.title}</h2>
             <p className="text-black mb-6">{selectedContent.textContext}</p>
-            <img
+            < Image
               src={selectedContent.img}
               alt={selectedContent.title}
               className="w-full h-96 object-cover rounded-xl transition duration-300"

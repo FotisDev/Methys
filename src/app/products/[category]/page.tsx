@@ -3,10 +3,13 @@
 import { useState, useEffect, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getCategoryByName, getSubcategories, fetchProducts, CategoryBackendType, Product } from "@/_lib/helpers";
+import {
+  getCategoryByName,
+  getSubcategories,
+  fetchProducts,
+  CategoryBackendType,
+} from "@/_lib/helpers";
 import { CategoryPageProps } from "@/_lib/interfaces";
-
-
 
 export default function CategoryPage({ params }: CategoryPageProps) {
   const [category, setCategory] = useState<CategoryBackendType | null>(null);
@@ -20,32 +23,29 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   useEffect(() => {
     const loadCategoryData = async () => {
       try {
-        // Find the main category (Mens, Womens, Kids)
         const categoryData = await getCategoryByName(categoryName);
-        
+
         if (!categoryData || categoryData.parent_id !== null) {
           throw new Error(`Main category "${categoryName}" not found`);
         }
 
         setCategory(categoryData);
 
-        // Get subcategories (Clothes, Shoes, etc.)
         const subcategoriesData = await getSubcategories(categoryData.id);
-        
-        // Get products to extract images for subcategories
+
         const allProducts = await fetchProducts();
-        
-        // Map images to subcategories
-        const subcategoriesWithImages = subcategoriesData.map(subcat => {
-          const product = allProducts?.find(p => p.category_men_id === subcat.id);
+
+        const subcategoriesWithImages = subcategoriesData.map((subcat) => {
+          const product = allProducts?.find(
+            (p) => p.category_men_id === subcat.id
+          );
           return {
             ...subcat,
-            image_url: product?.image_url || " "
+            image_url: product?.image_url ?? '/AuthClothPhoto.jpg',
           };
         });
 
         setSubcategories(subcategoriesWithImages);
-
       } catch (err) {
         console.error("Error loading category data:", err);
         setError(err instanceof Error ? err.message : "Unknown error");
@@ -70,7 +70,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Category Not Found</h1>
-        <p className="text-gray-600 mb-8">{error || `Category "${categoryName}" not found`}</p>
+        <p className="text-gray-600 mb-8">
+          {error || `Category "${categoryName}" not found`}
+        </p>
         <Link
           href="/products"
           className="px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
@@ -85,7 +87,10 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     <div className="container mx-auto px-4 py-12">
       {/* Breadcrumb */}
       <nav className="mb-8 text-sm text-gray-600">
-        <Link href="/products" className="hover:text-amber-600 transition-colors">
+        <Link
+          href="/products"
+          className="hover:text-amber-600 transition-colors"
+        >
           Products
         </Link>
         <span className="mx-2">/</span>
@@ -95,25 +100,28 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 capitalize">
         {category.name}
       </h1>
-      
+
       <p className="text-center text-gray-600 mb-12 text-lg">
-        Choose a subcategory to explore our {category.name.toLowerCase()} collection
+        Choose a subcategory to explore our {category.name.toLowerCase()}{" "}
+        collection
       </p>
 
       {subcategories.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-6xl mb-4">📦</div>
-          <h2 className="text-2xl font-semibold mb-4">No subcategories found</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            No subcategories found
+          </h2>
           <p className="text-gray-600 mb-8">
-            We're working on adding subcategories. Check back soon!
+            We are working on adding subcategories. Check back soon!
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {subcategories.map((subcategory) => {
-            const href = `/products/${resolvedParams.category}/${subcategory.name
-              .replace(/\s+/g, "-")
-              .toLowerCase()}`;
+            const href = `/products/${
+              resolvedParams.category
+            }/${subcategory.name.replace(/\s+/g, "-").toLowerCase()}`;
 
             return (
               <Link
@@ -121,30 +129,23 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 href={href}
                 className="group relative w-full aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                {/* <div className="absolute inset-0">
+                <div className="absolute inset-0">
                   <Image
-                    src={subcategory.image_url ?? ''}
-                    alt={`${subcategory.category_name} category`}
+                    src={subcategory.image_url?? '/AuthClothPhoto.jpg'}
+                    alt={`${subcategory.name} category image`}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    
                   />
-                </div> */}
-                 <div className="absolute inset-0 rounded-xl overflow-hidden">
-                <img
-                  src={subcategory.image_url ?? ''}
-                  alt={`${subcategory.name} category image`}
-                  className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
+                </div>
+
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <h3 className="text-lg font-semibold capitalize mb-1">
                     {subcategory.name}
                   </h3>
-                  <p className="text-sm text-gray-200">
-                    Explore collection →
-                  </p>
+                  <p className="text-sm text-gray-200">Explore collection →</p>
                 </div>
               </Link>
             );

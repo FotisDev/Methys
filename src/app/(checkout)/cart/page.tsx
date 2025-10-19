@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Product, getValidImage } from "@/_lib/helpers";
 
-interface CartItem extends Product {
+export interface CartItem extends Product {
   quantityInCart: number;
 }
 
@@ -20,9 +20,9 @@ const CartPage = () => {
     if (savedCart) {
       const parsedCart = JSON.parse(savedCart) as CartItem[];
       // Ensure all items have quantityInCart property
-      const validatedCart = parsedCart.map(item => ({
+      const validatedCart = parsedCart.map((item) => ({
         ...item,
-        quantityInCart: item.quantityInCart || 1
+        quantityInCart: item.quantityInCart || 1,
       }));
       setCartItems(validatedCart);
     }
@@ -51,7 +51,7 @@ const CartPage = () => {
       return;
     }
 
-    const updatedCart = cartItems.map(item => {
+    const updatedCart = cartItems.map((item) => {
       if (item.id === productId) {
         // Check if new quantity exceeds available stock
         if (newQuantity > item.quantity) {
@@ -68,7 +68,7 @@ const CartPage = () => {
 
   // Remove item from cart
   const removeFromCart = (productId: number) => {
-    const updatedCart = cartItems.filter(item => item.id !== productId);
+    const updatedCart = cartItems.filter((item) => item.id !== productId);
     saveCart(updatedCart);
   };
 
@@ -92,9 +92,14 @@ const CartPage = () => {
     <div className="container mx-auto px-4 py-12">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Shopping Cart</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Shopping Cart
+        </h1>
         <nav className="text-sm text-gray-600">
-          <Link href="/products" className="hover:text-amber-600 transition-colors">
+          <Link
+            href="/products"
+            className="hover:text-amber-600 transition-colors"
+          >
             Products
           </Link>
           <span className="mx-2">/</span>
@@ -107,12 +112,26 @@ const CartPage = () => {
         <div className="text-center py-12">
           <div className="max-w-md mx-auto">
             <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+              <svg
+                className="w-12 h-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                ></path>
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
-            <p className="text-gray-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Your cart is empty
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Looks like you havent added any items to your cart yet.
+            </p>
             <Link href="/products">
               <button className="bg-amber-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-amber-600 transition-colors duration-200 text-lg">
                 Start Shopping
@@ -154,6 +173,8 @@ const CartPage = () => {
                           fill
                           className="object-cover"
                           sizes="80px"
+                          width={40}
+                          height={40}
                         />
                         {item.is_offer && (
                           <div className="absolute top-1 left-1 bg-red-500 text-white text-xs font-bold px-1 py-0.5 rounded">
@@ -172,7 +193,7 @@ const CartPage = () => {
                         </p>
                         <div className="flex items-center space-x-2">
                           <span className="text-lg font-bold text-amber-600">
-                            ${item.price?.toFixed(2) || '0.00'}
+                            ${item.price?.toFixed(2) || "0.00"}
                           </span>
                           {item.is_offer && (
                             <span className="bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded-full">
@@ -186,24 +207,48 @@ const CartPage = () => {
                       <div className="flex flex-col items-center space-y-3">
                         <div className="flex items-center space-x-3 bg-gray-50 rounded-lg p-2">
                           <button
-                            onClick={() => updateQuantity(item.id, item.quantityInCart - 1)}
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantityInCart - 1)
+                            }
                             className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
                             disabled={item.quantityInCart <= 1}
                           >
-                            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4"></path>
+                            <svg
+                              className="w-4 h-4 text-gray-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M20 12H4"
+                              ></path>
                             </svg>
                           </button>
                           <span className="w-12 text-center font-semibold text-gray-900">
                             {item.quantityInCart}
                           </span>
                           <button
-                            onClick={() => updateQuantity(item.id, item.quantityInCart + 1)}
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantityInCart + 1)
+                            }
                             className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
                             disabled={item.quantityInCart >= item.quantity}
                           >
-                            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
+                            <svg
+                              className="w-4 h-4 text-gray-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M12 4v16m8-8H4"
+                              ></path>
                             </svg>
                           </button>
                         </div>
@@ -215,15 +260,26 @@ const CartPage = () => {
                       {/* Item Total & Remove */}
                       <div className="flex flex-col items-end space-y-2">
                         <div className="text-lg font-bold text-gray-900">
-                          ${((item.price || 0) * item.quantityInCart).toFixed(2)}
+                          $
+                          {((item.price || 0) * item.quantityInCart).toFixed(2)}
                         </div>
                         <button
                           onClick={() => removeFromCart(item.id)}
                           className="text-red-500 hover:text-red-700 p-1 transition-colors"
                           title="Remove item"
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            ></path>
                           </svg>
                         </button>
                       </div>
@@ -237,8 +293,10 @@ const CartPage = () => {
           {/* Cart Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl border border-gray-200 p-6 sticky top-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h3>
-              
+              <h3 className="text-xl font-bold text-gray-900 mb-6">
+                Order Summary
+              </h3>
+
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal ({cartItems.length} items)</span>
@@ -271,14 +329,24 @@ const CartPage = () => {
                     Continue Shopping
                   </button>
                 </Link>
-                <Link href={'/'}>back to home...</Link>
+                <Link href={"/"}>back to home...</Link>
               </div>
 
               {/* Security Badge */}
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    ></path>
                   </svg>
                   <span>Secure checkout</span>
                 </div>

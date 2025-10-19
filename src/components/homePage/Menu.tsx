@@ -1,17 +1,17 @@
 "use client";
 
-import Image from "next/image";
+
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
 
 import BulletButton from "./BulletButton";
-import ClotheCards from "./DropDownMenu";
 import DropDownMainPageSubCat from "./DropDownMainPageSubCat";
 import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
 import { useHeaderContext } from "./Header";
+import { CartItem } from "@/app/(checkout)/cart/page";
 
 const Menu = () => {
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
@@ -57,7 +57,7 @@ const Menu = () => {
       if (savedCart) {
         const cartItems = JSON.parse(savedCart);
         const totalCartItems = cartItems.reduce(
-          (sum: number, item: any) => sum + (item.quantityInCart || 1),
+          (sum: number, item: CartItem) => sum + (item.quantityInCart || 1),
           0
         );
         setCartItemCount(totalCartItems);
@@ -143,8 +143,7 @@ const Menu = () => {
 
   const navbarClasses = [
     "fixed",
-    "font-sans",
-    "font-semibold",
+    "font-poppins",
     "top-0",
     "z-50",
     "grid",
@@ -199,7 +198,7 @@ const Menu = () => {
           {/* Center - Logo */}
           <div className="flex justify-center">
             <Link href={PAGE_URLS.HOMEPAGE} passHref>
-              <p className="font-roboto text-lg">Methys</p>
+              <p className=" text-lg">Methys</p>
             </Link>
           </div>
 
@@ -227,7 +226,7 @@ const Menu = () => {
                     />
                   </svg>
                   {wishlistCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
                       {wishlistCount > 99 ? "99+" : wishlistCount}
                     </span>
                   )}
@@ -243,7 +242,7 @@ const Menu = () => {
                 <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
                   <CartSvg className="w-6 h-6 group-hover:text-gray-900 transition-colors" />
                   {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
+                    <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs  rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
                       {cartItemCount > 99 ? "99+" : cartItemCount}
                     </span>
                   )}
@@ -277,7 +276,7 @@ const Menu = () => {
                 key={label}
                 href={href}
                 onClick={() => handleMobileClick(label)}
-                className="text-left text-black font-medium py-2 border-b border-gray-200"
+                className="text-left text-black py-2 border-b border-gray-200"
               >
                 {label}
               </Link>
@@ -289,11 +288,11 @@ const Menu = () => {
                 toggleWishlist();
                 setShowBulletMenu(false);
               }}
-              className="flex items-center justify-between text-left text-black font-medium py-2 border-b border-gray-200"
+              className="flex items-center justify-between text-left text-black py-2 border-b border-gray-200"
             >
               <span>Wishlist</span>
               {wishlistCount > 0 && (
-                <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1 min-w-[24px] text-center">
+                <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[24px] text-center">
                   {wishlistCount > 99 ? "99+" : wishlistCount}
                 </span>
               )}
@@ -303,11 +302,11 @@ const Menu = () => {
             <Link
               href={PAGE_URLS.CART}
               onClick={() => setShowBulletMenu(false)}
-              className="flex items-center justify-between text-left text-black font-medium py-2 border-b border-gray-200"
+              className="flex items-center justify-between text-left text-black py-2 border-b border-gray-200"
             >
               <span>Cart</span>
               {cartItemCount > 0 && (
-                <span className="bg-amber-500 text-white text-xs font-bold rounded-full px-2 py-1 min-w-[24px] text-center">
+                <span className="bg-amber-500 text-white text-xs rounded-full px-2 py-1 min-w-[24px] text-center">
                   {cartItemCount > 99 ? "99+" : cartItemCount}
                 </span>
               )}

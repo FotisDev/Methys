@@ -1,34 +1,122 @@
 @import "tailwindcss";
-
-
 @tailwind utilities;
+
+@theme {
+
+  --font-poppins: var(--font-poppins), sans-serif;
+  --font-roboto: var(--font-roboto), sans-serif;
+
+
+  --color-sahara: #eba10e;
+  --color-graySand: #312e2e;
+  --color-myCyan: #008394;
+  --color-mysignature-orange: #eba10e;
+}
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  
-}
-
-@theme {
-   --color-sahara:#eba10e;
-   --color-graySand:#312e2e;
-   --color-myCyan:#008394;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1a1a1a; /* Fixed to a dark color */
+    --background: #1a1a1a;
     --foreground: #ededed;
-    --peach-yellow: #008394;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
- 
+  font-family: var(--font-poppins);
 }
 
 .react-datepicker-popper {
   z-index: 9999;
+}
+
+.custom-checkbox::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  background-color: white;
+  transform: scale(0.9);
+  transition: transform 0.2s;
+}
+
+.custom-checkbox:checked::after {
+  transform: scale(0);
+}
+.default-button {
+  cursor: pointer;
+  background-color: var(--color-sahara);
+  color: white;
+  padding: 1rem 2.25rem;
+  border-radius: 9999px;
+  text-align: center;
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.danger-button {
+  cursor: pointer;
+  background-color: red;
+  color: white;
+  padding: 1rem 2.25rem;
+  border-radius: 9999px;
+  text-align: center;
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.custom-container-4xl {
+  max-width: 120rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.padding-x {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+@media (min-width: 640px) { 
+  .padding-x {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (min-width: 1024px) { 
+  .padding-x {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+
+.padding-y {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .padding-y {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .padding-y {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 }

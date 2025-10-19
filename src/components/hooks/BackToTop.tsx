@@ -28,7 +28,7 @@ export default function BackToTop() {
 
     return (
         <a href={'#mainHTML'} className={`size-10 fixed bottom-[2%] right-4 z-[100] ${isVisible ? '' : 'opacity-0'} transition`}>
-            <DiagonalArrow className={'fill-signature-blue w-full h-full'}/>
+            <DiagonalArrow />
         </a>
     );
 }

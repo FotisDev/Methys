@@ -1,8 +1,8 @@
-import Logo from "@/svgs/logo";
+
 import Link from "next/link";
 import Newsletter from "./NewsLeter";
 import Image from "next/image";
-import { PAGE_URLS } from "@/_lib/constants";
+
 
 export default function Footer() {
   const paymentMethods = [
@@ -41,11 +41,9 @@ export default function Footer() {
 
       <footer className="bg-black w-full text-white text-sm sm:text-base font-poppins">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-40 sm:pt-36 lg:pt-32">
-          {/* ROW 1: App Download + Socials */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
-            {/* Download the App */}
             <div className="space-y-6 text-center lg:text-left">
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-sahara">
+              <h3 className="text-lg sm:text-xl lg:text-2xl  text-sahara">
                 Download the App
               </h3>
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
@@ -80,16 +78,15 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Follow Us */}
             <div className="space-y-6 text-center lg:text-center">
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold">
+              <h3 className="text-lg lg:text-xl ">
                 Follow Us
               </h3>
               <div className="flex gap-4 justify-start lg:justify-center flex-wrap">
                 {["Fb", "YT", "In", "IG", "TT"].map((social) => (
                   <div
                     key={social}
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black font-semibold hover:bg-gray-200 transition-colors"
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black  hover:bg-gray-200 transition-colors"
                   >
                     {social}
                   </div>
@@ -98,17 +95,15 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Yellow Line */}
           <div className="h-[2px] bg-sahara w-full mb-16"></div>
 
-          {/* ROW 2: Columns */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16">
             {columnsData.map((column) => (
               <div
                 key={column.category}
                 className="space-y-4 text-center sm:text-left"
               >
-                <h4 className="text-sahara font-semibold text-base sm:text-lg">
+                <h4 className="text-sahara  text-base sm:text-lg">
                   {column.category}
                 </h4>
 
@@ -133,7 +128,7 @@ export default function Footer() {
                     {paymentMethods.map((method) => (
                       <div
                         key={method.name}
-                        className="bg-white text-black py-2 px-4 rounded-md text-center font-medium"
+                        className="bg-white text-black py-2 px-4 rounded-md text-center"
                         style={{ width: method.width }}
                       >
                         {method.name}
@@ -153,11 +148,9 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* ROW 3: Bottom Line */}
           <div className="flex flex-col lg:flex-row justify-between items-center pt-8 border-t border-gray-700 gap-6">
-            {/* Left */}
             <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
-              <span className="font-bold text-lg sm:text-xl text-myCyan">
+              <span className=" text-lg sm:text-xl text-myCyan">
                 Methys
               </span>
               <span className="text-sm text-gray-300">
@@ -165,13 +158,12 @@ export default function Footer() {
               </span>
             </div>
 
-            {/* Right */}
             <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-center">
               <span className="text-white">For special <span className="text-red-500">Offers</span> make sure to </span>
               <Link
                 href="/login"
                 aria-label="SignUpPage"
-                className="w-[130px] h-[40px] text-[14px] bg-sahara text-white px-2 py-2 font-bold rounded text-center"
+                className="w-[130px] h-[40px] text-[14px] bg-sahara text-white px-2 py-2 rounded text-center"
               >
                 Sign Up / Sign In
               </Link>

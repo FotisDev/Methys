@@ -1,16 +1,13 @@
 "use client";
 
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { supabase } from "../../../_lib/supabaseClient"; // make sure this path is correct
+import { supabase } from "../../../_lib/supabaseClient";
 import { ResetPasswordFormData, resetPasswordSchema } from "@/_lib/utils/zod";
 
-
-
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const {
     register,
     handleSubmit,
@@ -36,7 +33,6 @@ export default function ResetPasswordPage() {
         refresh_token,
       });
       
-      // Check what email this session belongs to
       supabase.auth.getUser().then(({ data: { user } }) => {
         console.log("Password reset for user:", user?.email);
         setUserEmail(user?.email || null);
@@ -45,7 +41,6 @@ export default function ResetPasswordPage() {
   }, [searchParams]);
 
   const onSubmit = async (data: ResetPasswordFormData) => {
- 
     setError(null);
     setLoading(true);
 
@@ -58,19 +53,18 @@ export default function ResetPasswordPage() {
         return;
       }
 
-      // Log the user email for debugging
-      const {error : updateError } = await supabase.auth.updateUser({
+      const { error: updateError } = await supabase.auth.updateUser({
         password: data.password
       });
-      if(updateError){
-        setError('password update Failed:' + updateError.message);
+      
+      if (updateError) {
+        setError('Password update failed: ' + updateError.message);
         setLoading(false);
         return;
       }
+      
       setSuccess(true);
-
       await supabase.auth.signOut();
-
       setLoading(false);
     
       setTimeout(() => {
@@ -163,5 +157,17 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    }>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }

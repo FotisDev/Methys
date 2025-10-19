@@ -4,7 +4,7 @@ import { supabase } from "@/_lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import Image from "next/image";
 interface Category {
   id: string;
   name: string;
@@ -23,17 +23,14 @@ export default function DropDownMainPageSubCat() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Helper function to convert category name to URL slug
   const toSlug = (name: string) => {
     return name.toLowerCase().replace(/\s+/g, "-");
   };
 
-  // Fetch all categories and organize them by main categories
   useEffect(() => {
     const fetchCategories = async () => {
       setLoading(true);
       try {
-        // Fetch all categories from categoriesformen table
         const { data, error } = await supabase
           .from("categoriesformen")
           .select("id, name, parent_id,image_url")
@@ -46,11 +43,9 @@ export default function DropDownMainPageSubCat() {
         }
 
         if (data) {
-          // Separate main categories (parent_id is null) and subcategories
           const mainCats = data.filter((cat) => cat.parent_id === null);
           const subCats = data.filter((cat) => cat.parent_id !== null);
 
-          // Organize subcategories under their main categories
           const organizedCategories = mainCats.map((mainCat) => ({
             id: String(mainCat.id),
             name: mainCat.name,
@@ -75,7 +70,6 @@ export default function DropDownMainPageSubCat() {
     fetchCategories();
   }, []);
 
-  // Handle navigation for subcategories
   const handleNavigate = (subcategory: Category, mainCategoryName: string) => {
     const mainCategorySlug = toSlug(mainCategoryName);
     const subcategorySlug = toSlug(subcategory.name);
@@ -99,47 +93,45 @@ export default function DropDownMainPageSubCat() {
     <div className="fixed left-0 right-0 w-screen bg-white z-50">
       <div className="w-full ">
         <div className="py-6 flex flex-col sm:flex-row gap-12">
-          {/* Left side links column */}
           <div className="flex flex-col space-y-3 min-w-[200px] pl-8">
             <Link
               href="/offers"
-              className="text-lg font-semibold text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
+              className="text-lg  text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
             >
               See Our Offers
             </Link>
             <Link
               href="/online-exclusive"
-              className="text-lg font-semibold text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
+              className="text-lg  text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
             >
               Online Exclusive
             </Link>
             <Link
               href="/autumn-2025"
-              className="text-lg font-semibold text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
+              className="text-lg  text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
             >
               Autumn 2025
             </Link>
           </div>
 
-          {/* Categories and Images section */}
           <div className="flex-1 flex justify-center">
             <div>
-              {/* Categories row */}
               <div className="flex gap-4 justify-start">
                 {mainCategories.map((mainCat) => (
-                  <div key={mainCat.id} className="w-96 flex flex-col items-start">
-                    {/* Main Category Header */}
-                    <h3 className="font-semibold text-gray-800  text-lg capitalize">
+                  <div
+                    key={mainCat.id}
+                    className="w-96 flex flex-col items-start"
+                  >
+                    <h3 className=" text-gray-800  text-lg capitalize">
                       {mainCat.name}
                     </h3>
 
-                    {/* Subcategories */}
                     <div className="flex flex-col items-start mb-4">
                       {mainCat.subcategories.length > 0 ? (
                         mainCat.subcategories.map((subCat) => (
                           <button
                             key={subCat.id}
-                            className="py-1 font-mono text-gray-700 text-sm hover:text-gray-900 hover:underline transition-colors whitespace-nowrap capitalize"
+                            className="py-1  text-gray-700 text-sm hover:text-gray-900 hover:underline transition-colors whitespace-nowrap capitalize"
                             onClick={() => handleNavigate(subCat, mainCat.name)}
                           >
                             {subCat.name}
@@ -155,7 +147,6 @@ export default function DropDownMainPageSubCat() {
                 ))}
               </div>
 
-              {/* Images row */}
               <div className="flex gap-2 justify-start mt-4">
                 {mainCategories.map((mainCat) => {
                   let href = "#";
@@ -170,13 +161,14 @@ export default function DropDownMainPageSubCat() {
 
                   return (
                     <div key={mainCat.id} className="w-96">
-                      {/* Category Image */}
                       {mainCat.image_url && (
                         <Link href={href}>
-                          <img
-                            src={mainCat.image_url}
+                          <Image
+                            src={mainCat.image_url.trim()}
                             alt={mainCat.name}
                             className="w-full h-80 object-cover shadow-md cursor-pointer hover:opacity-90 transition"
+                            width={40}
+                            height={40}
                           />
                         </Link>
                       )}

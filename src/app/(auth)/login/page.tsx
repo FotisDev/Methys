@@ -10,8 +10,6 @@ import Link from "next/link";
 import { supabase } from "@/_lib/supabaseClient";
 
 import Logo from "../../../svgs/logo";
-import CreateAccountPage from "../createAccount/page";
-import ForgotPasswordPage from "../forgot-password/page";
 
 // Import the validation schema and type
 import { signInSchema, type SignInForm } from "../../../_lib/utils/zod";
@@ -21,7 +19,9 @@ const SignUpPage = () => {
 
   const [error, setError] = useState<string | null>(null);
   const [onMouseOver, setOnMouseOver] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showCreateAccount, setShowCreateAccount] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [forgotPassword, setForgotPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -55,49 +55,50 @@ const SignUpPage = () => {
   };
 
   const onSubmit = async (data: SignInForm) => {
-  setError(null);
-  setLoading(true);
+    setError(null);
+    setLoading(true);
 
-  try {
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    });
+    try {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
 
-    if (signInError) {
-      setError(signInError.message);
-      return;
-    }
-
-    // Παίρνουμε τον χρήστη που μόλις έκανε login
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (user) {
-      // Τώρα πάμε στον πίνακα profiles για να βρούμε το ρόλο
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-
-      if (profileError) {
-        setError("Δεν βρέθηκε ρόλος χρήστη");
+      if (signInError) {
+        setError(signInError.message);
         return;
       }
 
-      if (profile.role === "admin") {
-        router.push("/product-entry");
-      } else {
-        router.push("/offers");
-      }
-    }
-  } catch (err) {
-    setError("Something went wrong");
-  } finally {
-    setLoading(false);
-  }
-};
+      // Παίρνουμε τον χρήστη που μόλις έκανε login
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
+      if (user) {
+        // Τώρα πάμε στον πίνακα profiles για να βρούμε το ρόλο
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+
+        if (profileError) {
+          setError("Δεν βρέθηκε ρόλος χρήστη");
+          return;
+        }
+
+        if (profile.role === "admin") {
+          router.push("/product-entry");
+        } else {
+          router.push("/offers");
+        }
+      }
+    } catch {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row h-screen w-full">
@@ -162,7 +163,7 @@ const SignUpPage = () => {
               } transition-all rounded-3xl w-full`}
             >
               <Image
-                src="google.jpg"
+                src="/images/google.jpg" 
                 loader={myImageLoader}
                 className="w-10 h-10 rounded-full opacity-70"
                 width={40}
@@ -173,6 +174,8 @@ const SignUpPage = () => {
                 Sign in with Google
               </p>
             </div>
+
+            {/* Facebook Sign In */}
             <div
               onMouseEnter={() => handleMouseEnter("facebook")}
               onMouseLeave={handleMouseLeave}
@@ -183,7 +186,7 @@ const SignUpPage = () => {
               } transition-all rounded-3xl w-full`}
             >
               <Image
-                src="facebook.png"
+                src="/images/facebook.png" 
                 loader={myImageLoader}
                 className="w-10 h-10 rounded-full opacity-70"
                 width={40}

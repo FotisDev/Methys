@@ -6,7 +6,7 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { supabase, fetchCategories, CategoryBackendType } from "@/_lib/helpers";
-
+import Image from "next/image";
 // Define the form data type
 interface ProductFormData {
   name: string;
@@ -24,13 +24,13 @@ const productSchema = z.object({
     .min(1, "Product name is required")
     .min(2, "Product name must be at least 2 characters")
     .max(100, "Product name cannot exceed 100 characters"),
-  
+
   description: z
     .string()
     .max(500, "Description cannot exceed 500 characters")
     .optional()
     .or(z.literal("")),
-  
+
   price: z
     .number({
       required_error: "Price is required",
@@ -38,14 +38,14 @@ const productSchema = z.object({
     })
     .min(0.01, "Price must be greater than 0")
     .max(999999.99, "Price cannot exceed 999,999.99"),
-  
+
   category_men_id: z
     .number({
       required_error: "Category is required",
       invalid_type_error: "Category must be a valid number",
     })
     .min(1, "Category is required"),
-  
+
   imageFile: z
     .any()
     .optional()
@@ -62,10 +62,15 @@ const productSchema = z.object({
     .refine((files) => {
       if (!files || files.length === 0) return true;
       const file = files[0];
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+      ];
       return allowedTypes.includes(file.type);
     }, "Only JPG, PNG, and WebP files are allowed"),
-  
+
   is_offer: z.boolean(),
 });
 
@@ -116,7 +121,9 @@ export default function ProductEntryPage() {
         }
         console.debug("Fetched categories:", categoriesData);
         if (categoriesData.length === 0) {
-          setError("No categories found in the database. Please add categories in Supabase.");
+          setError(
+            "No categories found in the database. Please add categories in Supabase."
+          );
         }
         setCategories(categoriesData);
       } catch (err) {
@@ -151,15 +158,15 @@ export default function ProductEntryPage() {
   const validateFile = (file: File): string | null => {
     const maxSize = 5 * 1024 * 1024; // 5MB
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
-    
+
     if (file.size > maxSize) {
       return "File size must be less than 5MB";
     }
-    
+
     if (!allowedTypes.includes(file.type)) {
       return "Only JPG, PNG, and WebP files are allowed";
     }
-    
+
     return null;
   };
 
@@ -174,7 +181,7 @@ export default function ProductEntryPage() {
       // Upload image if provided
       if (data.imageFile && data.imageFile.length > 0) {
         const image = data.imageFile[0];
-        
+
         // Validate file
         const fileError = validateFile(image);
         if (fileError) {
@@ -183,7 +190,9 @@ export default function ProductEntryPage() {
         }
 
         const fileExt = image.name.split(".").pop()?.toLowerCase();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const fileName = `${Date.now()}-${Math.random()
+          .toString(36)
+          .substring(2)}.${fileExt}`;
         const filePath = `product-images/${fileName}`;
 
         setUploadProgress(25);
@@ -204,7 +213,7 @@ export default function ProductEntryPage() {
         const { data: urlData } = supabase.storage
           .from("product-images")
           .getPublicUrl(filePath);
-        
+
         fileUrl = urlData.publicUrl;
       }
 
@@ -231,7 +240,7 @@ export default function ProductEntryPage() {
 
       setUploadProgress(100);
       setSuccess("Product added successfully!");
-      
+
       // Reset form and preview
       reset({
         name: "",
@@ -241,13 +250,16 @@ export default function ProductEntryPage() {
         is_offer: false,
       });
       setImagePreview(null);
-      
+
       // Clear progress after a delay
       setTimeout(() => setUploadProgress(0), 2000);
-      
     } catch (err) {
       console.error("Error adding product:", err);
-      setError(err instanceof Error ? err.message : "An unexpected error occurred while adding the product");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred while adding the product"
+      );
       setUploadProgress(0);
     }
   };
@@ -260,14 +272,19 @@ export default function ProductEntryPage() {
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Καταχώρηση Προϊόντος</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Καταχώρηση Προϊόντος
+        </h1>
         <p className="text-gray-600">Add a new product to your catalog</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Product Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Product Name *
           </label>
           <input
@@ -285,7 +302,10 @@ export default function ProductEntryPage() {
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Description
           </label>
           <textarea
@@ -297,14 +317,19 @@ export default function ProductEntryPage() {
             onChange={clearMessages}
           />
           {errors.description && (
-            <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+            <p className="mt-1 text-sm text-red-600">
+              {errors.description.message}
+            </p>
           )}
         </div>
 
         {/* Price and Category */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Price (€) *
             </label>
             <input
@@ -318,12 +343,17 @@ export default function ProductEntryPage() {
               onChange={clearMessages}
             />
             {errors.price && (
-              <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.price.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="category_id" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="category_id"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Category *
             </label>
             <select
@@ -340,17 +370,24 @@ export default function ProductEntryPage() {
               ))}
             </select>
             {errors.category_men_id && (
-              <p className="mt-1 text-sm text-red-600">{errors.category_men_id.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.category_men_id.message}
+              </p>
             )}
             {categories.length === 0 && (
-              <p className="mt-1 text-sm text-red-600">No categories available. Please add categories in Supabase.</p>
+              <p className="mt-1 text-sm text-red-600">
+                No categories available. Please add categories in Supabase.
+              </p>
             )}
           </div>
         </div>
 
         {/* Product Image */}
         <div>
-          <label htmlFor="imageFile" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="imageFile"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Product Image
           </label>
           <input
@@ -365,18 +402,23 @@ export default function ProductEntryPage() {
             Max file size: 5MB. Supported formats: JPG, PNG, WebP
           </p>
           {errors.imageFile && (
-            <p className="mt-1 text-sm text-red-600">{errors.imageFile.message}</p>
+            <p className="mt-1 text-sm text-red-600">
+              {errors.imageFile.message}
+            </p>
           )}
-          
+
           {/* Image Preview */}
           {imagePreview && (
             <div className="mt-3">
               <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
-              <div className="relative inline-block">
-                <img
+              <div className="relative w-32 h-32">
+                <Image
                   src={imagePreview}
                   alt="Product preview"
-                  className="w-32 h-32 object-cover rounded-md border border-gray-300"
+                  className="object-cover rounded-md border border-gray-300"
+                  fill
+                  style={{ objectFit: "cover", borderRadius: "0.375rem" }} // optional
+                
                 />
               </div>
             </div>
@@ -392,7 +434,9 @@ export default function ProductEntryPage() {
               className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               onChange={clearMessages}
             />
-            <span className="text-sm font-medium text-gray-700">Mark as Special Offer</span>
+            <span className="text-sm font-medium text-gray-700">
+              Mark as Special Offer
+            </span>
           </label>
         </div>
 
@@ -429,8 +473,16 @@ export default function ProductEntryPage() {
           <div className="p-4 bg-red-50 border border-red-200 rounded-md">
             <div className="flex">
               <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                <svg
+                  className="h-5 w-5 text-red-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </div>
               <div className="ml-3">
@@ -444,8 +496,16 @@ export default function ProductEntryPage() {
           <div className="p-4 bg-green-50 border border-green-200 rounded-md">
             <div className="flex">
               <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                <svg
+                  className="h-5 w-5 text-green-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </div>
               <div className="ml-3">

@@ -1,10 +1,8 @@
 import React from 'react';
 
-type Props = {
-    className?:string;
-}
 
-const DiagonalArrow = ({className}:Props) => {
+
+const DiagonalArrow = () => {
     
     return (
 

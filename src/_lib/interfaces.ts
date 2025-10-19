@@ -308,6 +308,7 @@ export interface Product {
   }[];
 }
 
+
 export interface CategoryBackendType {
   id: number;
   category_name: string;

@@ -8,7 +8,7 @@ import HeartIcon from "@/svgs/whishListSvg";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+
 import {
   getCategoryByName,
   getSubcategories,
@@ -64,10 +64,9 @@ export default function ProductDetailPage({
     if (!product) return;
 
     if (isInWishlistState) {
-      // Remove from wishlist
-      const success = removeFromWishlist(product.id);
+      removeFromWishlist(product.id);
+      setIsInWishlistState(false);
     } else {
-      // Add to wishlist
       const success = addToWishlist(product);
       if (success) {
         setIsInWishlistState(true);
@@ -182,15 +181,12 @@ export default function ProductDetailPage({
     subcategorySlug,
   ]);
 
-  // Function to add product to cart
   const handleAddToCart = () => {
     if (!product) return;
 
-    // Get existing cart from localStorage
     const savedCart = localStorage.getItem("cartItems");
     const existingCart = savedCart ? JSON.parse(savedCart) : [];
 
-    // Check if product is already in cart
     const existingItem = existingCart.find(
       (item: Product) => item.id === product.id
     );
@@ -205,9 +201,8 @@ export default function ProductDetailPage({
       existingCart.push({ ...product, quantityInCart: 1 });
     }
 
-    // Save updated cart to localStorage
     localStorage.setItem("cartItems", JSON.stringify(existingCart));
-    setIsAddedToCart(true); // Show success message
+    setIsAddedToCart(true); 
   };
 
   if (isLoading) {
@@ -242,7 +237,6 @@ export default function ProductDetailPage({
 
   return (
     <div className="container mx-auto px-4 py-12">
-      {/* Breadcrumb Navigation */}
       <nav className="mb-8 text-sm text-gray-600">
         <Link
           href="/products"
@@ -271,11 +265,10 @@ export default function ProductDetailPage({
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Product Image */}
         <div className="space-y-4">
           <div className="aspect-square relative overflow-hidden rounded-xl bg-gray-100">
             <Image
-              src={getValidImage(product.image_url)}
+              src={getValidImage(product.image_url ?? '/AuthClothPhoto.jpg')}
               alt={product.name}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

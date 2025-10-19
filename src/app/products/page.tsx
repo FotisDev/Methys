@@ -9,6 +9,7 @@ import {
   CategoryBackendType,
   Product,
 } from "@/_lib/helpers";
+import Footer from "@/components/footer/Footer";
 
 // Debug component
 
@@ -19,7 +20,6 @@ export default function ProductList() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch categories and products
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -42,8 +42,6 @@ export default function ProductList() {
           console.error("Error fetching products:", err);
           console.warn("Using empty products array as fallback");
         }
-
-        // Map image_url from products
         const mappedCategories: CategoryBackendType[] = categoriesData.map(
           (cat) => {
             const product = productsData.find(
@@ -51,7 +49,7 @@ export default function ProductList() {
             );
             return {
               ...cat,
-              image_url: product?.image_url || " ",
+              image_url: product?.image_url,
               parent_id: cat.parent_id ?? null,
             };
           }
@@ -75,7 +73,6 @@ export default function ProductList() {
     loadCategories();
   }, []);
 
-  // Memoize parent categories (Mens:1, Womens:51, Kids:101)
   const parentCategories = useMemo(() => {
     return (
       categories?.filter(
@@ -89,7 +86,7 @@ export default function ProductList() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-gray-700 font-poppins">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 "></div>
         <p className="mt-4 text-lg">Loading categories...</p>
       </div>
     );
@@ -101,7 +98,7 @@ export default function ProductList() {
         <p>{error || "No categories found."}</p>
         <Link
           href="/"
-          className="mt-4 px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-lg hover:bg-amber-600 transition-colors"
+          className="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg  transition-colors"
         >
           Back to homepage
         </Link>
@@ -110,8 +107,8 @@ export default function ProductList() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 text-gray-800 font-poppins">
-      <h2 className="text-4xl md:text-5xl font-bold text-center mb-8">
+    <section className="padding-y text-gray-800 font-poppins">
+      <h2 className="text-4xl md:text-5xl  text-center mb-8">
         Product Categories
       </h2>
 
@@ -122,7 +119,7 @@ export default function ProductList() {
           const href = `/products/${category.name
             .replace(/\s+/g, "-")
             .toLowerCase()}`;
-          const imageUrl = category.image_url ?? " ";
+          const imageUrl = category.image_url ?? "/accesories.jpg ";
 
           return (
             <Link
@@ -131,15 +128,17 @@ export default function ProductList() {
               className="group relative w-full aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
               aria-label={`View ${category.name} subcategories`}
             >
-              <div className="absolute inset-0 rounded-xl overflow-hidden">
-                <img
-                  src={imageUrl ?? ""}
+              <div className="absolute inset-0 rounded-xl overflow-hidden ">
+                <Image
+                  src={imageUrl}
                   alt={`${category.name} category image`}
-                  className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-300"
+                 
                 />
               </div>
 
-              <span className="absolute bottom-2 left-2 px-3 py-1 text-white bg-gray-900/70 rounded-md capitalize text-sm font-medium">
+              <span className="absolute bottom-2 left-2 px-3 py-1 text-white bg-gray-900/70 rounded-md capitalize text-sm ">
                 {category.name}
               </span>
             </Link>
@@ -155,6 +154,8 @@ export default function ProductList() {
           Back to homepage
         </Link>
       </div>
-    </div>
+      <Footer/>
+    </section>
+    
   );
 }

@@ -11,7 +11,7 @@ export const useWishlist = () => {
       try {
         const parsedWishlist = JSON.parse(savedWishlist);
         setWishlistCount(parsedWishlist.length);
-      } catch (error) {
+      } catch{
         setWishlistCount(0);
       }
     } else {

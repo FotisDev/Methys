@@ -69,7 +69,7 @@ const CreateAccountPage = () => {
         setSuccess("Account created successfully! Check your email to verify.");
         reset();
       }
-    } catch (err) {
+    } catch {
       setError("Something went wrong.");
     } finally {
       setLoading(false);

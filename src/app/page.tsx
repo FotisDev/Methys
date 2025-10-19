@@ -1,15 +1,13 @@
 
 import Footer from "@/components/footer/Footer";
-import BookNow from "@/components/homePage/sections/BookNow";
 import { HeaderProvider } from "@/components/homePage/Header";
 import Hero from "@/components/homePage/Hero";
-import ThreeButtonsInRow from "@/components/homePage/ThreeButtonsInRow";
 import ThreeIcons from "@/components/homePage/ThreeIcons";
-import VideoSection from "@/components/homePage/VideoSection";
 import PhotoGallery from "@/components/homePage/sections/photoAndVideoGallery";
 import type { Metadata } from "next";
 import React, { Suspense } from "react";
 import CategoriesMainPage from "@/components/homePage/sections/CategoriesMainPage";
+import NewCollectionClothes from "@/components/homePage/NewCollection";
 
 export const metadata: Metadata = {
   title: "UrbanValor",
@@ -19,8 +17,9 @@ export const metadata: Metadata = {
 export default async function Home() {
   return (
     <div>
-      <HeaderProvider>
+      <HeaderProvider forceOpaque={false}>
         <Hero />
+        <NewCollectionClothes/>
         <Suspense>
           <PhotoGallery />
           <CategoriesMainPage />

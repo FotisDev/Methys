@@ -1,122 +1,77 @@
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/homePage/Header";
-import Link from "next/link";
-
+import Image from "next/image";
 
 export default function About() {
   return (
     <>
       <HeaderProvider forceOpaque={true}>
-        <div className="w-full flex flex-col relative">
-          {/* Shop Now Button */}
-          <Link
-            href="/products"
-            className="absolute right-4 top-4 sm:right-6 sm:top-6 
-                   bg-amber-500 text-black font-semibold text-sm sm:text-base
-                   px-4 py-2 sm:px-6 sm:py-3 rounded-full shadow-md 
-                   hover:bg-amber-600 transition z-10 font-poppins"
-          >
-            SHOP NOW
-          </Link>
+        <div className="w-full flex flex-col font-roboto pb-10">
+          <div className="flex flex-col lg:flex-row min-h-screen lg:h-[100vh] justify-center items-center">
+            <div className="w-full flex flex-col lg:w-1/2 h-auto lg:h-full items-start p-10 justify-center">
+              <h1 className="text-black text-2xl pb-5">About us</h1>
+              <p className="leading-relaxed text-gray-800">
+                Me, a clueless person about fashion back then from Greece,
+                happened to travel permanently to Copenhagen for work. I was
+                observing people and their styles — I was overwhelmed and
+                excited, seeing stylish people walking down the streets with
+                elegance. I said to myself that I also liked being stylish. Even
+                though these people had amazing styles, I kept noticing small
+                details: “That jacket would be perfect if it were green,” or
+                “Those shoes would look better if the sole was thinner.” I
+                realized I had opinions but no control — I wasn’t the one
+                designing or wearing them. I wanted to change that. When I came
+                back to Greece, I saw the style was missing, and at that exact
+                moment, the idea came to my mind. I had to create a brand for
+                men clothing that looked exactly the way I envisioned. Even if
+                no one chose it, I had to try — because trying, even when you
+                fail, is worth it.
+              </p>
+            </div>
 
-          {/* Main Section */}
-          <div className="">
-            <div className="flex flex-col lg:flex-row h-[80vh] sm:h-[90vh] lg:h-[100vh] bg-cover justify-center items-center">
-              {/* Left Side - Image */}
-              <div className="w-full flex flex-col lg:w-1/2 h-1/2 lg:h-full items-start p-10 justify-center relative">
-                <h1 className="text-black text-2xl pb-5 font-serif">
-                  About us
-                </h1>
-                <p className="font-serif">
-                  Me a clueless person about fashion back then from greece
-                  happened to travel for permantly stay at copenhagen to work. I
-                  was percerving people and their styles. i was so overwelmed
-                  and excited, when i was looking a really stylish person
-                  walking down the streets with style and elegance.i said to my
-                  self i also really liked being stylish and even these people
-                  had amazing styles i was keep saying to my self because i am
-                  very detailng person that Oh thats really nice jacket but if
-                  the color was green or this is really nice shoe but if the
-                  bottom of shoe was thiner. i reallized that i had no opinion
-                  to that its not me who made them or me who wear them.but i
-                  wanted to do somethink about it.when i came back to greece i
-                  saw the stylish people was missing and that exactly moment the
-                  idea came to my mind. i had to create a brand for men clothing
-                  to look exactly as i want the clothes to be. and even if noone
-                  chooses it, i had to try and trying even when you fail it
-                  worths.
-                </p>
-
-                {/* Floating Link at bottom left */}
-              </div>
-              <Link
-                href="/products"
-                className="absolute bottom-6 left-6  hover:bg-white hover:text-black text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm font-semibold hover:shadow-xl font-poppins"
+            <div className="w-full lg:w-1/2 h-auto lg:h-full flex items-center justify-center">
+              <video
+                src="/Awareness-16-9.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
               >
-                Explore more about our latest Collection
-              </Link>
-              {/* Right Side - Video */}
-              <div className="w-full lg:w-1/2 h-1/2 lg:h-full flex items-center justify-center relative">
-                <video
-                  src="/Awareness-16-9.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-full object-cover"
-                >
-                  Your browser does not support the video tag.
-                </video>
-
-                {/* Floating Link at bottom left */}
-              </div>
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
-          <div className="">
-            <div className="flex flex-col lg:flex-row h-[80vh] sm:h-[90vh] lg:h-[100vh] bg-cover justify-center items-center">
-              {/* Left Side - Image */}
-              <div className="w-full lg:w-1/2 h-[50vh] md:h-[70vh] lg:h-full flex items-center justify-center">
-                <img
-                  src="/Articles.jpg"
-                  alt="Article Image"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <Link
-                href="/products"
-                className="absolute bottom-6 left-6  hover:bg-white hover:text-black text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm font-semibold hover:shadow-xl font-poppins"
-              >
-                Explore more about our latest Collection
-              </Link>
-              {/* Right Side - Video */}
-              <div className="w-full flex flex-col lg:w-1/2 h-1/2 lg:h-full items-start p-10 justify-center relative">
-                <h1 className="text-black text-2xl pb-5">About us</h1>
-                <p>
-                  Me a clueless person about fashion back then from greece
-                  happened to travel for permantly stay at copenhagen to work. I
-                  was percerving people and their styles. i was so overwelmed
-                  and excited, when i was looking a really stylish person
-                  walking down the streets with style and elegance.i said to my
-                  self i also really liked being stylish and even these people
-                  had amazing styles i was keep saying to my self because i am
-                  very detailng person that Oh thats really nice jacket but if
-                  the color was green or this is really nice shoe but if the
-                  bottom of shoe was thiner. i reallized that i had no opinion
-                  to that its not me who made them or me who wear them.but i
-                  wanted to do somethink about it.when i came back to greece i
-                  saw the stylish people was missing and that exactly moment the
-                  idea came to my mind. i had to create a brand for men clothing
-                  to look exactly as i want the clothes to be. and even if noone
-                  chooses it, i had to try and trying even when you fail it
-                  worths.
-                </p>
 
-                {/* Floating Link at bottom left */}
-              </div>
+          <div className="flex flex-col lg:flex-row min-h-screen lg:h-[100vh] bg-cover justify-center items-center overflow-hidden">
+            <div className="w-full lg:w-1/2 h-auto lg:h-full flex items-center justify-center">
+              <Image
+                src="/Articles.jpg"
+                alt="Article Image"
+                className="w-full h-full object-cover"
+                width={1920}
+                height={1080}
+                unoptimized
+              />
+            </div>
+
+            <div className="w-full flex flex-col lg:w-1/2 h-auto lg:h-full items-start p-10 justify-center relative">
+              <h1 className="text-black text-2xl pb-5">Our Story</h1>
+              <p className="leading-relaxed text-gray-800">
+                It all started with a spark — a realization that style is more
+                than just appearance; it’s expression. In Copenhagen, I learned
+                to appreciate the art of dressing with detail and purpose.
+                Returning to Greece, I noticed the gap — a lack of that unique
+                everyday elegance. That’s when I decided to create a brand that
+                would bring style, confidence, and refinement to men’s clothing.
+                UrbanValor was born from that desire — to design pieces that
+                reflect individuality and the courage to be different.
+              </p>
             </div>
           </div>
         </div>
       </HeaderProvider>
+
       <Footer />
     </>
   );
