@@ -167,8 +167,10 @@ export default function DropDownMainPageSubCat() {
                             src={mainCat.image_url.trim()}
                             alt={mainCat.name}
                             className="w-full h-80 object-cover shadow-md cursor-pointer hover:opacity-90 transition"
-                            width={40}
-                            height={40}
+                            width={160}
+                            height={160}
+                            quality={90}
+                            priority
                           />
                         </Link>
                       )}

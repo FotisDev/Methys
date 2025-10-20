@@ -272,10 +272,10 @@ export default function ProductEntryPage() {
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-vintage-green mb-2">
           Καταχώρηση Προϊόντος
         </h1>
-        <p className="text-gray-600">Add a new product to your catalog</p>
+        <p className="text-vintage-green">Add a new product to your catalog</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -283,7 +283,7 @@ export default function ProductEntryPage() {
         <div>
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="block text-sm font-medium text-vintage-green mb-2"
           >
             Product Name *
           </label>
@@ -291,7 +291,7 @@ export default function ProductEntryPage() {
             id="name"
             type="text"
             {...register("name")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-vintage-green rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-vintage-green focus:border-vintage-green"
             placeholder="Enter product name"
             onChange={clearMessages}
           />
@@ -311,7 +311,7 @@ export default function ProductEntryPage() {
           <textarea
             id="description"
             {...register("description")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-vintage-green rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-vintage-green focus:border-vintage-green"
             rows={4}
             placeholder="Describe your product (optional)"
             onChange={clearMessages}
@@ -328,7 +328,7 @@ export default function ProductEntryPage() {
           <div>
             <label
               htmlFor="price"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-vintage-green mb-2"
             >
               Price (€) *
             </label>
@@ -338,7 +338,7 @@ export default function ProductEntryPage() {
               step="0.01"
               min="0"
               {...register("price", { valueAsNumber: true })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-vintage-green rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-vintage-green focus:border-vintage-green"
               placeholder="0.00"
               onChange={clearMessages}
             />
@@ -352,14 +352,14 @@ export default function ProductEntryPage() {
           <div>
             <label
               htmlFor="category_id"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-vintage-green mb-2"
             >
               Category *
             </label>
             <select
               id="category_id"
               {...register("category_men_id", { valueAsNumber: true })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-vintage-green  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-vintage-green focus:border-vintage-green"
               onChange={clearMessages}
             >
               <option value="0">-- Select a category --</option>
@@ -382,11 +382,10 @@ export default function ProductEntryPage() {
           </div>
         </div>
 
-        {/* Product Image */}
         <div>
           <label
             htmlFor="imageFile"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="block text-sm font-medium text-vintage-green mb-2"
           >
             Product Image
           </label>
@@ -395,10 +394,10 @@ export default function ProductEntryPage() {
             type="file"
             accept="image/jpeg,image/jpg,image/png,image/webp"
             {...register("imageFile")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-vintage-green rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-vintage-green focus:border-vintage-green"
             onChange={clearMessages}
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-vintage-green">
             Max file size: 5MB. Supported formats: JPG, PNG, WebP
           </p>
           {errors.imageFile && (
@@ -407,17 +406,16 @@ export default function ProductEntryPage() {
             </p>
           )}
 
-          {/* Image Preview */}
           {imagePreview && (
             <div className="mt-3">
-              <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
+              <p className="text-sm font-medium text-vintage-green mb-2">Preview:</p>
               <div className="relative w-32 h-32">
                 <Image
                   src={imagePreview}
                   alt="Product preview"
                   className="object-cover rounded-md border border-gray-300"
                   fill
-                  style={{ objectFit: "cover", borderRadius: "0.375rem" }} // optional
+                  style={{ objectFit: "cover", borderRadius: "0.375rem" }} 
                 
                 />
               </div>
@@ -425,24 +423,22 @@ export default function ProductEntryPage() {
           )}
         </div>
 
-        {/* Is Offer Checkbox */}
         <div>
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
               {...register("is_offer")}
-              className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              className="h-4 w-4 text-vintage-green border-vintage-green rounded focus:ring-vintage-green"
               onChange={clearMessages}
             />
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-vintage-green">
               Mark as Special Offer
             </span>
           </label>
         </div>
 
-        {/* Progress Bar */}
         {uploadProgress > 0 && uploadProgress < 100 && (
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-vintage-green rounded-full h-2">
             <div
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${uploadProgress}%` }}
@@ -450,19 +446,18 @@ export default function ProductEntryPage() {
           </div>
         )}
 
-        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex-1 bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-1py-2 px-6 rounded-md  disabled:opacity-50 disabled:cursor-not-allowed hover-colors"
           >
             {isSubmitting ? "Saving Product..." : "Save Product"}
           </button>
 
           <Link
             href="/"
-            className="flex-1 sm:flex-none bg-gray-600 text-white py-2 px-6 rounded-md font-medium hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors text-center"
+            className="flex-1 sm:flex-none  py-2 px-6 rounded-md hover-colors text-center"
           >
             Back to Homepage
           </Link>

@@ -32,23 +32,23 @@ const CategoriesMainPage = (): JSX.Element => {
           const rawName = (cat.name || "").toLowerCase();
           let imageName = "";
           if (rawName === "t-shirt" || rawName === "t-shirts")
-            imageName = "tshirt.jpg";
-          else if (rawName === "shirts") imageName = "shirts.avif";
-          else if (rawName === "jackets") imageName = "jackets.jpg";
+            imageName = "retroTshirt.jpg";
+          else if (rawName === "shirts") imageName = "retroshirt.jpg";
+          else if (rawName === "jackets") imageName = "retrojacket.jpg";
           else if (rawName === "socks") imageName = "socks.webp";
           else if (
             rawName === "jeans | pants" ||
             rawName === "jeans" ||
             rawName === "pants"
           )
-            imageName = "jeans.jpg";
+            imageName = "retrojean.jpg";
           else if (
             rawName === "custome pants" ||
             rawName === "custom" ||
             rawName === "custom pants"
           )
-            imageName = "customePants.webp";
-          else if (rawName === "shorts") imageName = "shorts.jpg";
+            imageName = "retropants.jpg";
+          else if (rawName === "shorts") imageName = "retroshort.jpg";
           else if (rawName === "accessories") imageName = "accessories.webp";
           else if (rawName === "shoes") imageName = "shoes.jpg";
           else if (
@@ -56,7 +56,7 @@ const CategoriesMainPage = (): JSX.Element => {
             rawName.includes("hoodie") ||
             rawName.includes("hoodies")
           )
-            imageName = "knitwear.webp";
+            imageName = "retrohood.jpg";
           else {
             const nameSlug = rawName
               .replace(/\s+/g, "-")
@@ -194,7 +194,7 @@ const CategoriesMainPage = (): JSX.Element => {
                         }}
                       />
 
-                      <div className="absolute bottom-0 flex flex-col justify-start p-6 pointer-events-none font-poppins ">
+                      <div className="absolute bottom-0 flex flex-col justify-start p-6 pointer-events-none ">
                         <div
                           className=" text-white "
                           style={{
@@ -202,10 +202,10 @@ const CategoriesMainPage = (): JSX.Element => {
                             textShadow: "0 2px 8px rgba(0,0,0,0.6)",
                           }}
                         >
-                          <p className="text-sm  mb-1 opacity-90">
+                          <p className="text-sm  mb-1 opacity-90 text-vintage-brown">
                             Autumn 2025
                           </p>
-                          <h3 className="text-lg ">
+                          <h3 className="text-lg text-vintage-brown ">
                             {subcategory.category_name}
                           </h3>
                         </div>
@@ -231,7 +231,7 @@ const CategoriesMainPage = (): JSX.Element => {
             onClick={prevSlide}
             disabled={currentIndex === 0}
             aria-label="Previous slide"
-            className={`absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-amber-400 ${
+            className={`absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full  text-white hover:bg-black/90  ${
               currentIndex === 0 ? "opacity-40 cursor-not-allowed" : ""
             }`}
           >
@@ -254,7 +254,7 @@ const CategoriesMainPage = (): JSX.Element => {
             onClick={nextSlide}
             disabled={currentIndex === totalSlides - 1}
             aria-label="Next slide"
-            className={`absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-amber-400 ${
+            className={`absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/40 text-white hover:bg-black/90 ${
               currentIndex === totalSlides - 1
                 ? "opacity-40 cursor-not-allowed"
                 : ""
@@ -284,7 +284,7 @@ const CategoriesMainPage = (): JSX.Element => {
             onClick={() => setCurrentIndex(i)}
             aria-label={`Go to slide ${i + 1}`}
             className={`w-3 h-3 rounded-full ${
-              i === currentIndex ? "bg-amber-500" : "bg-gray-300"
+              i === currentIndex ? "bg-vintage-green" : "bg-gray-300"
             }`}
           />
         ))}

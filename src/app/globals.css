@@ -1,16 +1,17 @@
 @import "tailwindcss";
 @tailwind utilities;
 
+
+
 @theme {
 
   --font-poppins: var(--font-poppins), sans-serif;
   --font-roboto: var(--font-roboto), sans-serif;
-
-
-  --color-sahara: #eba10e;
-  --color-graySand: #312e2e;
-  --color-myCyan: #008394;
-  --color-mysignature-orange: #eba10e;
+  --color-vintage-brown: #FFF0DD;
+  --color-vintage-green: #3B3B1A;
+  --color-default-color:#D1D3D4;
+  --color-default-cold:#1B3C53;
+  --color-default-yellow:#FF9D00;
 }
 
 :root {
@@ -25,10 +26,18 @@
   }
 }
 
+
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-poppins);
+}
+
+@layer components {
+  .hover-colors {
+    @apply bg-default-color text-vintage-green hover:bg-vintage-green hover:text-white;
+  }
 }
 
 .react-datepicker-popper {

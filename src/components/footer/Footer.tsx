@@ -46,7 +46,7 @@ export default function Footer() {
               <h3 className="text-lg sm:text-xl lg:text-2xl  text-sahara">
                 Download the App
               </h3>
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+              <div className="flex flex-col sm:flex-row items-center gap-2">
                 <Link
                   href="https://play.google.com/store"
                   target="_blank"
@@ -150,10 +150,10 @@ export default function Footer() {
 
           <div className="flex flex-col lg:flex-row justify-between items-center pt-8 border-t border-gray-700 gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
-              <span className=" text-lg sm:text-xl text-myCyan">
+              <span className=" text-lg sm:text-xl text-vintage-brown">
                 Methys
               </span>
-              <span className="text-sm text-gray-300">
+              <span className="text-sm text-vintage-brown">
                 © 2025 All rights reserved
               </span>
             </div>
@@ -163,7 +163,7 @@ export default function Footer() {
               <Link
                 href="/login"
                 aria-label="SignUpPage"
-                className="w-[130px] h-[40px] text-[14px] bg-sahara text-white px-2 py-2 rounded text-center"
+                className="w-[130px] h-[40px] text-[14px] bg-vintage-brown text-black px-2 py-2 rounded text-center"
               >
                 Sign Up / Sign In
               </Link>

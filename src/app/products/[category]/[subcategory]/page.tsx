@@ -22,7 +22,6 @@ export default function SubcategoryPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Sanitize and decode parameters
   const categorySlug = decodeURIComponent(params.category as string);
   const rawSubcategorySlug = decodeURIComponent(params.subcategory as string);
   const categoryName = categorySlug.replace(/-/g, " ").toLowerCase().trim();
@@ -58,16 +57,14 @@ export default function SubcategoryPage() {
           subcategories.map((sub) => sub.name)
         );
 
-        // Better matching logic that handles special characters
-        // Better matching logic that handles special characters
         const currentData = subcategories.find(
           (subcat) =>
-            (subcat.slug && subcat.slug === subcategorySlug) || // Match by slug first
-            subcat.name.toLowerCase().trim() === subcategoryName || // Then by exact name match
+            (subcat.slug && subcat.slug === subcategorySlug) || 
+            subcat.name.toLowerCase().trim() === subcategoryName || 
             (subcat.slug &&
-              decodeURIComponent(subcat.slug) === subcategorySlug) || // Match decoded slug
-            subcat.name.toLowerCase().includes(subcategoryName) || // Partial name match
-            subcategoryName.includes(subcat.name.toLowerCase()) // Reverse partial match
+              decodeURIComponent(subcat.slug) === subcategorySlug) || 
+            subcat.name.toLowerCase().includes(subcategoryName) || 
+            subcategoryName.includes(subcat.name.toLowerCase()) 
         );
 
         if (!currentData) {
@@ -84,7 +81,6 @@ export default function SubcategoryPage() {
         console.log("Fetching products for subcategory ID:", currentData.id);
         const allProducts = await fetchProducts();
 
-        // Filter products that belong to this subcategory
         const subcategoryProducts =
           allProducts?.filter(
             (product) => product.category_men_id === currentData.id
@@ -107,8 +103,8 @@ export default function SubcategoryPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+      <div className="flex flex-col items-center justify-center min-h-screen text-vintage-green font-roboto">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white "></div>
         <p className="mt-4 text-lg">Loading products...</p>
       </div>
     );
@@ -116,14 +112,14 @@ export default function SubcategoryPage() {
 
   if (error || !parentCategory || !currentCategory) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-2xl font-bold mb-4">Subcategory Not Found</h1>
-        <p className="text-gray-600 mb-8">
+      <div className="flex flex-col items-center justify-center min-h-screen text-vintage-green font-roboto">
+        <h1 className="text-2xl  mb-4">Subcategory Not Found</h1>
+        <p className="text-vintage-green  mb-8">
           {error || `Subcategory "${subcategoryName}" not found`}
         </p>
         <Link
           href={`/products/${encodeURIComponent(categorySlug)}`}
-          className="px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
+          className="px-6 py-3 hover-colors rounded-lg"
         >
           Back to {categoryName}
         </Link>
@@ -132,46 +128,45 @@ export default function SubcategoryPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      {/* Breadcrumb */}
-      <nav className="mb-8 text-sm text-gray-600">
+    <div className="container mx-auto px-4 py-12 font-roboto text-vintage-green">
+      <nav className="mb-8 text-sm ">
         <Link
           href="/products"
-          className="hover:text-amber-600 transition-colors"
+          className="hover:text-vintage-brown"
         >
           Products
         </Link>
         <span className="mx-2">/</span>
         <Link
           href={`/products/${encodeURIComponent(categorySlug)}`}
-          className="hover:text-amber-600 transition-colors capitalize"
+          className="hover:text-vintage-brown"
         >
           {parentCategory.name}
         </Link>
         <span className="mx-2">/</span>
-        <span className="capitalize font-medium">{currentCategory.name}</span>
+        <span className="hover:text-vintage-brown cursor-pointer">{currentCategory.name}</span>
       </nav>
 
-      <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 capitalize">
+      <h1 className="text-4xl md:text-5xl text-center mb-4 ">
         {currentCategory.name}
       </h1>
 
-      <p className="text-center text-gray-600 mb-12 text-lg">
+      <p className="text-center   mb-12 text-lg">
         Discover our collection of {currentCategory.name.toLowerCase()} products
       </p>
 
       {products.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-6xl mb-4">📦</div>
-          <h2 className="text-2xl font-semibold mb-4">No products found</h2>
-          <p className="text-gray-600 mb-8">
+          <h2 className="text-2xl  mb-4">No products found</h2>
+          <p className=" mb-8">
             We are working on adding products to this category. Check back soon!
           </p>
         </div>
       ) : (
         <>
-          <div className="mb-6 text-center">
-            <span className="text-gray-600">
+          <div className="mb-6 text-center font-roboto">
+            <span className="text-vintage-green ">
               Showing {products.length}{" "}
               {products.length === 1 ? "product" : "products"}
             </span>
@@ -181,7 +176,7 @@ export default function SubcategoryPage() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="group relative w-full bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="group relative w-full bg-white  rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-vintage-green  "
               >
                 <div className="relative aspect-[3/4] overflow-hidden">
                   <Image
@@ -196,21 +191,20 @@ export default function SubcategoryPage() {
                     unoptimized
                   />
 
-                  {/* Price badge */}
                   {product.price && (
-                    <div className="absolute top-3 right-3 bg-amber-500 text-white px-2 py-1 rounded-lg text-sm font-semibold">
+                    <div className="absolute top-3 right-3 bg-white  text-vintage-green  px-2 py-1 rounded-lg text-sm">
                       ${product.price}
                     </div>
                   )}
                 </div>
 
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2 line-clamp-2 capitalize">
+                  <h3 className="text-lg  mb-2 line-clamp-2 capitalize">
                     {product.name}
                   </h3>
 
                   {product.description && (
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                    <p className="text-sm text-vintage-green  mb-3 line-clamp-2">
                       {product.description}
                     </p>
                   )}
@@ -218,7 +212,7 @@ export default function SubcategoryPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       {product.price && (
-                        <span className="text-xl font-bold text-amber-600">
+                        <span className="text-xl  text-vintage-green ">
                           ${product.price}
                         </span>
                       )}
@@ -230,7 +224,7 @@ export default function SubcategoryPage() {
                       )}/${encodeURIComponent(
                         subcategorySlug
                       )}/${encodeURIComponent(product.slug)}`}
-                      className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors text-sm font-medium"
+                      className="px-4 py-2 hover-colors rounded "
                     >
                       View Details
                     </Link>
@@ -245,7 +239,7 @@ export default function SubcategoryPage() {
       <div className="text-center mt-12">
         <Link
           href={`/products/${encodeURIComponent(categorySlug)}`}
-          className="inline-block px-6 py-3 text-sm font-medium text-white bg-amber-500 rounded-lg hover:bg-amber-600 transition-colors"
+          className="inline-block px-6 py-3 text-sm hover-colors rounded"
         >
           ← Back to {parentCategory.name}
         </Link>

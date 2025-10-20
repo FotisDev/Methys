@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default async function NewCollectionClothes() {
   const items = await getNewCollection();
-  const limitedItems = items.slice(0, 4); // only 4 products
+  const limitedItems = items.slice(0, 4); 
 
   return (
     <section className="new-collection px-4 py-8 font-poppins">

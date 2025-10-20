@@ -6,6 +6,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "../../../_lib/supabaseClient";
 import { ResetPasswordFormData, resetPasswordSchema } from "@/_lib/utils/zod";
+import Link from "next/link";
 
 function ResetPasswordForm() {
   const {
@@ -83,22 +84,22 @@ function ResetPasswordForm() {
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Reset Password</h2>
+            <h2 className="text-2xl font-bold text-vintage-green mb-2">Reset Password</h2>
             {userEmail && (
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-vintage-green mb-4">
                 Resetting password for: <span className="font-semibold">{userEmail}</span>
               </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-vintage-green mb-2">
               New Password
             </label>
             <input
               type="password"
               {...register("password")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-vintage-green rounded-md"
               placeholder="Enter new password"
             />
             {errors.password && (
@@ -113,7 +114,7 @@ function ResetPasswordForm() {
             <input
               type="password"
               {...register("confirmPassword")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-vintage-green rounded-md"
               placeholder="Confirm new password"
             />
             {errors.confirmPassword && (
@@ -138,7 +139,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full hover-colors py-2 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Updating..." : "Update Password"}
           </button>
@@ -146,13 +147,12 @@ function ResetPasswordForm() {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Remember your password?{" "}
-            <button
+            Remember your password?
+            <Link
               onClick={() => router.push("/login")}
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
+              className="font-medium text-vintage-green ml-1" href={""}            >
               Sign in
-            </button>
+            </Link>
           </p>
         </div>
       </div>
@@ -163,8 +163,8 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-vintage-green">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2"></div>
       </div>
     }>
       <ResetPasswordForm />

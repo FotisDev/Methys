@@ -29,10 +29,10 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
         <Image
           src={hovered ? "/articles.jpg" : item.image_url}
           alt={item.name}
-          className="object-cover transition duration-500 ease-in-out"
-          sizes="(max-width:768px) 50vw, (max-width:1200px) 25vw, 2vw"
-          unoptimized={hovered}
           fill
+          className="object-cover transition duration-500 ease-in-out"
+          quality={100}
+          priority
         />
         <div className=" bg-gradient-to-t from-black/60 via-black/10 to-transparent transition duration-500" />
 

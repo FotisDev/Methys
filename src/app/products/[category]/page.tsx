@@ -60,7 +60,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-vintage-green"></div>
         <p className="mt-4 text-lg">Loading subcategories...</p>
       </div>
     );
@@ -75,7 +75,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         </p>
         <Link
           href="/products"
-          className="px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
+          className="px-6 py-3 rounded-lg hover-colors"
         >
           Back to Categories
         </Link>
@@ -84,35 +84,25 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      {/* Breadcrumb */}
-      <nav className="mb-8 text-sm text-gray-600">
+    <div className="container mx-auto px-4 py-12 font-roboto text-vintage-green">
+      <nav className="mb-8 text-sm ">
         <Link
           href="/products"
-          className="hover:text-amber-600 transition-colors"
+          className="hover:text-vintage-brown transition-colors"
         >
           Products
         </Link>
         <span className="mx-2">/</span>
-        <span className="capitalize font-medium">{category.name}</span>
+        <span className="hover:text-vintage-brown cursor-pointer ">{category.name}</span>
       </nav>
-
-      <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 capitalize">
-        {category.name}
-      </h1>
-
-      <p className="text-center text-gray-600 mb-12 text-lg">
-        Choose a subcategory to explore our {category.name.toLowerCase()}{" "}
-        collection
-      </p>
 
       {subcategories.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-6xl mb-4">📦</div>
-          <h2 className="text-2xl font-semibold mb-4">
+          <h2 className="text-2xl  mb-4">
             No subcategories found
           </h2>
-          <p className="text-gray-600 mb-8">
+          <p className="  mb-8">
             We are working on adding subcategories. Check back soon!
           </p>
         </div>
@@ -127,7 +117,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               <Link
                 key={subcategory.id}
                 href={href}
-                className="group relative w-full aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                className="group relative w-full aspect-[3/4] bg-vintage-green rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <div className="absolute inset-0">
                   <Image
@@ -140,12 +130,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   />
                 </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <h3 className="text-lg font-semibold capitalize mb-1">
+                <div className="absolute inset-0 bg-gradient-to-t from-vintage-green/60 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 text-vintage-brown">
+                  <h3 className="text-lg  mb-1">
                     {subcategory.name}
                   </h3>
-                  <p className="text-sm text-gray-200">Explore collection →</p>
+                  <p className="text-sm text-vintage-brown">Explore collection →</p>
                 </div>
               </Link>
             );
@@ -156,7 +146,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       <div className="text-center mt-12">
         <Link
           href="/products"
-          className="inline-block px-6 py-3 text-sm font-medium text-white bg-amber-500 rounded-lg hover:bg-amber-600 transition-colors"
+          className="inline-block px-6 py-3 text-sm hover-colors rounded"
         >
           ← Back to all categories
         </Link>

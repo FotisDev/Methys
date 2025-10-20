@@ -14,12 +14,10 @@ const config: Config = {
         poppins: ["var(--font-poppins)"],
         roboto: ["var(--font-roboto)"],
       },
-      // tailwind.config.ts
+
       colors: {
-        "peach-yellow": {
-          DEFAULT: "#F7D89A",
-          dark: "#f8d796",
-        },
+        "vintage-brown": "#FFF0DD",
+        "vintage-green": "#84994F",
       },
     },
   },

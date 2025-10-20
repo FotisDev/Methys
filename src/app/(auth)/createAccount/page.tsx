@@ -58,7 +58,7 @@ const CreateAccountPage = () => {
             last_name: data.lastName,
             telephone: data.telephone,
             birthdate: data.birthday,
-            is_member: true, // Set to true by default on signup
+            is_member: true,
           },
         },
       });
@@ -81,8 +81,8 @@ const CreateAccountPage = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen text-black">
-      {/* Left Section */}
+    <div className="flex flex-col md:flex-row h-screen text-vintage-green font-roboto">
+
       <div
         className="relative md:w-1/2 h-64 md:h-auto flex flex-col justify-between"
         style={{
@@ -91,16 +91,16 @@ const CreateAccountPage = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/50 to-white"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/80 to-white"></div>
         <div className="relative z-10 p-6 md:p-12 text-white flex flex-col justify-center h-full">
           <Link href="/" className="block mb-8 w-40 md:w-64">
-            <Logo size={250} />
+            Methys
           </Link>
           <section className="mt-auto">
-            <h1 className="text-3xl md:text-6xl font-bold mb-4 text-cyan-900/80 leading-tight">
+            <h1 className="text-3xl md:text-6xl  mb-4 text-vintage-green leading-tight">
               Dress Beyond Limits..
             </h1>
-            <p className="text-base md:text-2xl font-roboto text-cyan-900/80 max-w-md">
+            <p className="text-base md:text-2xl  text-vintage-green max-w-md">
               Elevate your everyday. Explore styles designed to turn heads
               crafted for those who dont settle.
             </p>
@@ -111,14 +111,13 @@ const CreateAccountPage = () => {
         </div>
       </div>
 
-      {/* Right Section */}
       <div className="md:w-1/2 w-full flex flex-col items-center justify-center bg-white px-6 md:px-16 py-12 md:py-0">
-        <div className="flex justify-end w-full mb-8 font-poppins text-sm md:text-lg">
+        <div className="flex justify-end w-full mb-8  text-sm md:text-lg">
           <p className="mr-2 text-gray-900">Already a member?</p>
           <a
             href="#"
             onClick={handleSignInClick}
-            className="text-cyan-800 font-semibold hover:underline"
+            className="text-vintage-green  hover:underline"
           >
             Sign in
           </a>
@@ -128,7 +127,7 @@ const CreateAccountPage = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-lg space-y-6"
         >
-          <h1 className="font-bold text-2xl text-cyan-800 mb-4">Sign up</h1>
+          <h1 className=" text-2xl text-vintage-green mb-4">Sign up</h1>
 
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
@@ -136,8 +135,8 @@ const CreateAccountPage = () => {
                 {...register("firstName")}
                 type="text"
                 placeholder="First Name"
-                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.firstName ? "border-red-500" : "border-gray-300"
+                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 ${
+                  errors.firstName ? "border-red-500" : "border-vintage-green"
                 }`}
               />
               {errors.firstName && (
@@ -151,8 +150,8 @@ const CreateAccountPage = () => {
                 {...register("lastName")}
                 type="text"
                 placeholder="Last Name"
-                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.lastName ? "border-red-500" : "border-gray-300"
+                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2  ${
+                  errors.lastName ? "border-red-500" : "border-vintage-green"
                 }`}
               />
               {errors.lastName && (
@@ -166,7 +165,7 @@ const CreateAccountPage = () => {
           <div>
             <label
               htmlFor="birthday"
-              className="block text-sm font-poppins text-black mb-1"
+              className="block text-sm  text-vintage-green mb-1"
             >
               Birthday
             </label>
@@ -174,8 +173,8 @@ const CreateAccountPage = () => {
               {...register("birthday")}
               type="date"
               max={new Date().toISOString().split("T")[0]}
-              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                errors.birthday ? "border-red-500" : "border-gray-300"
+              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2  ${
+                errors.birthday ? "border-red-500" : "border-vintage-green"
               }`}
             />
             {errors.birthday && (
@@ -190,8 +189,8 @@ const CreateAccountPage = () => {
               {...register("email")}
               type="email"
               placeholder="Email Address"
-              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                errors.email ? "border-red-500" : "border-gray-300"
+              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2  ${
+                errors.email ? "border-red-500" : "border-vintage-green"
               }`}
             />
             {errors.email && (
@@ -206,8 +205,8 @@ const CreateAccountPage = () => {
               {...register("telephone")}
               type="tel"
               placeholder="Telephone"
-              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                errors.telephone ? "border-red-500" : "border-gray-300"
+              className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2  ${
+                errors.telephone ? "border-red-500" : "border-vintage-green"
               }`}
             />
             {errors.telephone && (
@@ -223,8 +222,8 @@ const CreateAccountPage = () => {
                 {...register("password")}
                 type="password"
                 placeholder="Password"
-                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
+                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2  ${
+                  errors.password ? "border-red-500" : "border-vintage-green"
                 }`}
               />
               {errors.password && (
@@ -238,8 +237,8 @@ const CreateAccountPage = () => {
                 {...register("repeatPassword")}
                 type="password"
                 placeholder="Repeat Password"
-                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.repeatPassword ? "border-red-500" : "border-gray-300"
+                className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2  ${
+                  errors.repeatPassword ? "border-red-500" : "border-vintage-green"
                 }`}
               />
               {errors.repeatPassword && (
@@ -251,15 +250,15 @@ const CreateAccountPage = () => {
           </div>
 
           <div>
-            <label className="flex items-center gap-2 text-gray-900 text-sm cursor-pointer select-none">
+            <label className="flex items-center gap-2 text-vintage-green text-sm cursor-pointer select-none">
               <input
                 {...register("acceptTerms")}
                 type="checkbox"
-                className="w-5 h-5 rounded border-gray-400 accent-blue-600"
+                className="w-5 h-5 rounded border-vintage-green accent-vintage-green"
               />
               <span>
                 I accept the{" "}
-                <a href="#" className="text-cyan-600 hover:underline">
+                <a href="#" className="text-default-cold hover:underline">
                   Terms and Conditions
                 </a>
               </span>
@@ -272,13 +271,13 @@ const CreateAccountPage = () => {
           </div>
 
           {error && (
-            <div className="text-red-600 font-semibold text-center">
+            <div className="text-red-600  text-center">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="text-green-600 font-semibold text-center">
+            <div className="text-green-600  text-center">
               {success}
             </div>
           )}
@@ -286,7 +285,7 @@ const CreateAccountPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-cyan-900 hover:bg-cyan-700 text-white font-semibold rounded-xl py-3 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full hover-colors  rounded-xl py-3 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Creating account..." : "Create account"}
           </button>

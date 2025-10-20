@@ -9,7 +9,6 @@ import SignUpPage from "../login/page";
 import Logo from "../../../svgs/logo";
 import Link from "next/link";
 
-// Import the validation schema and type
 import { ForgotPasswordForm, forgotPasswordSchema } from "../../../_lib/utils/zod";
 
 const ForgotPasswordPage = () => {
@@ -46,7 +45,6 @@ const ForgotPasswordPage = () => {
     }
   };
 
-  // Handle session and email display only if tokens are present
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const access_token = urlParams.get("access_token");
@@ -62,7 +60,6 @@ const ForgotPasswordPage = () => {
           if (error) {
             setErrorMsg(error.message);
           } else if (session?.user) {
-            // No need to set userEmail here since this page doesn't display it
             console.log("Session set for user:", session.user.email);
           }
         })
@@ -76,23 +73,23 @@ const ForgotPasswordPage = () => {
   if (showSignUpPage) return <SignUpPage />;
 
   return (
-    <div className="flex flex-col md:flex-row h-full min-h-screen">
+    <div className="flex flex-col md:flex-row h-full min-h-screen font-roboto">
       {/* LEFT */}
       <div className="relative w-full md:w-1/2 h-[70vh] md:h-auto flex flex-col justify-between">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('AuthClothPhoto.jpg')" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/50 to-white" />
+        <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/90 to-white" />
         <div className="relative z-10 p-6 md:p-8 text-white">
           <Link href="/" className="block w-60 md:w-96 mb-6 md:mb-8">
             <Logo className="w-full" size={250} />
           </Link>
           <section className="flex flex-col mt-10 md:mt-48">
-            <h1 className="text-3xl md:text-7xl font-bold mb-3 md:mb-4 text-cyan-900/40">
+            <h1 className="text-3xl md:text-7xl font-bold mb-3 md:mb-4 text-vintage-green">
               Dress Beyond Limits..
             </h1>
-            <p className="text-lg md:text-4xl font-roboto text-cyan-900/40">
+            <p className="text-lg md:text-4xl font-roboto text-vintage-green">
               Elevate your everyday. Explore styles designed to turn heads
               crafted for those who don’t settle.
             </p>
@@ -113,7 +110,7 @@ const ForgotPasswordPage = () => {
             <a
               href="#"
               onClick={() => setShowCreateAccount(true)}
-              className="text-lg text-cyan-800 hover:underline"
+              className="text-lg text-vintage-green hover:underline"
             >
               Create an account
             </a>
@@ -124,12 +121,12 @@ const ForgotPasswordPage = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-[440px] mt-8 flex flex-col gap-4 px-4"
         >
-          <label className="text-start font-poppins text-sm md:text-base text-black">
+          <label className="text-start font-poppins text-sm md:text-base text-vintage-green">
             Your email
           </label>
           <input
             type="email"
-            className="w-full h-12 md:h-14 rounded-3xl text-center text-base font-poppins border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full h-12 md:h-14 rounded-3xl text-center text-base font-poppins border border-vintage-green"
             placeholder="Enter your email"
             {...register("email")}
           />
@@ -140,13 +137,13 @@ const ForgotPasswordPage = () => {
           )}
           {errorMsg && <span className="text-red-600 text-sm">{errorMsg}</span>}
           {submitted && (
-            <span className="text-green-600 text-sm">
+            <span className="text-vintage-green text-sm">
               Check your email for the reset link.
             </span>
           )}
           <button
             type="submit"
-            className="w-full h-12 md:h-14 rounded-3xl text-white bg-cyan-900 hover:bg-cyan-700"
+            className="w-full h-12 md:h-14 rounded-3xl hover-colors"
           >
             Submit
           </button>
@@ -154,7 +151,7 @@ const ForgotPasswordPage = () => {
             <a
               href="#"
               onClick={() => setShowSignUpPage(true)}
-              className="text-sm text-cyan-950 font-poppins hover:underline"
+              className="text-sm text-vintage-green font-poppins hover:underline"
             >
               Back to sign in
             </a>

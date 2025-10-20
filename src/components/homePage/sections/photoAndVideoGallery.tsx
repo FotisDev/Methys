@@ -18,14 +18,13 @@ const PhotoGallery: React.FC = () => {
           </div>
           <Link
             href="/products"
-            className="absolute bottom-6 left-6  hover:bg-white hover:text-black text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300 text-sm  hover:shadow-xl"
+            className="absolute bottom-6 left-6  px-6 py-3 text-sm  text-vintage-brown hover:underline"
           >
             Explore more about our latest Collection
           </Link>
-          {/* Right Side - Video */}
           <div className="w-full lg:w-1/2 h-1/2 lg:h-full flex items-center justify-center relative">
             <video
-              src="/Awareness-16-9.mp4"
+              src="/man-window.mp4"
               autoPlay
               muted
               loop
@@ -34,8 +33,6 @@ const PhotoGallery: React.FC = () => {
             >
               Your browser does not support the video tag.
             </video>
-
-            {/* Floating Link at bottom left */}
           </div>
         </div>
       </div>

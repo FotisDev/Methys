@@ -208,7 +208,7 @@ export default function ProductDetailPage({
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-vintage-green"></div>
         <p className="mt-4 text-lg">Loading product...</p>
       </div>
     );
@@ -216,9 +216,9 @@ export default function ProductDetailPage({
 
   if (error || !product || !unwrappedParams) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
-        <p className="text-gray-600 mb-8">
+      <div className="flex flex-col items-center justify-center min-h-screen font-poppins">
+        <h1 className="text-2xl  mb-4">Product Not Found</h1>
+        <p className="text-vintage-green mb-8">
           {error || `Product "${productSlug}" not found`}
         </p>
         {subcategorySlug && (
@@ -226,7 +226,7 @@ export default function ProductDetailPage({
             href={`/products/${encodeURIComponent(
               categorySlug
             )}/${encodeURIComponent(subcategorySlug)}`}
-            className="px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
+            className="px-6 py-3 hover-colors"
           >
             Back to {subcategoryName.replace(/-/g, " ") || "Products"}
           </Link>
@@ -236,18 +236,18 @@ export default function ProductDetailPage({
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <nav className="mb-8 text-sm text-gray-600">
+    <div className="container mx-auto px-4 py-12 font-roboto text-vintage-green">
+      <nav className="mb-8 text-sm text-vintage-green">
         <Link
           href="/products"
-          className="hover:text-amber-600 transition-colors"
+          className="hover:text-vintage-brown"
         >
           Products
         </Link>
         <span className="mx-2">/</span>
         <Link
           href={`/products/${encodeURIComponent(categorySlug)}`}
-          className="hover:text-amber-600 transition-colors capitalize"
+          className="hover:text-vintage-brown"
         >
           {parentCategory?.name || categoryName}
         </Link>
@@ -256,12 +256,12 @@ export default function ProductDetailPage({
           href={`/products/${encodeURIComponent(
             categorySlug
           )}/${encodeURIComponent(subcategorySlug)}`}
-          className="hover:text-amber-600 transition-colors capitalize"
+          className="hover:text-vintage-brown "
         >
           {currentCategory?.name || subcategoryName}
         </Link>
         <span className="mx-2">/</span>
-        <span className="font-medium">{product.name}</span>
+        <span className="hover:text-vintage-brown">{product.name}</span>
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -276,25 +276,24 @@ export default function ProductDetailPage({
               priority
             />
             {product.is_offer && (
-              <div className="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-2 rounded-lg">
+              <div className="absolute top-4 left-4 bg-red-700 text-white text-sm  px-3 py-2 rounded-lg">
                 SPECIAL OFFER
               </div>
             )}
           </div>
         </div>
 
-        {/* Product Details */}
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl md:text-4xl  text-vintage-green mb-4">
               {product.name}
             </h1>
             <div className="flex items-center space-x-4 mb-6">
-              <span className="text-3xl font-bold text-amber-600">
+              <span className="text-3xl">
                 ${product.price}
               </span>
               {product.is_offer && (
-                <span className="bg-red-100 text-red-800 text-sm font-semibold px-3 py-1 rounded-full">
+                <span className="bg-vintage-brown text-red-700 text-sm  px-3 py-1 rounded-full">
                   On Sale
                 </span>
               )}
@@ -302,7 +301,7 @@ export default function ProductDetailPage({
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            <h3 className="text-lg  text-gray-900 mb-3">
               Description
             </h3>
             <p className="text-gray-700 leading-relaxed">
@@ -310,50 +309,37 @@ export default function ProductDetailPage({
             </p>
           </div>
 
-          {/* Product Info */}
           <div className="border-t pt-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <h3 className="text-lg  text-text-vintage-green mb-4">
               Product Information
             </h3>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600">Category:</span>
-                <span className="font-medium">
-                  {parentCategory?.name || categoryName} →{" "}
-                  {currentCategory?.name || subcategoryName}
-                </span>
+                <span >Product ID:</span>
+                <span >#{product.id}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Product ID:</span>
-                <span className="font-medium">#{product.id}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Slug:</span>
-                <span className="font-medium">{product.slug}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Added:</span>
-                <span className="font-medium">
+                <span>Added:</span>
+                <span >
                   {new Date(product.created_at).toLocaleDateString()}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="space-y-4 pt-6">
             <button
               onClick={handleAddToCart}
-              className="w-full bg-amber-500 text-white font-semibold py-4 px-8 rounded-lg hover:bg-amber-600 transition-colors duration-200 text-lg"
+              className="w-full py-4 px-8 rounded-lg text-lg hover-colors"
             >
               {isAddedToCart ? "Added to Cart!" : "Add to Cart"}
             </button>
             <button
               onClick={handleWishlistToggle}
-              className={`w-full border-2 font-semibold py-4 px-8 rounded-lg transition-colors duration-200 text-lg flex items-center justify-center space-x-2 ${
+              className={`w-full border-2 py-4 px-8 rounded-lg transition-colors duration-200 text-lg flex items-center justify-center space-x-2 ${
                 isInWishlistState
                   ? "border-red-500 bg-red-50 text-red-600 hover:bg-red-100"
-                  : "border-amber-500 text-amber-500 hover:bg-amber-50"
+                  : "hover-colors"
               }`}
             >
               <HeartIcon
@@ -368,20 +354,18 @@ export default function ProductDetailPage({
             </button>
             {isAddedToCart && (
               <Link href="/cart">
-                <button className="w-full bg-green-500 text-white font-semibold py-4 px-8 rounded-lg hover:bg-green-600 transition-colors duration-200 text-lg mt-2">
+                <button className="w-full py-4 px-8 rounded-lgtext-lg mt-2 hover-colors">
                   Go to Cart
                 </button>
               </Link>
             )}
           </div>
-
-          {/* Back Navigation */}
           <div className="pt-6 border-t">
             <Link
               href={`/products/${encodeURIComponent(
                 categorySlug
               )}/${encodeURIComponent(subcategorySlug)}`}
-              className="inline-flex items-center text-amber-600 hover:text-amber-700 font-medium transition-colors"
+              className="inline-flex items-center hover-colors rounded p-4"
             >
               ← Back to {currentCategory?.name || subcategoryName}
             </Link>

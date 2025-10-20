@@ -9,8 +9,8 @@ export default function About() {
         <div className="w-full flex flex-col font-roboto pb-10">
           <div className="flex flex-col lg:flex-row min-h-screen lg:h-[100vh] justify-center items-center">
             <div className="w-full flex flex-col lg:w-1/2 h-auto lg:h-full items-start p-10 justify-center">
-              <h1 className="text-black text-2xl pb-5">About us</h1>
-              <p className="leading-relaxed text-gray-800">
+              <h1 className="text-vintage-green text-2xl pb-5">About us</h1>
+              <p className="leading-relaxed text-vintage-green">
                 Me, a clueless person about fashion back then from Greece,
                 happened to travel permanently to Copenhagen for work. I was
                 observing people and their styles — I was overwhelmed and
@@ -31,7 +31,7 @@ export default function About() {
 
             <div className="w-full lg:w-1/2 h-auto lg:h-full flex items-center justify-center">
               <video
-                src="/Awareness-16-9.mp4"
+                src="/looking-down.mp4"
                 autoPlay
                 muted
                 loop
@@ -56,8 +56,8 @@ export default function About() {
             </div>
 
             <div className="w-full flex flex-col lg:w-1/2 h-auto lg:h-full items-start p-10 justify-center relative">
-              <h1 className="text-black text-2xl pb-5">Our Story</h1>
-              <p className="leading-relaxed text-gray-800">
+              <h1 className="text-vintage-green text-2xl pb-5">Our Story</h1>
+              <p className="leading-relaxed text-vintage-green">
                 It all started with a spark — a realization that style is more
                 than just appearance; it’s expression. In Copenhagen, I learned
                 to appreciate the art of dressing with detail and purpose.

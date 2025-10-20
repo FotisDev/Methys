@@ -178,7 +178,6 @@ const Menu = () => {
             }
           }}
         >
-          {/* Left - Navigation */}
           <div className="flex items-center justify-start">
             <div className="hidden lg:flex gap-4 items-center ml-4">
               {navLinks.map(({ href, label }) => (
@@ -195,17 +194,14 @@ const Menu = () => {
             </div>
           </div>
 
-          {/* Center - Logo */}
           <div className="flex justify-center">
             <Link href={PAGE_URLS.HOMEPAGE} passHref>
               <p className=" text-lg">Methys</p>
             </Link>
           </div>
 
-          {/* Right - Icons */}
           <div className="flex items-center justify-end">
             <div className="hidden lg:flex items-center gap-4">
-              {/* Wishlist Icon - Now opens sidebar */}
               <button
                 onClick={toggleWishlist}
                 className="relative group"
@@ -233,14 +229,13 @@ const Menu = () => {
                 </div>
               </button>
 
-              {/* Cart Icon */}
               <Link
                 href={PAGE_URLS.CART}
                 className="relative group"
                 aria-label={`Cart with ${cartItemCount} items`}
               >
                 <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
-                  <CartSvg className="w-6 h-6 group-hover:text-gray-900 transition-colors" />
+                  <CartSvg className="w-6 h-6 group-hover:text-vintage-green transition-colors" />
                   {cartItemCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs  rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
                       {cartItemCount > 99 ? "99+" : cartItemCount}
@@ -282,7 +277,6 @@ const Menu = () => {
               </Link>
             ))}
 
-            {/* Mobile Wishlist - Now opens sidebar */}
             <button
               onClick={() => {
                 toggleWishlist();
@@ -298,7 +292,6 @@ const Menu = () => {
               )}
             </button>
 
-            {/* Mobile Cart */}
             <Link
               href={PAGE_URLS.CART}
               onClick={() => setShowBulletMenu(false)}
@@ -315,7 +308,6 @@ const Menu = () => {
         </div>
       )}
 
-      {/* Clothes Dropdown */}
       {showClothes && (
         <div
           ref={clothesModalRef}
@@ -327,7 +319,7 @@ const Menu = () => {
         >
           <button
             type="button"
-            className="absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
+            className="absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-vintage-green"
             onClick={() => setShowClothes(false)}
             aria-label="Close Clothes Menu"
           >
@@ -338,8 +330,6 @@ const Menu = () => {
           </div>
         </div>
       )}
-
-      {/* Wishlist Sidebar */}
       <WishlistSidebar
         isOpen={isWishlistOpen}
         onClose={closeWishlist}

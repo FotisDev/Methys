@@ -82,17 +82,17 @@ const CartPage = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-default-cold"></div>
         <p className="mt-4 text-lg">Loading cart...</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      {/* Header */}
+    <div className="container mx-auto px-4 py-12 font-poppins">
+
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl md:text-4xl  text-gray-900 mb-4">
           Shopping Cart
         </h1>
         <nav className="text-sm text-gray-600">
@@ -108,7 +108,6 @@ const CartPage = () => {
       </div>
 
       {cartItems.length === 0 ? (
-        /* Empty Cart State */
         <div className="text-center py-12">
           <div className="max-w-md mx-auto">
             <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -133,19 +132,16 @@ const CartPage = () => {
               Looks like you havent added any items to your cart yet.
             </p>
             <Link href="/products">
-              <button className="bg-amber-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-amber-600 transition-colors duration-200 text-lg">
+              <button className="bg-default-color text-white font-semibold py-3 px-8 rounded-lg  transition-colors duration-200 text-lg">
                 Start Shopping
               </button>
             </Link>
           </div>
         </div>
       ) : (
-        /* Cart with Items */
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Cart Items */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8  font-poppins">
           <div className="lg:col-span-3">
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-              {/* Cart Header */}
               <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-semibold text-gray-900">
@@ -160,12 +156,11 @@ const CartPage = () => {
                 </div>
               </div>
 
-              {/* Cart Items List */}
+          
               <div className="divide-y divide-gray-200">
                 {cartItems.map((item) => (
                   <div key={item.id} className="p-6">
                     <div className="flex items-center space-x-4">
-                      {/* Product Image */}
                       <div className="w-20 h-20 relative overflow-hidden rounded-lg bg-gray-100 flex-shrink-0">
                         <Image
                           src={getValidImage(item.image_url)}
@@ -173,37 +168,34 @@ const CartPage = () => {
                           fill
                           className="object-cover"
                           sizes="80px"
-                          width={40}
-                          height={40}
+                        
                         />
                         {item.is_offer && (
-                          <div className="absolute top-1 left-1 bg-red-500 text-white text-xs font-bold px-1 py-0.5 rounded">
+                          <div className="absolute top-1 left-1 bg-red-500 text-white text-xs px-1 py-0.5 rounded">
                             SALE
                           </div>
                         )}
                       </div>
 
-                      {/* Product Details */}
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-lg font-semibold text-gray-900 truncate mb-1">
+                        <h4 className="text-lg  text-gray-900 truncate mb-1">
                           {item.name}
                         </h4>
                         <p className="text-gray-600 text-sm line-clamp-2 mb-2">
                           {item.description}
                         </p>
                         <div className="flex items-center space-x-2">
-                          <span className="text-lg font-bold text-amber-600">
+                          <span className="text-lg  text-amber-600">
                             ${item.price?.toFixed(2) || "0.00"}
                           </span>
                           {item.is_offer && (
-                            <span className="bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded-full">
+                            <span className="bg-red-100 text-red-800 text-xs  px-2 py-1 rounded-full">
                               On Sale
                             </span>
                           )}
                         </div>
                       </div>
 
-                      {/* Quantity Controls */}
                       <div className="flex flex-col items-center space-y-3">
                         <div className="flex items-center space-x-3 bg-gray-50 rounded-lg p-2">
                           <button
@@ -227,7 +219,7 @@ const CartPage = () => {
                               ></path>
                             </svg>
                           </button>
-                          <span className="w-12 text-center font-semibold text-gray-900">
+                          <span className="w-12 text-center  text-gray-900">
                             {item.quantityInCart}
                           </span>
                           <button
@@ -257,9 +249,8 @@ const CartPage = () => {
                         </p>
                       </div>
 
-                      {/* Item Total & Remove */}
                       <div className="flex flex-col items-end space-y-2">
-                        <div className="text-lg font-bold text-gray-900">
+                        <div className="text-lg font-bold text-default-cold">
                           $
                           {((item.price || 0) * item.quantityInCart).toFixed(2)}
                         </div>
@@ -290,49 +281,48 @@ const CartPage = () => {
             </div>
           </div>
 
-          {/* Cart Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl border border-gray-200 p-6 sticky top-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">
+      
+          <div className="flex flex-col padding-y ">
+            <div className="bg-white rounded-xl border border-default-cold p-6 text-default-cold sticky top-6">
+              <h3 className="text-xl font-bold  mb-6">
                 Order Summary
               </h3>
 
               <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-gray-600">
+                <div className="flex justify-between">
                   <span>Subtotal ({cartItems.length} items)</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
+                <div className="flex justify-between">
                   <span>Shipping</span>
                   <span>Free</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
+                <div className="flex justify-between">
                   <span>Tax</span>
                   <span>Calculated at checkout</span>
                 </div>
                 <div className="border-t pt-4">
-                  <div className="flex justify-between items-center text-xl font-bold text-gray-900">
+                  <div className="flex justify-between items-center text-xl font-bold">
                     <span>Total</span>
-                    <span className="text-amber-600">${total.toFixed(2)}</span>
+                    <span className="">${total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="padding-y flex flex-col gap-2">
                 <Link href="/checkout">
-                  <button className="w-full bg-amber-500 text-white font-semibold py-4 px-6 rounded-lg hover:bg-amber-600 transition-colors duration-200 text-lg">
+                  <button className="w-full bg-default-color text-white hover:bg-default-cold py-4 px-6 rounded-lg  transition-colors duration-200 text-lg">
                     Proceed to Checkout
                   </button>
                 </Link>
                 <Link href="/products">
-                  <button className="w-full border-2 border-amber-500 text-amber-500 font-semibold py-3 px-6 rounded-lg hover:bg-amber-50 transition-colors duration-200">
+                  <button className="w-full border-2 border-default-cold text-default-cold hover:bg-default-cold hover:text-white py-3 px-6 rounded-lg  transition-colors duration-200">
                     Continue Shopping
                   </button>
                 </Link>
-                <Link href={"/"}>back to home...</Link>
+                <Link href={"/"} className="w-full border-2 border-default-cold text-default-cold hover:bg-default-cold hover:text-white py-3 px-6 rounded-lg text-center transition-colors duration-200">Back to home...</Link>
               </div>
 
-              {/* Security Badge */}
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
                   <svg

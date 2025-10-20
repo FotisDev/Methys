@@ -85,7 +85,7 @@ export default function ProductList() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-gray-700 font-poppins">
+      <div className="flex flex-col items-center justify-center min-h-screen text-vintage-green font-poppins">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 "></div>
         <p className="mt-4 text-lg">Loading categories...</p>
       </div>
@@ -94,11 +94,11 @@ export default function ProductList() {
 
   if (error || !categories || categories.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-gray-700 font-poppins text-xl">
+      <div className="flex flex-col items-center justify-center min-h-screen text-vintage-green font-poppins text-xl">
         <p>{error || "No categories found."}</p>
         <Link
           href="/"
-          className="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg  transition-colors"
+          className="mt-4 px-4 py-2 text-sm font-medium text-vintage-green rounded-lg  transition-colors"
         >
           Back to homepage
         </Link>
@@ -107,11 +107,7 @@ export default function ProductList() {
   }
 
   return (
-    <section className="padding-y text-gray-800 font-poppins">
-      <h2 className="text-4xl md:text-5xl  text-center mb-8">
-        Product Categories
-      </h2>
-
+    <section className="padding-y text-vintage-green font-roboto">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {parentCategories.map((category) => {
           if (!category.name) return null;
@@ -125,7 +121,7 @@ export default function ProductList() {
             <Link
               key={category.id}
               href={href}
-              className="group relative w-full aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+              className="group relative w-full aspect-[3/4] bg-vintage-green rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
               aria-label={`View ${category.name} subcategories`}
             >
               <div className="absolute inset-0 rounded-xl overflow-hidden ">
@@ -138,7 +134,7 @@ export default function ProductList() {
                 />
               </div>
 
-              <span className="absolute bottom-2 left-2 px-3 py-1 text-white bg-gray-900/70 rounded-md capitalize text-sm ">
+              <span className="absolute bottom-2 left-2 px-3 py-1 hover-colors rounded-md capitalize text-sm ">
                 {category.name}
               </span>
             </Link>
@@ -149,7 +145,7 @@ export default function ProductList() {
       <div className="text-center mt-8">
         <Link
           href="/"
-          className="inline-block px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-lg hover:bg-amber-600 transition-colors"
+          className="inline-block px-4 py-2 text-sm hover-colors rounded"
         >
           Back to homepage
         </Link>
