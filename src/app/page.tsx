@@ -1,6 +1,6 @@
 
 import Footer from "@/components/footer/Footer";
-import { HeaderProvider } from "@/components/homePage/Header";
+import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Hero from "@/components/homePage/Hero";
 import ThreeIcons from "@/components/homePage/ThreeIcons";
 import PhotoGallery from "@/components/homePage/sections/photoAndVideoGallery";

@@ -1,3 +1,4 @@
+
 import { getNewCollection } from "@/_lib/helpers";
 import NewCollectionCard from "../cards/NewCollectionCard";
 import Link from "next/link";
@@ -8,11 +9,11 @@ export default async function NewCollectionClothes() {
   const limitedItems = items.slice(0, 4); 
 
   return (
-    <section className="new-collection px-4 py-8 font-poppins">
+    <section className="new-collection  py-8 font-poppins">
       <div className="flex items-center justify-between mb-6">
         <Link
           href="/products"
-          className="text-sm  text-gray-600 hover:underline"
+          className="text-sm pl-2 text-gray-600 hover:underline"
         >
         Autumn New Collection Just Droped →
         </Link>

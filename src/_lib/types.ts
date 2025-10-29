@@ -43,7 +43,7 @@ export type Category = {
   id: number;
   category_name: string;
   parent_id?: number;
-  image_url?: string;
+  image_url: string;
 }
 
 export type CategoryWithImage = Category & { image?: string };

@@ -1,6 +1,7 @@
 import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import BackToTop from "@/components/hooks/BackToTop";
+import { ClientProvider } from "@/components/providers/ClientProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,7 +27,9 @@ export default function RootLayout({
       <head />
       <body id="mainHTML" className=" ">
         <BackToTop />
-        <main>{children}</main>
+        <ClientProvider>
+          <main>{children}</main>
+        </ClientProvider>
       </body>
     </html>
   );

@@ -16,8 +16,6 @@ type RawProduct = {
     };
   };
 };
-
-// Define interfaces
 export interface CategoryBackendType {
   id: number;
   name: string;
@@ -32,8 +30,8 @@ export interface RandomItemsOfEachCategory {
   image_url: string;
   price: number;
   categoryPath: string;
+  sizes?: string[];
 }
-
 export interface Product {
   id: number;
   name: string;
@@ -46,7 +44,6 @@ export interface Product {
   quantity: number;
   category_men_id: number;
 }
-
 export interface User {
   id: string;
   firstname: string;
@@ -91,7 +88,6 @@ export async function fetchProducts(): Promise<Product[] | null> {
   return data as Product[];
 }
 
-// Get main categories (level 1: Mens, Womens, Kids)
 export async function getMainCategories(): Promise<CategoryBackendType[]> {
   const { data, error } = await supabase
     .from("categoriesformen")
@@ -107,7 +103,6 @@ export async function getMainCategories(): Promise<CategoryBackendType[]> {
   return data as CategoryBackendType[];
 }
 
-// Get subcategories for a parent category
 export async function getSubcategories(
   parentId: number
 ): Promise<CategoryBackendType[]> {
@@ -125,7 +120,6 @@ export async function getSubcategories(
   return data as CategoryBackendType[];
 }
 
-// Find category by name (case insensitive)
 export async function getCategoryByName(
   categoryName: string,
   parentId?: number | null
@@ -149,9 +143,6 @@ export async function getCategoryByName(
   return data as CategoryBackendType;
 }
 
-
-
-// Get category by ID
 export async function getCategoryById(
   categoryId: number
 ): Promise<CategoryBackendType | null> {
@@ -169,7 +160,6 @@ export async function getCategoryById(
   return data as CategoryBackendType;
 }
 
-// Get products by category ID (for final level categories)
 export async function getProductsByCategory(
   categoryId: number
 ): Promise<Product[]> {
@@ -189,7 +179,6 @@ export async function getProductsByCategory(
   return data as Product[];
 }
 
-// Get full category path (breadcrumb)
 export async function getCategoryPath(
   categoryId: number
 ): Promise<CategoryBackendType[]> {
@@ -200,14 +189,13 @@ export async function getCategoryPath(
     const category = await getCategoryById(currentId);
     if (!category) break;
 
-    path.unshift(category); // Add to beginning
+    path.unshift(category); 
     currentId = category.parent_id || 0;
   }
 
   return path;
 }
 
-// Check if category has subcategories
 export async function hasSubcategories(categoryId: number): Promise<boolean> {
   const { data, error } = await supabase
     .from("categoriesformen")
@@ -218,7 +206,6 @@ export async function hasSubcategories(categoryId: number): Promise<boolean> {
   return !error && data && data.length > 0;
 }
 
-//CHECK IF CATEGORY HAS PRODUCTS
 export async function hasProducts(categoryId: number): Promise<boolean> {
   const { data, error } = await supabase
     .from("products")
@@ -229,38 +216,48 @@ export async function hasProducts(categoryId: number): Promise<boolean> {
   return !error && data && data.length > 0;
 }
 
-//NEW COLLECTION
 export async function getNewCollection(): Promise<RandomItemsOfEachCategory[]> {
   try {
     const { data, error } = await supabase.from("products").select(`
+      id,
+      name,
+      slug,
+      price,
+      image_url,
+      categoryformen:category_men_id (
         id,
         name,
-        slug,
-        price,
-        image_url,
-        categoryformen:category_men_id (
+        sizes,
+        parent:parent_id (
           id,
           name,
-          parent:parent_id (
+          grandparent:parent_id (
             id,
-            name,
-            grandparent:parent_id (
-              id,
-              name
-            )
+            name
           )
         )
-      `);
+      ),
+      product_variants (
+        size,
+        price,
+        quantity
+      )
+    `);
 
     if (error) throw error;
-    const formattedData = data.map((product: RawProduct) => {
-      const sub = product.categoriesformen?.name?.toLowerCase();
-      const parent = product.categoriesformen?.parent?.name?.toLowerCase();
+
+    const formattedData = data.map((product: any) => {
+      const sub = product.categoryformen?.name?.toLowerCase();
+      const parent = product.categoryformen?.parent?.name?.toLowerCase();
       const grandparent =
-        product.categoriesformen?.parent?.grandparent?.name?.toLowerCase();
+        product.categoryformen?.parent?.grandparent?.name?.toLowerCase();
 
       const segments = [grandparent, parent, sub].filter(Boolean);
       const categoryPath = segments.join("/");
+
+      const sizes =
+        product.product_variants?.map((variant: any) => variant.size) || [];
+
       return {
         id: product.id.toString(),
         name: product.name,
@@ -268,6 +265,7 @@ export async function getNewCollection(): Promise<RandomItemsOfEachCategory[]> {
         image_url: product.image_url,
         price: product.price,
         categoryPath,
+        sizes,
       };
     });
 
@@ -278,7 +276,6 @@ export async function getNewCollection(): Promise<RandomItemsOfEachCategory[]> {
   }
 }
 
-//FETCH PRODUCTS BY SLUG
 export async function fetchProductBySlug(
   categoryId: number,
   slug: string
@@ -323,7 +320,6 @@ export async function fetchProductBySlug(
   }
 }
 
-// Legacy functions for compatibility
 export async function getCategoryId(categoryName: string) {
   const category = await getCategoryByName(categoryName);
   return {
@@ -358,22 +354,16 @@ export async function getSellerName(users: User | User[] | null) {
 }
 
 export const getValidImage = (url?: string | null) => {
-  // Return fallback if no URL provided or empty string
+
   if (!url || url.trim() === "") {
     return "/Casual.jpg";
   }
-
-  // If it's already a full URL (http:// or https://), return as-is
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return url;
   }
 
-  // If it starts with /, it's already a valid local path
   if (url.startsWith('/')) {
     return url;
   }
-
-  // If it's a relative filename (like "google.jpg" or "facebook.png"),
-  // assume it should be in the /public/images folder
   return `/images/${url}`;
 };

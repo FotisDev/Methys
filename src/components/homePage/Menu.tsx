@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
@@ -10,21 +9,27 @@ import DropDownMainPageSubCat from "./DropDownMainPageSubCat";
 import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
-import { useHeaderContext } from "./Header";
-import { CartItem } from "@/app/(checkout)/cart/page";
+import { useHeaderContext } from "../providers/HeaderProvider";
+import { useCart } from "../providers/CardProvider";
 
 const Menu = () => {
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
   const [showClothes, setShowClothes] = useState(false);
   const [showBulletMenu, setShowBulletMenu] = useState(false);
-  const [cartItemCount, setCartItemCount] = useState(0);
+
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  // Use the wishlist hook
+  const { cartItems } = useCart();
+
+  const cartItemCount = cartItems.reduce(
+    (sum, item) => sum + (item.quantityInCart || 1),
+    0
+  );
+
   const { isWishlistOpen, wishlistCount, toggleWishlist, closeWishlist } =
     useWishlist();
 
@@ -33,7 +38,6 @@ const Menu = () => {
     { href: PAGE_URLS.PRODUCTS, label: "SHOP" },
   ];
 
-  // Helper function for getting valid images
   const getValidImage = (imageUrl: string) => {
     if (!imageUrl || imageUrl === "null" || imageUrl === "undefined") {
       return "/images/placeholder.jpg";
@@ -50,34 +54,6 @@ const Menu = () => {
     return `/images/${imageUrl}`;
   };
 
-  // Update cart count from localStorage
-  useEffect(() => {
-    const updateCartCount = () => {
-      const savedCart = localStorage.getItem("cartItems");
-      if (savedCart) {
-        const cartItems = JSON.parse(savedCart);
-        const totalCartItems = cartItems.reduce(
-          (sum: number, item: CartItem) => sum + (item.quantityInCart || 1),
-          0
-        );
-        setCartItemCount(totalCartItems);
-      } else {
-        setCartItemCount(0);
-      }
-    };
-
-    updateCartCount();
-
-    window.addEventListener("storage", updateCartCount);
-    window.addEventListener("cartUpdated", updateCartCount);
-
-    return () => {
-      window.removeEventListener("storage", updateCartCount);
-      window.removeEventListener("cartUpdated", updateCartCount);
-    };
-  }, []);
-
-  // Handle scroll for navbar opacity
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -139,7 +115,8 @@ const Menu = () => {
     setShowBulletMenu(false);
   };
 
-  const isOpaque =  forceOpaqueFromContext || isNavbarHovered || showClothes || isScrolled;
+  const isOpaque =
+    forceOpaqueFromContext || isNavbarHovered || showClothes || isScrolled;
 
   const navbarClasses = [
     "fixed",
@@ -237,7 +214,7 @@ const Menu = () => {
                 <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
                   <CartSvg className="w-6 h-6 group-hover:text-vintage-green transition-colors" />
                   {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs  rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
+                    <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
                       {cartItemCount > 99 ? "99+" : cartItemCount}
                     </span>
                   )}

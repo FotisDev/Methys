@@ -7,12 +7,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import Menu from "./Menu";
+import Menu from "../homePage/Menu";
 import { ContactPageProps, SocialProps } from "@/_lib/interfaces";
 import { ENUM_SOCIALS } from "@/_lib/enums";
-// import { fetchBackend } from '../../../lib/server'; // disable for now
 
-// Define the context type
 type HeaderContextType = {
   contact: ContactPageProps | null;
   social: SocialProps | null;
@@ -22,10 +20,8 @@ type HeaderContextType = {
   forceOpaque?: boolean;
 };
 
-// Create the context
 const HeaderContext = createContext<HeaderContextType | undefined>(undefined);
 
-// HeaderProvider component
 export function HeaderProvider({
   children,
   forceOpaque = false,
@@ -37,10 +33,8 @@ export function HeaderProvider({
   const [social, setSocial] = useState<SocialProps | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(true);
-
-  // ===> Replace this with static mock data
+  
   useEffect(() => {
-    // Mock data instead of fetching from backend
     const mockContact: ContactPageProps = {
       Contact: {
         Email: "Fotislir@outlook.com",
@@ -56,7 +50,7 @@ export function HeaderProvider({
       },
       name: ENUM_SOCIALS.FACEBOOK,
       url: "",
-      icon: { url: "" }, // React component για το icon
+      icon: { url: "" },
     };
 
     setContact(mockContact);

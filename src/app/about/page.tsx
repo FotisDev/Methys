@@ -1,5 +1,5 @@
 import Footer from "@/components/footer/Footer";
-import { HeaderProvider } from "@/components/homePage/Header";
+import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Image from "next/image";
 
 export default function About() {
