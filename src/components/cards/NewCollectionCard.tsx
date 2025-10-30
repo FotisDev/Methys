@@ -51,8 +51,7 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
       onMouseLeave={() => setHovered(false)}
     >
       <div className="relative w-full">
-        {/* Image Container with aspect ratio */}
-        <div className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[90vh] xl:h-[95vh]">
+        <div className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh]">
           <Image
             src={hovered ? "/articles.jpg" : item.image_url}
             alt={item.name}
@@ -73,17 +72,17 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="relative p-3 sm:p-4 md:p-5 lg:p-6 text-vintage-green">
-          <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl left-0 top-1 line-clamp-1">{item.name}</h3>
+        <div className="relative pt-3  text-vintage-green">
+          <h3 className="text-base  left-3 top-1 line-clamp-1">{item.name}</h3>
 
-          <div className="text-xs sm:text-sm md:text-base text-vintage-green/70 mt-1 block">
+          <div className="text-xs  md:text-base text-vintage-green/70 mt-1 block flex-wrap">
             {item.sizes && item.sizes.length > 0 ? (
               <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-wrap">
                 {item.sizes.map((size) => (
                   <span
                     key={size}
                     onClick={(e) => handleSizeClick(e, size)}
-                    className={`cursor-pointer px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base transition-all duration-200 ${
+                    className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base transition-all duration-200 ${
                       selectedSize === size
                         ? "bg-vintage-green text-white"
                         : "bg-white text-vintage-green hover:bg-vintage-green hover:text-white"
@@ -98,7 +97,7 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
             )}
           </div>
 
-          <p className="absolute right-3 sm:right-4 md:right-5 lg:right-6 top-3 sm:top-4 md:top-5 lg:top-6 text-base sm:text-lg md:text-xl lg:text-2xl">${item.price}</p>
+          <p className="absolute right-3 sm:right-4 md:right-5 lg:right-6 top-3 text-base ">${item.price}</p>
         </div>
       </div>
     </Link>
