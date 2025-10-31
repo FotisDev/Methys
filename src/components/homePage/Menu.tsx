@@ -133,12 +133,17 @@ const Menu = () => {
     "text-xs",
     "transition-all",
     "duration-300",
+    'border',
+    'border-gray-50',
+    'shadow',
+    'shadow-gray-50',
+
   ];
 
   if (isOpaque) {
     navbarClasses.push("bg-white", "text-black");
   } else {
-    navbarClasses.push("text-white");
+    navbarClasses.push("text-white border-none shadow-none");
   }
 
   return (

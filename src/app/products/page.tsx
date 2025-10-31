@@ -10,8 +10,7 @@ import {
   Product,
 } from "@/_lib/helpers";
 import Footer from "@/components/footer/Footer";
-
-// Debug component
+import { HeaderProvider } from "@/components/providers/HeaderProvider";
 
 export default function ProductList() {
   const [categories, setCategories] = useState<CategoryBackendType[] | null>(
@@ -107,51 +106,51 @@ export default function ProductList() {
   }
 
   return (
-    <section className="padding-y text-vintage-green font-roboto">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {parentCategories.map((category) => {
-          if (!category.name) return null;
+    <HeaderProvider forceOpaque={true}>
+      <section className="padding-y text-vintage-green font-roboto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {parentCategories.map((category) => {
+            if (!category.name) return null;
 
-          const href = `/products/${category.name
-            .replace(/\s+/g, "-")
-            .toLowerCase()}`;
-          const imageUrl = category.image_url ?? "/accesories.jpg ";
+            const href = `/products/${category.name
+              .replace(/\s+/g, "-")
+              .toLowerCase()}`;
+            const imageUrl = category.image_url ?? "/accesories.jpg ";
 
-          return (
-            <Link
-              key={category.id}
-              href={href}
-              className="group relative w-full aspect-[3/4] bg-vintage-green rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-              aria-label={`View ${category.name} subcategories`}
-            >
-              <div className="absolute inset-0 rounded-xl overflow-hidden ">
-                <Image
-                  src={imageUrl}
-                  alt={`${category.name} category image`}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
-                 
-                />
-              </div>
+            return (
+              <Link
+                key={category.id}
+                href={href}
+                className="group relative w-full aspect-[3/4] bg-vintage-green rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                aria-label={`View ${category.name} subcategories`}
+              >
+                <div className="absolute inset-0 rounded-xl overflow-hidden ">
+                  <Image
+                    src={imageUrl}
+                    alt={`${category.name} category image`}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
 
-              <span className="absolute bottom-2 left-2 px-3 py-1 hover-colors rounded-md capitalize text-sm ">
-                {category.name}
-              </span>
-            </Link>
-          );
-        })}
-      </div>
+                <span className="absolute bottom-2 left-2 px-3 py-1 hover-colors rounded-md capitalize text-sm ">
+                  {category.name}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
 
-      <div className="text-center mt-8">
-        <Link
-          href="/"
-          className="inline-block px-4 py-2 text-sm hover-colors rounded"
-        >
-          Back to homepage
-        </Link>
-      </div>
-      <Footer/>
-    </section>
-    
+        <div className="text-center mt-8">
+          <Link
+            href="/"
+            className="inline-block px-4 py-2 text-sm hover-colors rounded"
+          >
+            Back to homepage
+          </Link>
+        </div>
+        <Footer />
+      </section>
+    </HeaderProvider>
   );
 }

@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useEffect, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -9,148 +6,156 @@ import {
   fetchProducts,
   CategoryBackendType,
 } from "@/_lib/helpers";
-import { CategoryPageProps } from "@/_lib/interfaces";
+import { HeaderProvider } from "@/components/providers/HeaderProvider";
+import { notFound } from "next/navigation";
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const [category, setCategory] = useState<CategoryBackendType | null>(null);
-  const [subcategories, setSubcategories] = useState<CategoryBackendType[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface CategoryPageProps {
+  params: { category: string };
+}
 
-  const resolvedParams = use(params);
-  const categoryName = resolvedParams.category.replace(/-/g, " ");
+type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
+  image_url: string;
+};
 
-  useEffect(() => {
-    const loadCategoryData = async () => {
-      try {
-        const categoryData = await getCategoryByName(categoryName);
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const categoryName = params.category.replace(/-/g, " ");
 
-        if (!categoryData || categoryData.parent_id !== null) {
-          throw new Error(`Main category "${categoryName}" not found`);
-        }
+  let category: CategoryBackendType | null = null;
+  let subcategories: SubcategoryWithImage[] = [];
+  let error: string | null = null;
 
-        setCategory(categoryData);
+  try {
+    const categoryData = await getCategoryByName(categoryName);
 
-        const subcategoriesData = await getSubcategories(categoryData.id);
+    if (!categoryData || categoryData.parent_id !== null) {
+      throw new Error(`Main category "${categoryName}" not found`);
+    }
+    category = categoryData;
+    const [subcategoriesData, allProducts] = await Promise.all([
+      getSubcategories(categoryData.id),
+      fetchProducts(),
+    ]);
 
-        const allProducts = await fetchProducts();
-
-        const subcategoriesWithImages = subcategoriesData.map((subcat) => {
-          const product = allProducts?.find(
-            (p) => p.category_men_id === subcat.id
-          );
-          return {
-            ...subcat,
-            image_url: product?.image_url ?? '/AuthClothPhoto.jpg',
-          };
-        });
-
-        setSubcategories(subcategoriesWithImages);
-      } catch (err) {
-        console.error("Error loading category data:", err);
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadCategoryData();
-  }, [categoryName]);
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-vintage-green"></div>
-        <p className="mt-4 text-lg">Loading subcategories...</p>
-      </div>
-    );
+    subcategories = subcategoriesData.map((subcat) => {
+      const product = allProducts?.find((p) => p.category_men_id === subcat.id);
+      return {
+        ...subcat,
+        image_url: product?.image_url ?? "/AuthClothPhoto.jpg",
+      } as SubcategoryWithImage;
+    });
+  } catch (err) {
+    console.error("Error loading category data:", err);
+    error = err instanceof Error ? err.message : "Unknown error";
   }
 
   if (error || !category) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-2xl font-bold mb-4">Category Not Found</h1>
-        <p className="text-gray-600 mb-8">
-          {error || `Category "${categoryName}" not found`}
-        </p>
-        <Link
-          href="/products"
-          className="px-6 py-3 rounded-lg hover-colors"
-        >
-          Back to Categories
-        </Link>
-      </div>
-    );
+    notFound();
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 font-roboto text-vintage-green">
-      <nav className="mb-8 text-sm ">
-        <Link
-          href="/products"
-          className="hover:text-vintage-brown transition-colors"
-        >
-          Products
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="hover:text-vintage-brown cursor-pointer ">{category.name}</span>
-      </nav>
+    <HeaderProvider forceOpaque={true}>
+      <main className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh] pt-32 p-2 font-roboto ">
+        <div className="mx-auto">
+          <nav aria-label="Breadcrumb" className="mb-8 text-sm">
+            <ol className="flex items-center space-x-2">
+              <li>
+                <Link
+                  href="/products"
+                  className="hover:text-vintage-brown transition-colors"
+                >
+                  Products
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-gray-500">
+                /
+              </li>
+              <li className="text-vintage-green hover:text-vintage-brown ">
+                {category.name}
+              </li>
+            </ol>
+          </nav>
+          <hr className="mt-4 mb-4 bg-vintage-green" />
+          <header className="flex flex-row gap-3 text-center mb-4">
+            <h1 className=" text-vintage-green mb-2 text-2xl">{category.name.toLocaleUpperCase()}</h1>
+            <p className=" text-lg text-gray-700">
+              Explore our {category.name.toLowerCase()} collections
+            </p>
+          </header>
 
-      {subcategories.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="text-6xl mb-4">📦</div>
-          <h2 className="text-2xl  mb-4">
-            No subcategories found
-          </h2>
-          <p className="  mb-8">
-            We are working on adding subcategories. Check back soon!
-          </p>
+          {subcategories.length === 0 ? (
+            <section
+              className="text-center py-16"
+              aria-labelledby="no-subcategories"
+            >
+              <div className="text-6xl mb-4" role="img" aria-label="Empty box">
+                Package
+              </div>
+              <h2 id="no-subcategories" className="text-2xl font-semibold mb-4">
+                No subcategories found
+              </h2>
+              <p className="text-gray-600 max-w-md mx-auto">
+                We are working on adding subcategories. Check back soon!
+              </p>
+            </section>
+          ) : (
+            <section aria-labelledby="subcategories-heading  font-roboto text-vintage-green">
+              <h2 id="subcategories-heading" className="sr-only">
+                {category.name}
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-1">
+                {subcategories.map((subcategory) => {
+                  const href = `/products/${params.category}/${subcategory.name
+                    .replace(/\s+/g, "-")
+                    .toLowerCase()}`;
+
+                  return (
+                    <article key={subcategory.id} className="group ">
+                      <Link
+                        href={href}
+                        className="block relative w-full aspect-[3/4] bg-vintage-green overflow-hidden "
+                        aria-label={`View ${subcategory.name} collection`}
+                      >
+                        <div className="absolute inset-0">
+                          <Image
+                            src={subcategory.image_url}
+                            alt={`Photo of ${subcategory.name} clothing collection`}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                            priority={false}
+                          />
+                        </div>
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-vintage-green/70 via-transparent to-transparent" />
+
+                        <div className="relative h-full flex flex-col justify-end p-4 text-left">
+                          <h3 className="text-lg sm:text-xl font-semibold text-vintage-brown mb-1">
+                            {subcategory.name}
+                          </h3>
+                          <p className="text-sm text-vintage-brown font-medium">
+                            Explore collection →
+                          </p>
+                        </div>
+                      </Link>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          <footer className=" text-center p-10">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-full hover-colors transition-colors"
+              aria-label="Return to all product categories"
+            >
+              Back to all categories
+            </Link>
+          </footer>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {subcategories.map((subcategory) => {
-            const href = `/products/${
-              resolvedParams.category
-            }/${subcategory.name.replace(/\s+/g, "-").toLowerCase()}`;
-
-            return (
-              <Link
-                key={subcategory.id}
-                href={href}
-                className="group relative w-full aspect-[3/4] bg-vintage-green rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <div className="absolute inset-0">
-                  <Image
-                    src={subcategory.image_url?? '/AuthClothPhoto.jpg'}
-                    alt={`${subcategory.name} category image`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                    
-                  />
-                </div>
-
-                <div className="absolute inset-0 bg-gradient-to-t from-vintage-green/60 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-vintage-brown">
-                  <h3 className="text-lg  mb-1">
-                    {subcategory.name}
-                  </h3>
-                  <p className="text-sm text-vintage-brown">Explore collection →</p>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
-
-      <div className="text-center mt-12">
-        <Link
-          href="/products"
-          className="inline-block px-6 py-3 text-sm hover-colors rounded"
-        >
-          ← Back to all categories
-        </Link>
-      </div>
-    </div>
+      </main>
+    </HeaderProvider>
   );
 }
