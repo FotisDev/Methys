@@ -140,15 +140,6 @@ export default function ProductList() {
             );
           })}
         </div>
-
-        <div className="text-center mt-8">
-          <Link
-            href="/"
-            className="inline-block px-4 py-2 text-sm hover-colors rounded"
-          >
-            Back to homepage
-          </Link>
-        </div>
         <Footer />
       </section>
     </HeaderProvider>

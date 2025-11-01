@@ -140,15 +140,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
                 </div>
               </div>
               <ProductActions product={product} />
-
-              <div className="pt-6 border-t">
-                <Link
-                  href={`/products/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subcategorySlug)}`}
-                  className="inline-flex items-center hover-colors rounded p-4"
-                >
-                  ← Back to {currentCategory.name}
-                </Link>
-              </div>
             </div>
           </div>
         </section>

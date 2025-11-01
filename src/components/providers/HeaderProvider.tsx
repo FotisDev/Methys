@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import Menu from "../homePage/Menu";
+import Menu from "../header/Menu";
 import { ContactPageProps, SocialProps } from "@/_lib/interfaces";
 import { ENUM_SOCIALS } from "@/_lib/enums";
 

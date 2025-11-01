@@ -144,16 +144,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               </div>
             </section>
           )}
-
-          <footer className=" text-center p-10">
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-full hover-colors transition-colors"
-              aria-label="Return to all product categories"
-            >
-              Back to all categories
-            </Link>
-          </footer>
         </div>
       </main>
     </HeaderProvider>

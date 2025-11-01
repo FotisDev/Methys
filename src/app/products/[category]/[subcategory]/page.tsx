@@ -7,6 +7,7 @@ import {
   fetchProducts,
 } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
+import Footer from "@/components/footer/Footer";
 
 interface PageProps {
   params: Promise<{
@@ -160,17 +161,9 @@ export default async function SubcategoryPage({ params }: PageProps) {
               </div>
             </>
           )}
-
-          {/* Back Button */}
-          <div className="text-center p-10">
-            <Link
-              href={`/products/${encodeURIComponent(categorySlug)}`}
-              className="inline-block px-6 py-3 text-sm hover-colors rounded-2xl sm:rounded-3xl p-2"
-            >
-              ← Back to {parentCategory.name}
-            </Link>
-          </div>
         </section>
+    
+        <Footer showNewsLetter={false}/>
       </HeaderProvider>
     );
   } catch (error) {

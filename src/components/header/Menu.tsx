@@ -4,8 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
 
-import BulletButton from "./BulletButton";
-import DropDownMainPageSubCat from "./DropDownMainPageSubCat";
+import BulletButton from "../sections/BulletButton";
+import DropDownMainPageSubCat from "../sections/DropDownMainPageSubCat";
 import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
@@ -141,7 +141,7 @@ const Menu = () => {
   ];
 
   if (isOpaque) {
-    navbarClasses.push("bg-white", "text-black");
+    navbarClasses.push("bg-white", "text-vintage-green");
   } else {
     navbarClasses.push("text-white border-none shadow-none");
   }

@@ -367,3 +367,35 @@ export const getValidImage = (url?: string | null) => {
   }
   return `/images/${url}`;
 };
+
+export async function fetchSections() {
+  console.log("🔍 Fetching sections..."); 
+  
+  const { data, error } = await supabase.from("sections").select("*");
+
+  console.log("📊 Supabase response:", { data, error });
+
+  if (error) {
+    console.error("❌ Error fetching sections:", error);
+    return null;
+  }
+
+  if (!data || data.length === 0) {
+    console.warn("⚠️ No sections found in database");
+    return null;
+  }
+
+  const sectionData = data.reduce((acc, item) => {
+    console.log("Processing item:", item); 
+    acc[item.key] = {
+      title: item.title,
+      text: item.text,
+      img_url: item.img_url,
+    };
+    return acc;
+  }, {} as Record<string, { title: string; text: string; img_url: string }>);
+
+  console.log("✅ Final sectionData:", sectionData);
+
+  return sectionData;
+}

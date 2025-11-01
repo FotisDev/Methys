@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Newsletter() {
   return (
     <div className="relative z-20 mb-[-80px] sm:mb-[-60px] lg:mb-[-70px] font-poppins padding-y padding-x">
-      <div className="w-full max-w-7xl mx-auto px-4 flex justify-center">
+      <div className="w-full max-w-[1500px] mx-auto px-4 flex justify-center">
         <div className="w-full sm:w-[90%] lg:w-[80%] rounded-xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2">
           <div className="relative w-full h-[250px] md:h-auto md:min-h-[330px]">
             <Image

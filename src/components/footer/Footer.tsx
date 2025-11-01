@@ -1,10 +1,12 @@
-
 import Link from "next/link";
 import Newsletter from "./NewsLeter";
 import Image from "next/image";
 
+interface FooterProps {
+  showNewsLetter?: boolean;
+}
 
-export default function Footer() {
+export default function Footer({ showNewsLetter = true }: FooterProps) {
   const paymentMethods = [
     { name: "VISA", width: "122px" },
     { name: "MASTERCARD", width: "122px" },
@@ -37,9 +39,8 @@ export default function Footer() {
 
   return (
     <>
-      <Newsletter />
-
-      <footer className="bg-black w-full text-white text-sm sm:text-base font-poppins">
+      {showNewsLetter && <Newsletter />}
+      <footer className="bg-vintage-brown w-full text-vintage-green text-sm sm:text-base font-poppins">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-40 sm:pt-36 lg:pt-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
             <div className="space-y-6 text-center lg:text-left">
@@ -79,9 +80,7 @@ export default function Footer() {
             </div>
 
             <div className="space-y-6 text-center lg:text-center">
-              <h3 className="text-lg lg:text-xl ">
-                Follow Us
-              </h3>
+              <h3 className="text-lg lg:text-xl ">Follow Us</h3>
               <div className="flex gap-4 justify-start lg:justify-center flex-wrap">
                 {["Fb", "YT", "In", "IG", "TT"].map((social) => (
                   <div
@@ -159,7 +158,10 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-center">
-              <span className="text-white">For special <span className="text-red-500">Offers</span> make sure to </span>
+              <span className="text-vintage-green">
+                For special <span className="text-red-500">Offers</span> make
+                sure to{" "}
+              </span>
               <Link
                 href="/login"
                 aria-label="SignUpPage"
