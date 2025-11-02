@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// Improved Product Entry Schema
 export const productSchema = z.object({
   name: z
     .string()

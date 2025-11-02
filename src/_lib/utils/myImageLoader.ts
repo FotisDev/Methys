@@ -3,7 +3,7 @@
 // import { ImageLoaderProps } from "next/image";
 
 // export default function myImageLoader({ src, width, quality }: ImageLoaderProps) {
-//   if (src.startsWith('https://abbycar.de')) return src;
+//   if (src.startsWith('https://your.example.com')) return src;
 
 //   let url: any = src;
 //   try {

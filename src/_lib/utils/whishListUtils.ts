@@ -2,8 +2,7 @@ import { Product } from "@/_lib/helpers";
 
 export const addToWishlist = (product: Product): boolean => {
   const wishlistItems = JSON.parse(localStorage.getItem("wishlistItems") || "[]");
-  
-  // Check if already in wishlist
+
   const isAlreadyInWishlist = wishlistItems.some((item: Product) => item.id === product.id);
   
   if (isAlreadyInWishlist) {

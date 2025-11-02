@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+
 interface Category {
   id: string;
   name: string;
@@ -90,64 +91,33 @@ export default function DropDownMainPageSubCat() {
   }
 
   return (
-    <div className="fixed left-0 right-0 w-screen bg-white z-50">
-      <div className="w-full ">
-        <div className="py-6 flex flex-col sm:flex-row gap-12">
+    <nav className="fixed left-0 right-0 w-screen bg-white z-50">
+      <div className="w-full">
+        <div className="py-6 flex flex-col sm:flex-row gap-1">
           <div className="flex flex-col space-y-3 min-w-[200px] pl-8">
             <Link
               href="/offers"
-              className="text-lg  text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
+              className="text-lg text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
             >
               See Our Offers
             </Link>
             <Link
               href="/online-exclusive"
-              className="text-lg  text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
+              className="text-lg text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
             >
               Online Exclusive
             </Link>
             <Link
               href="/autumn-2025"
-              className="text-lg  text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
+              className="text-lg text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
             >
               Autumn 2025
             </Link>
           </div>
 
           <div className="flex-1 flex justify-center">
-            <div>
-              <div className="flex gap-4 justify-start">
-                {mainCategories.map((mainCat) => (
-                  <div
-                    key={mainCat.id}
-                    className="w-96 flex flex-col items-start"
-                  >
-                    <h3 className=" text-gray-800  text-lg capitalize">
-                      {mainCat.name}
-                    </h3>
-
-                    <div className="flex flex-col items-start mb-4">
-                      {mainCat.subcategories.length > 0 ? (
-                        mainCat.subcategories.map((subCat) => (
-                          <button
-                            key={subCat.id}
-                            className="py-1  text-gray-700 text-sm hover:text-gray-900 hover:underline transition-colors whitespace-nowrap capitalize"
-                            onClick={() => handleNavigate(subCat, mainCat.name)}
-                          >
-                            {subCat.name}
-                          </button>
-                        ))
-                      ) : (
-                        <p className="text-gray-500 text-sm">
-                          No subcategories
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex gap-2 justify-start mt-4">
+            <div className="w-full max-w-[1440px]">
+              <div className="flex gap-1">
                 {mainCategories.map((mainCat) => {
                   let href = "#";
 
@@ -160,15 +130,44 @@ export default function DropDownMainPageSubCat() {
                   }
 
                   return (
-                    <div key={mainCat.id} className="w-96">
+                    <div
+                      key={mainCat.id}
+                      className="flex-1 flex flex-col items-start"
+                    >
+                      <div className="flex-1 w-full">
+                        <h3 className="text-gray-800 text-lg capitalize mb-2">
+                          {mainCat.name}
+                        </h3>
+
+                        <div className="flex flex-col items-start mb-4">
+                          {mainCat.subcategories.length > 0 ? (
+                            mainCat.subcategories.map((subCat) => (
+                              <button
+                                key={subCat.id}
+                                className="py-1 text-gray-700 text-sm hover:text-gray-900 hover:underline transition-colors whitespace-nowrap capitalize"
+                                onClick={() =>
+                                  handleNavigate(subCat, mainCat.name)
+                                }
+                              >
+                                {subCat.name}
+                              </button>
+                            ))
+                          ) : (
+                            <p className="text-gray-500 text-sm">
+                              No subcategories
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
                       {mainCat.image_url && (
-                        <Link href={href}>
+                        <Link href={href} className="w-full">
                           <Image
                             src={mainCat.image_url.trim()}
                             alt={mainCat.name}
                             className="w-full h-80 object-cover shadow-md cursor-pointer hover:opacity-90 transition"
-                            width={160}
-                            height={160}
+                            width={320}
+                            height={320}
                             quality={90}
                             priority
                           />
@@ -187,6 +186,6 @@ export default function DropDownMainPageSubCat() {
           </div>
         )}
       </div>
-    </div>
+    </nav>
   );
 }

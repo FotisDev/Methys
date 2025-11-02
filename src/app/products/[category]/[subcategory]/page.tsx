@@ -19,7 +19,6 @@ interface PageProps {
 export default async function SubcategoryPage({ params }: PageProps) {
   const { category, subcategory } = await params;
 
-  // Decode and process URL parameters
   const categorySlug = decodeURIComponent(category);
   const rawSubcategorySlug = decodeURIComponent(subcategory);
   const categoryName = categorySlug.replace(/-/g, " ").toLowerCase().trim();
@@ -31,16 +30,12 @@ export default async function SubcategoryPage({ params }: PageProps) {
   const subcategorySlug = rawSubcategorySlug;
 
   try {
-    // Fetch parent category
     const parentCategory = await getCategoryByName(categoryName);
     if (!parentCategory || parentCategory.parent_id !== null) {
       notFound();
     }
-
-    // Fetch subcategories
     const subcategories = await getSubcategories(parentCategory.id);
 
-    // Find matching subcategory
     const currentCategory = subcategories.find(
       (subcat) =>
         (subcat.slug && subcat.slug === subcategorySlug) ||
@@ -54,15 +49,15 @@ export default async function SubcategoryPage({ params }: PageProps) {
       notFound();
     }
 
-    // Fetch all products and filter by subcategory
     const allProducts = await fetchProducts();
-    const products = allProducts?.filter(
-      (product) => product.category_men_id === currentCategory.id
-    ) || [];
+    const products =
+      allProducts?.filter(
+        (product) => product.category_men_id === currentCategory.id
+      ) || [];
 
     return (
       <HeaderProvider forceOpaque={true}>
-        <section className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh] pt-32 p-2 font-roboto text-vintage-green">
+       <section className="relative w-full min-h-[50vh] sm:min-h-[55vh] md:min-h-[60vh] lg:min-h-[80vh] pt-32 p-2 pb-32 font-roboto text-vintage-green">
           {/* Breadcrumb Navigation */}
           <nav className="mb-4 text-sm">
             <Link href="/products" className="hover:text-vintage-brown">
@@ -85,9 +80,12 @@ export default async function SubcategoryPage({ params }: PageProps) {
 
           {/* Header */}
           <div className="flex flex-row gap-3 text-center">
-            <h1 className="text-2xl text-center">{currentCategory.name.toUpperCase()}</h1>
+            <h1 className="text-2xl text-center">
+              {currentCategory.name.toUpperCase()}
+            </h1>
             <p className="text-center text-lg">
-              Discover our collection of {currentCategory.name.toLowerCase()} products
+              Discover our collection of {currentCategory.name.toLowerCase()}{" "}
+              products
             </p>
           </div>
 
@@ -97,7 +95,8 @@ export default async function SubcategoryPage({ params }: PageProps) {
               <div className="text-6xl mb-4">📦</div>
               <h2 className="text-2xl mb-4">No products found</h2>
               <p className="mb-8">
-                We are working on adding products to this category. Check back soon!
+                We are working on adding products to this category. Check back
+                soon!
               </p>
             </div>
           ) : (
@@ -105,7 +104,8 @@ export default async function SubcategoryPage({ params }: PageProps) {
               {/* Product Count */}
               <div className="p-10 text-center font-roboto relative">
                 <span className="text-vintage-green text-lg absolute left-3">
-                  {products.length} {products.length === 1 ? "product" : "products"}
+                  {products.length}{" "}
+                  {products.length === 1 ? "product" : "products"}
                 </span>
               </div>
 
@@ -162,8 +162,8 @@ export default async function SubcategoryPage({ params }: PageProps) {
             </>
           )}
         </section>
-    
-        <Footer showNewsLetter={false}/>
+
+        <Footer showNewsLetter={true} />
       </HeaderProvider>
     );
   } catch (error) {
@@ -172,7 +172,6 @@ export default async function SubcategoryPage({ params }: PageProps) {
   }
 }
 
-// Optional: Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps) {
   const { category, subcategory } = await params;
   const categorySlug = decodeURIComponent(category);

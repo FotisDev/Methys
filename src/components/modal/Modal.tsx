@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 export function Modal({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
-  // Prevent background scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
