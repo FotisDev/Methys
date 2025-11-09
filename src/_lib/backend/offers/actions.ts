@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/_lib/supabaseClient";
-import type { Product } from "@/_lib/helpers";
+import type { Product } from "@/_lib/types";
 
 export interface ProductWithDiscount extends Product {
   discountedPrice: number;
@@ -18,20 +18,14 @@ export async function fetchOffers(): Promise<ProductWithDiscount[]> {
     console.error("Error fetching offers:", error);
     return [];
   }
-  console.log("Raw products from DB:", JSON.stringify(products, null, 2));
 
   const discountPercent = 20;
 
   const productsWithDiscount = (products || []).map((p) => {
-    
-    console.log(`Product "${p.name}" raw price:`, p.price, typeof p.price);
+
     const originalPrice = parseFloat(p.price) || 0;
     const discountedPrice =
       originalPrice > 0 ? originalPrice * (1 - discountPercent / 100) : 0;
-
-    console.log(
-      `  → Calculated: original=${originalPrice}, discounted=${discountedPrice}`
-    );
 
     return {
       ...p,

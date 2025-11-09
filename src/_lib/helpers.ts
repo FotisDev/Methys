@@ -1,21 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
+import { Product } from "./types";
 
-type RawProduct = {
-  id: number;
-  name: string;
-  slug: string;
-  price: number;
-  image_url: string;
-  categoriesformen?: {
-    name?: string;
-    parent?: {
-      name?: string;
-      grandparent?: {
-        name?: string;
-      };
-    };
-  };
-};
 export interface CategoryBackendType {
   id: number;
   name: string;
@@ -32,18 +17,7 @@ export interface RandomItemsOfEachCategory {
   categoryPath: string;
   sizes?: string[];
 }
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image_url: string;
-  created_at: string;
-  is_offer: boolean;
-  slug: string;
-  quantity: number;
-  category_men_id: number;
-}
+
 export interface User {
   id: string;
   firstname: string;

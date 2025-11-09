@@ -21,16 +21,7 @@ export type User = {
   firstname: string;
   lastname: string;
 };
-export type Product = {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  image_url: string | null;
-  category: string;
-  slug: string;
-  users: User[] | null;
-};
+
 export type Params = {
   params: Promise<{
     category: string;
@@ -52,4 +43,17 @@ export type CategoryParams = {
   params:{
     category:string,
   }
+}
+
+export type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image_url: string;
+  created_at: string;
+  is_offer: boolean;
+  slug: string;
+  quantity: number;
+  category_men_id: number;
 }
