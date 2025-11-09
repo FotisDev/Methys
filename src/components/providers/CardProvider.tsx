@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 interface CartItem {
-  id: number;
+  id: number | string; // Αλλαγή εδώ
   selectedSize?: string | null;
   quantityInCart: number;
   [key: string]: any;
@@ -12,8 +12,8 @@ interface CartItem {
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (item: any) => void;
-  updateItemQuantity: (id: number, size: string | null, quantity: number) => void;
-  removeItem: (id: number, size: string | null) => void;
+  updateItemQuantity: (id: number | string, size: string | null, quantity: number) => void; // Αλλαγή εδώ
+  removeItem: (id: number | string, size: string | null) => void; // Αλλαγή εδώ
   clearCart: () => void;
 }
 
@@ -22,7 +22,6 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  // Load from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("cartItems");
     if (saved) {
@@ -34,21 +33,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Save to localStorage
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     window.dispatchEvent(new Event("cartUpdated"));
   }, [cartItems]);
 
-  // Add or increment
   const addToCart = (item: any) => {
     setCartItems((prev) => {
       const existing = prev.find(
-        (i) => i.id === item.id && i.selectedSize === item.selectedSize
+        (i) => String(i.id) === String(item.id) && i.selectedSize === item.selectedSize
       );
       if (existing) {
         return prev.map((i) =>
-          i.id === item.id && i.selectedSize === item.selectedSize
+          String(i.id) === String(item.id) && i.selectedSize === item.selectedSize
             ? { ...i, quantityInCart: i.quantityInCart + 1 }
             : i
         );
@@ -57,29 +54,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  // Update quantity directly
-  const updateItemQuantity = (id: number, size: string | null, quantity: number) => {
+  const updateItemQuantity = (id: number | string, size: string | null, quantity: number) => {
     if (quantity < 1) {
       removeItem(id, size);
       return;
     }
     setCartItems((prev) =>
       prev.map((i) =>
-        i.id === id && i.selectedSize === size
+        String(i.id) === String(id) && i.selectedSize === size
           ? { ...i, quantityInCart: quantity }
           : i
       )
     );
   };
 
-  // Remove specific item
-  const removeItem = (id: number, size: string | null) => {
+  const removeItem = (id: number | string, size: string | null) => {
     setCartItems((prev) =>
-      prev.filter((i) => !(i.id === id && i.selectedSize === size))
+      prev.filter((i) => !(String(i.id) === String(id) && i.selectedSize === size))
     );
   };
 
-  // Clear all
   const clearCart = () => {
     setCartItems([]);
     localStorage.removeItem("cartItems");

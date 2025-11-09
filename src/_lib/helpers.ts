@@ -189,7 +189,7 @@ export async function getCategoryPath(
     const category = await getCategoryById(currentId);
     if (!category) break;
 
-    path.unshift(category); 
+    path.unshift(category);
     currentId = category.parent_id || 0;
   }
 
@@ -354,23 +354,22 @@ export async function getSellerName(users: User | User[] | null) {
 }
 
 export const getValidImage = (url?: string | null) => {
-
   if (!url || url.trim() === "") {
     return "/Casual.jpg";
   }
-  if (url.startsWith('http://') || url.startsWith('https://')) {
+  if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }
 
-  if (url.startsWith('/')) {
+  if (url.startsWith("/")) {
     return url;
   }
   return `/images/${url}`;
 };
 
 export async function fetchSections() {
-  console.log("🔍 Fetching sections..."); 
-  
+  console.log("🔍 Fetching sections...");
+
   const { data, error } = await supabase.from("sections").select("*");
 
   console.log("📊 Supabase response:", { data, error });
@@ -386,7 +385,7 @@ export async function fetchSections() {
   }
 
   const sectionData = data.reduce((acc, item) => {
-    console.log("Processing item:", item); 
+    console.log("Processing item:", item);
     acc[item.key] = {
       title: item.title,
       text: item.text,
@@ -398,4 +397,18 @@ export async function fetchSections() {
   console.log("✅ Final sectionData:", sectionData);
 
   return sectionData;
+}
+
+export async function fetchOffers() {
+  const { data: products, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_offer", true);
+
+  if (error) {
+    console.error("Error fetching offers:", error);
+    return [];
+  }
+
+  return products || [];
 }

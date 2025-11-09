@@ -11,10 +11,8 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// ✅ Schema Validation
 const sizeVariantSchema = z.object({
   size: z.string(),
-  price: z.number().min(0, "Η τιμή πρέπει να είναι θετική"),
   quantity: z.number().min(0, "Η ποσότητα πρέπει να είναι θετική"),
 });
 
@@ -29,8 +27,7 @@ const productSchema = z.object({
 
 type ProductFormValues = z.infer<typeof productSchema>;
 
-// ✅ Διαθέσιμα μεγέθη
-const availableSizes = ["XS", "S", "M", "L", "XL", "XXL"];
+const availableSizes = ["XS", "S", "M", "L", "XL"];
 
 export default function AddProductForm() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
@@ -57,7 +54,6 @@ export default function AddProductForm() {
     name: "sizeVariants",
   });
 
-  // 🔹 Φόρτωση κατηγοριών από Supabase
   useEffect(() => {
     async function fetchCategories() {
       const { data, error } = await supabase
@@ -71,7 +67,6 @@ export default function AddProductForm() {
     fetchCategories();
   }, []);
 
-  // 🔹 Preview εικόνας
   const imageFile = watch("image");
   useEffect(() => {
     if (imageFile && imageFile.length > 0) {
@@ -82,7 +77,6 @@ export default function AddProductForm() {
     }
   }, [imageFile]);
 
-  // ✅ Upload εικόνας στο Supabase
   async function uploadImage(file: File): Promise<string | null> {
     setUploading(true);
     const filePath = `products/${Date.now()}_${file.name}`;
@@ -101,7 +95,6 @@ export default function AddProductForm() {
     return publicUrl.publicUrl;
   }
 
-  // ✅ Submit προϊόντος
   const onSubmit = async (data: ProductFormValues) => {
     try {
       let imageUrl: string | null = null;
@@ -110,14 +103,12 @@ export default function AddProductForm() {
         imageUrl = await uploadImage(data.image[0]);
       }
 
-      // Δημιουργία slug
       const slug = data.name
         .toLowerCase()
         .trim()
         .replace(/\s+/g, "-")
         .replace(/[^\w-]+/g, "");
 
-      // ✅ Εισαγωγή προϊόντος στον πίνακα products
       const { data: productData, error: productError } = await supabase
         .from("products")
         .insert([
@@ -135,11 +126,10 @@ export default function AddProductForm() {
 
       if (productError) throw productError;
 
-      // ✅ Εισαγωγή μεγεθών στον πίνακα product_variants
       const variants = data.sizeVariants.map((variant) => ({
         product_id: productData.id,
         size: variant.size,
-        price: variant.price,
+        price: data.basePrice, 
         quantity: variant.quantity,
         sku: `${slug}-${variant.size.toLowerCase()}`,
       }));
@@ -159,11 +149,10 @@ export default function AddProductForm() {
     }
   };
 
-  // ✅ Προσθήκη νέου μεγέθους
   function handleAddSize(size: string) {
     const exists = watch("sizeVariants").some((v) => v.size === size);
     if (exists) return alert(`Το μέγεθος ${size} υπάρχει ήδη.`);
-    append({ size, price: 0, quantity: 0 });
+    append({ size, quantity: 0 });
   }
 
   return (
@@ -175,7 +164,6 @@ export default function AddProductForm() {
         ➕ Προσθήκη Νέου Προϊόντος
       </h1>
 
-      {/* --- Όνομα --- */}
       <div>
         <label className="block text-sm font-medium mb-1">Όνομα προϊόντος</label>
         <input
@@ -188,7 +176,6 @@ export default function AddProductForm() {
         )}
       </div>
 
-      {/* --- Περιγραφή --- */}
       <div>
         <label className="block text-sm font-medium mb-1">Περιγραφή</label>
         <textarea
@@ -198,7 +185,6 @@ export default function AddProductForm() {
         />
       </div>
 
-      {/* --- Κατηγορία --- */}
       <div>
         <label className="block text-sm font-medium mb-1">Κατηγορία</label>
         <select
@@ -219,18 +205,21 @@ export default function AddProductForm() {
         )}
       </div>
 
-      {/* --- Τιμή Βάσης --- */}
       <div>
-        <label className="block text-sm font-medium mb-1">Τιμή (βασική)</label>
+        <label className="block text-sm font-medium mb-1">Τιμή προϊόντος (€)</label>
         <input
           type="number"
           step="0.01"
           {...register("basePrice", { valueAsNumber: true })}
           className="border p-2 w-full rounded"
+          placeholder="π.χ. 29.99"
         />
         {errors.basePrice && (
           <p className="text-red-500 text-sm">{errors.basePrice.message}</p>
         )}
+        <p className="text-xs text-gray-500 mt-1">
+          Η τιμή θα ισχύει για όλα τα μεγέθη
+        </p>
       </div>
 
       {/* --- Εικόνα --- */}
@@ -247,9 +236,8 @@ export default function AddProductForm() {
         )}
       </div>
 
-      {/* --- Επιλογή Μεγεθών --- */}
       <div>
-        <label className="block text-sm font-medium mb-1">Μεγέθη</label>
+        <label className="block text-sm font-medium mb-1">Διαθέσιμα Μεγέθη</label>
         <div className="flex flex-wrap gap-2">
           {availableSizes.map((size) => (
             <button
@@ -262,40 +250,34 @@ export default function AddProductForm() {
             </button>
           ))}
         </div>
+        {errors.sizeVariants && (
+          <p className="text-red-500 text-sm mt-1">{errors.sizeVariants.message}</p>
+        )}
       </div>
 
-      {/* --- Πίνακας Μεγεθών --- */}
       {fields.length > 0 && (
-        <div className="space-y-4 mt-4">
+        <div className="space-y-3 mt-4">
+          <h3 className="font-medium text-sm">Ποσότητες ανά μέγεθος:</h3>
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="border rounded-lg p-3 grid grid-cols-3 gap-3 items-center"
+              className="border rounded-lg p-3 flex items-center gap-3"
             >
-              <p className="font-semibold">{field.size}</p>
-              <input
-                type="number"
-                step="0.01"
-                {...register(`sizeVariants.${index}.price`, {
-                  valueAsNumber: true,
-                })}
-                placeholder="Τιμή"
-                className="border p-2 rounded"
-              />
+              <span className="font-semibold text-lg w-12">{field.size}</span>
               <input
                 type="number"
                 {...register(`sizeVariants.${index}.quantity`, {
                   valueAsNumber: true,
                 })}
-                placeholder="Ποσότητα"
-                className="border p-2 rounded"
+                placeholder="Ποσότητα σε απόθεμα"
+                className="border p-2 rounded flex-1"
               />
               <button
                 type="button"
                 onClick={() => remove(index)}
-                className="text-red-500 text-sm col-span-3 text-right"
+                className="text-red-500 text-sm px-2"
               >
-                Διαγραφή
+                ✕
               </button>
             </div>
           ))}
@@ -305,7 +287,7 @@ export default function AddProductForm() {
       {/* --- Submit --- */}
       <button
         type="submit"
-        className="bg-black text-white px-6 py-2 rounded w-full hover:bg-gray-800"
+        className="bg-black text-white px-6 py-3 rounded w-full hover:bg-gray-800 font-medium"
       >
         Καταχώρηση Προϊόντος
       </button>

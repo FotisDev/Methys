@@ -11,6 +11,7 @@ import {
 } from "@/_lib/helpers";
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
 export default function ProductList() {
   const [categories, setCategories] = useState<CategoryBackendType[] | null>(
@@ -107,8 +108,10 @@ export default function ProductList() {
 
   return (
     <HeaderProvider forceOpaque={true}>
-      <section className="padding-y text-vintage-green font-roboto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <section className="padding-y padding-x text-vintage-green font-roboto">
+      <div className="pt-16">
+        {<Breadcrumb LinkclassName={"p-1"}/>}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
           {parentCategories.map((category) => {
             if (!category.name) return null;
 
@@ -121,10 +124,10 @@ export default function ProductList() {
               <Link
                 key={category.id}
                 href={href}
-                className="group relative w-full aspect-[3/4] bg-vintage-green rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                className="group relative w-full aspect-[3/4] bg-vintage-green "
                 aria-label={`View ${category.name} subcategories`}
               >
-                <div className="absolute inset-0 rounded-xl overflow-hidden ">
+                <div className="absolute inset-0  overflow-hidden ">
                   <Image
                     src={imageUrl}
                     alt={`${category.name} category image`}
@@ -141,6 +144,7 @@ export default function ProductList() {
           })}
         </div>
         <Footer />
+      </div>
       </section>
     </HeaderProvider>
   );

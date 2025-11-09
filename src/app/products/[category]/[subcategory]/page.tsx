@@ -8,6 +8,7 @@ import {
 } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Footer from "@/components/footer/Footer";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
 interface PageProps {
   params: Promise<{
@@ -59,22 +60,7 @@ export default async function SubcategoryPage({ params }: PageProps) {
       <HeaderProvider forceOpaque={true}>
        <section className="relative w-full min-h-[50vh] sm:min-h-[55vh] md:min-h-[60vh] lg:min-h-[80vh] pt-32 p-2 pb-32 font-roboto text-vintage-green">
           {/* Breadcrumb Navigation */}
-          <nav className="mb-4 text-sm">
-            <Link href="/products" className="hover:text-vintage-brown">
-              Products
-            </Link>
-            <span className="mx-2">/</span>
-            <Link
-              href={`/products/${encodeURIComponent(categorySlug)}`}
-              className="hover:text-vintage-brown"
-            >
-              {parentCategory.name}
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="hover:text-vintage-brown cursor-pointer">
-              {currentCategory.name}
-            </span>
-          </nav>
+         <Breadcrumb LinkclassName={"hover:text-vintage-brown"} />
 
           <hr className="mt-4 mb-4 bg-vintage-green" />
 

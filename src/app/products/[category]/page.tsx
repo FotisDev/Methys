@@ -8,6 +8,7 @@ import {
 } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { notFound } from "next/navigation";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
 interface CategoryPageProps {
   params: { category: string };
@@ -18,21 +19,25 @@ type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
 };
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const categoryName = params.category.replace(/-/g, " ");
+  // ✅ σωστό: το params είναι πλέον promise, οπότε το κάνουμε await
+  const { category } = await params;
+  const categoryName = category.replace(/-/g, " ");
 
-  let category: CategoryBackendType | null = null;
+  let categoryData: CategoryBackendType | null = null;
   let subcategories: SubcategoryWithImage[] = [];
   let error: string | null = null;
 
   try {
-    const categoryData = await getCategoryByName(categoryName);
+    const foundCategory = await getCategoryByName(categoryName);
 
-    if (!categoryData || categoryData.parent_id !== null) {
+    if (!foundCategory || foundCategory.parent_id !== null) {
       throw new Error(`Main category "${categoryName}" not found`);
     }
-    category = categoryData;
+
+    categoryData = foundCategory;
+
     const [subcategoriesData, allProducts] = await Promise.all([
-      getSubcategories(categoryData.id),
+      getSubcategories(foundCategory.id),
       fetchProducts(),
     ]);
 
@@ -48,47 +53,30 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     error = err instanceof Error ? err.message : "Unknown error";
   }
 
-  if (error || !category) {
+  if (error || !categoryData) {
     notFound();
   }
 
   return (
     <HeaderProvider forceOpaque={true}>
-      <main className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh] pt-32 p-2 font-roboto ">
+      <main className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh] pt-32 p-2 font-roboto">
         <div className="mx-auto">
-          <nav aria-label="Breadcrumb" className="mb-8 text-sm">
-            <ol className="flex items-center space-x-2">
-              <li>
-                <Link
-                  href="/products"
-                  className="hover:text-vintage-brown transition-colors"
-                >
-                  Products
-                </Link>
-              </li>
-              <li aria-hidden="true" className="text-gray-500">
-                /
-              </li>
-              <li className="text-vintage-green hover:text-vintage-brown ">
-                {category.name}
-              </li>
-            </ol>
-          </nav>
+          <Breadcrumb LinkclassName={"hover:text-vintage-brown"} />
           <hr className="mt-4 mb-4 bg-vintage-green" />
+
           <header className="flex flex-row gap-3 text-center mb-4">
-            <h1 className=" text-vintage-green mb-2 text-2xl">{category.name.toLocaleUpperCase()}</h1>
-            <p className=" text-lg text-gray-700">
-              Explore our {category.name.toLowerCase()} collections
+            <h1 className="text-vintage-green mb-2 text-2xl">
+              {categoryData.name.toUpperCase()}
+            </h1>
+            <p className="text-lg text-gray-700">
+              Explore our {categoryData.name.toLowerCase()} collections
             </p>
           </header>
 
           {subcategories.length === 0 ? (
-            <section
-              className="text-center py-16"
-              aria-labelledby="no-subcategories"
-            >
+            <section className="text-center py-16" aria-labelledby="no-subcategories">
               <div className="text-6xl mb-4" role="img" aria-label="Empty box">
-                Package
+                📦
               </div>
               <h2 id="no-subcategories" className="text-2xl font-semibold mb-4">
                 No subcategories found
@@ -98,22 +86,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               </p>
             </section>
           ) : (
-            <section aria-labelledby="subcategories-heading  font-roboto text-vintage-green">
+            <section aria-labelledby="subcategories-heading font-roboto text-vintage-green">
               <h2 id="subcategories-heading" className="sr-only">
-                {category.name}
+                {categoryData.name}
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-1">
                 {subcategories.map((subcategory) => {
-                  const href = `/products/${params.category}/${subcategory.name
+                  const href = `/products/${category}/${subcategory.name
                     .replace(/\s+/g, "-")
                     .toLowerCase()}`;
 
                   return (
-                    <article key={subcategory.id} className="group ">
+                    <article key={subcategory.id} className="group">
                       <Link
                         href={href}
-                        className="block relative w-full aspect-[3/4] bg-vintage-green overflow-hidden "
+                        className="block relative w-full aspect-[3/4] bg-vintage-green overflow-hidden"
                         aria-label={`View ${subcategory.name} collection`}
                       >
                         <div className="absolute inset-0">

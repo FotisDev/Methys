@@ -10,6 +10,7 @@ import {
 } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import ProductActions from "./ProductActionsInline";
+import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 
 interface PageProps {
   params: Promise<{
@@ -59,27 +60,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     return (
       <HeaderProvider forceOpaque={true}>
         <section className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh] pt-32 p-2 font-roboto text-vintage-green">
-          <nav className="mb-8 text-sm text-vintage-green">
-            <Link href="/products" className="hover:text-vintage-brown">
-              Products
-            </Link>
-            <span className="mx-2">/</span>
-            <Link
-              href={`/products/${encodeURIComponent(categorySlug)}`}
-              className="hover:text-vintage-brown"
-            >
-              {parentCategory.name}
-            </Link>
-            <span className="mx-2">/</span>
-            <Link
-              href={`/products/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subcategorySlug)}`}
-              className="hover:text-vintage-brown"
-            >
-              {currentCategory.name}
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="hover:text-vintage-brown">{product.name}</span>
-          </nav>
+         <Breadcrumb LinkclassName={"hover:text-vintage-brown"} />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div className="space-y-4">
