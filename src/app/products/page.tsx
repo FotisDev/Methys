@@ -7,12 +7,12 @@ import {
   fetchCategories,
   fetchProducts,
   CategoryBackendType,
-  Product,
+
 } from "@/_lib/helpers";
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
-
+import { Product } from "@/_lib/types";
 export default function ProductList() {
   const [categories, setCategories] = useState<CategoryBackendType[] | null>(
     null

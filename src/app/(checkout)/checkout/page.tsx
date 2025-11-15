@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { fetchProducts, Product, getValidImage } from "@/_lib/helpers";
+import { fetchProducts, getValidImage } from "@/_lib/helpers";
 import { useCart } from "@/components/providers/CardProvider";
 import { supabase } from "@/_lib/supabaseClient";
-
+import { Product } from "@/_lib/types";
 interface CartItem extends Product {
   quantityInCart: number;
   selectedSize?: string | null;

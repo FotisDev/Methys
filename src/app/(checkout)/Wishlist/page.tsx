@@ -3,16 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Product, getValidImage } from "@/_lib/helpers";
-
+import { getValidImage } from "@/_lib/helpers";
+import { Product } from "@/_lib/types";
 interface WishlistItem extends Product {
-  addedToWishlist?: string; 
+  addedToWishlist?: string;
 }
 
 const WishlistPage = () => {
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
 
   useEffect(() => {
     const savedWishlist = localStorage.getItem("wishlistItems");
@@ -23,13 +22,11 @@ const WishlistPage = () => {
     setIsLoading(false);
   }, []);
 
-
   const saveWishlist = (updatedWishlist: WishlistItem[]) => {
     setWishlistItems(updatedWishlist);
     localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
     window.dispatchEvent(new Event("wishlistUpdated"));
   };
-
 
   const removeFromWishlist = (productId: number) => {
     const updatedWishlist = wishlistItems.filter(
@@ -38,19 +35,15 @@ const WishlistPage = () => {
     saveWishlist(updatedWishlist);
   };
 
-
   const clearWishlist = () => {
     if (window.confirm("Are you sure you want to clear your wishlist?")) {
       saveWishlist([]);
     }
   };
 
-
   const addToCart = (product: WishlistItem) => {
- 
     const savedCart = localStorage.getItem("cartItems");
     const existingCart = savedCart ? JSON.parse(savedCart) : [];
-
 
     const existingItem = existingCart.find(
       (item: Product & { quantityInCart: number }) => item.id === product.id
@@ -67,7 +60,7 @@ const WishlistPage = () => {
     }
 
     localStorage.setItem("cartItems", JSON.stringify(existingCart));
-    
+
     window.dispatchEvent(new Event("cartUpdated"));
 
     alert("Item added to cart!");

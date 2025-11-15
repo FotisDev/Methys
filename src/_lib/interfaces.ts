@@ -1,102 +1,100 @@
-import { ENUM_SOCIALS } from "./enums"
+import { ENUM_SOCIALS } from "./enums";
 export interface SocialProps {
-    name: ENUM_SOCIALS,
-    url: string,
-    icon: ImageProps,
-    Social: {
-        Facebook: string | null
-        Instagram: string | null
-        Linkedin: string | null
-    }
-
+  name: ENUM_SOCIALS;
+  url: string;
+  icon: ImageProps;
+  Social: {
+    Facebook: string | null;
+    Instagram: string | null;
+    Linkedin: string | null;
+  };
 }
 export interface ReviewProps extends BackendError {
-    id: number,
-    slug: string,
-    comment: string,
-    name: string,
-    rating: number,
-    image?: {
-        url: string
-    }
+  id: number;
+  slug: string;
+  comment: string;
+  name: string;
+  rating: number;
+  image?: {
+    url: string;
+  };
 }
 export interface SearchInputProps {
-    selectedRatings: number[];
-    toggleRating: (rating: number) => void;
+  selectedRatings: number[];
+  toggleRating: (rating: number) => void;
 }
 
 export interface MetadataProps {
-    MetaTitle: string,
-    MetaDescription: string,
-    OpenGraphImageUrl: string,
-    canonical: string,
+  MetaTitle: string;
+  MetaDescription: string;
+  OpenGraphImageUrl: string;
+  canonical: string;
 }
 export interface ForgotPasswordProps extends BackendError {
-    forgotPassword: string,
-    description: string
+  forgotPassword: string;
+  description: string;
 }
 export interface CreateAccountProps extends BackendError {
-    CreateAccount: string,
-    description: string
+  CreateAccount: string;
+  description: string;
 }
 export interface SignUpPageProps extends BackendError {
-    SingUp: string,
-    description: string,
+  SingUp: string;
+  description: string;
 }
 export interface BackendError {
-    error?: undefined
+  error?: undefined;
 }
 export interface VideoPlayButtonSVGProps {
-    circleColor?: string;
-    pathColor?: string;
-    size?: string | number;
-    className?: string;
-    onClick?: () => void;
-    videoUrl?: string;
+  circleColor?: string;
+  pathColor?: string;
+  size?: string | number;
+  className?: string;
+  onClick?: () => void;
+  videoUrl?: string;
 }
 export interface DiagonalArrowSVGProps {
-    className: string;
-    size?: string | number;
-    color: string;
+  className: string;
+  size?: string | number;
+  color: string;
 }
 export interface ClassNameProps {
-    className?: string
+  className?: string;
 }
 export interface RegionProps {
-    Name: string
+  Name: string;
 }
 export interface ImageProps {
   url?: string;
-  icon?: string | null; 
+  icon?: string | null;
 }
 export interface ClassNameProps {
-    className?: string
+  className?: string;
 }
 export interface VideoPlayButtonSVGProps {
-    circleColor?: string;
-    pathColor?: string;
-    size?: string | number;
-    className?: string;
-    onClick?: () => void;
-    videoUrl?: string;
+  circleColor?: string;
+  pathColor?: string;
+  size?: string | number;
+  className?: string;
+  onClick?: () => void;
+  videoUrl?: string;
 }
 export interface DiagonalArrowSVGProps {
-    className: string;
-    size?: string | number;
-    color: string;
+  className: string;
+  size?: string | number;
+  color: string;
 }
 export interface CreateAccountProps extends BackendError {
-    CreateAccount: string,
-    description: string
+  CreateAccount: string;
+  description: string;
 }
 export interface ForgotPasswordProps extends BackendError {
-    forgotPassword: string,
-    description: string
+  forgotPassword: string;
+  description: string;
 }
 export interface SignUpPageProps extends BackendError {
-    SingUp: string,
-    description: string,
-
+  SingUp: string;
+  description: string;
 }
 
 export interface Product {
@@ -122,7 +120,6 @@ export interface Product {
   }[];
 }
 
-
 export interface CategoryBackendType {
   id: number;
   category_name: string;
@@ -130,15 +127,13 @@ export interface CategoryBackendType {
   image_url?: string | undefined; // optional now
 }
 
-
 export interface ContactPageProps {
-    Contact: {
-        Telephone: string
-        Email: string
-    }
+  Contact: {
+    Telephone: string;
+    Email: string;
+  };
 }
-export interface CategoryPageProps {
-  params: Promise<{
-    category: string;
-  }>;
-}
+export type CategoryPageProps = {
+  params: Promise<{ category: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};

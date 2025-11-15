@@ -1,4 +1,4 @@
-import { Product } from "@/_lib/helpers";
+import { Product } from "@/_lib/types";
 
 export const addToWishlist = (product: Product): boolean => {
   const wishlistItems = JSON.parse(localStorage.getItem("wishlistItems") || "[]");

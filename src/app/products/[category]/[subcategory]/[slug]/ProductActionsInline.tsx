@@ -8,7 +8,7 @@ import {
   isInWishlist,
 } from "@/_lib/utils/whishListUtils";
 import HeartIcon from "@/svgs/whishListSvg";
-import { Product } from "@/_lib/helpers";
+import { Product } from "@/_lib/types";
 import { useCart } from "@/components/providers/CardProvider";
 
 interface ProductActionsProps {
