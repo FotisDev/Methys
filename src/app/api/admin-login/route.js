@@ -17,7 +17,7 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // 2. Check admin role
+
   const { data: userData } = await supabase
     .from('users')
     .select('role')
@@ -39,7 +39,6 @@ export async function POST(request) {
       );
     }
 
-    // Get user from Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -52,15 +51,13 @@ export async function POST(request) {
       );
     }
 
-    // Check if user exists in your custom users table
     let { data: user, error: userError } = await supabase
       .from("users")
       .select("*")
       .eq("id", authData.user.id)
       .single();
 
-    // If user doesn't exist in users table, create it
-    if (userError && userError.code === 'PGRST116') { // No rows returned
+    if (userError && userError.code === 'PGRST116') { 
       console.log("User not found in users table, creating...");
       
       const { data: newUser, error: createError } = await supabase
@@ -70,7 +67,7 @@ export async function POST(request) {
           email: authData.user.email,
           firstname:'',
           lastname:'',
-          role: 'admin' // or 'user' - set default role
+          role: 'admin' 
         }])
         .select()
         .single();
@@ -85,7 +82,6 @@ export async function POST(request) {
       
       user = newUser;
     } else if (userError) {
-      // Some other error occurred
       console.error("Database error:", userError);
       return NextResponse.json(
         { success: false, message: "Database error" },
@@ -93,7 +89,6 @@ export async function POST(request) {
       );
     }
 
-    // Create JWT token
     const token = jwt.sign(
       {
         userId: authData.user.id,
@@ -115,12 +110,11 @@ export async function POST(request) {
       },
     });
 
-    // Set JWT token in cookie
     response.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7, 
       path: "/",
     });
 

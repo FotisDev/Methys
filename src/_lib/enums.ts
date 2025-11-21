@@ -15,6 +15,3 @@ export enum ENUM_TOGGLE_OPTIONS {
   CLOSE = "CLOSE",
 }
 
-export enum ENUM_SEARCH_QUERY_PARAMS {
-  PICK_UP_DATE_TIME = "pickUpDateTime",
-}

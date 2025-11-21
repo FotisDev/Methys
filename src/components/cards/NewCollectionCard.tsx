@@ -4,22 +4,24 @@ import CartSvg from "@/svgs/cartSvg";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, MouseEvent } from "react";
-import { RandomItemsOfEachCategory } from "@/_lib/helpers";
-import { useCart } from "../providers/CardProvider";
+import { useCart } from "../providers/CartProvider";
 import { useWishlist } from "../providers/WishListProvider";
+import { ProductInDetails } from "@/_lib/types";
 
-interface NewCollectionCardProps {
-  item: RandomItemsOfEachCategory;
-}
-
-function HeartSvg({ filled, className }: { filled: boolean; className?: string }) {
+function HeartSvg({
+  filled,
+  className,
+}: {
+  filled: boolean;
+  className?: string;
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill={filled ? "currentColor" : "none"}
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
@@ -29,13 +31,22 @@ function HeartSvg({ filled, className }: { filled: boolean; className?: string }
   );
 }
 
+interface NewCollectionCardProps {
+  item: ProductInDetails;
+}
+
 export default function NewCollectionCard({ item }: NewCollectionCardProps) {
   const [hovered, setHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
   const { addToCart } = useCart();
   const { addToWishlist, isInWishlist } = useWishlist();
 
   const inWishlist = isInWishlist(item.id);
+
+  const availableSizes = item.product_variants
+    .filter((variant) => variant.quantity > 0)
+    .map((variant) => variant.size);
 
   const handleSizeClick = (e: MouseEvent<HTMLSpanElement>, size: string) => {
     e.preventDefault();
@@ -47,15 +58,12 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!selectedSize && item.sizes && item.sizes.length > 0) {
+    if (!selectedSize && availableSizes.length > 0) {
       alert("Please select a size first");
       return;
     }
 
-    addToCart({
-      ...item,
-      selectedSize,
-    });
+    addToCart(item, selectedSize || undefined);
 
     alert(
       selectedSize
@@ -70,17 +78,29 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
     addToWishlist(item);
   };
 
+  const getCategoryPath = (): string => {
+  const category = item.categoryformen;
+  const parent = category?.parent;
+
+  if (parent?.slug && category?.slug) {
+    return `${parent.slug}/${category.slug}`;
+  }
+
+  return category?.slug ?? "uncategorized";
+};
+
+
   return (
     <Link
-      href={`/products/${item.categoryPath}/${item.slug}`}
+      href={`/products/${getCategoryPath()}/${item.slug ?? ""}`}
       className="group block overflow-hidden transition font-roboto"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-    >
-      <div className="relative w-full">
+    > 
+      <section className="relative w-full border-b border-gray-200 ">
         <div className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh]">
           <Image
-            src={hovered ? "/articles.jpg" : item.image_url}
+            src={hovered ? "/articles.jpg" : item.image_url ?? "/Articles.jpg"}
             alt={item.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -115,19 +135,19 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
 
         {/* Product Info */}
         <div className="relative pt-3 text-vintage-green">
-          <h3 className="text-base left-3 top-1 line-clamp-1">{item.name}</h3>
+          <h3 className="text-base left-3 top-1 line-clamp-1 bg-gray-100">{item.name}</h3>
 
-          <div className="text-xs md:text-base text-vintage-green/70 mt-1 block flex-wrap">
-            {item.sizes && item.sizes.length > 0 ? (
-              <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-wrap">
-                {item.sizes.map((size) => (
+          <div className="text-xs md:text-base text-vintage-green/70  block flex-wrap ">
+            {availableSizes.length > 0 ? (
+              <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-wrap bg-gray-100">
+                {availableSizes.map((size) => (
                   <span
                     key={size}
                     onClick={(e) => handleSizeClick(e, size)}
-                    className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base transition-all duration-200 ${
+                    className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base transition-all duration-200 bg-gray-100${
                       selectedSize === size
-                        ? "bg-vintage-green text-white"
-                        : "bg-white text-vintage-green hover:bg-vintage-green hover:text-white"
+                        ? "bg-vintage-green text-white rounded-full"
+                        : "bg-white text-vintage-green hover:bg-vintage-green hover:text-white rounded-full"
                     }`}
                   >
                     {size}
@@ -145,7 +165,7 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
             ${item.price}
           </p>
         </div>
-      </div>
+      </section>
     </Link>
   );
 }

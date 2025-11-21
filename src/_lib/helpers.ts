@@ -1,24 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
-import { Product } from "./types";
+import { CategoryBackendType} from "./types";
 
-export interface CategoryBackendType {
-  id: number;
-  name: string;
-  parent_id?: number | null;
-  image_url?: string;
-  slug?: string;
-}
-export interface RandomItemsOfEachCategory {
-  id: string;
-  name: string;
-  slug: string;
-  image_url: string;
-  price: number;
-  categoryPath: string;
-  sizes?: string[];
-}
 
-export interface User {
+export type User = {
   id: string;
   firstname: string;
   lastname: string;
@@ -46,76 +30,49 @@ export async function fetchCategories(): Promise<CategoryBackendType[] | null> {
   return data as CategoryBackendType[];
 }
 
-export async function fetchProducts(): Promise<Product[] | null> {
-  const { data, error } = await supabase
-    .from("products")
-    .select(
-      "id, name, description, price, created_at, image_url, category_men_id, slug, is_offer"
-    )
-    .order("created_at", { ascending: false });
-
-  if (error || !data) {
-    console.error("Error fetching products:", error?.message);
-    return null;
-  }
-
-  return data as Product[];
-}
-
-export async function getMainCategories(): Promise<CategoryBackendType[]> {
-  const { data, error } = await supabase
-    .from("categoriesformen")
-    .select("id, name, parent_id")
-    .is("parent_id", null)
-    .order("id", { ascending: true });
-
-  if (error || !data) {
-    console.error("Error fetching main categories:", error?.message);
-    return [];
-  }
-
-  return data as CategoryBackendType[];
-}
 
 export async function getSubcategories(
   parentId: number
 ): Promise<CategoryBackendType[]> {
   const { data, error } = await supabase
     .from("categoriesformen")
-    .select("id,name, parent_id")
+    .select("id, name, parent_id, slug")
     .eq("parent_id", parentId)
     .order("id", { ascending: true });
 
-  if (error || !data) {
-    console.error("Error fetching subcategories:", error?.message);
+  if (error) {
+    console.error("Error fetching subcategories:", error);
     return [];
   }
 
-  return data as CategoryBackendType[];
+  return data || [];
 }
 
-export async function getCategoryByName(
-  categoryName: string,
+
+export async function getCategoryBySlug(
+  slug: string,
   parentId?: number | null
 ): Promise<CategoryBackendType | null> {
-  const query = supabase
+  let query = supabase
     .from("categoriesformen")
-    .select("id, name, parent_id")
-    .ilike("name", categoryName);
+    .select("id, name, parent_id, slug")
+    .eq("slug", slug);
 
   if (parentId !== null && parentId !== undefined) {
-    query.eq("parent_id", parentId);
+    query = query.eq("parent_id", parentId);
   }
 
   const { data, error } = await query.maybeSingle();
 
-  if (error || !data) {
-    console.error("Category not found:", error?.message);
+  if (error) {
+    console.error("Supabase error in getCategoryBySlug:", error);
     return null;
   }
 
-  return data as CategoryBackendType;
+  return data ?? null;
 }
+
+
 
 export async function getCategoryById(
   categoryId: number
@@ -134,25 +91,6 @@ export async function getCategoryById(
   return data as CategoryBackendType;
 }
 
-export async function getProductsByCategory(
-  categoryId: number
-): Promise<Product[]> {
-  const { data, error } = await supabase
-    .from("products")
-    .select(
-      "id, name, description, price, created_at, image_url, category_men_id, slug, is_offer"
-    )
-    .eq("categoriesformen", categoryId)
-    .order("created_at", { ascending: false });
-
-  if (error || !data) {
-    console.error("Error fetching products:", error?.message);
-    return [];
-  }
-
-  return data as Product[];
-}
-
 export async function getCategoryPath(
   categoryId: number
 ): Promise<CategoryBackendType[]> {
@@ -168,147 +106,6 @@ export async function getCategoryPath(
   }
 
   return path;
-}
-
-export async function hasSubcategories(categoryId: number): Promise<boolean> {
-  const { data, error } = await supabase
-    .from("categoriesformen")
-    .select("id")
-    .eq("parent_id", categoryId)
-    .limit(1);
-
-  return !error && data && data.length > 0;
-}
-
-export async function hasProducts(categoryId: number): Promise<boolean> {
-  const { data, error } = await supabase
-    .from("products")
-    .select("id")
-    .eq("category_men_id", categoryId)
-    .limit(1);
-
-  return !error && data && data.length > 0;
-}
-
-export async function getNewCollection(): Promise<RandomItemsOfEachCategory[]> {
-  try {
-    const { data, error } = await supabase.from("products").select(`
-      id,
-      name,
-      slug,
-      price,
-      image_url,
-      categoryformen:category_men_id (
-        id,
-        name,
-        sizes,
-        parent:parent_id (
-          id,
-          name,
-          grandparent:parent_id (
-            id,
-            name
-          )
-        )
-      ),
-      product_variants (
-        size,
-        price,
-        quantity
-      )
-    `);
-
-    if (error) throw error;
-
-    const formattedData = data.map((product: any) => {
-      const sub = product.categoryformen?.name?.toLowerCase();
-      const parent = product.categoryformen?.parent?.name?.toLowerCase();
-      const grandparent =
-        product.categoryformen?.parent?.grandparent?.name?.toLowerCase();
-
-      const segments = [grandparent, parent, sub].filter(Boolean);
-      const categoryPath = segments.join("/");
-
-      const sizes =
-        product.product_variants?.map((variant: any) => variant.size) || [];
-
-      return {
-        id: product.id.toString(),
-        name: product.name,
-        slug: product.slug,
-        image_url: product.image_url,
-        price: product.price,
-        categoryPath,
-        sizes,
-      };
-    });
-
-    return formattedData;
-  } catch (err) {
-    console.error("Error fetching new collection", err);
-    return [];
-  }
-}
-
-export async function fetchProductBySlug(
-  categoryId: number,
-  slug: string
-): Promise<Product | null> {
-  try {
-    const { data, error } = await supabase
-      .from("products")
-      .select(
-        `
-        id,
-        name,
-        price,
-        description,
-        image_url,
-        slug,
-        created_at,
-        category_men_id,
-        is_offer
-      `
-      )
-      .eq("slug", slug)
-      .eq("category_men_id", categoryId)
-      .maybeSingle();
-
-    if (error) {
-      console.error("Error fetching product by slug:", error.message);
-      return null;
-    }
-
-    if (!data) {
-      console.error(
-        `Product with slug "${slug}" and category_men_id "${categoryId}" not found`
-      );
-      return null;
-    }
-
-    console.log("Fetched product:", data);
-    return data as Product;
-  } catch (error) {
-    console.error("Unexpected error fetching product by slug:", error);
-    return null;
-  }
-}
-
-export async function getCategoryId(categoryName: string) {
-  const category = await getCategoryByName(categoryName);
-  return {
-    data: category,
-    error: category ? null : new Error("Category not found"),
-  };
-}
-
-export async function fetchProductsByCategory(
-  categoryName: string
-): Promise<Product[] | null> {
-  const category = await getCategoryByName(categoryName);
-  if (!category) return [];
-
-  return await getProductsByCategory(category.id);
 }
 
 export async function getCategoryHierarchy(
@@ -340,49 +137,3 @@ export const getValidImage = (url?: string | null) => {
   }
   return `/images/${url}`;
 };
-
-export async function fetchSections() {
-  console.log("🔍 Fetching sections...");
-
-  const { data, error } = await supabase.from("sections").select("*");
-
-  console.log("📊 Supabase response:", { data, error });
-
-  if (error) {
-    console.error("❌ Error fetching sections:", error);
-    return null;
-  }
-
-  if (!data || data.length === 0) {
-    console.warn("⚠️ No sections found in database");
-    return null;
-  }
-
-  const sectionData = data.reduce((acc, item) => {
-    console.log("Processing item:", item);
-    acc[item.key] = {
-      title: item.title,
-      text: item.text,
-      img_url: item.img_url,
-    };
-    return acc;
-  }, {} as Record<string, { title: string; text: string; img_url: string }>);
-
-  console.log("✅ Final sectionData:", sectionData);
-
-  return sectionData;
-}
-
-export async function fetchOffers() {
-  const { data: products, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("is_offer", true);
-
-  if (error) {
-    console.error("Error fetching offers:", error);
-    return [];
-  }
-
-  return products || [];
-}

@@ -80,7 +80,8 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center relative justify-center bg-default-color">
+      <span className="absolute top-10 text-white left-10">Methys</span>
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
@@ -149,8 +150,8 @@ function ResetPasswordForm() {
           <p className="text-sm text-gray-600">
             Remember your password?
             <Link
-              onClick={() => router.push("/login")}
-              className="font-medium text-vintage-green ml-1" href={""}            >
+              href={'/login'}
+              className="font-medium text-vintage-green ml-1"             >
               Sign in
             </Link>
           </p>

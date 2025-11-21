@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/_lib/supabaseClient";
 import SignUpPage from "../login/page";
-import Logo from "../../../svgs/logo";
-
+import Image from "next/image";
 import {
   createAccountSchema,
   type CreateAccountForm,
@@ -85,13 +84,20 @@ const CreateAccountPage = () => {
 
       <div
         className="relative md:w-1/2 h-64 md:h-auto flex flex-col justify-between"
-        style={{
-          backgroundImage: "url('AuthClothPhoto.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/80 to-white"></div>
+        // style={{
+        //   backgroundImage: "url('AuthClothPhoto.jpg')",
+        //   backgroundSize: "cover",
+        //   backgroundPosition: "center",
+        // }}
+        >
+        <Image 
+        src={'/AuthClothPhoto.jpg'}
+        alt="Methys"
+        className="object-cover"
+        fill
+        />
+      
+        <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/80 to-gray-50"></div>
         <div className="relative z-10 p-6 md:p-12 text-white flex flex-col justify-center h-full">
           <Link href="/" className="block mb-8 w-40 md:w-64">
             Methys
@@ -106,21 +112,21 @@ const CreateAccountPage = () => {
             </p>
           </section>
           <div className="mt-8 text-sm md:text-lg">
-            <p>2025 UrbanValor. All rights reserved.</p>
+            <p>2025 <span className="text-default-yellow">UrbanValor</span>. All rights reserved.</p>
           </div>
         </div>
       </div>
 
-      <div className="md:w-1/2 w-full flex flex-col items-center justify-center bg-white px-6 md:px-16 py-12 md:py-0">
+      <div className="md:w-1/2 w-full flex flex-col items-center justify-center bg-gray-50 px-6 md:px-16 py-12 md:py-0">
         <div className="flex justify-end w-full mb-8  text-sm md:text-lg">
           <p className="mr-2 text-gray-900">Already a member?</p>
-          <a
-            href="#"
+          <Link
+            href="/login"
             onClick={handleSignInClick}
             className="text-vintage-green  hover:underline"
           >
             Sign in
-          </a>
+          </Link>
         </div>
 
         <form
@@ -258,9 +264,9 @@ const CreateAccountPage = () => {
               />
               <span>
                 I accept the{" "}
-                <a href="#" className="text-default-cold hover:underline">
+                <Link href="#" className="text-default-cold hover:underline">
                   Terms and Conditions
-                </a>
+                </Link>
               </span>
             </label>
             {errors.acceptTerms && (

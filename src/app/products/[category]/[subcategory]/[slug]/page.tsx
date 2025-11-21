@@ -1,51 +1,43 @@
-
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import {
-  getCategoryByName,
+  getCategoryBySlug,
   getSubcategories,
-  fetchProductBySlug,
   getValidImage,
 } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
-import ProductActions from "./ProductActionsInline";
+import ProductActionsInline from "./ProductActionsInline";
 import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
+import { fetchProductBySlug } from "@/_lib/backend/productBySlug/action";
 
 interface PageProps {
-  params: Promise<{
+  params: {
     category: string;
     subcategory: string;
     slug: string;
-  }>;
+  };
 }
 
-export default async function ProductDetailPage({ params }: PageProps) {
-  const { category, subcategory, slug } = await params;
-  
-  // Decode URL parameters
+export default async function ProductDetailPage({ params, searchParams }: PageProps & { searchParams?: { [key: string]: string | string[] | undefined } }) {
+
+  const resolvedParams = await params;
+  const { category, subcategory, slug } = resolvedParams;
+
   const categorySlug = decodeURIComponent(category);
   const subcategorySlug = decodeURIComponent(subcategory);
   const productSlug = decodeURIComponent(slug);
-  
-  const categoryName = categorySlug.replace(/-/g, " ").toLowerCase().trim();
-  const subcategoryName = subcategorySlug.replace(/-/g, " ").toLowerCase().trim();
 
   try {
-    const parentCategory = await getCategoryByName(categoryName);
-    if (!parentCategory) {
+    
+    const parentCategory = await getCategoryBySlug(categorySlug);
+    if (!parentCategory || parentCategory.parent_id !== null) {
       notFound();
     }
 
     const subcategories = await getSubcategories(parentCategory.id);
-    
+
     const currentCategory = subcategories.find(
-      (subcat) =>
-        (subcat.slug && decodeURIComponent(subcat.slug) === subcategorySlug) ||
-        subcat.name.toLowerCase().trim() === subcategoryName ||
-        (subcat.slug && subcat.slug === subcategorySlug) ||
-        subcat.name.toLowerCase().includes(subcategoryName) ||
-        subcategoryName.includes(subcat.name.toLowerCase())
+      (subcat) => subcat.slug === subcategorySlug
     );
 
     if (!currentCategory) {
@@ -53,74 +45,138 @@ export default async function ProductDetailPage({ params }: PageProps) {
     }
 
     const product = await fetchProductBySlug(currentCategory.id, productSlug);
+
     if (!product) {
       notFound();
     }
 
     return (
       <HeaderProvider forceOpaque={true}>
-        <section className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh] pt-32 p-2 font-roboto text-vintage-green">
-         <Breadcrumb LinkclassName={"hover:text-vintage-brown"} />
+        <section className="relative w-full pt-20 pb-32 font-roboto text-vintage-green">
+          {/* Breadcrumb */}
+          <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+            <Breadcrumb LinkclassName="hover:text-vintage-brown text-sm uppercase tracking-wider" />
+          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="space-y-4">
-              <div className="aspect-square relative overflow-hidden bg-gray-100">
-                <Image
-                  src={getValidImage(product.image_url ?? "/AuthClothPhoto.jpg")}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                  priority
-                />
-                {product.is_offer && (
-                  <div className="absolute top-4 left-4 bg-red-700 text-white text-sm px-3 py-2 rounded-lg">
-                    SPECIAL OFFER
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className=" mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+              {/* LEFT SIDE - PRODUCT IMAGES */}
+              <div className="space-y-0">
+                {/* Main Image */}
+                <div className="relative bg-gray-50 overflow-hidden" style={{ aspectRatio: '3/4' }}>
+                  <Image
+                    src={getValidImage(product.image_url ?? "/AuthClothPhoto.jpg")}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-center"
+                    priority
+                  />
 
-            <div className="space-y-6">
-              <div>
-                <h1 className="text-3xl md:text-4xl text-vintage-green mb-4">
-                  {product.name}
-                </h1>
-                <div className="flex items-center space-x-4 mb-6">
-                  <span className="text-3xl">${product.price}</span>
                   {product.is_offer && (
-                    <span className="bg-vintage-brown text-red-700 text-sm px-3 py-1 rounded-full">
-                      On Sale
-                    </span>
+                    <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 tracking-wider">
+                      NEW IN
+                    </div>
                   )}
                 </div>
-              </div>
 
-              <div>
-                <h3 className="text-lg text-gray-900 mb-3">Description</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {product.description}
-                </p>
-              </div>
-
-              <div className="border-t pt-6">
-                <h3 className="text-lg text-text-vintage-green mb-4">
-                  Product Information
-                </h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Product ID:</span>
-                    <span>#{product.id}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Added:</span>
-                    <span>
-                      {new Date(product.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
+                {/* Secondary Image */}
+                <div className="relative bg-gray-50 overflow-hidden mt-0" style={{ aspectRatio: '3/4' }}>
+                  <Image
+                    src={getValidImage(product.image_url ?? "/AuthClothPhoto.jpg")}
+                    alt={`${product.name} - alternate view`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-center"
+                  />
                 </div>
               </div>
-              <ProductActions product={product} />
+
+              <div className="lg:sticky lg:top-24 lg:h-fit space-y-8">
+                <div>
+                  <h1 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
+                    {product.name}
+                  </h1>
+                  
+                  {product.description && (
+                    <p className="text-sm text-gray-600 mb-4">
+                      {product.description.split(' ').slice(0, 5).join(' ')}
+                    </p>
+                  )}
+
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-xl font-normal">€{product.price}</span>
+                    {product.is_offer && (
+                      <span className="text-sm text-gray-500 line-through">
+                        €{(parseFloat(product.price.toString()) * 1.2).toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <ProductActionsInline product={product} />
+
+                <div className="border-t pt-6 space-y-4">
+                  <details className="group">
+                    <summary className="flex justify-between items-center cursor-pointer list-none">
+                      <span className="text-sm font-medium">Free delivery over €150</span>
+                      <span className="transition group-open:rotate-45">+</span>
+                    </summary>
+                    <div className="mt-3 text-sm text-gray-600 leading-relaxed">
+                      <p>Expected delivery: November 26 - 28</p>
+                    </div>
+                  </details>
+
+                  <details className="group border-t pt-4">
+                    <summary className="flex justify-between items-center cursor-pointer list-none">
+                      <span className="text-sm font-medium">Extended returns until January 23rd</span>
+                      <span className="transition group-open:rotate-45">+</span>
+                    </summary>
+                    <div className="mt-3 text-sm text-gray-600 leading-relaxed">
+                      <p>Need help? Contact us or check our FAQ</p>
+                    </div>
+                  </details>
+                </div>
+
+                <div className="border-t pt-6">
+                  <p className="text-sm text-gray-700 leading-relaxed mb-6">
+                    {product.description}
+                  </p>
+
+                  <div className="space-y-2 text-sm">
+                    <p>- 100% Cotton (Organic)</p>
+                    <p>- Brushed twill fabric</p>
+                    <p>- Loose fit</p>
+                    <p>- All-over check pattern</p>
+                    <p>- Single chest pocket with button closure</p>
+                    <p>- Full button placket</p>
+                    <p>- Adjustable buttoned cuffs</p>
+                    <p>- Straight hem</p>
+                  </div>
+                </div>
+
+                {product.product_variants?.length > 0 && (
+                  <div className="border-t pt-6">
+                    <h3 className="text-sm font-medium mb-3">Size & Stock Information</h3>
+                    <div className="space-y-2">
+                      {product.product_variants.map((variant, index) => (
+                        <div 
+                          key={index} 
+                          className="flex justify-between items-center text-sm py-2 border-b border-gray-100"
+                        >
+                          <span>Size {variant.size}</span>
+                          <span className={variant.quantity > 0 ? "text-vintage-brown" : "text-red-600"}>
+                            {variant.quantity > 0 ? `${variant.quantity} in stock` : "Out of stock"}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="text-xs text-gray-500">
+                  Product ID: #{product.id}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -133,23 +189,21 @@ export default async function ProductDetailPage({ params }: PageProps) {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { category, subcategory, slug } = await params;
-  const productSlug = decodeURIComponent(slug);
-  const subcategorySlug = decodeURIComponent(subcategory);
+  const resolvedParams = await params;
+  const { category, subcategory, slug } = resolvedParams;
+
   const categorySlug = decodeURIComponent(category);
-  
-  const categoryName = categorySlug.replace(/-/g, " ").toLowerCase().trim();
-  const subcategoryName = subcategorySlug.replace(/-/g, " ").toLowerCase().trim();
+  const subcategorySlug = decodeURIComponent(subcategory);
+  const productSlug = decodeURIComponent(slug);
 
   try {
-    const parentCategory = await getCategoryByName(categoryName);
+    const parentCategory = await getCategoryBySlug(categorySlug);
     if (!parentCategory) return { title: "Product Not Found" };
 
     const subcategories = await getSubcategories(parentCategory.id);
+
     const currentCategory = subcategories.find(
-      (subcat) =>
-        (subcat.slug && decodeURIComponent(subcat.slug) === subcategorySlug) ||
-        subcat.name.toLowerCase().trim() === subcategoryName
+      (subcat) => subcat.slug === subcategorySlug
     );
 
     if (!currentCategory) return { title: "Product Not Found" };

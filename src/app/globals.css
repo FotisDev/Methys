@@ -7,7 +7,7 @@
 
   --font-poppins: var(--font-poppins), sans-serif;
   --font-roboto: var(--font-roboto), sans-serif;
-  --color-vintage-brown: #FFF0DD;
+  --color-vintage-brown: #FCB53B;
   --color-vintage-green: #3B3B1A;
   --color-default-color:#D1D3D4;
   --color-default-cold:#1B3C53;
@@ -36,7 +36,7 @@ body {
 
 @layer components {
   .hover-colors {
-    @apply bg-default-color text-vintage-green hover:bg-vintage-green hover:text-white;
+    @apply bg-default-color text-vintage-green hover:bg-vintage-green hover:text-white text-center;
   }
 }
 

@@ -10,7 +10,7 @@ import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
 import { useHeaderContext } from "../providers/HeaderProvider";
-import { useCart } from "../providers/CardProvider";
+import { useCart } from "../providers/CartProvider";
 
 const Menu = () => {
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
@@ -23,12 +23,14 @@ const Menu = () => {
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  const { cartItems } = useCart();
+  const { cart, getCartItemsCount } = useCart(); 
 
-  const cartItemCount = cartItems.reduce(
-    (sum, item) => sum + (item.quantityInCart || 1),
-    0
-  );
+  const cartItemCount = getCartItemsCount
+    ? getCartItemsCount()
+    : cart.reduce(
+        (sum, item) => sum + (item?.quantity || 0), 
+        0
+      );
 
   const { isWishlistOpen, wishlistCount, toggleWishlist, closeWishlist } =
     useWishlist();
@@ -133,11 +135,10 @@ const Menu = () => {
     "text-xs",
     "transition-all",
     "duration-300",
-    'border',
-    'border-gray-50',
-    'shadow',
-    'shadow-gray-50',
-
+    "border",
+    "border-gray-50",
+    "shadow",
+    "shadow-gray-50",
   ];
 
   if (isOpaque) {

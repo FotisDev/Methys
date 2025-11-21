@@ -5,14 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   fetchCategories,
-  fetchProducts,
-  CategoryBackendType,
 
 } from "@/_lib/helpers";
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
-import { Product } from "@/_lib/types";
+import { CategoryBackendType, Product, ProductInDetails } from "@/_lib/types";
+import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 export default function ProductList() {
   const [categories, setCategories] = useState<CategoryBackendType[] | null>(
     null
@@ -29,7 +28,7 @@ export default function ProductList() {
         }
         console.debug("Fetched categories:", categoriesData);
 
-        let productsData: Product[] = [];
+        let productsData: ProductInDetails[] = [];
         try {
           const products = await fetchProducts();
           if (products) {
@@ -45,7 +44,7 @@ export default function ProductList() {
         const mappedCategories: CategoryBackendType[] = categoriesData.map(
           (cat) => {
             const product = productsData.find(
-              (p) => p.category_men_id === cat.id
+              (p) => p?.categoryformen?.id === cat.id
             );
             return {
               ...cat,
@@ -54,7 +53,6 @@ export default function ProductList() {
             };
           }
         );
-        console.log(mappedCategories);
 
         setCategories(mappedCategories);
       } catch (err) {

@@ -11,10 +11,7 @@ export async function POST(request) {
     const body = await request.json();
     const { email, password, firstname, lastname, telephone, birthday } = body;
 
-    // Debug: Log what we received
-    console.log("Received data:", { email, password, firstname, lastname, telephone, birthday });
 
-    // Validate required fields
     if (!email || !password || !firstname) {
       console.log("Validation failed:", { 
         email: !!email, 
@@ -27,7 +24,6 @@ export async function POST(request) {
       );
     }
 
-    // Create user in Supabase Auth
     const { data: signUpData, error: signUpError } =
       await supabase.auth.admin.createUser({
         email,
@@ -41,15 +37,14 @@ export async function POST(request) {
 
     const userId = signUpData.user.id;
 
-    // Insert into your custom users table
     const { error: insertError } = await supabase.from("users").insert([
       {
         id: userId,
         firstname,
-        lastname: lastname || '', // Provide default if empty
+        lastname: lastname || '', 
         email,
-        telephone: telephone || '', // Provide default if empty
-        birthday: birthday || null, // Provide null if empty
+        telephone: telephone || '', 
+        birthday: birthday || null, 
         role: "user",
       },
     ]);
@@ -57,7 +52,6 @@ export async function POST(request) {
     if (insertError) {
       console.error("User table insert error:", insertError);
       
-      // IMPORTANT: Clean up the auth user if custom user creation fails
       try {
         await supabase.auth.admin.deleteUser(userId);
         console.log("Cleaned up auth user after failed insert");

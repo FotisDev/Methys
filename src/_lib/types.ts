@@ -1,17 +1,13 @@
-import { ReactElement } from "react";
 
-export type MenuOption = {
-  Text: string;
-  URL: string;
-  Target?: boolean;
-};
-export type SideMenuOption = {
-  Text: string;
-  URL: string;
-  Icon: ReactElement;
-  Target?: boolean;
-};
-export interface PageProps {
+export type CategoryBackendType = {
+  id: number;
+  name: string;
+  parent_id?: number | null;
+  image_url?: string;
+  slug?: string;
+}
+
+export type PageProps = {
   params: {
     slug: string;
   };
@@ -35,15 +31,15 @@ export type Category = {
   category_name: string;
   parent_id?: number;
   image_url: string;
-}
+};
 
 export type CategoryWithImage = Category & { image?: string };
 
 export type CategoryParams = {
-  params:{
-    category:string,
-  }
-}
+  params: {
+    category: string;
+  };
+};
 
 export type Product = {
   id: number;
@@ -56,4 +52,32 @@ export type Product = {
   slug: string;
   quantity: number;
   category_men_id: number;
-}
+};
+
+export type ProductInDetails = {
+  id: number;
+  name: string;
+  slug: string | null;
+  price: number;
+  description: string | null;
+  image_url: string | null;
+  is_offer?: boolean;
+  categoryformen: {
+    id: number;
+    name: string;
+    slug: string | null;
+    parent: {
+      id: number;
+      name: string;
+      slug: string | null;
+    } | null;
+  } | null;
+  product_variants: {
+    size: string;
+    price: number | null;
+    quantity: number;
+  }[];
+};
+
+
+

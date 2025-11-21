@@ -9,27 +9,6 @@ export interface SocialProps {
     Linkedin: string | null;
   };
 }
-export interface ReviewProps extends BackendError {
-  id: number;
-  slug: string;
-  comment: string;
-  name: string;
-  rating: number;
-  image?: {
-    url: string;
-  };
-}
-export interface SearchInputProps {
-  selectedRatings: number[];
-  toggleRating: (rating: number) => void;
-}
-
-export interface MetadataProps {
-  MetaTitle: string;
-  MetaDescription: string;
-  OpenGraphImageUrl: string;
-  canonical: string;
-}
 export interface ForgotPasswordProps extends BackendError {
   forgotPassword: string;
   description: string;
@@ -58,19 +37,12 @@ export interface DiagonalArrowSVGProps {
   size?: string | number;
   color: string;
 }
-export interface ClassNameProps {
-  className?: string;
-}
-export interface RegionProps {
-  Name: string;
-}
+
 export interface ImageProps {
   url?: string;
   icon?: string | null;
 }
-export interface ClassNameProps {
-  className?: string;
-}
+
 export interface VideoPlayButtonSVGProps {
   circleColor?: string;
   pathColor?: string;
@@ -124,7 +96,7 @@ export interface CategoryBackendType {
   id: number;
   category_name: string;
   parent_id?: number;
-  image_url?: string | undefined; // optional now
+  image_url?: string | undefined; 
 }
 
 export interface ContactPageProps {

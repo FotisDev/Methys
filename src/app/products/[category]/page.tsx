@@ -1,14 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  getCategoryByName,
-  getSubcategories,
-  fetchProducts,
-  CategoryBackendType,
-} from "@/_lib/helpers";
+import { getCategoryBySlug, getSubcategories } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
+import { CategoryBackendType } from "@/_lib/types";
+import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 
 interface CategoryPageProps {
   params: { category: string };
@@ -19,7 +16,6 @@ type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
 };
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  // ✅ σωστό: το params είναι πλέον promise, οπότε το κάνουμε await
   const { category } = await params;
   const categoryName = category.replace(/-/g, " ");
 
@@ -28,7 +24,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   let error: string | null = null;
 
   try {
-    const foundCategory = await getCategoryByName(categoryName);
+    const foundCategory = await getCategoryBySlug(categoryName);
 
     if (!foundCategory || foundCategory.parent_id !== null) {
       throw new Error(`Main category "${categoryName}" not found`);
@@ -42,7 +38,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     ]);
 
     subcategories = subcategoriesData.map((subcat) => {
-      const product = allProducts?.find((p) => p.category_men_id === subcat.id);
+      const product = allProducts?.find(
+        (p) => p?.categoryformen?.id === subcat.id
+      );
       return {
         ...subcat,
         image_url: product?.image_url ?? "/AuthClothPhoto.jpg",
@@ -74,7 +72,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </header>
 
           {subcategories.length === 0 ? (
-            <section className="text-center py-16" aria-labelledby="no-subcategories">
+            <section
+              className="text-center py-16"
+              aria-labelledby="no-subcategories"
+            >
               <div className="text-6xl mb-4" role="img" aria-label="Empty box">
                 📦
               </div>
@@ -93,9 +94,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-1">
                 {subcategories.map((subcategory) => {
-                  const href = `/products/${category}/${subcategory.name
-                    .replace(/\s+/g, "-")
-                    .toLowerCase()}`;
+                 const href = `/products/${category}/${subcategory.slug}`;
 
                   return (
                     <article key={subcategory.id} className="group">

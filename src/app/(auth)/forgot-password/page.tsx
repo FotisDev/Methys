@@ -80,7 +80,7 @@ const ForgotPasswordPage = () => {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('AuthClothPhoto.jpg')" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/90 to-white" />
+        <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/90 to-gray-50" />
         <div className="relative z-10 p-6 md:p-8 text-white">
           <Link href="/" className="block w-60 md:w-96 mb-6 md:mb-8">
             <Logo className="w-full" size={250} />
@@ -97,18 +97,18 @@ const ForgotPasswordPage = () => {
         </div>
         <div className="relative z-10 p-6 md:p-8">
           <p className="text-sm md:text-xl text-white">
-            2025 UrbanValor. All rights reserved.
+            2025 <span className="text-default-yellow">UrbanValor</span>. All rights reserved.
           </p>
         </div>
       </div>
 
       {/* RIGHT */}
-      <div className="w-full md:w-1/2 flex flex-col bg-white items-center justify-center relative py-10 px-6">
+      <div className="w-full md:w-1/2 flex flex-col bg-gray-50 items-center justify-center relative py-10 px-6">
         <div className="absolute top-4 right-4 md:top-28 md:right-24 font-poppins text-sm md:text-lg">
           <label className="text-lg text-black">New user?</label>
           <span>
             <a
-              href="#"
+              href="/createAccount"
               onClick={() => setShowCreateAccount(true)}
               className="text-lg text-vintage-green hover:underline"
             >
@@ -148,13 +148,13 @@ const ForgotPasswordPage = () => {
             Submit
           </button>
           <div className="flex justify-start">
-            <a
-              href="#"
+            <Link
+              href="/login"
               onClick={() => setShowSignUpPage(true)}
               className="text-sm text-vintage-green font-poppins hover:underline"
             >
               Back to sign in
-            </a>
+            </Link>
           </div>
         </form>
       </div>

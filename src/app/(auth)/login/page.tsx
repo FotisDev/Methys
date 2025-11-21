@@ -98,53 +98,59 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-full">
-      <div className="relative w-full sm:w-auto md:w-1/2 h-[150vh] md:h-full flex flex-col justify-between">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('AuthClothPhoto.jpg')" }}
+    <section className="flex flex-col md:flex-row h-screen w-full font-roboto">
+      <div
+        className="relative md:w-1/2 h-64 md:h-auto flex flex-col justify-between"
+      >
+        <Image
+          src={"/AuthClothPhoto.jpg"}
+          alt="Methys"
+          className="object-cover"
+          fill
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-vintage-green to-white" />
-        <div className="relative z-10 p-6 md:p-8 text-default-green">
-          <Link href="/" className="block w-64 md:w-96 mb-4 md:mb-8">
-            <Logo className="w-full" size={250} />
+
+        <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/80 to-gray-50"></div>
+        <div className="relative z-10 p-6 md:p-12 text-white flex flex-col justify-center h-full">
+          <Link href="/" className="block mb-8 w-40 md:w-64">
+            Methys
           </Link>
-          <section className="mt-10 md:mt-48 text-vintage-green">
-            <h1 className="text-3xl md:text-6xl font-bold mb-2 md:mb-4">
+          <section className="mt-auto">
+            <h1 className="text-3xl md:text-6xl  mb-4 text-vintage-green leading-tight">
               Dress Beyond Limits..
             </h1>
-            <p className="text-lg md:text-3xl font-roboto">
+            <p className="text-base md:text-2xl  text-vintage-green max-w-md">
               Elevate your everyday. Explore styles designed to turn heads
               crafted for those who dont settle.
             </p>
           </section>
-        </div>
-        <div className="relative z-10 p-6 md:p-8 text-white text-sm md:text-xl">
-          2025 UrbanValor. All rights reserved.
+          <div className="mt-8 text-sm md:text-lg">
+            <p>
+              2025 <span className="text-default-yellow">UrbanValor</span>. All
+              rights reserved.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-white relative py-8 px-6 md:px-12">
-        <div className="absolute top-6 right-6 md:top-28 md:right-24 text-sm md:text-lg font-poppins">
+      <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-gray-50 relative py-8 px-6 md:px-12">
+        <div className="absolute top-6 right-6 md:top-28 md:right-24 text-sm md:text-lg ">
           <label htmlFor="remember-me" className="text-gray-900 mr-1">
             New user?
           </label>
-          <a
-            href="#"
+          <Link
+            href="/createAccount"
             onClick={handleCreateAccountClick}
             className="text-vintage-green hover:underline"
           >
             Create an account
-          </a>
+          </Link>
         </div>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-lg space-y-6 mt-16"
         >
-          <h1 className="text-xl md:text-2xl font-bold text-vintage-green">
-            Sign in
-          </h1>
+          <h1 className="text-xl md:text-2xl  text-vintage-green">Sign in</h1>
 
           <div className="flex flex-col md:flex-row gap-4 md:gap-6">
             <div
@@ -157,16 +163,14 @@ const SignUpPage = () => {
               } transition-all rounded-3xl w-full`}
             >
               <Image
-                src="/images/google.jpg" 
+                src="/google.jpg"
                 loader={myImageLoader}
                 className="w-10 h-10 rounded-full opacity-70"
                 width={40}
                 height={40}
-                alt="Google"
+                alt="Google.jpg"
               />
-              <p className="text-vintage-green font-poppins text-sm">
-                Sign in with Google
-              </p>
+              <p className="text-vintage-green  text-sm">Sign in with Google</p>
             </div>
 
             {/* Facebook Sign In */}
@@ -180,32 +184,30 @@ const SignUpPage = () => {
               } transition-all rounded-3xl w-full`}
             >
               <Image
-                src="/images/facebook.png" 
+                src="/facebook.png"
                 loader={myImageLoader}
-                className="w-10 h-10 rounded-full opacity-70"
+                className="w-9 h-9 rounded-full opacity-70"
                 width={40}
                 height={40}
                 alt="Facebook"
               />
-              <p className="text-vintage-green font-poppins text-sm">
+              <p className="text-vintage-green  text-sm">
                 Sign in with Facebook
               </p>
             </div>
           </div>
 
-          <div className="text-center text-vintage-green text-sm font-poppins">
+          <div className="text-center text-vintage-green text-sm ">
             or sign in using email
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-poppins text-vintage-green">
-                Email
-              </label>
+              <label className="block text-sm  text-vintage-green">Email</label>
               <input
                 {...register("email")}
                 type="email"
-                className={`mt-1 block w-full h-12 rounded-xl text-center border shadow-sm font-poppins focus:ring-vintage-green focus:border-vintage-green ${
+                className={`mt-1 block w-full h-12 rounded-xl text-center border shadow-sm  focus:ring-vintage-green focus:border-vintage-green ${
                   errors.email ? "border-red-500" : "border-vintage-green"
                 }`}
                 placeholder="Please enter your email"
@@ -218,13 +220,13 @@ const SignUpPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-poppins text-vintage-green">
+              <label className="block text-sm  text-vintage-green">
                 Password
               </label>
               <input
                 {...register("password")}
                 type="password"
-                className={`mt-1 block w-full h-12 rounded-xl text-center border shadow-sm font-poppins focus:ring-blue-500 focus:border-blue-500 ${
+                className={`mt-1 block w-full h-12 rounded-xl text-center border shadow-sm  focus:ring-blue-500 focus:border-blue-500 ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Enter your password"
@@ -246,13 +248,13 @@ const SignUpPage = () => {
               />
               Remember me
             </label>
-            <a
-              href="#"
+            <Link
+              href="/forgot-password"
               onClick={handleForgotPasswordClick}
-              className="text-vintage-green font-poppins hover:underline"
+              className="text-vintage-green  hover:underline"
             >
               Forgot Password?
-            </a>
+            </Link>
           </div>
 
           <button
@@ -264,13 +266,11 @@ const SignUpPage = () => {
           </button>
 
           {error && (
-            <p className="text-red-600 font-semibold text-center text-sm">
-              {error}
-            </p>
+            <p className="text-red-600  text-center text-sm">{error}</p>
           )}
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 

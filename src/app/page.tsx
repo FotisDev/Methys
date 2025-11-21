@@ -7,8 +7,6 @@ import type { Metadata } from "next";
 import React, { Suspense } from "react";
 import CategoriesMainPage from "@/components/sections/CategoriesMainPage";
 import NewCollectionClothes from "@/components/sections/NewCollection";
-import ButtonsInRow from "@/components/sections/ButtonsInRow";
-import { fetchSections } from "@/_lib/helpers";
 import ThreeIcons from "@/components/sections/ThreeIcons";
 
 export const metadata: Metadata = {
@@ -19,8 +17,6 @@ export const metadata: Metadata = {
 
 export default async function Home() {
 
-  const sectionData = await fetchSections();
-console.log(JSON.stringify(sectionData,null,2)); 
   return (
     <div>
       <HeaderProvider forceOpaque={false}>
@@ -29,13 +25,7 @@ console.log(JSON.stringify(sectionData,null,2));
         <Suspense>
           <PhotoGallery />
           <CategoriesMainPage />
-          {/* 
-          
-          <VideoSection />
-          <BookNow />
-          */}
           <ThreeIcons />
-           {/* <ButtonsInRow data={sectionData} defaultSelected="recommended" /> */}
           <Footer />
         </Suspense>
       </HeaderProvider>
