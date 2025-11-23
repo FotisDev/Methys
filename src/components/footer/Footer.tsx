@@ -40,11 +40,11 @@ export default function Footer({ showNewsLetter = true }: FooterProps) {
   return (
     <>
       {showNewsLetter && <Newsletter />}
-      <footer className="bg-vintage-white w-full text-vintage-brown text-sm sm:text-base font-poppins">
+      <footer className="bg-vintage-white w-full text-vintage-green text-sm sm:text-base font-poppins">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-40 sm:pt-36 lg:pt-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
             <div className="space-y-6 text-center lg:text-left">
-              <h3 className="text-lg sm:text-xl lg:text-2xl  text-sahara">
+              <h3 className="text-lg sm:text-xl lg:text-2xl  text-vintage-green">
                 Download the App
               </h3>
               <div className="flex flex-col sm:flex-row items-center gap-2">
@@ -85,7 +85,7 @@ export default function Footer({ showNewsLetter = true }: FooterProps) {
                 {["Fb", "YT", "In", "IG", "TT"].map((social) => (
                   <div
                     key={social}
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black  hover:bg-gray-200 transition-colors"
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full cursor-pointer flex items-center justify-center text-black  hover:bg-vintage-white transition-colors"
                   >
                     {social}
                   </div>

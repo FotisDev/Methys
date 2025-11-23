@@ -31,7 +31,7 @@ const HeroSection = () => {
         <div className="relative z-10 flex items-center ml-2 w-full h-full">
           <Link 
             href="/products" 
-            className="text-vintage-brown text-md hover:underline "
+            className="text-vintage-white text-md hover:underline "
           >
             Explore Our Collection
           </Link>

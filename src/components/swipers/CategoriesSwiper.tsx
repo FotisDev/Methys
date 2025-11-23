@@ -10,11 +10,11 @@ export default function CategoriesSwiper({
 }) {
   if (!categories?.length) {
     return (
-      <p className="text-center mt-10 text-vintage-white">No categories found.</p>
+      <p className="text-center  text-vintage-white">No categories found.</p>
     );
   }
   return (
-    <div className="w-full py-8 sm:py-12 md:py-16">
+    <div className="w-full">
       <GenericSwiper
         items={categories}
         slidesPerView={1}

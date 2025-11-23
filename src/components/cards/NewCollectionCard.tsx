@@ -79,16 +79,15 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
   };
 
   const getCategoryPath = (): string => {
-  const category = item.categoryformen;
-  const parent = category?.parent;
+    const category = item.categoryformen;
+    const parent = category?.parent;
 
-  if (parent?.slug && category?.slug) {
-    return `${parent.slug}/${category.slug}`;
-  }
+    if (parent?.slug && category?.slug) {
+      return `${parent.slug}/${category.slug}`;
+    }
 
-  return category?.slug ?? "uncategorized";
-};
-
+    return category?.slug ?? "uncategorized";
+  };
 
   return (
     <Link
@@ -96,8 +95,8 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
       className="group block overflow-hidden transition font-roboto"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-    > 
-      <section className="relative w-full border-b border-gray-200 ">
+    >
+      <section className="relative w-full border-b border-2 border-vintage-green p-0.5 ">
         <div className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh]">
           <Image
             src={hovered ? "/articles.jpg" : item.image_url ?? "/Articles.jpg"}
@@ -134,12 +133,14 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="relative pt-3 text-vintage-green">
-          <h3 className="text-base left-3 top-1 line-clamp-1 bg-gray-100">{item.name}</h3>
+        <div className="relative pt-3 text-vintage-green ">
+          <h3 className="text-base left-3 top-1 line-clamp-1 bg-vintage-white">
+            {item.name}
+          </h3>
 
           <div className="text-xs md:text-base text-vintage-green/70  block flex-wrap ">
             {availableSizes.length > 0 ? (
-              <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-wrap bg-gray-100">
+              <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-wrap bg-vintage-white">
                 {availableSizes.map((size) => (
                   <span
                     key={size}

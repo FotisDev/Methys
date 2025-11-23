@@ -18,7 +18,7 @@ const PhotoGallery: React.FC = () => {
           </div>
           <Link
             href="/products"
-            className="absolute bottom-6 left-6  px-6 py-3 text-sm  text-vintage-brown hover:underline"
+            className="absolute bottom-6 left-6  px-6 py-3 text-sm  text-vintage-white hover:underline"
           >
             Explore more about our latest Collection
           </Link>

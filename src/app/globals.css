@@ -130,3 +130,9 @@ body {
     padding-bottom: 2rem;
   }
 }
+
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--color-vintage-white) !important;
+}

@@ -23,14 +23,11 @@ const Menu = () => {
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  const { cart, getCartItemsCount } = useCart(); 
+  const { cart, getCartItemsCount } = useCart();
 
   const cartItemCount = getCartItemsCount
     ? getCartItemsCount()
-    : cart.reduce(
-        (sum, item) => sum + (item?.quantity || 0), 
-        0
-      );
+    : cart.reduce((sum, item) => sum + (item?.quantity || 0), 0);
 
   const { isWishlistOpen, wishlistCount, toggleWishlist, closeWishlist } =
     useWishlist();
@@ -217,10 +214,16 @@ const Menu = () => {
                 className="relative group"
                 aria-label={`Cart with ${cartItemCount} items`}
               >
-                <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
-                  <CartSvg className="w-6 h-6 group-hover:text-vintage-green transition-colors" />
+                <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors group">
+                  <CartSvg
+                    className={`w-6 h-6 transition-colors ${
+                      isOpaque
+                        ? "text-vintage-green group-hover:text-default-yellow"
+                        : "text-white group-hover:text-vintage-green"
+                    }`}
+                  />
                   {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
+                    <span className="absolute -top-1 -right-1 bg-vintage-brown text-white text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
                       {cartItemCount > 99 ? "99+" : cartItemCount}
                     </span>
                   )}
