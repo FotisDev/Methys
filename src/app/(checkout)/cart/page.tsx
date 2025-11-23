@@ -86,7 +86,7 @@ const CartPage = () => {
             Your cart is empty
           </h2>
           <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
-            Looks like you haven't added any items to your cart yet.
+            Looks like you havent added any items to your cart yet.
           </p>
           <Link href="/products">
             <button className="bg-default-color text-white py-2.5 sm:py-3 px-6 sm:px-8 rounded-lg transition-colors duration-200 text-base sm:text-lg hover:bg-default-cold">

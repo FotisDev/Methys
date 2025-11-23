@@ -7,27 +7,27 @@ import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { CategoryBackendType } from "@/_lib/types";
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 
-interface CategoryPageProps {
-  params: { category: string };
-}
-
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
 };
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
   const { category } = await params;
-  const categoryName = category.replace(/-/g, " ");
+  const categorySlug = decodeURIComponent(category);
 
   let categoryData: CategoryBackendType | null = null;
   let subcategories: SubcategoryWithImage[] = [];
   let error: string | null = null;
 
   try {
-    const foundCategory = await getCategoryBySlug(categoryName);
+    const foundCategory = await getCategoryBySlug(categorySlug);
 
     if (!foundCategory || foundCategory.parent_id !== null) {
-      throw new Error(`Main category "${categoryName}" not found`);
+      throw new Error(`Main category "${categorySlug}" not found`);
     }
 
     categoryData = foundCategory;
@@ -39,15 +39,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
     subcategories = subcategoriesData.map((subcat) => {
       const product = allProducts?.find(
-        (p) => p?.categoryformen?.id === subcat.id
+        (p) => p?.categoryformen?.id === subcat.id && p?.image_url
       );
+
       return {
         ...subcat,
         image_url: product?.image_url ?? "/AuthClothPhoto.jpg",
       } as SubcategoryWithImage;
     });
   } catch (err) {
-    console.error("Error loading category data:", err);
+    console.error("Error loading category page:", err);
     error = err instanceof Error ? err.message : "Unknown error";
   }
 
@@ -57,71 +58,68 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <HeaderProvider forceOpaque={true}>
-      <main className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh] pt-32 p-2 font-roboto">
-        <div className="mx-auto">
-          <Breadcrumb LinkclassName={"hover:text-vintage-brown"} />
-          <hr className="mt-4 mb-4 bg-vintage-green" />
+      <main className="relative w-full min-h-screen pt-32 pb-20 font-roboto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumb LinkclassName="hover:text-vintage-brown" />
+          <hr className="my-6 border-vintage-green/30" />
 
-          <header className="flex flex-row gap-3 text-center mb-4">
-            <h1 className="text-vintage-green mb-2 text-2xl">
+          <header className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-light text-vintage-green mb-4 tracking-wide">
               {categoryData.name.toUpperCase()}
             </h1>
-            <p className="text-lg text-gray-700">
-              Explore our {categoryData.name.toLowerCase()} collections
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+              Explore our premium {categoryData.name.toLowerCase()} collections – timeless style, exceptional quality.
             </p>
           </header>
 
           {subcategories.length === 0 ? (
-            <section
-              className="text-center py-16"
-              aria-labelledby="no-subcategories"
-            >
-              <div className="text-6xl mb-4" role="img" aria-label="Empty box">
-                📦
+            <section className="text-center py-20" aria-labelledby="no-subcategories">
+              <div className="text-8xl mb-6" role="img" aria-label="Empty box">
+                Empty Box
               </div>
-              <h2 id="no-subcategories" className="text-2xl font-semibold mb-4">
-                No subcategories found
+              <h2 id="no-subcategories" className="text-3xl font-semibold mb-4 text-vintage-green">
+                No subcategories yet
               </h2>
-              <p className="text-gray-600 max-w-md mx-auto">
-                We are working on adding subcategories. Check back soon!
+              <p className="text-lg text-gray-600 max-w-md mx-auto">
+                We’re working on adding new collections. Check back soon!
               </p>
             </section>
           ) : (
-            <section aria-labelledby="subcategories-heading font-roboto text-vintage-green">
+            <section aria-labelledby="subcategories-heading">
               <h2 id="subcategories-heading" className="sr-only">
-                {categoryData.name}
+                {categoryData.name} Subcategories
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {subcategories.map((subcategory) => {
-                 const href = `/products/${category}/${subcategory.slug}`;
+                  const href = `/products/${encodeURIComponent(categorySlug)}/${encodeURIComponent(
+                    subcategory.slug ?? ""
+                  )}`;
 
                   return (
-                    <article key={subcategory.id} className="group">
+                    <article key={subcategory.id} className="group relative overflow-hidden">
                       <Link
                         href={href}
-                        className="block relative w-full aspect-[3/4] bg-vintage-green overflow-hidden"
+                        className="block relative aspect-[3/4] bg-gray-100"
                         aria-label={`View ${subcategory.name} collection`}
                       >
-                        <div className="absolute inset-0">
-                          <Image
-                            src={subcategory.image_url}
-                            alt={`Photo of ${subcategory.name} clothing collection`}
-                            fill
-                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                            className="object-cover group-hover:scale-110 transition-transform duration-300"
-                            priority={false}
-                          />
-                        </div>
+                        <Image
+                          src={subcategory.image_url}
+                          alt={`${subcategory.name} collection`}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          priority
+                        />
 
-                        <div className="absolute inset-0 bg-gradient-to-t from-vintage-green/70 via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                        <div className="relative h-full flex flex-col justify-end p-4 text-left">
-                          <h3 className="text-lg sm:text-xl font-semibold text-vintage-brown mb-1">
+                        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                          <h3 className="text-2xl font-semibold mb-2 tracking-wide">
                             {subcategory.name}
                           </h3>
-                          <p className="text-sm text-vintage-brown font-medium">
-                            Explore collection →
+                          <p className="text-sm opacity-90 font-medium">
+                            Shop Collection
                           </p>
                         </div>
                       </Link>
@@ -135,4 +133,27 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </main>
     </HeaderProvider>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
+  const { category } = await params;
+  const categorySlug = decodeURIComponent(category);
+
+  try {
+    const foundCategory = await getCategoryBySlug(categorySlug);
+    if (!foundCategory || foundCategory.parent_id !== null) {
+      return { title: "Category Not Found | Urban Valor" };
+    }
+
+    return {
+      title: `${foundCategory.name} | Urban Valor`,
+      description: `Shop our exclusive ${foundCategory.name.toLowerCase()} collection – premium quality, timeless design.`,
+    };
+  } catch {
+    return { title: "Category Not Found | Urban Valor" };
+  }
 }

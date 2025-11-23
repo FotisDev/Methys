@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
 import { useCart } from "@/components/providers/CartProvider";
-import { supabase } from "@/_lib/supabaseClient";
+import { supabase } from "@/_lib/supabase/client";
 
 const Checkout = () => {
   const {
@@ -95,52 +95,57 @@ const Checkout = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
+  e.preventDefault();
+  if (!validateForm()) return;
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
 
-    try {
-      const { error } = await supabase.from("orders").insert({
-        user_id: "guest-checkout", 
-        items: cart.map((item) => {
-          const { finalPrice } = getItemPrice(item);
-          return {
-            product_id: item.id,
-            name: item.name,
-            quantity: item.quantity || 1,
-            price: finalPrice,
-            selectedSize: item.selectedSize,
-            image_url: item.image_url,
-          };
-        }),
-        total_amount: total,
-        customer_info: {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          city: formData.city,
-          zipCode: formData.zipCode,
-        },
-        payment_info: {
-          last4: formData.cardNumber.slice(-4),
-          cardHolderName: formData.cardHolderName,
-        },
-        status: "pending",
-      });
+  try {
+    const { error } = await supabase.from("orders").insert({
+      user_id: "guest-checkout",
+      items: cart.map((item) => {
+        const { finalPrice } = getItemPrice(item);
+        return {
+          product_id: item.id,
+          name: item.name,
+          quantity: item.quantity || 1,
+          price: finalPrice,
+          selectedSize: item.selectedSize,
+          image_url: item.image_url,
+        };
+      }),
+      total_amount: total,
+      customer_info: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        zipCode: formData.zipCode,
+      },
+      payment_info: {
+        last4: formData.cardNumber.slice(-4),
+        cardHolderName: formData.cardHolderName,
+      },
+      status: "pending",
+    });
 
-      if (error) throw error;
+    if (error) throw error;
 
-      setIsSubmitted(true);
-      clearCart();
-    } catch (err: any) {
-      console.error(err);
-      alert("Order failed: " + err.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    setIsSubmitted(true);
+    clearCart();
+  } catch (err: unknown) {
+    console.error("Order submission failed:", err);
+
+    const errorMessage = err instanceof Error 
+      ? err.message 
+      : "There was an Error throught proccess of payment";
+
+    alert("Order failed: " + errorMessage);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   if (isSubmitted) {
     return (
@@ -173,7 +178,7 @@ const Checkout = () => {
       <div className="text-center py-16">
         <h2 className="text-2xl mb-4">Your cart is empty</h2>
         <Link href="/products">
-          <button className="bg-amber-500 text-white px-8 py-3 rounded-lg hover:bg-amber-600">
+          <button className="bg-vintage-brown text-white px-8 py-3 rounded-lg hover:bg-vintage-brown">
             Shop Now
           </button>
         </Link>

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { supabase } from "../../../_lib/supabaseClient";
+import { supabase } from "../../../_lib/supabase/client";
 import { ResetPasswordFormData, resetPasswordSchema } from "@/_lib/utils/zod";
 import Link from "next/link";
 

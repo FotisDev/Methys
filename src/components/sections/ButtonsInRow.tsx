@@ -21,8 +21,18 @@ export default function ButtonsInRow({
   data,
   defaultSelected,
 }: ButtonsInRowProps) {
- 
-  if (!data) {
+  
+  const keys = data ? Object.keys(data) : [];
+  const hasData = data && keys.length > 0;
+
+  const initialKey =
+    hasData && defaultSelected && data[defaultSelected]
+      ? defaultSelected
+      : keys[0] || "";
+
+  const [selectedKey, setSelectedKey] = useState<string>(initialKey);
+
+  if (!hasData) {
     return (
       <section className="flex flex-col items-center py-12 px-4">
         <p className="text-gray-500">No sections available</p>
@@ -30,21 +40,7 @@ export default function ButtonsInRow({
     );
   }
 
-  const keys = Object.keys(data);
-  
-  if (keys.length === 0) {
-    return (
-      <section className="flex flex-col items-center py-12 px-4">
-        <p className="text-gray-500">No sections found</p>
-      </section>
-    );
-  }
-
-  const [selectedKey, setSelectedKey] = useState<string>(
-    (defaultSelected && data[defaultSelected]) ? defaultSelected : keys[0]
-  );
-
-  const selectedContent = data[selectedKey];
+  const selectedContent = data![selectedKey];
 
   if (!selectedContent) {
     return (
@@ -63,36 +59,36 @@ export default function ButtonsInRow({
             key={key}
             onClick={() => setSelectedKey(key)}
             className={`text-gray-500 font-poppins text-lg px-6 py-3 rounded-[40px] transition duration-300
-            ${
-              selectedKey === key
-                ? "bg-[#dd8d14] text-white"
-                : "hover:bg-[#dce3e9]"
-            }`}
+              ${selectedKey === key ? "bg-[#dd8d14] text-white" : "hover:bg-[#dce3e9]"}`}
           >
-            {data[key].title}
+            {data![key].title}
           </button>
         ))}
       </div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedKey}
           layout
-          initial={{ width: 110, opacity: 0 }}
-          animate={{ width: "70vw", opacity: 1 }}
-          exit={{ width: 0, opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="overflow-hidden rounded-xl bg-gray-100 shadow-lg p-6 flex flex-col items-center shadow-amber-500"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="w-full max-w-5xl overflow-hidden rounded-xl bg-gray-100 shadow-lg p-6 md:p-10 flex flex-col items-center"
         >
-          <h2 className="text-2xl text-black font-bold mb-4">
+          <h2 className="text-2xl md:text-3xl text-black font-bold mb-6 text-center">
             {selectedContent.title}
           </h2>
-          <p className="text-black mb-6">{selectedContent.text}</p>
-          <div className="relative w-full h-96">
+          <p className="text-black text-center mb-8 max-w-3xl leading-relaxed">
+            {selectedContent.text}
+          </p>
+          <div className="relative w-full h-96 md:h-[500px] rounded-xl overflow-hidden shadow-xl">
             <Image
               src={selectedContent.img_url}
               alt={selectedContent.title}
               fill
-              className="object-cover rounded-xl transition duration-300"
+              className="object-cover"
+              priority
             />
           </div>
         </motion.div>

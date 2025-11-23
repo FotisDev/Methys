@@ -2,7 +2,7 @@
 
 import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
-
+import Image from "next/image";
 type OffersListProps = {
   offers: ProductWithDiscount[];
 };
@@ -37,10 +37,11 @@ export default function OffersList({ offers }: OffersListProps) {
             >
               {/* Εικόνα */}
               <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[75vh] overflow-hidden">
-                <img
+                <Image
                   src={offer.image_url}
                   alt={offer.name}
                   className="w-full h-full object-cover object-center transition-transform duration-500 ease-in-out group-hover:scale-105"
+                  fill
                 />
 
                 {/* Badge */}

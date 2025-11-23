@@ -40,7 +40,7 @@ export default function Footer({ showNewsLetter = true }: FooterProps) {
   return (
     <>
       {showNewsLetter && <Newsletter />}
-      <footer className="bg-vintage-brown w-full text-vintage-green text-sm sm:text-base font-poppins">
+      <footer className="bg-vintage-white w-full text-vintage-brown text-sm sm:text-base font-poppins">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-40 sm:pt-36 lg:pt-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
             <div className="space-y-6 text-center lg:text-left">
@@ -149,10 +149,10 @@ export default function Footer({ showNewsLetter = true }: FooterProps) {
 
           <div className="flex flex-col lg:flex-row justify-between items-center pt-8 border-t border-gray-700 gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
-              <span className=" text-lg sm:text-xl text-vintage-brown">
+              <span className=" text-lg sm:text-xl text-vintage-white">
                 Methys
               </span>
-              <span className="text-sm text-vintage-brown">
+              <span className="text-sm text-vintage-white">
                 © 2025 All rights reserved
               </span>
             </div>
@@ -165,7 +165,7 @@ export default function Footer({ showNewsLetter = true }: FooterProps) {
               <Link
                 href="/login"
                 aria-label="SignUpPage"
-                className="w-[130px] h-[40px] text-[14px] bg-vintage-brown text-black px-2 py-2 rounded text-center"
+                className="w-[130px] h-[40px] text-[14px] bg-vintage-white text-black px-2 py-2 rounded text-center"
               >
                 Sign Up / Sign In
               </Link>

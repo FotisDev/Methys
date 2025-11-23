@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import CustomerSupport from '@/svgs/customerSupport';
 import Mail from '@/svgs/mail';
-import OurLocations from '@/svgs/ourLocations';
 import SocialsSvg from '@/svgs/Socials';
 import { useState } from 'react';
 

@@ -10,25 +10,22 @@ import ProductActionsInline from "./ProductActionsInline";
 import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { fetchProductBySlug } from "@/_lib/backend/productBySlug/action";
 
-interface PageProps {
-  params: {
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{
     category: string;
     subcategory: string;
     slug: string;
-  };
-}
-
-export default async function ProductDetailPage({ params, searchParams }: PageProps & { searchParams?: { [key: string]: string | string[] | undefined } }) {
-
-  const resolvedParams = await params;
-  const { category, subcategory, slug } = resolvedParams;
+  }>;
+}) {
+  const { category, subcategory, slug } = await params;
 
   const categorySlug = decodeURIComponent(category);
   const subcategorySlug = decodeURIComponent(subcategory);
   const productSlug = decodeURIComponent(slug);
 
   try {
-    
     const parentCategory = await getCategoryBySlug(categorySlug);
     if (!parentCategory || parentCategory.parent_id !== null) {
       notFound();
@@ -63,9 +60,14 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
               {/* LEFT SIDE - PRODUCT IMAGES */}
               <div className="space-y-0">
                 {/* Main Image */}
-                <div className="relative bg-gray-50 overflow-hidden" style={{ aspectRatio: '3/4' }}>
+                <div
+                  className="relative bg-gray-50 overflow-hidden"
+                  style={{ aspectRatio: "3/4" }}
+                >
                   <Image
-                    src={getValidImage(product.image_url ?? "/AuthClothPhoto.jpg")}
+                    src={getValidImage(
+                      product.image_url ?? "/AuthClothPhoto.jpg"
+                    )}
                     alt={product.name}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
@@ -81,9 +83,14 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
                 </div>
 
                 {/* Secondary Image */}
-                <div className="relative bg-gray-50 overflow-hidden mt-0" style={{ aspectRatio: '3/4' }}>
+                <div
+                  className="relative bg-gray-50 overflow-hidden mt-0"
+                  style={{ aspectRatio: "3/4" }}
+                >
                   <Image
-                    src={getValidImage(product.image_url ?? "/AuthClothPhoto.jpg")}
+                    src={getValidImage(
+                      product.image_url ?? "/AuthClothPhoto.jpg"
+                    )}
                     alt={`${product.name} - alternate view`}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
@@ -97,18 +104,23 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
                   <h1 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
                     {product.name}
                   </h1>
-                  
+
                   {product.description && (
                     <p className="text-sm text-gray-600 mb-4">
-                      {product.description.split(' ').slice(0, 5).join(' ')}
+                      {product.description.split(" ").slice(0, 5).join(" ")}
                     </p>
                   )}
 
                   <div className="flex items-baseline gap-3">
-                    <span className="text-xl font-normal">€{product.price}</span>
+                    <span className="text-xl font-normal">
+                      €{product.price}
+                    </span>
                     {product.is_offer && (
                       <span className="text-sm text-gray-500 line-through">
-                        €{(parseFloat(product.price.toString()) * 1.2).toFixed(2)}
+                        €
+                        {(parseFloat(product.price.toString()) * 1.2).toFixed(
+                          2
+                        )}
                       </span>
                     )}
                   </div>
@@ -118,7 +130,9 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
                 <div className="border-t pt-6 space-y-4">
                   <details className="group">
                     <summary className="flex justify-between items-center cursor-pointer list-none">
-                      <span className="text-sm font-medium">Free delivery over €150</span>
+                      <span className="text-sm font-medium">
+                        Free delivery over €150
+                      </span>
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
                     <div className="mt-3 text-sm text-gray-600 leading-relaxed">
@@ -128,7 +142,9 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
 
                   <details className="group border-t pt-4">
                     <summary className="flex justify-between items-center cursor-pointer list-none">
-                      <span className="text-sm font-medium">Extended returns until January 23rd</span>
+                      <span className="text-sm font-medium">
+                        Extended returns until January 23rd
+                      </span>
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
                     <div className="mt-3 text-sm text-gray-600 leading-relaxed">
@@ -156,16 +172,26 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
 
                 {product.product_variants?.length > 0 && (
                   <div className="border-t pt-6">
-                    <h3 className="text-sm font-medium mb-3">Size & Stock Information</h3>
+                    <h3 className="text-sm font-medium mb-3">
+                      Size & Stock Information
+                    </h3>
                     <div className="space-y-2">
                       {product.product_variants.map((variant, index) => (
-                        <div 
-                          key={index} 
+                        <div
+                          key={index}
                           className="flex justify-between items-center text-sm py-2 border-b border-gray-100"
                         >
                           <span>Size {variant.size}</span>
-                          <span className={variant.quantity > 0 ? "text-vintage-brown" : "text-red-600"}>
-                            {variant.quantity > 0 ? `${variant.quantity} in stock` : "Out of stock"}
+                          <span
+                            className={
+                              variant.quantity > 0
+                                ? "text-vintage-brown"
+                                : "text-red-600"
+                            }
+                          >
+                            {variant.quantity > 0
+                              ? `${variant.quantity} in stock`
+                              : "Out of stock"}
                           </span>
                         </div>
                       ))}
@@ -187,10 +213,16 @@ export default async function ProductDetailPage({ params, searchParams }: PagePr
     notFound();
   }
 }
-
-export async function generateMetadata({ params }: PageProps) {
-  const resolvedParams = await params;
-  const { category, subcategory, slug } = resolvedParams;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{
+    category: string;
+    subcategory: string;
+    slug: string;
+  }>;
+}) {
+  const { category, subcategory, slug } = await params;
 
   const categorySlug = decodeURIComponent(category);
   const subcategorySlug = decodeURIComponent(subcategory);
@@ -201,7 +233,6 @@ export async function generateMetadata({ params }: PageProps) {
     if (!parentCategory) return { title: "Product Not Found" };
 
     const subcategories = await getSubcategories(parentCategory.id);
-
     const currentCategory = subcategories.find(
       (subcat) => subcat.slug === subcategorySlug
     );
@@ -213,7 +244,7 @@ export async function generateMetadata({ params }: PageProps) {
 
     return {
       title: `${product.name} | Your Store`,
-      description: product.description,
+      description: product.description ?? undefined,
     };
   } catch {
     return { title: "Product Not Found" };

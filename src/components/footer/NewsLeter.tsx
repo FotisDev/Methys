@@ -14,7 +14,7 @@ export default function Newsletter() {
              fill
             />
           </div>
-          <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center space-y-4 bg-vintage-brown ">
+          <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center space-y-4 bg-vintage-white ">
             <p className=" text-xl sm:text-2xl lg:text-3xl">
               Subscribe to Our Newsletter
             </p>

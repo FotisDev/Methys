@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "@/_lib/supabaseClient";
+import { supabase } from "@/_lib/supabase/client";
 import type { Product } from "@/_lib/types";
 
 export interface ProductWithDiscount extends Product {

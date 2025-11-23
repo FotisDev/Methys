@@ -10,7 +10,7 @@ import {
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
-import { CategoryBackendType, Product, ProductInDetails } from "@/_lib/types";
+import { CategoryBackendType, ProductInDetails } from "@/_lib/types";
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 export default function ProductList() {
   const [categories, setCategories] = useState<CategoryBackendType[] | null>(

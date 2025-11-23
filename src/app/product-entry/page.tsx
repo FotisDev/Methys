@@ -1,33 +1,35 @@
 "use client";
-
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClient } from "@supabase/supabase-js";
+import { addProductAction } from "@/_lib/backend/AddProductAction/action";
+import { supabase } from "@/_lib/supabase/client";
+import { ProductInsert, VariantInsert } from "@/_lib/types";
+import { getErrorMessage } from "@/_lib/helpers";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
+// Zod schemas
 const sizeVariantSchema = z.object({
   size: z.string(),
-  quantity: z.number().min(0, "Η ποσότητα πρέπει να είναι θετική"),
+  quantity: z.coerce.number().min(0, "Η ποσότητα πρέπει να είναι θετική"),
 });
 
 const productSchema = z.object({
   name: z.string().min(1, "Το όνομα είναι υποχρεωτικό"),
   description: z.string().optional(),
-  category_men_id: z.number().min(1, "Επέλεξε κατηγορία"),
-  basePrice: z.number().min(0, "Η τιμή είναι υποχρεωτική"),
-  image: z.instanceof(FileList).optional(),
-  sizeVariants: z.array(sizeVariantSchema).nonempty("Πρέπει να προσθέσεις τουλάχιστον ένα μέγεθος"),
+  category_men_id: z.coerce.number().min(1, "Επέλεξε κατηγορία"),
+  basePrice: z.coerce.number().min(0.01, "Η τιμή είναι υποχρεωτική"),
+  image: z.any().optional(), 
+  sizeVariants: z
+    .array(sizeVariantSchema)
+    .nonempty("Πρέπει να προσθέσεις τουλάχιστον ένα μέγεθος"),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
 
-const availableSizes = ["XS", "S", "M", "L", "XL"];
+const availableSizes = ["XS", "S", "M", "L", "XL"] as const;
 
 export default function AddProductForm() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
@@ -40,12 +42,13 @@ export default function AddProductForm() {
     handleSubmit,
     watch,
     reset,
-    setValue,
     formState: { errors },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       sizeVariants: [],
+      basePrice: 0,
+      category_men_id: undefined,
     },
   });
 
@@ -54,6 +57,7 @@ export default function AddProductForm() {
     name: "sizeVariants",
   });
 
+  // Φόρτωση κατηγοριών
   useEffect(() => {
     async function fetchCategories() {
       const { data, error } = await supabase
@@ -61,99 +65,106 @@ export default function AddProductForm() {
         .select("id, name")
         .order("id", { ascending: true });
 
-      if (error) console.error("Error fetching categories:", error.message);
-      else setCategories(data || []);
+      if (error) {
+        console.error("Error fetching categories:", error.message);
+      } else {
+        setCategories(data || []);
+      }
     }
     fetchCategories();
   }, []);
 
+  // Preview εικόνας
   const imageFile = watch("image");
   useEffect(() => {
-    if (imageFile && imageFile.length > 0) {
-      const file = imageFile[0];
+    if (imageFile?.[0]) {
+      const file = imageFile[0] as File;
       const url = URL.createObjectURL(file);
       setImagePreview(url);
       return () => URL.revokeObjectURL(url);
+    } else {
+      setImagePreview(null);
     }
   }, [imageFile]);
 
+  // Upload εικόνας
   async function uploadImage(file: File): Promise<string | null> {
     setUploading(true);
-    const filePath = `products/${Date.now()}_${file.name}`;
-    const { data, error } = await supabase.storage
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2, 9)}.${fileExt}`;
+    const filePath = `products/${fileName}`;
+
+    const { error } = await supabase.storage
       .from("product-images")
       .upload(filePath, file);
+
     setUploading(false);
 
     if (error) {
-      console.error("Error uploading image:", error.message);
+      console.error("Error uploading image:", error);
       return null;
     }
-    const { data: publicUrl } = supabase.storage
-      .from("product-images")
-      .getPublicUrl(filePath);
-    return publicUrl.publicUrl;
+
+    const { data } = supabase.storage.from("product-images").getPublicUrl(filePath);
+    return data.publicUrl;
   }
 
-  const onSubmit = async (data: ProductFormValues) => {
+  // Submit
+  const onSubmit = async (formData: ProductFormValues) => {
     try {
       let imageUrl: string | null = null;
 
-      if (data.image && data.image.length > 0) {
-        imageUrl = await uploadImage(data.image[0]);
+      if (formData.image?.[0]) {
+        const file = formData.image[0] as File;
+        imageUrl = await uploadImage(file);
+        if (!imageUrl) throw new Error("Αποτυχία ανεβάσματος εικόνας");
       }
 
-      const slug = data.name
+      const slug = formData.name
         .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")
-        .replace(/[^\w-]+/g, "");
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") 
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
 
-      const { data: productData, error: productError } = await supabase
-        .from("products")
-        .insert([
-          {
-            name: data.name,
-            description: data.description || "",
-            price: data.basePrice,
-            image_url: imageUrl,
-            slug,
-            category_men_id: data.category_men_id,
-          },
-        ])
-        .select()
-        .single();
+      const baseProductData: ProductInsert = {
+        name: formData.name,
+        slug,
+        price: formData.basePrice,
+        description: formData.description ?? "",
+        image_url: imageUrl,
+        category_men_id: formData.category_men_id,
+        is_offer: false,
+      };
 
-      if (productError) throw productError;
-
-      const variants = data.sizeVariants.map((variant) => ({
-        product_id: productData.id,
-        size: variant.size,
-        price: data.basePrice, 
-        quantity: variant.quantity,
-        sku: `${slug}-${variant.size.toLowerCase()}`,
+      const variants: VariantInsert[] = formData.sizeVariants.map((v) => ({
+        size: v.size,
+        quantity: v.quantity,
+        price: formData.basePrice,
+        slug: `${slug}-${v.size.toLowerCase()}`,
       }));
 
-      const { error: variantError } = await supabase
-        .from("product_variants")
-        .insert(variants);
+      await addProductAction(baseProductData, variants);
 
-      if (variantError) throw variantError;
-
-      alert("✅ Το προϊόν καταχωρήθηκε με επιτυχία!");
+      alert("Product comfirmed!");
       reset();
       setImagePreview(null);
-    } catch (err: any) {
-      console.error("Error submitting product:", err.message);
-      alert("❌ Σφάλμα κατά την καταχώρηση προϊόντος!");
+    } catch (err) {
+      console.error(err);
+      alert("Order failed: " + getErrorMessage(err));
     }
   };
 
-  function handleAddSize(size: string) {
-    const exists = watch("sizeVariants").some((v) => v.size === size);
-    if (exists) return alert(`Το μέγεθος ${size} υπάρχει ήδη.`);
+  const handleAddSize = (size: string) => {
+    const exists = fields.some((f) => f.size === size);
+    if (exists) {
+      alert(`The size ${size} already exists.`);
+      return;
+    }
     append({ size, quantity: 0 });
-  }
+  };
 
   return (
     <form
@@ -161,37 +172,32 @@ export default function AddProductForm() {
       className="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-6"
     >
       <h1 className="text-2xl font-semibold mb-4 text-center">
-        ➕ Προσθήκη Νέου Προϊόντος
+        Add new Product
       </h1>
 
+      {/* Όνομα */}
       <div>
-        <label className="block text-sm font-medium mb-1">Όνομα προϊόντος</label>
+        <label className="block text-sm font-medium mb-1">Name of Product</label>
         <input
           {...register("name")}
           className="border p-2 w-full rounded"
           placeholder="Π.χ. Basic T-Shirt"
         />
-        {errors.name && (
-          <p className="text-red-500 text-sm">{errors.name.message}</p>
-        )}
+        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Περιγραφή</label>
-        <textarea
-          {...register("description")}
-          className="border p-2 w-full rounded"
-          rows={3}
-        />
+        <label className="block text-sm font-medium mb-1">Description</label>
+        <textarea {...register("description")} className="border p-2 w-full rounded" rows={3} />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Κατηγορία</label>
+        <label className="block text-sm font-medium mb-1">Category</label>
         <select
-          {...register("category_men_id", { valueAsNumber: true })}
+          {...register("category_men_id")}
           className="border p-2 w-full rounded"
         >
-          <option value="">Επέλεξε κατηγορία</option>
+          <option value="">Choose Category</option>
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>
               {cat.name}
@@ -199,83 +205,80 @@ export default function AddProductForm() {
           ))}
         </select>
         {errors.category_men_id && (
-          <p className="text-red-500 text-sm">
-            {errors.category_men_id.message}
-          </p>
+          <p className="text-red-500 text-sm">{errors.category_men_id.message}</p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Τιμή προϊόντος (€)</label>
+        <label className="block text-sm font-medium mb-1">Price of Product (€)</label>
         <input
           type="number"
           step="0.01"
-          {...register("basePrice", { valueAsNumber: true })}
+          {...register("basePrice")}
           className="border p-2 w-full rounded"
           placeholder="π.χ. 29.99"
         />
         {errors.basePrice && (
           <p className="text-red-500 text-sm">{errors.basePrice.message}</p>
         )}
-        <p className="text-xs text-gray-500 mt-1">
-          Η τιμή θα ισχύει για όλα τα μεγέθη
-        </p>
+        <p className="text-xs text-gray-500 mt-1">Price is the same for all sizes</p>
       </div>
 
-      {/* --- Εικόνα --- */}
       <div>
-        <label className="block text-sm font-medium mb-1">Εικόνα</label>
+        <label className="block text-sm font-medium mb-1">Image</label>
         <input type="file" accept="image/*" {...register("image")} />
-        {uploading && <p>Φόρτωση...</p>}
+        {uploading && <p>Loading Image...</p>}
         {imagePreview && (
-          <img
-            src={imagePreview}
-            alt="Preview"
-            className="mt-3 w-40 h-40 object-cover rounded-lg"
-          />
+          <div className="mt-3">
+            <Image
+              src={imagePreview}
+              alt="Preview"
+              className="w-40 h-40 object-cover rounded-lg shadow"
+              fill
+            />
+          </div>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Διαθέσιμα Μεγέθη</label>
+        <label className="block text-sm font-medium mb-1">Available Sizes</label>
         <div className="flex flex-wrap gap-2">
           {availableSizes.map((size) => (
             <button
               type="button"
               key={size}
               onClick={() => handleAddSize(size)}
-              className="border px-3 py-1 rounded hover:bg-gray-100"
+              className="border px-3 py-1 rounded hover:bg-gray-100 transition"
             >
               + {size}
             </button>
           ))}
         </div>
-        {errors.sizeVariants && (
+        {errors.sizeVariants && !Array.isArray(errors.sizeVariants) && (
           <p className="text-red-500 text-sm mt-1">{errors.sizeVariants.message}</p>
         )}
       </div>
 
       {fields.length > 0 && (
-        <div className="space-y-3 mt-4">
-          <h3 className="font-medium text-sm">Ποσότητες ανά μέγεθος:</h3>
+        <div className="space-y-3">
+          <h3 className="font-medium text-sm">Quantity per size:</h3>
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="border rounded-lg p-3 flex items-center gap-3"
+              className="border rounded-lg p-3 flex items-center gap-3 bg-gray-50"
             >
               <span className="font-semibold text-lg w-12">{field.size}</span>
               <input
                 type="number"
-                {...register(`sizeVariants.${index}.quantity`, {
-                  valueAsNumber: true,
-                })}
-                placeholder="Ποσότητα σε απόθεμα"
+                {...register(`sizeVariants.${index}.quantity`)}
+                placeholder="Quantity"
                 className="border p-2 rounded flex-1"
+                min="0"
               />
               <button
                 type="button"
                 onClick={() => remove(index)}
-                className="text-red-500 text-sm px-2"
+                className="text-red-600 hover:text-red-800 font-bold"
               >
                 ✕
               </button>
@@ -284,13 +287,13 @@ export default function AddProductForm() {
         </div>
       )}
 
-      {/* --- Submit --- */}
       <button
         type="submit"
-        className="bg-black text-white px-6 py-3 rounded w-full hover:bg-gray-800 font-medium"
+        className="bg-black text-white px-6 py-3 rounded w-full hover:bg-gray-800 font-medium transition"
       >
         Καταχώρηση Προϊόντος
       </button>
     </form>
   );
 }
+

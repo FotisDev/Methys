@@ -10,7 +10,7 @@ export default function CategoriesSwiper({
 }) {
   if (!categories?.length) {
     return (
-      <p className="text-center mt-10 text-vintage-green">No categories found.</p>
+      <p className="text-center mt-10 text-vintage-white">No categories found.</p>
     );
   }
   return (

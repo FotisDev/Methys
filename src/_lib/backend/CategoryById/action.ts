@@ -1,4 +1,4 @@
-import { supabase } from "@/_lib/helpers";
+import { supabase } from "@/_lib/supabase/client";
 import { CategoryBackendType } from "@/_lib/types";
 
 export async function getCategoryByName(categoryName: string, parentId?: number | null): Promise<CategoryBackendType | null> {

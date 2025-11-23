@@ -6,14 +6,20 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+import type { SwiperOptions } from "swiper/types";
+
+type SwiperBreakpoints = Record<number, SwiperOptions>;
+
 type GenericSwiperProps<T> = {
   items: T[];
   renderItem: (item: T, index: number) => React.ReactNode;
-  slidesPerView?: number;
+  slidesPerView?: number | "auto";
   spaceBetween?: number;
   loop?: boolean;
-  autoplay?: boolean;
-  breakpoints?: Record<string, any>;
+  autoplay?: boolean | { delay: number; disableOnInteraction: boolean };
+  navigation?: boolean;
+  pagination?: boolean | { clickable?: boolean };
+  breakpoints?: SwiperBreakpoints;
   className?: string;
 };
 
@@ -24,13 +30,15 @@ export default function GenericSwiper<T>({
   spaceBetween = 10,
   loop = true,
   autoplay = true,
+  navigation = true,
+  pagination = true,
   breakpoints,
   className = "",
 }: GenericSwiperProps<T>) {
-  if (!items?.length) {
+  if (!items || items.length === 0) {
     return (
-      <div className="flex justify-center items-center h-[50vh]">
-        <p className="text-vintage-green">No content available.</p>
+      <div className="flex justify-center items-center h-[50vh] bg-gray-50">
+        <p className="text-vintage-white text-lg">No content available.</p>
       </div>
     );
   }
@@ -41,14 +49,20 @@ export default function GenericSwiper<T>({
       slidesPerView={slidesPerView}
       spaceBetween={spaceBetween}
       loop={loop}
-      navigation
-      pagination={{ clickable: true }}
-      autoplay={autoplay ? { delay: 4000, disableOnInteraction: false } : false}
+      navigation={navigation}
+      pagination={pagination ? { clickable: true } : false}
+      autoplay={
+        autoplay
+          ? { delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }
+          : false
+      }
       breakpoints={breakpoints}
-      className={`relative ${className}`}
+      className={className}
     >
       {items.map((item, index) => (
-        <SwiperSlide key={index}>{renderItem(item, index)}</SwiperSlide>
+        <SwiperSlide key={index}>
+          {renderItem(item, index)}
+        </SwiperSlide>
       ))}
     </Swiper>
   );

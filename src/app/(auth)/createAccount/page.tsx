@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabase } from "@/_lib/supabaseClient";
+import { supabase } from "@/_lib/supabase/client";
 import SignUpPage from "../login/page";
 import Image from "next/image";
 import {

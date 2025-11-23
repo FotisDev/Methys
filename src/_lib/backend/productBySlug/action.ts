@@ -1,7 +1,7 @@
 'use server';
 
-import { supabase } from "@/_lib/supabaseClient";
-import { ProductInDetails } from "@/_lib/types";
+import { supabase } from "@/_lib/supabase/client";
+import {  ProductInDetails } from "@/_lib/types";
 
 export async function fetchProductBySlug(
   categoryId: number,
@@ -50,24 +50,13 @@ export async function fetchProductBySlug(
       return null;
     }
 
-    const extractSingle = (relation: any): any | null => {
-      if (Array.isArray(relation)) {
-        return relation.length > 0 ? relation[0] : null;
-      }
-      return relation || null;
-    };
-
-    let categoryData = extractSingle(data.categoryformen);
-    if (categoryData) {
-      categoryData.parent = extractSingle(categoryData.parent);
-    }
 
     const mappedData: ProductInDetails = {
       ...data,
       slug: data.slug ?? null,
       description: data.description ?? null,
       image_url: data.image_url ?? null,
-      categoryformen: categoryData,
+      categoryformen: data.id,
       product_variants: Array.isArray(data.product_variants) ? data.product_variants : [],
     };
 

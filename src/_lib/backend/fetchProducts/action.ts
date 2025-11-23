@@ -1,4 +1,4 @@
-import { supabase } from "@/_lib/supabaseClient";
+import { supabase } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
 
 export async function fetchProducts(): Promise<ProductInDetails[] | null> {

@@ -16,9 +16,9 @@ export default function CategoryCard({ category }: { category: Category }) {
         className="object-cover object-center"
         priority
       />
-      <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 text-vintage-brown font-poppins">
+      <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 text-vintage-white font-poppins">
         <p className="text-xs sm:text-sm opacity-80">Autumn 2025</p>
-        <h3 className="text-lg sm:text-xl md:text-2xl ">{category.category_name}</h3>
+        <h3 className="text-xs  ">{category.category_name}</h3>
       </div>
     </Link>
   );

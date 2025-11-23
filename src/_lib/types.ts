@@ -1,11 +1,11 @@
 
 export type CategoryBackendType = {
-  id: number;
-  name: string;
-  parent_id?: number | null;
-  image_url?: string;
-  slug?: string;
-}
+    id: number;
+    name: string;
+    slug?: string;
+    image_url?: string | null; 
+    parent_id: number | null;
+};
 
 export type PageProps = {
   params: {
@@ -79,5 +79,21 @@ export type ProductInDetails = {
   }[];
 };
 
+export type ProductInsert = {
+  name: string;
+  slug: string;
+  price: number;
+  description: string;
+  image_url: string | null;
+  category_men_id: number;
+  is_offer?: boolean;
+};
+
+export type VariantInsert = {
+  size: string;
+  quantity: number;
+  price: number;
+  slug: string;
+};
 
 
