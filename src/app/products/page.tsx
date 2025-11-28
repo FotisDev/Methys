@@ -3,15 +3,12 @@
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  fetchCategories,
-
-} from "@/_lib/helpers";
+import { fetchCategories } from "@/_lib/helpers";
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
-import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { CategoryBackendType, ProductInDetails } from "@/_lib/types";
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
+import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 export default function ProductList() {
   const [categories, setCategories] = useState<CategoryBackendType[] | null>(
     null
@@ -104,45 +101,51 @@ export default function ProductList() {
     );
   }
 
+  const breadcrumbItems = [
+    { name: "Home", slug: "/" },
+    { name: "Products", slug: "/products" },
+  ];
+
   return (
     <HeaderProvider forceOpaque={true}>
       <section className="padding-y padding-x text-vintage-green font-roboto">
-      <div className="pt-16">
-        {<Breadcrumb LinkclassName={"p-1"}/>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-          {parentCategories.map((category) => {
-            if (!category.name) return null;
+        <div className="pt-16">
+          <Breadcrumbs items={breadcrumbItems}/>
 
-            const href = `/products/${category.name
-              .replace(/\s+/g, "-")
-              .toLowerCase()}`;
-            const imageUrl = category.image_url ?? "/accesories.jpg ";
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            {parentCategories.map((category) => {
+              if (!category.name) return null;
 
-            return (
-              <Link
-                key={category.id}
-                href={href}
-                className="group relative w-full aspect-[3/4] bg-vintage-green "
-                aria-label={`View ${category.name} subcategories`}
-              >
-                <div className="absolute inset-0  overflow-hidden ">
-                  <Image
-                    src={imageUrl}
-                    alt={`${category.name} category image`}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
+              const href = `/products/${category.name
+                .replace(/\s+/g, "-")
+                .toLowerCase()}`;
+              const imageUrl = category.image_url ?? "/accesories.jpg ";
 
-                <span className="absolute bottom-2 left-2 px-3 py-1 hover-colors rounded-md capitalize text-sm ">
-                  {category.name}
-                </span>
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={category.id}
+                  href={href}
+                  className="group relative w-full aspect-[3/4] bg-vintage-green "
+                  // aria-label={`View ${category.name} subcategories`}
+                >
+                  <div className="absolute inset-0  overflow-hidden ">
+                    <Image
+                      src={imageUrl}
+                      alt={``}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+
+                  <span className="absolute bottom-2 left-2 px-3 py-1 hover-colors rounded-md capitalize text-sm ">
+                    {category.name}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
       </section>
     </HeaderProvider>
   );

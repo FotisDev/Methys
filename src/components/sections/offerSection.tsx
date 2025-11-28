@@ -1,8 +1,8 @@
 "use client";
 
 import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
-import Breadcrumb from "../breadcrumb/Breadcrumb";
 import Image from "next/image";
+import { Breadcrumbs } from "../breadcrumb/breadcrumbSchema";
 type OffersListProps = {
   offers: ProductWithDiscount[];
 };
@@ -19,10 +19,17 @@ export default function OffersList({ offers }: OffersListProps) {
     );
   }
 
+  const breadcrumbs = [
+    { name: "/Home", slug: "home",  },
+    { name: "/Offers", slug: "offers" },
+  ];
+
   return (
     <section className=" font-roboto text-vintage-green pt-16">
-      <Breadcrumb LinkclassName={"hover:text-vintage-brown inline"} />
-      <h1 className="text-2xl font-semibold py-2">Explore our Limited Offers</h1>
+      <Breadcrumbs items={breadcrumbs} />
+      <h1 className="text-2xl font-semibold py-2">
+        Explore our Limited Offers
+      </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0.5">
         {offers.map((offer) => {

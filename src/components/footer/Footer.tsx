@@ -113,7 +113,7 @@ export default function Footer({ showNewsLetter = true }: FooterProps) {
                         <Link
                           href={item.href}
                           className="hover:underline hover:text-sahara transition-colors text-sm sm:text-base"
-                          aria-label={`Learn more about ${item.name}`}
+                          // aria-label={`Learn more about ${item.name}`}
                         >
                           {item.name}
                         </Link>
@@ -164,7 +164,6 @@ export default function Footer({ showNewsLetter = true }: FooterProps) {
               </span>
               <Link
                 href="/login"
-                aria-label="SignUpPage"
                 className="w-[130px] h-[40px] text-[14px] bg-vintage-white text-black px-2 py-2 rounded text-center"
               >
                 Sign Up / Sign In

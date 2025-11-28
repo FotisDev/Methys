@@ -6,7 +6,7 @@ import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
 import { ProductInDetails } from "@/_lib/types";
 import { useCart } from "@/components/providers/CartProvider";
-import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
+import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 
 interface WishlistItem extends ProductInDetails {
   addedToWishlist?: string;
@@ -81,6 +81,10 @@ const WishlistPage = () => {
   const getCategorySlug = (item: WishlistItem): string => {
     return item.categoryformen?.slug || "all";
   };
+  const breadcrumbItems = [
+    { name: "Home", slug: "/" },
+    { name: "Wishlist", slug: `/Wishlist` },
+  ];
 
   if (isLoading) {
     return (
@@ -113,10 +117,11 @@ const WishlistPage = () => {
           <p className="text-gray-600 mb-8">
             Save your favorite items for later.
           </p>
-          <Link href="/products">
-            <button className="bg-default-color hover:bg-default-cold text-white font-medium py-3 px-10 rounded-lg transition">
-              Start Shopping
-            </button>
+          <Link
+            href="/products"
+            className="bg-default-color hover:bg-default-cold text-white font-medium py-3 px-10 rounded-lg transition"
+          >
+            Start Shopping
           </Link>
         </div>
       </div>
@@ -127,7 +132,9 @@ const WishlistPage = () => {
     <section className="container mx-auto  px-4 py-12 font-poppins">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">My Wishlist</h1>
       <nav className="text-sm text-gray-600 mb-10">
-        <Breadcrumb LinkclassName={"hover:text-vintage-brown"} />
+        <Breadcrumbs
+          items={breadcrumbItems}
+        />
       </nav>
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
@@ -242,8 +249,6 @@ const WishlistPage = () => {
                 </div>
 
                 <div className="space-y-4">
-                  
-
                   <Link
                     href={`/products/${getCategorySlug(item)}/${item.id}`}
                     className="block text-center w-full py-3 border hover-colors border-gray-300 rounded-lg transition"
@@ -264,10 +269,11 @@ const WishlistPage = () => {
       </div>
 
       <div className="text-center mt-16">
-        <Link href="/products">
-          <button className="bg-default-color hover:bg-default-cold text-white font-medium py-4 px-12 rounded-lg text-lg transition">
-            Continue Shopping
-          </button>
+        <Link
+          href="/products"
+          className="bg-default-color hover:bg-default-cold text-white font-medium py-4 px-12 rounded-lg text-lg transition"
+        >
+          Continue Shopping
         </Link>
       </div>
     </section>

@@ -3,9 +3,9 @@ import Link from "next/link";
 import { getCategoryBySlug, getSubcategories } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { notFound } from "next/navigation";
-import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { CategoryBackendType } from "@/_lib/types";
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
+import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
@@ -56,11 +56,17 @@ export default async function CategoryPage({
     notFound();
   }
 
+  const breadcrumbItems = [
+    { name: "Home", slug: "/" },
+    { name: "Products", slug: "/products" },
+    { name: categoryData.name, slug: `/products/${categorySlug}` },
+  ];
+
   return (
     <HeaderProvider forceOpaque={true}>
       <main className="relative w-full min-h-screen pt-32 pb-20 font-roboto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb LinkclassName="hover:text-vintage-brown" />
+          <Breadcrumbs items={breadcrumbItems}  />
           <hr className="my-6 border-vintage-green/30" />
 
           <header className="text-center mb-12">
@@ -68,16 +74,23 @@ export default async function CategoryPage({
               {categoryData.name.toUpperCase()}
             </h1>
             <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Explore our premium {categoryData.name.toLowerCase()} collections – timeless style, exceptional quality.
+              Explore our premium {categoryData.name.toLowerCase()} collections
+              – timeless style, exceptional quality.
             </p>
           </header>
 
           {subcategories.length === 0 ? (
-            <section className="text-center py-20" aria-labelledby="no-subcategories">
+            <section
+              className="text-center py-20"
+              aria-labelledby="no-subcategories"
+            >
               <div className="text-8xl mb-6" role="img" aria-label="Empty box">
                 Empty Box
               </div>
-              <h2 id="no-subcategories" className="text-3xl font-semibold mb-4 text-vintage-green">
+              <h2
+                id="no-subcategories"
+                className="text-3xl font-semibold mb-4 text-vintage-green"
+              >
                 No subcategories yet
               </h2>
               <p className="text-lg text-gray-600 max-w-md mx-auto">
@@ -92,20 +105,23 @@ export default async function CategoryPage({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {subcategories.map((subcategory) => {
-                  const href = `/products/${encodeURIComponent(categorySlug)}/${encodeURIComponent(
-                    subcategory.slug ?? ""
-                  )}`;
+                  const href = `/products/${encodeURIComponent(
+                    categorySlug
+                  )}/${encodeURIComponent(subcategory.slug ?? "")}`;
 
                   return (
-                    <article key={subcategory.id} className="group relative overflow-hidden">
+                    <article
+                      key={subcategory.id}
+                      className="group relative overflow-hidden"
+                    >
                       <Link
                         href={href}
                         className="block relative aspect-[3/4] bg-gray-100"
-                        aria-label={`View ${subcategory.name} collection`}
+                      
                       >
                         <Image
                           src={subcategory.image_url}
-                          alt={`${subcategory.name} collection`}
+                          alt={``}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"

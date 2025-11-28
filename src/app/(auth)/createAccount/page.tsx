@@ -81,7 +81,6 @@ const CreateAccountPage = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen text-vintage-green font-roboto">
-
       <div
         className="relative md:w-1/2 h-64 md:h-auto flex flex-col justify-between"
         // style={{
@@ -89,14 +88,14 @@ const CreateAccountPage = () => {
         //   backgroundSize: "cover",
         //   backgroundPosition: "center",
         // }}
-        >
-        <Image 
-        src={'/AuthClothPhoto.jpg'}
-        alt="Methys"
-        className="object-cover"
-        fill
+      >
+        <Image
+          src={"/AuthClothPhoto.jpg"}
+          alt="Methys"
+          className="object-cover"
+          fill
         />
-      
+
         <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/80 to-gray-50"></div>
         <div className="relative z-10 p-6 md:p-12 text-white flex flex-col justify-center h-full">
           <Link href="/" className="block mb-8 w-40 md:w-64">
@@ -112,7 +111,10 @@ const CreateAccountPage = () => {
             </p>
           </section>
           <div className="mt-8 text-sm md:text-lg">
-            <p>2025 <span className="text-default-yellow">UrbanValor</span>. All rights reserved.</p>
+            <p>
+              2025 <span className="text-default-yellow">UrbanValor</span>. All
+              rights reserved.
+            </p>
           </div>
         </div>
       </div>
@@ -123,7 +125,7 @@ const CreateAccountPage = () => {
           <Link
             href="/login"
             onClick={handleSignInClick}
-            className="text-vintage-green  hover:underline"
+            className="text-vintage-green hover:underline"
           >
             Sign in
           </Link>
@@ -244,7 +246,9 @@ const CreateAccountPage = () => {
                 type="password"
                 placeholder="Repeat Password"
                 className={`w-full h-12 rounded-xl px-4 text-center shadow-sm focus:ring-2  ${
-                  errors.repeatPassword ? "border-red-500" : "border-vintage-green"
+                  errors.repeatPassword
+                    ? "border-red-500"
+                    : "border-vintage-green"
                 }`}
               />
               {errors.repeatPassword && (
@@ -276,16 +280,10 @@ const CreateAccountPage = () => {
             )}
           </div>
 
-          {error && (
-            <div className="text-red-600  text-center">
-              {error}
-            </div>
-          )}
+          {error && <div className="text-red-600  text-center">{error}</div>}
 
           {success && (
-            <div className="text-green-600  text-center">
-              {success}
-            </div>
+            <div className="text-green-600  text-center">{success}</div>
           )}
 
           <button

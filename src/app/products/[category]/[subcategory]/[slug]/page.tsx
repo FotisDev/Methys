@@ -7,8 +7,9 @@ import {
 } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import ProductActionsInline from "./ProductActionsInline";
-import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { fetchProductBySlug } from "@/_lib/backend/productBySlug/action";
+import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
+import { createProductSchema } from "@/components/schemas/newCollectionSchema";
 
 export default async function ProductDetailPage({
   params,
@@ -47,12 +48,27 @@ export default async function ProductDetailPage({
       notFound();
     }
 
+    
+    const breadcrumbItems = [
+      { name: "Home", slug: "/" },
+      { name: "Products", slug: "/products" },
+      { name: parentCategory.name, slug: `/products/${categorySlug}` },
+      {
+        name: currentCategory.name,
+        slug: `/products/${categorySlug}/${subcategorySlug}`,
+      },
+      {
+        name: product.name,
+        slug: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+      },
+    ];
+
     return (
       <HeaderProvider forceOpaque={true}>
         <section className="relative w-full pt-20 pb-32 font-roboto text-vintage-green">
           {/* Breadcrumb */}
           <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-            <Breadcrumb LinkclassName="hover:text-vintage-brown text-sm uppercase tracking-wider" />
+            <Breadcrumbs items={breadcrumbItems}  />
           </div>
 
           <div className=" mx-auto px-4 sm:px-6 lg:px-8">
@@ -242,9 +258,57 @@ export async function generateMetadata({
     const product = await fetchProductBySlug(currentCategory.id, productSlug);
     if (!product) return { title: "Product Not Found" };
 
+    const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${productSlug}`;
+
+    const schema = createProductSchema({
+      url: fullUrl,
+      name: product.name,
+      description: product.description ?? "",
+      images: [product.image_url ?? "/AuthClothPhoto.jpg"],
+      price: Number(product.price),
+      currency: "EUR",
+      sku: String(product.slug ?? product.id),
+      brand: "Methys",
+      availability: product.product_variants.some((p) => p.quantity > 0),
+      sizes: product.product_variants.map((p) => p.size),
+      category: currentCategory.name,
+      id: product.id.toString(),
+    });
+
     return {
-      title: `${product.name} | Your Store`,
-      description: product.description ?? undefined,
+      title: `${product.name} | Methys`,
+      description: product.description ?? "Premium clothing from Methys.",
+      alternates: {
+        canonical: fullUrl,
+      },
+      robots: {
+        index: true,
+        follow: true,
+      },
+      authors: [{ name: "Methys" }],
+      publisher: "Methys",
+      openGraph: {
+        title: product.name,
+        description: product.description ?? "",
+        url: fullUrl,
+        images: [
+          {
+            url: product.image_url,
+            width: 800,
+            height: 800,
+            alt: product.name,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: product.name,
+        description: product.description ?? "",
+        images: [product.image_url],
+      },
+      other: {
+        "script:ld+json": JSON.stringify(schema),
+      },
     };
   } catch {
     return { title: "Product Not Found" };

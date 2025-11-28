@@ -88,10 +88,11 @@ const CartPage = () => {
           <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
             Looks like you havent added any items to your cart yet.
           </p>
-          <Link href="/products">
-            <button className="bg-default-color text-white py-2.5 sm:py-3 px-6 sm:px-8 rounded-lg transition-colors duration-200 text-base sm:text-lg hover:bg-default-cold">
-              Start Shopping
-            </button>
+          <Link
+            href="/products"
+            className="bg-default-color text-white py-2.5 sm:py-3 px-6 sm:px-8 rounded-lg transition-colors duration-200 text-base sm:text-lg hover:bg-default-cold"
+          >
+            Start Shopping
           </Link>
         </div>
       </div>
@@ -105,7 +106,10 @@ const CartPage = () => {
           Shopping Cart
         </h1>
         <nav className="text-xs sm:text-sm text-vintage-green">
-          <Link href="/products" className="hover:text-vintage-brown transition-colors">
+          <Link
+            href="/products"
+            className="hover:text-vintage-brown transition-colors"
+          >
             Products
           </Link>
           <span className="mx-1 sm:mx-2">/</span>
@@ -138,12 +142,14 @@ const CartPage = () => {
 
                 const uniqueKey = `${item.id}-${item.selectedSize || "nosize"}`;
 
-                const { finalPrice, originalPrice, isDiscounted } = getItemPrice(item);
+                const { finalPrice, originalPrice, isDiscounted } =
+                  getItemPrice(item);
 
-                const availableQuantity =
-                  item.selectedSize
-                    ? item.product_variants.find((v) => v.size === item.selectedSize)?.quantity || 0
-                    : item.quantity || 0;
+                const availableQuantity = item.selectedSize
+                  ? item.product_variants.find(
+                      (v) => v.size === item.selectedSize
+                    )?.quantity || 0
+                  : item.quantity || 0;
 
                 return (
                   <div key={uniqueKey} className="p-3 sm:p-6">
@@ -170,7 +176,9 @@ const CartPage = () => {
                             {item.name}
                           </h4>
                           {item.selectedSize && (
-                            <p className="text-xs text-gray-500 mt-1">Size: {item.selectedSize}</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Size: {item.selectedSize}
+                            </p>
                           )}
 
                           {/* Price with discount */}
@@ -192,11 +200,18 @@ const CartPage = () => {
                         </div>
 
                         <button
-                          onClick={() => handleRemoveItem(item.id, item.selectedSize)}
+                          onClick={() =>
+                            handleRemoveItem(item.id, item.selectedSize)
+                          }
                           className="text-red-500 hover:text-red-700 p-1"
                           title="Remove item"
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -212,31 +227,63 @@ const CartPage = () => {
                         <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-1.5">
                           <button
                             onClick={() =>
-                              handleUpdateQuantity(item.id, item.selectedSize, (item.quantity || 1) - 1)
+                              handleUpdateQuantity(
+                                item.id,
+                                item.selectedSize,
+                                (item.quantity || 1) - 1
+                              )
                             }
                             disabled={(item.quantity || 1) <= 1}
                             className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M20 12H4"
+                              />
                             </svg>
                           </button>
-                          <span className="w-10 text-center f">{item.quantity || 1}</span>
+                          <span className="w-10 text-center f">
+                            {item.quantity || 1}
+                          </span>
                           <button
                             onClick={() =>
-                              handleUpdateQuantity(item.id, item.selectedSize, (item.quantity || 1) + 1)
+                              handleUpdateQuantity(
+                                item.id,
+                                item.selectedSize,
+                                (item.quantity || 1) + 1
+                              )
                             }
                             disabled={(item.quantity || 1) >= availableQuantity}
                             className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M12 4v16m8-8H4"
+                              />
                             </svg>
                           </button>
                         </div>
 
                         <div className="text-right">
-                          <p className="text-xs text-gray-500">{availableQuantity} available</p>
+                          <p className="text-xs text-gray-500">
+                            {availableQuantity} available
+                          </p>
                           <p className="text-lg  text-default-cold">
                             ${(finalPrice * (item.quantity || 1)).toFixed(2)}
                           </p>
@@ -263,8 +310,14 @@ const CartPage = () => {
 
                       <div className="flex-1">
                         <h4 className="text-lg  text-gray-900">{item.name}</h4>
-                        {item.selectedSize && <p className="text-sm text-gray-500 mt-1">Size: {item.selectedSize}</p>}
-                        <p className="text-gray-600 text-sm mt-1 line-clamp-2">{item.description}</p>
+                        {item.selectedSize && (
+                          <p className="text-sm text-gray-500 mt-1">
+                            Size: {item.selectedSize}
+                          </p>
+                        )}
+                        <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+                          {item.description}
+                        </p>
 
                         <div className="mt-3 flex items-center gap-3">
                           <span className="text-xl  text-amber-600">
@@ -272,7 +325,9 @@ const CartPage = () => {
                           </span>
                           {isDiscounted && (
                             <>
-                              <del className="text-gray-400">${originalPrice.toFixed(2)}</del>
+                              <del className="text-gray-400">
+                                ${originalPrice.toFixed(2)}
+                              </del>
                               <span className="bg-red-100 text-red-700 text-xs px-2.5 py-1 rounded-full">
                                 On Sale
                               </span>
@@ -285,29 +340,61 @@ const CartPage = () => {
                         <div className="flex items-center gap-3 bg-gray-50 rounded-lg p-2">
                           <button
                             onClick={() =>
-                              handleUpdateQuantity(item.id, item.selectedSize, (item.quantity || 1) - 1)
+                              handleUpdateQuantity(
+                                item.id,
+                                item.selectedSize,
+                                (item.quantity || 1) - 1
+                              )
                             }
                             disabled={(item.quantity || 1) <= 1}
                             className="w-9 h-9 rounded-full bg-white border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
                           >
-                            <svg className="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
+                            <svg
+                              className="w-4 h-4 mx-auto"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M20 12H4"
+                              />
                             </svg>
                           </button>
-                          <span className="w-12 text-center ">{item.quantity || 1}</span>
+                          <span className="w-12 text-center ">
+                            {item.quantity || 1}
+                          </span>
                           <button
                             onClick={() =>
-                              handleUpdateQuantity(item.id, item.selectedSize, (item.quantity || 1) + 1)
+                              handleUpdateQuantity(
+                                item.id,
+                                item.selectedSize,
+                                (item.quantity || 1) + 1
+                              )
                             }
                             disabled={(item.quantity || 1) >= availableQuantity}
                             className="w-9 h-9 rounded-full bg-white border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
                           >
-                            <svg className="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                            <svg
+                              className="w-4 h-4 mx-auto"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M12 4v16m8-8H4"
+                              />
                             </svg>
                           </button>
                         </div>
-                        <p className="text-xs text-gray-500">{availableQuantity} available</p>
+                        <p className="text-xs text-gray-500">
+                          {availableQuantity} available
+                        </p>
                       </div>
 
                       <div className="text-right">
@@ -315,11 +402,18 @@ const CartPage = () => {
                           ${(finalPrice * (item.quantity || 1)).toFixed(2)}
                         </p>
                         <button
-                          onClick={() => handleRemoveItem(item.id, item.selectedSize)}
+                          onClick={() =>
+                            handleRemoveItem(item.id, item.selectedSize)
+                          }
                           className="mt-3 text-red-500 hover:text-red-700"
                           title="Remove item"
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -364,17 +458,22 @@ const CartPage = () => {
             </div>
 
             <div className="space-y-3  flex flex-col">
-              <Link href="/checkout">
-                <button className="w-full hover-colors hover:bg-default-cold hover:text-white  py-3.5 rounded-lg transition">
-                  Proceed to Checkout
-                </button>
+              <Link
+                href="/checkout"
+                className="w-full hover-colors hover:bg-default-cold hover:text-white  py-3.5 rounded-lg transition"
+              >
+                Proceed to Checkout
               </Link>
-              <Link href="/products">
-                <button className="w-full border-2 hover-colors hover:bg-default-cold hover:text-white py-3 rounded-lg transition">
-                  Continue Shopping
-                </button>
+              <Link
+                href="/products"
+                className="w-full border-2 hover-colors hover:bg-default-cold hover:text-white py-3 rounded-lg transition"
+              >
+                Continue Shopping
               </Link>
-              <Link href="/" className="block text-center text-default-cold hover:underline text-sm">
+              <Link
+                href="/"
+                className="block text-center text-default-cold hover:underline text-sm"
+              >
                 ← Back to home
               </Link>
             </div>

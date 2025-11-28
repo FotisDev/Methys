@@ -3,13 +3,16 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabase} from "@/_lib/supabase/client";
+import { supabase } from "@/_lib/supabase/client";
 import CreateAccountPage from "../createAccount/page";
 import SignUpPage from "../login/page";
 import Logo from "../../../svgs/logo";
 import Link from "next/link";
 
-import { ForgotPasswordForm, forgotPasswordSchema } from "../../../_lib/utils/zod";
+import {
+  ForgotPasswordForm,
+  forgotPasswordSchema,
+} from "../../../_lib/utils/zod";
 
 const ForgotPasswordPage = () => {
   const [showCreateAccount, setShowCreateAccount] = useState(false);
@@ -64,7 +67,9 @@ const ForgotPasswordPage = () => {
           }
         })
         .catch(() => {
-          setErrorMsg("Failed to set session. Please try the reset link again.");
+          setErrorMsg(
+            "Failed to set session. Please try the reset link again."
+          );
         });
     }
   }, []);
@@ -82,9 +87,14 @@ const ForgotPasswordPage = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/90 to-gray-50" />
         <div className="relative z-10 p-6 md:p-8 text-white">
-          <Link href="/" className="block w-60 md:w-96 mb-6 md:mb-8">
+          <Link
+            href="/"
+            className="block w-60 md:w-96 mb-6 md:mb-8"
+        
+          >
             <Logo className="w-full" size={250} />
           </Link>
+
           <section className="flex flex-col mt-10 md:mt-48">
             <h1 className="text-3xl md:text-7xl font-bold mb-3 md:mb-4 text-vintage-green">
               Dress Beyond Limits..
@@ -97,7 +107,8 @@ const ForgotPasswordPage = () => {
         </div>
         <div className="relative z-10 p-6 md:p-8">
           <p className="text-sm md:text-xl text-white">
-            2025 <span className="text-default-yellow">UrbanValor</span>. All rights reserved.
+            2025 <span className="text-default-yellow">UrbanValor</span>. All
+            rights reserved.
           </p>
         </div>
       </div>
@@ -107,13 +118,14 @@ const ForgotPasswordPage = () => {
         <div className="absolute top-4 right-4 md:top-28 md:right-24 font-poppins text-sm md:text-lg">
           <label className="text-lg text-black">New user?</label>
           <span>
-            <a
+            <Link
               href="/createAccount"
               onClick={() => setShowCreateAccount(true)}
               className="text-lg text-vintage-green hover:underline"
+            
             >
               Create an account
-            </a>
+            </Link>
           </span>
         </div>
 

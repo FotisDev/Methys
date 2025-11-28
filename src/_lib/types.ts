@@ -2,7 +2,7 @@
 export type CategoryBackendType = {
     id: number;
     name: string;
-    slug?: string;
+    slug: string;
     image_url?: string | null; 
     parent_id: number | null;
 };

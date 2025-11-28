@@ -4,8 +4,8 @@ import Link from "next/link";
 import { getCategoryBySlug, getSubcategories } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Footer from "@/components/footer/Footer";
-import Breadcrumb from "@/components/breadcrumb/Breadcrumb";
 import { getProductsWithStructure } from "@/_lib/backend/newCollection/action";
+import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 
 export default async function SubcategoryPage({
   params,
@@ -30,8 +30,7 @@ export default async function SubcategoryPage({
     const subcategories = await getSubcategories(parentCategory.id);
 
     const currentCategory = subcategories.find(
-      (subcat) =>
-        subcat.slug?.toLowerCase() === subcategorySlug.toLowerCase()
+      (subcat) => subcat.slug?.toLowerCase() === subcategorySlug.toLowerCase()
     );
 
     if (!currentCategory) {
@@ -47,10 +46,22 @@ export default async function SubcategoryPage({
           product.categoryformen.id === currentCategory.id
       ) ?? [];
 
+    const breadcrumbItems = [
+      { name: "Home", slug: "/" },
+      { name: "Products", slug: "/products" },
+    ];
+
+    if (categorySlug) {
+      breadcrumbItems.push({
+        name: categorySlug,
+        slug: `/${process.env.NEXT_PUBLIC_SITE_URL}${categorySlug}`,
+      });
+    }
+
     return (
       <HeaderProvider forceOpaque={true}>
         <section className="relative w-full min-h-[80vh] pt-32 p-2 pb-32 font-roboto text-vintage-green">
-          <Breadcrumb LinkclassName="hover:text-vintage-brown" />
+          <Breadcrumbs items={breadcrumbItems} />
 
           <hr className="mt-4 mb-4 bg-vintage-green" />
 
@@ -59,7 +70,8 @@ export default async function SubcategoryPage({
               {currentCategory.name.toUpperCase()}
             </h1>
             <p className="text-lg text-vintage-brown">
-              Discover our collection of {currentCategory.name.toLowerCase()} products
+              Discover our collection of {currentCategory.name.toLowerCase()}{" "}
+              products
             </p>
           </div>
 
@@ -68,14 +80,16 @@ export default async function SubcategoryPage({
               <div className="text-8xl mb-6">Κουτί</div>
               <h2 className="text-2xl md:text-3xl mb-4">No products found</h2>
               <p className="text-lg text-gray-600 max-w-md mx-auto">
-                We’re working on adding products to this category. Check back soon!
+                We’re working on adding products to this category. Check back
+                soon!
               </p>
             </div>
           ) : (
             <>
               <div className="p-6 text-center">
                 <span className="text-lg text-vintage-brown">
-                  {products.length} {products.length === 1 ? "product" : "products"} available
+                  {products.length}{" "}
+                  {products.length === 1 ? "product" : "products"} available
                 </span>
               </div>
 
@@ -86,7 +100,11 @@ export default async function SubcategoryPage({
                   return (
                     <Link
                       key={product.id}
-                      href={`/products/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subcategorySlug)}/${encodeURIComponent(product.slug ?? "")}`}
+                      href={`/products/${encodeURIComponent(
+                        categorySlug
+                      )}/${encodeURIComponent(
+                        subcategorySlug
+                      )}/${encodeURIComponent(product.slug ?? "")}`}
                       className="group block bg-white border border-vintage-green/20 hover:border-vintage-green transition-all duration-300 overflow-hidden"
                     >
                       <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
@@ -140,7 +158,6 @@ export default async function SubcategoryPage({
   }
 }
 
-// ΚΑΙ ΤΟ generateMetadata – ΣΩΣΤΑ!
 export async function generateMetadata({
   params,
 }: {

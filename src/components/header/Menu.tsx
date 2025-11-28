@@ -147,7 +147,7 @@ const Menu = () => {
   return (
     <div className="relative items-center justify-center">
       <div>
-        <div
+        <nav
           className={navbarClasses.join(" ")}
           ref={menuRef}
           style={{ zIndex: 1000 }}
@@ -157,26 +157,27 @@ const Menu = () => {
               setIsNavbarHovered(false);
             }
           }}
+          aria-label="Main navigation"
         >
           <div className="flex items-center justify-start">
-            <div className="hidden lg:flex gap-4 items-center ml-4">
+            <ul className="hidden lg:flex gap-4 items-center ml-4">
               {navLinks.map(({ href, label }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="uppercase hover:underline"
-                  onMouseEnter={() => handleMouseEnter(label)}
-                >
-                  {label}
-                </Link>
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="uppercase hover:underline"
+                    onMouseEnter={() => handleMouseEnter(label)}
+                  >
+                    {label}
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           <div className="flex justify-center">
-            <Link href={PAGE_URLS.HOMEPAGE} passHref>
-              <p className=" text-lg">Methys</p>
+            <Link href={PAGE_URLS.HOMEPAGE} className="text-lg ">
+              Methys
             </Link>
           </div>
 
@@ -193,6 +194,7 @@ const Menu = () => {
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -235,7 +237,7 @@ const Menu = () => {
 
             <button
               ref={toggleButtonRef}
-              aria-label="Open Mobile Menu"
+              aria-label="Open mobile menu"
               className="lg:hidden text-3xl"
               onClick={() => {
                 setShowBulletMenu(!showBulletMenu);
@@ -245,53 +247,61 @@ const Menu = () => {
               ☰
             </button>
           </div>
-        </div>
+        </nav>
       </div>
 
       {/* Mobile Menu */}
       {showBulletMenu && (
-        <div className="block lg:hidden absolute top-full left-0 z-30 w-full bg-white shadow-md transition-all duration-300 ease-in-out">
-          <div className="flex flex-col px-4 py-4 gap-3">
+        <nav
+          className="block lg:hidden absolute top-full left-0 z-30 w-full bg-white shadow-md transition-all duration-300 ease-in-out"
+          aria-label="Mobile navigation"
+        >
+          <ul className="flex flex-col px-4 py-4 gap-3">
             {navLinks.map(({ href, label }) => (
-              <Link
-                key={label}
-                href={href}
-                onClick={() => handleMobileClick(label)}
-                className="text-left text-black py-2 border-b border-gray-200"
-              >
-                {label}
-              </Link>
+              <li key={label}>
+                <Link
+                  href={href}
+                  onClick={() => handleMobileClick(label)}
+                  className="block text-left text-black py-2 border-b border-gray-200"
+                >
+                  {label}
+                </Link>
+              </li>
             ))}
 
-            <button
-              onClick={() => {
-                toggleWishlist();
-                setShowBulletMenu(false);
-              }}
-              className="flex items-center justify-between text-left text-black py-2 border-b border-gray-200"
-            >
-              <span>Wishlist</span>
-              {wishlistCount > 0 && (
-                <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[24px] text-center">
-                  {wishlistCount > 99 ? "99+" : wishlistCount}
-                </span>
-              )}
-            </button>
+            <li>
+              <button
+                onClick={() => {
+                  toggleWishlist();
+                  setShowBulletMenu(false);
+                }}
+                className="w-full flex items-center justify-between text-left text-black py-2 border-b border-gray-200"
+              >
+                <span>Wishlist</span>
+                {wishlistCount > 0 && (
+                  <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[24px] text-center">
+                    {wishlistCount > 99 ? "99+" : wishlistCount}
+                  </span>
+                )}
+              </button>
+            </li>
 
-            <Link
-              href={PAGE_URLS.CART}
-              onClick={() => setShowBulletMenu(false)}
-              className="flex items-center justify-between text-left text-black py-2 border-b border-gray-200"
-            >
-              <span>Cart</span>
-              {cartItemCount > 0 && (
-                <span className="bg-amber-500 text-white text-xs rounded-full px-2 py-1 min-w-[24px] text-center">
-                  {cartItemCount > 99 ? "99+" : cartItemCount}
-                </span>
-              )}
-            </Link>
-          </div>
-        </div>
+            <li>
+              <Link
+                href={PAGE_URLS.CART}
+                onClick={() => setShowBulletMenu(false)}
+                className="flex items-center justify-between text-left text-black py-2 border-b border-gray-200"
+              >
+                <span>Cart</span>
+                {cartItemCount > 0 && (
+                  <span className="bg-vintage-brown text-white text-xs rounded-full px-2 py-1 min-w-[24px] text-center">
+                    {cartItemCount > 99 ? "99+" : cartItemCount}
+                  </span>
+                )}
+              </Link>
+            </li>
+          </ul>
+        </nav>
       )}
 
       {showClothes && (
@@ -307,7 +317,7 @@ const Menu = () => {
             type="button"
             className="absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-vintage-green"
             onClick={() => setShowClothes(false)}
-            aria-label="Close Clothes Menu"
+            aria-label="Close clothes menu"
           >
             &times;
           </button>

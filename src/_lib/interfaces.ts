@@ -68,37 +68,6 @@ export interface SignUpPageProps extends BackendError {
   SingUp: string;
   description: string;
 }
-
-export interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  price: number;
-  image_url: string;
-  created_at: string;
-  categories: {
-    id: string;
-    category_name: string;
-    image_url: string;
-  }[];
-  users: {
-    id: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-    telephone: string;
-    birthday: string;
-  }[];
-}
-
-export interface CategoryBackendType {
-  id: number;
-  category_name: string;
-  parent_id?: number;
-  image_url?: string | undefined; 
-}
-
 export interface ContactPageProps {
   Contact: {
     Telephone: string;

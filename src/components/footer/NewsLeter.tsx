@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Newsletter() {
   return (
@@ -11,7 +12,7 @@ export default function Newsletter() {
               alt="Newsletter Illustration"
               className="object-cover rounded-2xl"
               priority
-             fill
+              fill
             />
           </div>
           <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center space-y-4 bg-vintage-white ">
@@ -40,12 +41,12 @@ export default function Newsletter() {
 
             <p className="  text-xs sm:text-sm lg:text-[16px] opacity-80">
               By subscribing, you agree to our{" "}
-              <a
+              <Link
                 href="/terms"
                 className="underline hover:opacity-100  hover:text-vintage-green hover:font-bold transition-opacity"
               >
                 Terms & Conditions
-              </a>
+              </Link>
               .
             </p>
           </div>
