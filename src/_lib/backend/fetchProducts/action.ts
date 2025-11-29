@@ -41,6 +41,5 @@ export async function fetchProducts(): Promise<ProductInDetails[] | null> {
 
   if (!data || data.length === 0) return [];
 
-  // Perfectly typed, no mapping needed
   return data;
 }
