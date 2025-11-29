@@ -10,6 +10,7 @@ import ProductActionsInline from "./ProductActionsInline";
 import { fetchProductBySlug } from "@/_lib/backend/productBySlug/action";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createProductSchema } from "@/components/schemas/newCollectionSchema";
+import Schema from "@/components/schemas/SchemaMarkUp";
 
 export default async function ProductDetailPage({
   params,
@@ -37,18 +38,33 @@ export default async function ProductDetailPage({
     const currentCategory = subcategories.find(
       (subcat) => subcat.slug === subcategorySlug
     );
-
     if (!currentCategory) {
       notFound();
     }
 
     const product = await fetchProductBySlug(currentCategory.id, productSlug);
-
     if (!product) {
       notFound();
     }
 
-    
+    const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${productSlug}`;
+
+    const schema = createProductSchema({
+      url: fullUrl,
+      name: product.name,
+      description: product.description ?? "",
+      images: [product.image_url ?? "/AuthClothPhoto.jpg"],
+      price: Number(product.price),
+      currency: "EUR",
+      sku: String(product.slug ?? product.id),
+      brand: "Methys",
+      availability: product.product_variants.some((p) => p.quantity > 0),
+      sizes: product.product_variants.map((p) => p.size),
+      product_details: product.product_details,
+      category: currentCategory.name,
+      id: product.id.toString(),
+    });
+
     const breadcrumbItems = [
       { name: "Home", slug: "/" },
       { name: "Products", slug: "/products" },
@@ -66,16 +82,13 @@ export default async function ProductDetailPage({
     return (
       <HeaderProvider forceOpaque={true}>
         <section className="relative w-full pt-20 pb-32 font-roboto text-vintage-green">
-          {/* Breadcrumb */}
           <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-            <Breadcrumbs items={breadcrumbItems}  />
+            <Breadcrumbs items={breadcrumbItems} />
           </div>
 
           <div className=" mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-              {/* LEFT SIDE - PRODUCT IMAGES */}
               <div className="space-y-0">
-                {/* Main Image */}
                 <div
                   className="relative bg-gray-50 overflow-hidden"
                   style={{ aspectRatio: "3/4" }}
@@ -98,7 +111,6 @@ export default async function ProductDetailPage({
                   )}
                 </div>
 
-                {/* Secondary Image */}
                 <div
                   className="relative bg-gray-50 overflow-hidden mt-0"
                   style={{ aspectRatio: "3/4" }}
@@ -117,9 +129,9 @@ export default async function ProductDetailPage({
 
               <div className="lg:sticky lg:top-24 lg:h-fit space-y-8">
                 <div>
-                  <h1 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
+                  <h3 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
                     {product.name}
-                  </h1>
+                  </h3>
 
                   {product.description && (
                     <p className="text-sm text-gray-600 mb-4">
@@ -141,6 +153,7 @@ export default async function ProductDetailPage({
                     )}
                   </div>
                 </div>
+
                 <ProductActionsInline product={product} />
 
                 <div className="border-t pt-6 space-y-4">
@@ -171,18 +184,13 @@ export default async function ProductDetailPage({
 
                 <div className="border-t pt-6">
                   <p className="text-sm text-gray-700 leading-relaxed mb-6">
-                    {product.description}
+                    {product.size_description}
                   </p>
-
+                  <div className="space-y-2 text-sm ">
+                    {product.description}
+                  </div>
                   <div className="space-y-2 text-sm">
-                    <p>- 100% Cotton (Organic)</p>
-                    <p>- Brushed twill fabric</p>
-                    <p>- Loose fit</p>
-                    <p>- All-over check pattern</p>
-                    <p>- Single chest pocket with button closure</p>
-                    <p>- Full button placket</p>
-                    <p>- Adjustable buttoned cuffs</p>
-                    <p>- Straight hem</p>
+                    {product.product_details}
                   </div>
                 </div>
 
@@ -221,6 +229,8 @@ export default async function ProductDetailPage({
               </div>
             </div>
           </div>
+
+          <Schema markup={schema} />
         </section>
       </HeaderProvider>
     );
@@ -229,6 +239,7 @@ export default async function ProductDetailPage({
     notFound();
   }
 }
+
 export async function generateMetadata({
   params,
 }: {
@@ -252,28 +263,12 @@ export async function generateMetadata({
     const currentCategory = subcategories.find(
       (subcat) => subcat.slug === subcategorySlug
     );
-
     if (!currentCategory) return { title: "Product Not Found" };
 
     const product = await fetchProductBySlug(currentCategory.id, productSlug);
     if (!product) return { title: "Product Not Found" };
 
     const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${productSlug}`;
-
-    const schema = createProductSchema({
-      url: fullUrl,
-      name: product.name,
-      description: product.description ?? "",
-      images: [product.image_url ?? "/AuthClothPhoto.jpg"],
-      price: Number(product.price),
-      currency: "EUR",
-      sku: String(product.slug ?? product.id),
-      brand: "Methys",
-      availability: product.product_variants.some((p) => p.quantity > 0),
-      sizes: product.product_variants.map((p) => p.size),
-      category: currentCategory.name,
-      id: product.id.toString(),
-    });
 
     return {
       title: `${product.name} | Methys`,
@@ -305,9 +300,6 @@ export async function generateMetadata({
         title: product.name,
         description: product.description ?? "",
         images: [product.image_url],
-      },
-      other: {
-        "script:ld+json": JSON.stringify(schema),
       },
     };
   } catch {

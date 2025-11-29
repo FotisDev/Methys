@@ -54,7 +54,7 @@ export default async function SubcategoryPage({
     if (categorySlug) {
       breadcrumbItems.push({
         name: categorySlug,
-        slug: `/${process.env.NEXT_PUBLIC_SITE_URL}${categorySlug}`,
+        slug: `/products/${categorySlug}`,
       });
     }
 

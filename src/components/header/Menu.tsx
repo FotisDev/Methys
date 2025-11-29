@@ -177,7 +177,7 @@ const Menu = () => {
 
           <div className="flex justify-center">
             <Link href={PAGE_URLS.HOMEPAGE} className="text-lg ">
-              Methys
+              <h1>Methys</h1>
             </Link>
           </div>
 

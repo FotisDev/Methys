@@ -1,3 +1,5 @@
+"use server";
+
 import { supabase } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
 
@@ -7,20 +9,21 @@ export async function fetchProducts(): Promise<ProductInDetails[] | null> {
     .select(`
       id,
       name,
-      description,
-      price,
-      created_at,
-      image_url,
       slug,
+      price,
+      description,
+      size_description,
+      product_details,
+      image_url,
       is_offer,
-      category_men_id,
-      categoryformen:category_men_id (
+      categoryformen:category_men_id!inner (
         id,
         name,
-        parent:parent_id (
+        slug,
+        parent:parent_id!inner (
           id,
           name,
-          grandparent:parent_id (id, name)
+          slug
         )
       ),
       product_variants (
@@ -29,57 +32,15 @@ export async function fetchProducts(): Promise<ProductInDetails[] | null> {
         quantity
       )
     `)
-    .order("created_at", { ascending: false });
+    .overrideTypes<ProductInDetails[], { merge: false }>(); // NEW WAY
 
-  if (error || !data) {
-    console.error("Error fetching products:", error?.message);
+  if (error) {
+    console.error("Error fetching products:", error.message);
     return null;
   }
 
-  const transformedData = data?.map(item => {
-    const categoryArray = item.categoryformen;
-    let category = null;
+  if (!data || data.length === 0) return [];
 
-    if (categoryArray && categoryArray.length > 0) {
-      const categoryData = categoryArray[0];
-      
-      let parent = null;
-      if (categoryData.parent && categoryData.parent.length > 0) {
-        const parentData = categoryData.parent[0];
-        
-        let grandparent = null;
-        if (parentData.grandparent && parentData.grandparent.length > 0) {
-          grandparent = parentData.grandparent[0];
-        }
-        
-        parent = {
-          id: parentData.id,
-          name: parentData.name,
-          grandparent: grandparent
-        };
-      }
-      
-      category = {
-        id: categoryData.id,
-        name: categoryData.name,
-        parent: parent
-      };
-    }
-
-    return {
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      price: item.price,
-      image_url: item.image_url,
-      created_at: item.created_at,
-      is_offer: item.is_offer,
-      slug: item.slug,
-      category_men_id: item.category_men_id,
-      categoryformen: category,
-      product_variants: item.product_variants || []
-    };
-  });
-
-  return transformedData as ProductInDetails[];
+  // Perfectly typed, no mapping needed
+  return data;
 }

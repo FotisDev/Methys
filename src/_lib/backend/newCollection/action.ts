@@ -28,7 +28,8 @@ type RawProductFromDB = {
     quantity: number;
     price?: number | null;
   }[];
-  size_description:string;
+  size_description: string;
+  product_details: string;
 };
 
 export async function getProductsWithStructure(): Promise<
@@ -44,6 +45,7 @@ export async function getProductsWithStructure(): Promise<
       price,
       description,
       size_description,
+      product_details,
       image_url,
       is_offer,
       categoryformen:category_men_id!inner(
@@ -83,6 +85,7 @@ export async function getProductsWithStructure(): Promise<
     size_description: item.size_description,
     image_url: item.image_url,
     is_offer: item.is_offer ?? false,
+    product_details: item.product_details,
 
     categoryformen: item.categoryformen
       ? {

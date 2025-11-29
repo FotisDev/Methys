@@ -77,6 +77,7 @@ export type ProductInDetails = {
     quantity: number;
   }[];
   size_description: string;
+  product_details: string;
 };
 
 export type ProductInsert = {
@@ -87,7 +88,7 @@ export type ProductInsert = {
   image_url: string | null;
   category_men_id: number;
   is_offer?: boolean;
-  size_description: string;
+  size_description?: string;
 };
 
 export type VariantInsert = {
