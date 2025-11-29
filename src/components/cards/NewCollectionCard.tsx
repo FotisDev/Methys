@@ -96,8 +96,8 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <section className="relative w-full border-b border-2 border-vintage-green p-0.5 ">
-        <div className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[80vh]">
+      <section className="relative w-full bg-white ">
+        <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[70vh]">
           <Image
             src={hovered ? "/articles.jpg" : item.image_url ?? "/Articles.jpg"}
             alt={item.name}
@@ -133,22 +133,26 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="relative pt-3 text-vintage-green ">
-          <h3 className="text-base left-3 top-1 line-clamp-1 bg-vintage-white">
+        <div className="relative pt-3 text-vintage-green pl-3 ">
+          <h3 className="text-base left-3 top-1 line-clamp-1 bg-white">
             {item.name}
           </h3>
 
-          <div className="text-xs md:text-base text-vintage-green/70  block flex-wrap ">
-            {availableSizes.length > 0 ? (
-              <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-wrap bg-vintage-white">
+          <div className="text-xs md:text-base text-vintage-green/70 block flex-wrap min-h-[2.5rem]">
+            {hovered && item.size_description ? (
+              <p className="text-sm sm:text-base text-vintage-green/90 py-1">
+                {item.size_description}
+              </p>
+            ) : availableSizes.length > 0 ? (
+              <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-wrap bg-white">
                 {availableSizes.map((size) => (
                   <span
                     key={size}
                     onClick={(e) => handleSizeClick(e, size)}
                     className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base transition-all duration-200 bg-gray-100${
                       selectedSize === size
-                        ? "bg-vintage-green text-white rounded-full"
-                        : "bg-white text-vintage-green hover:bg-vintage-green hover:text-white rounded-full"
+                        ? `bg-vintage-green text-white `
+                        : "bg-white text-vintage-green hover:bg-vintage-green hover:text-white rounded w-6 sm:w-9x"
                     }`}
                   >
                     {size}

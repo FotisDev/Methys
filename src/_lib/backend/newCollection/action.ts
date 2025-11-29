@@ -28,17 +28,22 @@ type RawProductFromDB = {
     quantity: number;
     price?: number | null;
   }[];
+  size_description:string;
 };
 
-export async function getProductsWithStructure(): Promise<ProductInDetails[] | null> {
+export async function getProductsWithStructure(): Promise<
+  ProductInDetails[] | null
+> {
   const { data, error } = await supabase
     .from("products")
-    .select(`
+    .select(
+      `
       id,
       name,
       slug,
       price,
       description,
+      size_description,
       image_url,
       is_offer,
       categoryformen:category_men_id!inner(
@@ -56,8 +61,9 @@ export async function getProductsWithStructure(): Promise<ProductInDetails[] | n
         quantity,
         price
       )
-    `)
-    .returns<RawProductFromDB[]>(); 
+    `
+    )
+    .returns<RawProductFromDB[]>();
 
   if (error) {
     console.error("Supabase error:", error.message);
@@ -74,6 +80,7 @@ export async function getProductsWithStructure(): Promise<ProductInDetails[] | n
     slug: item.slug,
     price: item.price,
     description: item.description,
+    size_description: item.size_description,
     image_url: item.image_url,
     is_offer: item.is_offer ?? false,
 
@@ -95,7 +102,7 @@ export async function getProductsWithStructure(): Promise<ProductInDetails[] | n
     product_variants: item.product_variants.map((v) => ({
       size: v.size,
       quantity: v.quantity,
-      price: v.price ?? item.price, 
+      price: v.price ?? item.price,
     })),
   }));
 

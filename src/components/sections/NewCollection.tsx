@@ -18,7 +18,7 @@ export default async function NewCollectionClothes() {
   }
 
   return (
-    <section className="new-collection py-8 px-0.5 font-poppins bg-vintage-white">
+    <section className="new-collection py-8 px-0.5 font-poppins bg-white">
       <div className="flex items-center justify-between mb-6">
         <Link
           href="/products"

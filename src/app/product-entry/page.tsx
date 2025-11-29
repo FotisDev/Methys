@@ -9,8 +9,6 @@ import { supabase } from "@/_lib/supabase/client";
 import { ProductInsert, VariantInsert } from "@/_lib/types";
 import { getErrorMessage } from "@/_lib/helpers";
 
-
-// Zod schemas
 const sizeVariantSchema = z.object({
   size: z.string(),
   quantity: z.coerce.number().min(0, "Η ποσότητα πρέπει να είναι θετική"),
@@ -21,7 +19,8 @@ const productSchema = z.object({
   description: z.string().optional(),
   category_men_id: z.coerce.number().min(1, "Επέλεξε κατηγορία"),
   basePrice: z.coerce.number().min(0.01, "Η τιμή είναι υποχρεωτική"),
-  image: z.any().optional(), 
+  image: z.any().optional(),
+  size_description: z.string().optional(),
   sizeVariants: z
     .array(sizeVariantSchema)
     .nonempty("Πρέπει να προσθέσεις τουλάχιστον ένα μέγεθος"),
@@ -32,7 +31,9 @@ type ProductFormValues = z.infer<typeof productSchema>;
 const availableSizes = ["XS", "S", "M", "L", "XL"] as const;
 
 export default function AddProductForm() {
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -107,7 +108,9 @@ export default function AddProductForm() {
       return null;
     }
 
-    const { data } = supabase.storage.from("product-images").getPublicUrl(filePath);
+    const { data } = supabase.storage
+      .from("product-images")
+      .getPublicUrl(filePath);
     return data.publicUrl;
   }
 
@@ -125,7 +128,7 @@ export default function AddProductForm() {
       const slug = formData.name
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") 
+        .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, "");
 
@@ -134,6 +137,7 @@ export default function AddProductForm() {
         slug,
         price: formData.basePrice,
         description: formData.description ?? "",
+        size_description: formData.size_description ?? "",
         image_url: imageUrl,
         category_men_id: formData.category_men_id,
         is_offer: false,
@@ -177,18 +181,36 @@ export default function AddProductForm() {
 
       {/* Όνομα */}
       <div>
-        <label className="block text-sm font-medium mb-1">Name of Product</label>
+        <label className="block text-sm font-medium mb-1">
+          Name of Product
+        </label>
         <input
           {...register("name")}
           className="border p-2 w-full rounded"
           placeholder="Π.χ. Basic T-Shirt"
         />
-        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+        {errors.name && (
+          <p className="text-red-500 text-sm">{errors.name.message}</p>
+        )}
       </div>
 
       <div>
         <label className="block text-sm font-medium mb-1">Description</label>
-        <textarea {...register("description")} className="border p-2 w-full rounded" rows={3} />
+        <textarea
+          {...register("description")}
+          className="border p-2 w-full rounded"
+          rows={3}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          sizeDescription
+        </label>
+        <textarea
+          {...register("size_description")}
+          className="border p-2 w-full rounded"
+          rows={3}
+        />
       </div>
 
       <div>
@@ -205,12 +227,16 @@ export default function AddProductForm() {
           ))}
         </select>
         {errors.category_men_id && (
-          <p className="text-red-500 text-sm">{errors.category_men_id.message}</p>
+          <p className="text-red-500 text-sm">
+            {errors.category_men_id.message}
+          </p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Price of Product (€)</label>
+        <label className="block text-sm font-medium mb-1">
+          Price of Product (€)
+        </label>
         <input
           type="number"
           step="0.01"
@@ -221,7 +247,9 @@ export default function AddProductForm() {
         {errors.basePrice && (
           <p className="text-red-500 text-sm">{errors.basePrice.message}</p>
         )}
-        <p className="text-xs text-gray-500 mt-1">Price is the same for all sizes</p>
+        <p className="text-xs text-gray-500 mt-1">
+          Price is the same for all sizes
+        </p>
       </div>
 
       <div>
@@ -229,19 +257,22 @@ export default function AddProductForm() {
         <input type="file" accept="image/*" {...register("image")} />
         {uploading && <p>Loading Image...</p>}
         {imagePreview && (
-          <div className="mt-3">
+          <div className="mt-3 relative w-40 h-40">
             <Image
               src={imagePreview}
               alt="Preview"
-              className="w-40 h-40 object-cover rounded-lg shadow"
+              className="object-cover rounded-lg shadow"
               fill
+              sizes="160px"
             />
           </div>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Available Sizes</label>
+        <label className="block text-sm font-medium mb-1">
+          Available Sizes
+        </label>
         <div className="flex flex-wrap gap-2">
           {availableSizes.map((size) => (
             <button
@@ -255,7 +286,9 @@ export default function AddProductForm() {
           ))}
         </div>
         {errors.sizeVariants && !Array.isArray(errors.sizeVariants) && (
-          <p className="text-red-500 text-sm mt-1">{errors.sizeVariants.message}</p>
+          <p className="text-red-500 text-sm mt-1">
+            {errors.sizeVariants.message}
+          </p>
         )}
       </div>
 
@@ -296,4 +329,3 @@ export default function AddProductForm() {
     </form>
   );
 }
-

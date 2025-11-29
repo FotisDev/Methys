@@ -1,17 +1,16 @@
-
 export type CategoryBackendType = {
-    id: number;
-    name: string;
-    slug: string;
-    image_url?: string | null; 
-    parent_id: number | null;
+  id: number;
+  name: string;
+  slug: string;
+  image_url?: string | null;
+  parent_id: number | null;
 };
 
 export type PageProps = {
   params: {
     slug: string;
   };
-}
+};
 export type User = {
   id: string;
   firstname: string;
@@ -77,6 +76,7 @@ export type ProductInDetails = {
     price: number | null;
     quantity: number;
   }[];
+  size_description: string;
 };
 
 export type ProductInsert = {
@@ -87,6 +87,7 @@ export type ProductInsert = {
   image_url: string | null;
   category_men_id: number;
   is_offer?: boolean;
+  size_description: string;
 };
 
 export type VariantInsert = {
@@ -95,5 +96,3 @@ export type VariantInsert = {
   price: number;
   slug: string;
 };
-
-
