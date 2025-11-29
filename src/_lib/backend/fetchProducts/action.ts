@@ -32,7 +32,7 @@ export async function fetchProducts(): Promise<ProductInDetails[] | null> {
         quantity
       )
     `)
-    .overrideTypes<ProductInDetails[], { merge: false }>(); // NEW WAY
+    .overrideTypes<ProductInDetails[], { merge: false }>(); 
 
   if (error) {
     console.error("Error fetching products:", error.message);
