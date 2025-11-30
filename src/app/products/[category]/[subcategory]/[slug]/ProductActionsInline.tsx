@@ -64,7 +64,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
         <div className="flex gap-2">
           <button className="relative w-16 h-16 border-2 border-vintage-green rounded overflow-hidden">
             <Image
-              src={product.image_url ?? "/Articles.jpg"}
+              src={product.image_url?.[0] ?? "/Articles.jpg"}
               alt="Mountain Grey Brown"
               fill
               className="object-cover"
@@ -176,7 +176,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
         isOpen={isSizeGuideOpen}
         onClose={() => setIsSizeGuideOpen(false)}
         productName={product.name}
-        productImages={[product.image_url ?? ""]}
+        productImages={[product.image_url?.[0] ?? ""]}
       />
     </div>
   );

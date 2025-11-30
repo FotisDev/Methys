@@ -53,7 +53,7 @@ export default async function ProductDetailPage({
       url: fullUrl,
       name: product.name,
       description: product.description ?? "",
-      images: [product.image_url ?? "/AuthClothPhoto.jpg"],
+      images: [product.image_url?.[0] ?? "/AuthClothPhoto.jpg"],
       price: Number(product.price),
       currency: "EUR",
       sku: String(product.slug ?? product.id),
@@ -95,7 +95,7 @@ export default async function ProductDetailPage({
                 >
                   <Image
                     src={getValidImage(
-                      product.image_url ?? "/AuthClothPhoto.jpg"
+                      product.image_url?.[0] ?? "/AuthClothPhoto.jpg"
                     )}
                     alt={product.name}
                     fill
@@ -117,7 +117,7 @@ export default async function ProductDetailPage({
                 >
                   <Image
                     src={getValidImage(
-                      product.image_url ?? "/AuthClothPhoto.jpg"
+                      product.image_url?.[0] ?? "/AuthClothPhoto.jpg"
                     )}
                     alt={`${product.name} - alternate view`}
                     fill

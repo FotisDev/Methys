@@ -45,7 +45,7 @@ export default function ProductList() {
             );
             return {
               ...cat,
-              image_url: product?.image_url,
+              image_url: product?.image_url?.[0],
               parent_id: cat.parent_id ?? null,
             };
           }
@@ -119,7 +119,7 @@ export default function ProductList() {
               const href = `/products/${category.name
                 .replace(/\s+/g, "-")
                 .toLowerCase()}`;
-              const imageUrl = category.image_url ?? "/accesories.jpg ";
+              const imageUrl = category.image_url?.[0] ?? "/accesories.jpg ";
 
               return (
                 <Link

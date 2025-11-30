@@ -139,7 +139,7 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                       <div className="w-20 h-26 relative overflow-hidden rounded-lg bg-gray-100 flex-shrink-0">
                         {item.image_url && (
                           <Image
-                            src={getValidImage(item.image_url)}
+                            src={getValidImage(Array.isArray(item.image_url) ? item.image_url[0] : item.image_url)}
                             alt={item.name}
                             fill
                             className="object-cover"

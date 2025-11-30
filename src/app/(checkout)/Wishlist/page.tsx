@@ -169,7 +169,7 @@ const WishlistPage = () => {
             >
               <div className=" relative w-full h-[50vh] sm:h-[55vh] ">
                 <Image
-                  src={getValidImage(item.image_url)}
+                  src={getValidImage(item.image_url?.[0])}
                   alt={item.name}
                   fill
                   className="object-cover"

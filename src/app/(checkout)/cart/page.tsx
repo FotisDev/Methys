@@ -158,7 +158,7 @@ const CartPage = () => {
                       <div className="flex items-start gap-3">
                         <div className="w-20 h-20 relative overflow-hidden rounded-lg bg-vintage-green flex-shrink-0">
                           <Image
-                            src={getValidImage(item.image_url)}
+                            src={getValidImage(item.image_url?.[0])}
                             alt={item.name}
                             fill
                             className="object-cover"
@@ -295,7 +295,7 @@ const CartPage = () => {
                     <div className="hidden sm:flex items-center gap-6">
                       <div className="w-20 h-20 relative overflow-hidden rounded-lg bg-gray-100 flex-shrink-0">
                         <Image
-                          src={getValidImage(item.image_url)}
+                          src={getValidImage(item.image_url?.[0])}
                           alt={item.name}
                           fill
                           className="object-cover"

@@ -109,7 +109,7 @@ export default async function SubcategoryPage({
                     >
                       <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
                         <Image
-                          src={product.image_url || "/AuthClothPhoto.jpg"}
+                          src={product.image_url?.[0] || "/AuthClothPhoto.jpg"}
                           alt={product.name}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"

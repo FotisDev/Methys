@@ -402,7 +402,7 @@ const Checkout = () => {
                   >
                     <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200">
                       <Image
-                        src={getValidImage(item.image_url)}
+                        src={getValidImage(item.image_url?.[0])}
                         alt={item.name}
                         width={64}
                         height={64}
