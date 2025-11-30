@@ -38,17 +38,13 @@ export default function ProductList() {
           console.error("Error fetching products:", err);
           console.warn("Using empty products array as fallback");
         }
+      
         const mappedCategories: CategoryBackendType[] = categoriesData.map(
-          (cat) => {
-            const product = productsData.find(
-              (p) => p?.categoryformen?.id === cat.id
-            );
-            return {
-              ...cat,
-              image_url: product?.image_url?.[0],
-              parent_id: cat.parent_id ?? null,
-            };
-          }
+          (cat) => ({
+            ...cat,
+            image_url: cat.image_url || "/accesories.jpg",
+            parent_id: cat.parent_id ?? null,
+          })
         );
 
         setCategories(mappedCategories);
@@ -110,7 +106,7 @@ export default function ProductList() {
     <HeaderProvider forceOpaque={true}>
       <section className="padding-y padding-x text-vintage-green font-roboto">
         <div className="pt-16">
-          <Breadcrumbs items={breadcrumbItems}/>
+          <Breadcrumbs items={breadcrumbItems} />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
             {parentCategories.map((category) => {
@@ -120,6 +116,7 @@ export default function ProductList() {
                 .replace(/\s+/g, "-")
                 .toLowerCase()}`;
               const imageUrl = category.image_url ?? "/accesories.jpg ";
+              console.log(imageUrl);
 
               return (
                 <Link

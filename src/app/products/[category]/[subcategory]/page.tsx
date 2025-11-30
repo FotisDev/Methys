@@ -28,7 +28,8 @@ export default async function SubcategoryPage({
     }
 
     const subcategories = await getSubcategories(parentCategory.id);
-
+    
+    
     const currentCategory = subcategories.find(
       (subcat) => subcat.slug?.toLowerCase() === subcategorySlug.toLowerCase()
     );
@@ -77,7 +78,7 @@ export default async function SubcategoryPage({
 
           {products.length === 0 ? (
             <div className="text-center mt-20">
-              <div className="text-8xl mb-6">Κουτί</div>
+              <div className="text-8xl mb-6">Still creating this page.</div>
               <h2 className="text-2xl md:text-3xl mb-4">No products found</h2>
               <p className="text-lg text-gray-600 max-w-md mx-auto">
                 We’re working on adding products to this category. Check back

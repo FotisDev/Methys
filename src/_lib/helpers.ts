@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { CategoryBackendType} from "./types";
-
+import { CategoryBackendType } from "./types";
 
 export type User = {
   id: string;
@@ -9,7 +8,7 @@ export type User = {
   email: string;
   telephone: string | null;
   birthday: string | null;
-}
+};
 
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,7 +18,7 @@ export const supabase = createClient(
 export async function fetchCategories(): Promise<CategoryBackendType[] | null> {
   const { data, error } = await supabase
     .from("categoriesformen")
-    .select("id, name, parent_id")
+    .select("id, name, parent_id, image_url")
     .order("id", { ascending: true });
 
   if (error || !data) {
@@ -30,13 +29,12 @@ export async function fetchCategories(): Promise<CategoryBackendType[] | null> {
   return data as CategoryBackendType[];
 }
 
-
 export async function getSubcategories(
   parentId: number
 ): Promise<CategoryBackendType[]> {
   const { data, error } = await supabase
     .from("categoriesformen")
-    .select("id, name, parent_id, slug")
+    .select("id, name, parent_id, slug,image_url")
     .eq("parent_id", parentId)
     .order("id", { ascending: true });
 
@@ -48,14 +46,13 @@ export async function getSubcategories(
   return data || [];
 }
 
-
 export async function getCategoryBySlug(
   slug: string,
   parentId?: number | null
 ): Promise<CategoryBackendType | null> {
   let query = supabase
     .from("categoriesformen")
-    .select("id, name, parent_id, slug")
+    .select("id, name, parent_id, slug,image_url")
     .eq("slug", slug);
 
   if (parentId !== null && parentId !== undefined) {
@@ -72,14 +69,12 @@ export async function getCategoryBySlug(
   return data ?? null;
 }
 
-
-
 export async function getCategoryById(
   categoryId: number
 ): Promise<CategoryBackendType | null> {
   const { data, error } = await supabase
     .from("categoriesformen")
-    .select("id,name, parent_id")
+    .select("id,name, parent_id,image_url")
     .eq("id", categoryId)
     .maybeSingle();
 
@@ -137,7 +132,6 @@ export const getValidImage = (url?: string | null) => {
   }
   return `/images/${url}`;
 };
-
 
 export const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
