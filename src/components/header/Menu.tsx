@@ -37,7 +37,7 @@ const Menu = () => {
     { href: PAGE_URLS.PRODUCTS, label: "SHOP" },
   ];
 
-  const getValidImage = (imageUrl: string) => {
+  const getValidImage = (imageUrl: string | undefined) => {
     if (!imageUrl || imageUrl === "null" || imageUrl === "undefined") {
       return "/images/placeholder.jpg";
     }
@@ -52,7 +52,6 @@ const Menu = () => {
 
     return `/images/${imageUrl}`;
   };
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
