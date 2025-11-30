@@ -88,7 +88,7 @@ const SignInPage = () => {
 
           <div className="mt-8 text-sm md:text-lg">
             <p>
-              2025 <span className="text-default-yellow">UrbanValor</span>. All
+              2025 <span className="text-default-yellow">Methys</span>. All
               rights reserved.
             </p>
           </div>

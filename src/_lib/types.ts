@@ -59,7 +59,7 @@ export type ProductInDetails = {
   slug: string | null;
   price: number;
   description: string | null;
-  image_url: string | null;
+  image_url: string[] | null;
   is_offer?: boolean;
   categoryformen: {
     id: number;

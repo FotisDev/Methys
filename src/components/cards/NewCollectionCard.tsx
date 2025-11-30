@@ -89,6 +89,10 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
     return category?.slug ?? "uncategorized";
   };
 
+  const defaultImg = item.image_url?.[0] ?? "/Articles.jpg";
+  const hoverImg = item.image_url?.[1] ?? defaultImg;
+
+
   return (
     <Link
       href={`/products/${getCategoryPath()}/${item.slug ?? ""}`}
@@ -99,10 +103,13 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
       <section className="relative w-full bg-white ">
         <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[70vh]">
           <Image
-            src={hovered ? "/articles.jpg" : item.image_url ?? "/Articles.jpg"}
+            src={hovered ? hoverImg : defaultImg}
             alt={item.name}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            sizes="(max-width: 640px) 100vw,
+           (max-width: 768px) 50vw,
+           (max-width: 1024px) 33vw,
+           25vw"
             className="object-cover object-center transition duration-500 ease-in-out"
             quality={100}
             priority
