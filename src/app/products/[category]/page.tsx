@@ -44,7 +44,7 @@ export default async function CategoryPage({
 
       return {
         ...subcat,
-        image_url: subcat?.image_url ?? "/AuthClothPhoto.jpg",
+        image_url: subcat?.image_url ?? product?.image_url?.[0],
       } as SubcategoryWithImage;
     });
   } catch (err) {
