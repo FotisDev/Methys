@@ -10,9 +10,8 @@ import { ProductInDetails } from "@/_lib/types";
 interface WishlistSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  getValidImage: (imageUrl: string) => string;
+  getValidImage: (imageUrl: string | undefined) => string;
 }
-
 const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
   isOpen,
   onClose,
@@ -139,7 +138,7 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                       <div className="w-20 h-26 relative overflow-hidden rounded-lg bg-gray-100 flex-shrink-0">
                         {item.image_url && (
                           <Image
-                            src={getValidImage(Array.isArray(item.image_url) ? item.image_url[0] : item.image_url)}
+                            src={getValidImage(item.image_url?.[0])}
                             alt={item.name}
                             fill
                             className="object-cover"

@@ -126,7 +126,6 @@ export default function ProductList() {
                   key={category.id}
                   href={href}
                   className="group relative w-full aspect-[3/4] bg-vintage-green "
-                  // aria-label={`View ${category.name} subcategories`}
                 >
                   <div className="absolute inset-0  overflow-hidden ">
                     <Image
