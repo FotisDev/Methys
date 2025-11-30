@@ -120,7 +120,7 @@ export default async function CategoryPage({
                       
                       >
                         <Image
-                          src={subcategory.image_url?.[0]}
+                          src={subcategory.image_url}
                           alt={``}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

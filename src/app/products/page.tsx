@@ -119,7 +119,7 @@ export default function ProductList() {
               const href = `/products/${category.name
                 .replace(/\s+/g, "-")
                 .toLowerCase()}`;
-              const imageUrl = category.image_url?.[0] ?? "/accesories.jpg ";
+              const imageUrl = category.image_url ?? "/accesories.jpg ";
 
               return (
                 <Link
