@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "@/_lib/supabase/client";
+import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import type { Product } from "@/_lib/types";
 
 export interface ProductWithDiscount extends Product {
@@ -9,6 +9,13 @@ export interface ProductWithDiscount extends Product {
 }
 
 export async function fetchOffers(): Promise<ProductWithDiscount[]> {
+  const supabase = await createSupabaseServerClient();  
+
+  const { data: { user } } = await supabase.auth.getUser();
+  console.log("User authenticated:", !!user);
+  console.log("User ID:", user?.id);
+
+  console.log("Fetching offers...");
   const { data: products, error } = await supabase
     .from("products")
     .select("*")
@@ -19,13 +26,16 @@ export async function fetchOffers(): Promise<ProductWithDiscount[]> {
     return [];
   }
 
+  if (!products || products.length === 0) {
+    console.log("No offer products found in database");
+    return [];
+  }
+
   const discountPercent = 20;
 
-  const productsWithDiscount = (products || []).map((p) => {
-
-    const originalPrice = parseFloat(p.price) || 0;
-    const discountedPrice =
-      originalPrice > 0 ? originalPrice * (1 - discountPercent / 100) : 0;
+  const productsWithDiscount: ProductWithDiscount[] = products.map((p) => {
+    const originalPrice = parseFloat(p.price as string) || 0;
+    const discountedPrice = originalPrice * (1 - discountPercent / 100);
 
     return {
       ...p,

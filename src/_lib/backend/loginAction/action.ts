@@ -1,12 +1,19 @@
-
-'use server';
+"use server";
 
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
-export type SignInResult = {
-  error?: string;
+type SignInSuccess = {
+  success: true;
+  role: "admin" | "user";
 };
+
+type SignInError = {
+  success: false;
+  error: string;
+};
+
+export type SignInResult = SignInSuccess | SignInError;
 
 export async function signInAction(formData: FormData): Promise<SignInResult> {
   const supabase = await createSupabaseServerClient();
@@ -14,33 +21,27 @@ export async function signInAction(formData: FormData): Promise<SignInResult> {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
-    return { error: error.message };
+  if (error || !data?.user) {
+    return { success: false, error: error?.message ?? "Invalid credentials" };
   }
-
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "User doesnt Found" };
 
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
     .select("role")
-    .eq("id", user.id)
+    .eq("id", data.user.id)
     .single();
 
-  if (profileError || !profile) {
-    return { error: "Profile doesnt found" };
+  if (profileError || !profile?.role) {
+    return { success: false, error: "Profile not found or role missing" };
   }
 
-  if (profile.role === "admin") {
-    redirect("/product-entry");
-  } else {
-    redirect("/offers");
-  }
+  revalidatePath("/offers");
+  revalidatePath("/product-entry");
 
-  return {};
+  return { success: true, role: profile.role as "admin" | "user" };
 }

@@ -10,18 +10,18 @@ type OffersListProps = {
 export default function OffersList({ offers }: OffersListProps) {
   if (offers.length === 0) {
     return (
-      <section className="p-6">
+      <section className="p-36">
         <h1 className="text-2xl font-semibold mb-4 text-vintage-green">
           Offers
         </h1>
-        <p className="text-gray-500">Δεν υπάρχουν προσφορές αυτή τη στιγμή.</p>
+        <p className="text-gray-500">Login is required to See our Offers..</p>
       </section>
     );
   }
 
   const breadcrumbs = [
-    { name: "/Home", slug: "home",  },
-    { name: "/Offers", slug: "offers" },
+    { name: "Home", slug: "home",  },
+    { name: "Offers", slug: "offers" },
   ];
 
   return (
@@ -45,7 +45,7 @@ export default function OffersList({ offers }: OffersListProps) {
               {/* Εικόνα */}
               <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[75vh] overflow-hidden">
                 <Image
-                  src={offer.image_url}
+                  src={offer.image_url[0]}
                   alt={offer.name}
                   className="w-full h-full object-cover object-center transition-transform duration-500 ease-in-out group-hover:scale-105"
                   fill
@@ -53,10 +53,10 @@ export default function OffersList({ offers }: OffersListProps) {
 
                 {/* Badge */}
                 <div className="absolute top-3 left-3 bg-ext-vintage-green rounded-full text-white text-sm px-3 py-1.5  z-10  flex items-center gap-2">
-                  <p className="text-gray-400 line-through text-sm">
+                  <p className="text-gray-800 line-through text-sm">
                     €{originalPrice.toFixed(2)}
                   </p>
-                  <span className="text-xs bg-white text-vintage-green rounded-full px-2 py-0.5 ">
+                  <span className="text-xs  text-vintage-white font-bold rounded-full px-2 py-0.5 ">
                     €{discountedPrice.toFixed(2)}
                   </span>
                 </div>
@@ -66,13 +66,13 @@ export default function OffersList({ offers }: OffersListProps) {
               </div>
 
               {/* Πληροφορίες */}
-              <div className="relative pt-4 pb-5 px-4 text-vintage-green">
+              <div className="relative pt-2 pb-5 px-1 text-vintage-green">
                 <h3 className="text-base md:text-lg  line-clamp-1">
                   {offer.name}
                 </h3>
 
                 <div className="flex items-center gap-2 mt-2">
-                  <p className="text-vintage-green  text-lg">
+                  <p className="text-vintage-green font-bold text-sm">
                     €{discountedPrice.toFixed(2)}
                   </p>
                   <span>-{discountPercent}%</span>

@@ -8,12 +8,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { signInSchema, type SignInForm } from "../../../_lib/utils/zod";
 import { signInAction } from "@/_lib/backend/loginAction/action";
+import { useRouter } from "next/navigation";
 import { getErrorMessage } from "@/_lib/helpers";
+
+
 const SignInPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [onMouseOver, setOnMouseOver] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -45,7 +48,10 @@ const SignInPage = () => {
 
     try {
       const result = await signInAction(formData);
-      if (result?.error) {
+
+      if (result.success) {
+        router.push(result.role === "admin" ? "/product-entry" : "/offers");
+      } else {
         setError(result.error);
       }
     } catch (err) {
