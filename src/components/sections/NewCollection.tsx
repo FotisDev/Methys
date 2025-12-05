@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getProductsWithStructure } from "@/_lib/backend/newCollection/action";
+import { getProductsWithStructure } from "@/_lib/backend/ProductWithStructure/action";
 import NewCollectionCard from "../cards/NewCollectionCard";
 
 export default async function NewCollectionClothes() {

@@ -9,7 +9,7 @@ export default async function OfferPage() {
   return (
     <HeaderProvider forceOpaque={true}>
       <section className="padding-y padding-x bg-white">
-        <OffersList offers={offers} />
+        <OffersList offerProduct={offers} />
       </section>
       <Footer showNewsLetter={false} />
     </HeaderProvider>

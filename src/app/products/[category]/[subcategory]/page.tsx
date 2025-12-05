@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getCategoryBySlug, getSubcategories } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Footer from "@/components/footer/Footer";
-import { getProductsWithStructure } from "@/_lib/backend/newCollection/action";
+import { getProductsWithStructure } from "@/_lib/backend/ProductWithStructure/action";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 
 export default async function SubcategoryPage({
