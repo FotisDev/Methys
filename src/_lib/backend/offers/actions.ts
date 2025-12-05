@@ -9,6 +9,15 @@ export interface ProductWithDiscount extends ProductInDetails {
 }
 
 export async function fetchOffers(): Promise<ProductWithDiscount[]> {
+  const supabaseClient = await createSupabaseServerClient();
+
+  const {
+    data: { user },
+  } = await supabaseClient.auth.getUser();
+
+  if (!user) {
+    return [];
+  }
   const supabase = await createSupabaseServerClient();
 
   const { data, error } = await supabase
