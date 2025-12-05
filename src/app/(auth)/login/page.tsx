@@ -50,13 +50,13 @@ const SignInPage = () => {
       const result = await signInAction(formData);
 
       if (result.success) {
-        router.push(result.role === "admin" ? "/product-entry" : "/offers");
+        window.location.href = result.role === "admin" ? "/product-entry" : "/offers";
       } else {
         setError(result.error);
+        setLoading(false);
       }
     } catch (err) {
       setError(getErrorMessage(err));
-    } finally {
       setLoading(false);
     }
   };
