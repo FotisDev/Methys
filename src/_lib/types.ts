@@ -97,3 +97,12 @@ export type VariantInsert = {
   price: number;
   slug: string;
 };
+
+
+export type FAQ ={ 
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  created_at: string;
+}

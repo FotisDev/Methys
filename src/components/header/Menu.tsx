@@ -215,16 +215,16 @@ const Menu = () => {
                 className="relative group"
                 aria-label={`Cart with ${cartItemCount} items`}
               >
-                <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors group">
+                <div className="relative p-2 hover:bg-black rounded-full transition-colors group">
                   <CartSvg
                     className={`w-6 h-6 transition-colors ${
                       isOpaque
-                        ? "text-vintage-green group-hover:text-default-yellow"
+                        ? "text-vintage-green group-hover:text-white"
                         : "text-white group-hover:text-vintage-green"
                     }`}
                   />
                   {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-vintage-brown text-white text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
+                    <span className="absolute -top-1 -right-1 bg-vintage-white text-red-500 text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
                       {cartItemCount > 99 ? "99+" : cartItemCount}
                     </span>
                   )}
