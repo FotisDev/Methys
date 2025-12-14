@@ -40,7 +40,7 @@ export default function Footer({ showNewsLetter = true }: FooterProps) {
   return (
     <>
       {showNewsLetter && <Newsletter />}
-      <footer className="bg-vintage-white w-full text-vintage-green text-sm sm:text-base font-poppins">
+      <footer className="bg-white w-full text-vintage-green text-sm sm:text-base font-poppins">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-40 sm:pt-36 lg:pt-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
             <div className="space-y-6 text-center lg:text-left">

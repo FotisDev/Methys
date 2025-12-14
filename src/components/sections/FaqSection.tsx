@@ -28,9 +28,9 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
           {faqs.length === 0 ? (
             <p>No FAQs found.</p>
           ) : (
-            <div className="w-full max-w-3xl">
+            <div className="w-full max-w-7xl bg-white px-5 rounded-xl">
               {faqs.map((faq) => (
-                <div key={faq.id} className="border-b border-gray-300 py-12">
+                <div key={faq.id} className="border-b border-default-color py-12">
                   <button
                     onClick={() => toggleFaq(faq.id)}
                     className="flex justify-between items-start w-full text-left group"

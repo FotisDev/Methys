@@ -25,7 +25,7 @@ export default async function Home() {
         <Suspense>
           <PhotoGallery />
           <CategoriesMainPage />
-          <ThreeIcons />
+          {/* <ThreeIcons /> */}
           <Footer />
         </Suspense>
       </HeaderProvider>
