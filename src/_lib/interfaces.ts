@@ -78,3 +78,26 @@ export type CategoryPageProps = {
   params: Promise<{ category: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
+
+export interface MetadataProps {
+  MetaTitle?: string;
+  MetaDescription?: string;
+  OpenGraphImageUrl?: string;
+  canonical?: string;
+  alternates?: Record<string, string>;
+  robots?: {
+    index?: boolean;
+    follow?: boolean;
+  };
+  other?: Record<string, string>;
+}
+
+ export interface ProductMetadataProps extends MetadataProps {
+  name: string;
+  description?: string;
+  slug: string;
+  imageUrl?: string;
+  price?: number;
+  currency?: string;
+  inStock?: boolean;
+}
