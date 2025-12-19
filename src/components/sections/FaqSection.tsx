@@ -63,7 +63,7 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
           )}
         </div>
       </section>
-      <Footer showNewsLetter={false}/>
+      <Footer />
     </HeaderProvider>
   );
 }

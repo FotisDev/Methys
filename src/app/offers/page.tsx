@@ -11,7 +11,7 @@ export default async function OfferPage() {
       <section className="padding-y padding-x bg-white">
         <OffersList offerProduct={offers} />
       </section>
-      <Footer showNewsLetter={false} />
+      <Footer  />
     </HeaderProvider>
   );
 }

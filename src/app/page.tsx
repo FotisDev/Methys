@@ -7,7 +7,6 @@ import type { Metadata } from "next";
 import React, { Suspense } from "react";
 import CategoriesMainPage from "@/components/sections/CategoriesMainPage";
 import NewCollectionClothes from "@/components/sections/NewCollection";
-import ThreeIcons from "@/components/sections/ThreeIcons";
 
 export const metadata: Metadata = {
   title: "UrbanValor",
@@ -25,7 +24,6 @@ export default async function Home() {
         <Suspense>
           <PhotoGallery />
           <CategoriesMainPage />
-          {/* <ThreeIcons /> */}
           <Footer />
         </Suspense>
       </HeaderProvider>

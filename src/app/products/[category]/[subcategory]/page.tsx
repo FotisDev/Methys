@@ -150,7 +150,7 @@ export default async function SubcategoryPage({
           )}
         </section>
 
-        <Footer showNewsLetter={true} />
+        <Footer />
       </HeaderProvider>
     );
   } catch (error) {
