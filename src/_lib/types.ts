@@ -85,7 +85,7 @@ export type ProductInsert = {
   slug: string;
   price: number;
   description: string;
-  image_url: string | null;
+  image_url: string[] | null;
   category_men_id: number;
   is_offer?: boolean;
   size_description?: string;

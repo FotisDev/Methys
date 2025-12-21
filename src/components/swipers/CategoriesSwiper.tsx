@@ -14,7 +14,7 @@ export default function CategoriesSwiper({
     );
   }
   return (
-    <div className="w-full">
+    <div className="w-full pt-1">
       <GenericSwiper
         items={categories}
         slidesPerView={1}

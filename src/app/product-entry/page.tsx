@@ -138,7 +138,7 @@ export default function AddProductForm() {
         price: formData.basePrice,
         description: formData.description ?? "",
         size_description: formData.size_description ?? "",
-        image_url: imageUrl,
+        image_url: imageUrl ? [imageUrl] : null,
         category_men_id: formData.category_men_id,
         is_offer: false,
       };
