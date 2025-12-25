@@ -1,4 +1,3 @@
-// import Newsletter from "./NewsLeter";
 import Image from "next/image";
 import { LinkedIn } from "@/svgs/linkedIn";
 import { JSX } from "react";
@@ -10,11 +9,6 @@ import { Tiktok } from "@/svgs/tiktok";
 import { WorldShpereSvg } from "@/svgs/worldShpere";
 import Link from "next/link";
 
-// interface FooterProps {
-//   showNewsLetter?: boolean;
-// }
-
-// export default function Footer({ showNewsLetter = true }: FooterProps) {
 export default function Footer() {
   const socials: Array<{
     name: string;
@@ -29,12 +23,7 @@ export default function Footer() {
     { name: "youtube", icon: Youtube, url: "" },
   ];
 
-  const [legalPolicyColumn, quickLinksColumn, paymentMethods]: Array<{
-    category: string;
-    items: Array<{ name: string; href: string }>;
-    Icon?: string;
-    email?: string;
-  }> = [
+  const [legalPolicyColumn, quickLinksColumn, paymentMethods] = [
     {
       category: "Legal Policy",
       items: [
@@ -65,45 +54,54 @@ export default function Footer() {
       ],
       Icon: "/paymentMethods.png",
     },
-    {
-      category: "Contact Us",
-      items: [{ name: "", href: "" }],
-      email: "fotislir@outlook.com",
-    },
   ];
 
   return (
-    <footer className="h-full padding-y items-center justify-center font-robboto w-full ">
-      {/* {showNewsLetter && <Newsletter />} */}
-      <section className="grid grid-cols-5 bg-white gap-2 justify-items-center">
-        <div className="pl-1 flex flex-col gap-6  text-md ">
+    <footer className="w-full font-robboto bg-white">
+  
+      <section
+        className="
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-5
+          gap-8
+          px-4
+          py-10
+        "
+      >
+        <div className="flex flex-col gap-6 w-full">
           <h3 className="font-bold text-vintage-green">
             Join The Methys Community
           </h3>
-          <p>
+
+          <p className="text-sm">
             Get a heads up about latest Collections, events and collaborations
           </p>
-          <form className="flex flex-row ">
+
+          <form className="flex w-full">
             <input
               type="email"
               placeholder="Enter your Email"
               required
-              className="border border-default-color w-full h-auto p-2 text-center "
+              className="border border-default-color w-full p-2 text-sm"
             />
             <button
               type="submit"
-              className="bg-default-cold text-white w-20 h-14"
+              className="bg-default-cold text-white w-16"
             >
-              {"->"}
+              →
             </button>
           </form>
-          <div className="pt-2 flex flex-row gap-4">
+
+          <div className="flex gap-4">
             {socials.map((social, index) => {
               const Icon = social.icon;
               return (
                 <div
                   key={index}
-                  className="w-5 h-5 cursor-pointer flex text-black"
+                  className="w-5 h-5 cursor-pointer text-black"
                 >
                   {Icon ? <Icon /> : social.name}
                 </div>
@@ -111,69 +109,84 @@ export default function Footer() {
             })}
           </div>
         </div>
-        <div className="flex flex-col gap-2 ">
-          <h3 className="font-bold ">{legalPolicyColumn.category}</h3>
+
+        <div className="flex flex-col gap-2 text-center lg:text-left">
+          <h3 className="font-bold">{legalPolicyColumn.category}</h3>
           {legalPolicyColumn.items.map((item, index) => (
-            <a key={index} href={item.href}>
+            <Link key={index} href={item.href}>
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
-        <div className="flex flex-col gap-2 ">
+
+        <div className="flex flex-col gap-2 text-center lg:text-left">
           <h3 className="font-bold">{quickLinksColumn.category}</h3>
           {quickLinksColumn.items.map((item, index) => (
-            <a key={index} href={item.href}>
+            <Link key={index} href={item.href}>
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
-        <div className="flex flex-col gap-2 ">
-          <h3 className="font-bold  ">{paymentMethods.category}</h3>
+
+        <div className="flex flex-col gap-2 text-center lg:text-left">
+          <h3 className="font-bold">{paymentMethods.category}</h3>
           {paymentMethods.items.map((item, index) => (
-            <a key={index} href={item.href}>
+            <Link key={index} href={item.href}>
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
-        <div>
-          <div className="w-4 h-4 flex flex-col gap-3">
-            <h3 className=" font-bold">Country</h3>
-            <div className="flex">
-              <span className="">
-                <WorldShpereSvg />
-              </span>
-              <p className="text-sm underline ">International</p>
+
+        <div className="flex flex-col items-center lg:items-start gap-6">
+          <div>
+            <h3 className="font-bold">Country</h3>
+            <div className="flex items-center gap-2">
+              <WorldShpereSvg />
+              <p className="text-sm underline">International</p>
             </div>
           </div>
-          <div className="mt-12">
-            {paymentMethods.Icon && (
-              <Image
-                src={paymentMethods.Icon}
-                alt="Payment Methods"
-                className="mt-5 w-60"
-                width={20}
-                height={20}
-                unoptimized
-              />
-            )}
-          </div>
+
+          <Image
+            src="/paymentMethods.png"
+            alt="Payment Methods"
+            className="w-40 sm:w-48 lg:w-60"
+            width={240}
+            height={60}
+            unoptimized
+          />
         </div>
       </section>
-      <hr className=" mt-5" />
-      <div className="flex flex-col items-center relative ">
-        <div className=" text-center mt-5">
-          © 2025 <span className="text-vintage-green font-bold"> Methys.</span>{" "}
-          All Rights Reserved. Terms and Conditions Privacy Policy Cookies
-          Cookie settings
+
+      <hr />
+
+      <div className="relative px-4 py-6">
+        <div className="text-center text-sm">
+          © 2025{" "}
+          <span className="text-vintage-green font-bold">Methys.</span>{" "}
+          All Rights Reserved.
         </div>
-        <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-center  absolute right-5 -bottom-3">
-          <span className="text-vintage-green">
-            For special <span className="text-red-500">Offers</span> make sure
-            to{" "}
+
+        <div
+          className="
+            flex
+            flex-col
+            sm:flex-row
+            items-center
+            gap-4
+            text-sm
+            mt-6
+            lg:absolute
+            lg:right-5
+            lg:bottom-6
+          "
+        >
+          <span className="text-vintage-green text-center">
+            For special <span className="text-red-500">Offers</span> make sure to
           </span>
+
           <Link
             href="/login"
-            className="w-[130px] h-[40px] text-[14px] bg-vintage-white text-black px-2 py-2 rounded text-center"
+            className="w-[130px] h-[40px] bg-vintage-white text-black flex items-center justify-center rounded"
           >
             Sign Up / Sign In
           </Link>

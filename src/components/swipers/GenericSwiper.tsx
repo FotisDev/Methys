@@ -29,7 +29,7 @@ export default function GenericSwiper<T>({
   slidesPerView = 1,
   spaceBetween = 10,
   loop = true,
-  autoplay = true,
+  autoplay = false,
   navigation = true,
   pagination = true,
   breakpoints,
@@ -53,7 +53,7 @@ export default function GenericSwiper<T>({
       pagination={pagination ? { clickable: true } : false}
       autoplay={
         autoplay
-          ? { delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }
+          ? { delay: 1000, disableOnInteraction: false, pauseOnMouseEnter: true }
           : false
       }
       breakpoints={breakpoints}

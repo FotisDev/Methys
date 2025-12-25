@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getProductsWithStructure } from "@/_lib/backend/ProductWithStructure/action";
-import NewCollectionCard from "../cards/NewCollectionCard";
+import SwiperComponent from "../swipers/SwiperComponent";
 
 export default async function NewCollectionClothes() {
   const items = await getProductsWithStructure();
@@ -9,8 +9,8 @@ export default async function NewCollectionClothes() {
     return <div>No products found</div>;
   }
 
-  const validItems = items.filter((item): item is NonNullable<typeof item> => 
-    item !== null
+  const validItems = items.filter(
+    (item): item is NonNullable<typeof item> => item !== null
   );
 
   if (validItems.length === 0) {
@@ -18,21 +18,17 @@ export default async function NewCollectionClothes() {
   }
 
   return (
-    <section className="new-collection py-8 px-0.5 font-poppins bg-white">
+    <section className="new-collection py-8 font-poppins bg-white">
       <div className="flex items-center justify-between mb-6">
         <Link
           href="/products"
           className="text-sm pl-2 text-black hover:underline"
         >
-          Autumn New Collection Just Droped →
+          Autumn New Collection Just Dropped →
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
-        {validItems.map((item) => (
-          <NewCollectionCard key={item.id} item={item} />
-        ))}
-      </div>
+      <SwiperComponent items={validItems} />
     </section>
   );
 }
