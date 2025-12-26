@@ -140,7 +140,7 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="relative pt-3 text-vintage-green pl-3 ">
+        <div className="relative pt-3 text-vintage-green">
           <h3 className="text-base left-3 top-1 line-clamp-1 bg-white">
             {item.name}
           </h3>
@@ -151,12 +151,12 @@ export default function NewCollectionCard({ item }: NewCollectionCardProps) {
                 {item.size_description}
               </p>
             ) : availableSizes.length > 0 ? (
-              <div className="flex gap-1.5 sm:gap-2 md:gap-3 flex-wrap bg-white">
+              <div className="flex gap-1  flex-wrap bg-white">
                 {availableSizes.map((size) => (
                   <span
                     key={size}
                     onClick={(e) => handleSizeClick(e, size)}
-                    className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-base transition-all duration-200 bg-gray-100${
+                    className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-sm transition-all duration-200 bg-gray-100${
                       selectedSize === size
                         ? `bg-vintage-green text-white `
                         : "bg-white text-vintage-green hover:bg-vintage-green hover:text-white rounded w-6 sm:w-9x"

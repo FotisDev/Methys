@@ -1,7 +1,7 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -29,9 +29,9 @@ export default function GenericSwiper<T>({
   slidesPerView = 1,
   spaceBetween = 10,
   loop = true,
-  autoplay = false,
-  navigation = true,
-  pagination = true,
+  // autoplay = false,
+  // navigation = true,
+  // pagination = true,
   breakpoints,
   className = "",
 }: GenericSwiperProps<T>) {
@@ -45,17 +45,14 @@ export default function GenericSwiper<T>({
 
   return (
     <Swiper
-      modules={[Navigation, Pagination, Autoplay]}
+      modules={[Navigation]}
+      // modules={[Navigation, Pagination, Autoplay]}
       slidesPerView={slidesPerView}
       spaceBetween={spaceBetween}
       loop={loop}
-      navigation={navigation}
-      pagination={pagination ? { clickable: true } : false}
-      autoplay={
-        autoplay
-          ? { delay: 1000, disableOnInteraction: false, pauseOnMouseEnter: true }
-          : false
-      }
+      navigation
+      pagination={{ clickable: true }}
+      autoplay={false}
       breakpoints={breakpoints}
       className={className}
     >

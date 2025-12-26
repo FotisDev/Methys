@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { CategoryBackendType } from "@/_lib/types";
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
+import Footer from "@/components/footer/Footer";
 
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
@@ -64,16 +65,14 @@ export default async function CategoryPage({
 
   return (
     <HeaderProvider forceOpaque={true}>
-      <main className="relative w-full min-h-screen pt-32 pb-20 font-roboto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="relative w-full min-h-screen pt-24 pb-16 font-roboto">
+        <div className="w-full  px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={breadcrumbItems}  />
-          <hr className="my-6 border-vintage-green/30" />
+          <hr className="pb-3 border-vintage-green/30" />
 
-          <header className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-light text-vintage-green mb-4 tracking-wide">
-              {categoryData.name.toUpperCase()}
-            </h1>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+          <header className="mb-5">
+            
+            <p className="text-lg text-gray-700 max-w-2xl ">
               Explore our premium {categoryData.name.toLowerCase()} collections
               – timeless style, exceptional quality.
             </p>
@@ -103,7 +102,7 @@ export default async function CategoryPage({
                 {categoryData.name} Subcategories
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 h-[120vh]">
                 {subcategories.map((subcategory) => {
                   const href = `/products/${encodeURIComponent(
                     categorySlug
@@ -112,11 +111,11 @@ export default async function CategoryPage({
                   return (
                     <article
                       key={subcategory.id}
-                      className="group relative overflow-hidden"
+                      className="group relative overflow-hidden w-full"
                     >
                       <Link
                         href={href}
-                        className="block relative aspect-[3/4] bg-gray-100"
+                        className="block relative aspect-[3/4] bg-gray-100 h-full w-full"
                       
                       >
                         <Image
@@ -147,6 +146,7 @@ export default async function CategoryPage({
           )}
         </div>
       </main>
+      <Footer/>
     </HeaderProvider>
   );
 }

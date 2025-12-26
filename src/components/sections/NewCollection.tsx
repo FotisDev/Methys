@@ -18,11 +18,11 @@ export default async function NewCollectionClothes() {
   }
 
   return (
-    <section className="new-collection py-8 font-poppins bg-white">
+    <section className="new-collection pt-5 font-poppins bg-white">
       <div className="flex items-center justify-between mb-6">
         <Link
           href="/products"
-          className="text-sm pl-2 text-black hover:underline"
+          className="text-sm pl-2  text-black hover:underline"
         >
           Autumn New Collection Just Dropped →
         </Link>

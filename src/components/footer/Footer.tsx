@@ -8,6 +8,7 @@ import { Facebook } from "@/svgs/facebook";
 import { Tiktok } from "@/svgs/tiktok";
 import { WorldShpereSvg } from "@/svgs/worldShpere";
 import Link from "next/link";
+import FoldableSectionComponent from "../foldableComponent/FoldableSection";
 
 export default function Footer() {
   const socials: Array<{
@@ -38,8 +39,6 @@ export default function Footer() {
       items: [
         { name: "Home", href: "/" },
         { name: "About", href: "/about" },
-        { name: "Blog", href: "/blog" },
-        { name: "Offers", href: "/offers" },
         { name: "Help", href: "/help" },
       ],
     },
@@ -58,20 +57,21 @@ export default function Footer() {
 
   return (
     <footer className="w-full font-robboto bg-white">
-  
       <section
         className="
           grid
           grid-cols-1
-          sm:grid-cols-2
-          md:grid-cols-3
+          sm:grid-cols-1
+          md:grid-cols-1
           lg:grid-cols-5
           gap-8
-          px-4
+          px-2
           py-10
+         
+          
         "
       >
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full sm:w-96 lg:w-full">
           <h3 className="font-bold text-vintage-green">
             Join The Methys Community
           </h3>
@@ -87,10 +87,7 @@ export default function Footer() {
               required
               className="border border-default-color w-full p-2 text-sm"
             />
-            <button
-              type="submit"
-              className="bg-default-cold text-white w-16"
-            >
+            <button type="submit" className="bg-default-cold text-white w-16">
               →
             </button>
           </form>
@@ -99,10 +96,7 @@ export default function Footer() {
             {socials.map((social, index) => {
               const Icon = social.icon;
               return (
-                <div
-                  key={index}
-                  className="w-5 h-5 cursor-pointer text-black"
-                >
+                <div key={index} className="w-5 h-5 cursor-pointer text-black">
                   {Icon ? <Icon /> : social.name}
                 </div>
               );
@@ -111,30 +105,24 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col gap-2 text-center lg:text-left">
-          <h3 className="font-bold">{legalPolicyColumn.category}</h3>
-          {legalPolicyColumn.items.map((item, index) => (
-            <Link key={index} href={item.href}>
-              {item.name}
-            </Link>
-          ))}
+          <FoldableSectionComponent
+            title={legalPolicyColumn.category}
+            items={legalPolicyColumn.items}
+          />
         </div>
 
         <div className="flex flex-col gap-2 text-center lg:text-left">
-          <h3 className="font-bold">{quickLinksColumn.category}</h3>
-          {quickLinksColumn.items.map((item, index) => (
-            <Link key={index} href={item.href}>
-              {item.name}
-            </Link>
-          ))}
+          <FoldableSectionComponent
+            title={quickLinksColumn.category}
+            items={quickLinksColumn.items}
+          />
         </div>
 
         <div className="flex flex-col gap-2 text-center lg:text-left">
-          <h3 className="font-bold">{paymentMethods.category}</h3>
-          {paymentMethods.items.map((item, index) => (
-            <Link key={index} href={item.href}>
-              {item.name}
-            </Link>
-          ))}
+          <FoldableSectionComponent
+            title={paymentMethods.category}
+            items={paymentMethods.items}
+          />
         </div>
 
         <div className="flex flex-col items-center lg:items-start gap-6">
@@ -161,8 +149,7 @@ export default function Footer() {
 
       <div className="relative px-4 py-6">
         <div className="text-center text-sm">
-          © 2025{" "}
-          <span className="text-vintage-green font-bold">Methys.</span>{" "}
+          © 2025 <span className="text-vintage-green font-bold">Methys.</span>{" "}
           All Rights Reserved.
         </div>
 
@@ -181,7 +168,8 @@ export default function Footer() {
           "
         >
           <span className="text-vintage-green text-center">
-            For special <span className="text-red-500">Offers</span> make sure to
+            For special <span className="text-red-500">Offers</span> make sure
+            to
           </span>
 
           <Link

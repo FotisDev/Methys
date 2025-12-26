@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/_lib/supabase/client";
 import CreateAccountPage from "../createAccount/page";
 import SignUpPage from "../login/page";
-import Logo from "../../../svgs/logo";
 import Link from "next/link";
 
 import {
@@ -87,12 +86,8 @@ const ForgotPasswordPage = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/90 to-gray-50" />
         <div className="relative z-10 p-6 md:p-8 text-white">
-          <Link
-            href="/"
-            className="block w-60 md:w-96 mb-6 md:mb-8"
-        
-          >
-            <Logo className="w-full" size={250} />
+         <Link href="/" className="block mb-8 w-40 md:w-64">
+            Methys
           </Link>
 
           <section className="flex flex-col mt-10 md:mt-48">

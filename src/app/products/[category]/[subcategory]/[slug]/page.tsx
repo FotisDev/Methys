@@ -11,6 +11,7 @@ import { fetchProductBySlug } from "@/_lib/backend/productBySlug/action";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createProductSchema } from "@/components/schemas/newCollectionSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
+import Footer from "@/components/footer/Footer";
 
 export default async function ProductDetailPage({
   params,
@@ -232,6 +233,7 @@ export default async function ProductDetailPage({
 
           <Schema markup={schema} />
         </section>
+        <Footer/>
       </HeaderProvider>
     );
   } catch (error) {

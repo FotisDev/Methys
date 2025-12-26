@@ -36,7 +36,7 @@ export const Breadcrumbs = ({ items}: itemWithClassName) => {
   };
 
   return (
-    <section id={"breadcrumbs"} className={` mb-6 sm:mb-11 `}>
+    <section id={"breadcrumbs"} className={` mb-2 sm:mb-4 `}>
       <SchemaMarkUp markup={markup} />
       <div className={`flex gap-2 items-center flex-wrap text-base sm:text-xl`}>
         {items.map((item, index) => {

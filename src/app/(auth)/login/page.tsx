@@ -1,6 +1,5 @@
 "use client";
 
-import myImageLoader from "@/_lib/utils/myImageLoader";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -75,10 +74,8 @@ const SignInPage = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/80 to-gray-50" />
 
         <div className="relative z-10 p-6 md:p-12 text-white flex flex-col justify-center h-full">
-          <Link href="/" className="block mb-8">
-            <h2 className="text-4xl md:text-6xl font-bold text-vintage-green">
-              Methys
-            </h2>
+          <Link href="/" className="block mb-8 w-40 md:w-64">
+            Methys
           </Link>
 
           <section className="mt-auto">
@@ -127,7 +124,7 @@ const SignInPage = () => {
               type="button"
               onMouseEnter={() => handleMouseEnter("google")}
               onMouseLeave={handleMouseLeave}
-              className={`flex items-center justify-start gap-4 px-4 py-2 border border-gray-300 rounded-3xl w-full transition-all ${
+              className={`flex items-center justify-start gap-4 px-4 py-2 border border-gray-300 bg-vintage-white/50 rounded-3xl w-full transition-all ${
                 onMouseOver === "google"
                   ? "scale-105 shadow-2xl shadow-vintage-green"
                   : "hover:bg-gray-100"
@@ -135,7 +132,7 @@ const SignInPage = () => {
             >
               <Image
                 src="/google.jpg"
-                loader={myImageLoader}
+               
                 className="w-10 h-10 rounded-full"
                 width={40}
                 height={40}
@@ -151,7 +148,7 @@ const SignInPage = () => {
               type="button"
               onMouseEnter={() => handleMouseEnter("facebook")}
               onMouseLeave={handleMouseLeave}
-              className={`flex items-center justify-start gap-4 px-4 py-2 border border-gray-300 rounded-3xl w-full transition-all ${
+              className={`flex items-center justify-start gap-4 px-4 py-2 border border-gray-300 bg-vintage-white/50 rounded-3xl w-full transition-all ${
                 onMouseOver === "facebook"
                   ? "scale-105 shadow-2xl shadow-vintage-green"
                   : "hover:bg-gray-100"
@@ -159,7 +156,7 @@ const SignInPage = () => {
             >
               <Image
                 src="/facebook.png"
-                loader={myImageLoader}
+               
                 className="w-9 h-9 rounded-full"
                 width={40}
                 height={40}
