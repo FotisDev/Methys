@@ -78,9 +78,13 @@ const WishlistPage = () => {
   const hasSizes = (item: WishlistItem): boolean =>
     !!(item.product_variants?.length > 0);
 
-  const getCategorySlug = (item: WishlistItem): string => {
-    return item.categoryformen?.slug || "all";
+  const getProductUrl = (item: WishlistItem): string => {
+    const parent = item.categoryformen?.parent;
+    const categorySlug = parent?.slug ?? "all";
+    const subcategorySlug = item.categoryformen?.slug ?? "all";
+    return `/products/${categorySlug}/${subcategorySlug}/${item.slug}`;
   };
+
   const breadcrumbItems = [
     { name: "Home", slug: "/" },
     { name: "Wishlist", slug: `/Wishlist` },
@@ -132,9 +136,7 @@ const WishlistPage = () => {
     <section className="container mx-auto  px-4 py-12 font-poppins">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">My Wishlist</h1>
       <nav className="text-sm text-gray-600 mb-10">
-        <Breadcrumbs
-          items={breadcrumbItems}
-        />
+        <Breadcrumbs items={breadcrumbItems} />
       </nav>
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
@@ -237,7 +239,7 @@ const WishlistPage = () => {
 
                   <span
                     className={`text-sm font-medium ${
-                      outOfStock ? "text-red-600" : "text-green-600"
+                      outOfStock ? "text-red-600" : "text-vintage-green"
                     }`}
                   >
                     {outOfStock
@@ -250,7 +252,7 @@ const WishlistPage = () => {
 
                 <div className="space-y-4">
                   <Link
-                    href={`/products/${getCategorySlug(item)}/${item.id}`}
+                    href={getProductUrl(item)}
                     className="block text-center w-full py-3 border hover-colors border-gray-300 rounded-lg transition"
                   >
                     View Details

@@ -11,6 +11,8 @@ import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
 import { useHeaderContext } from "../providers/HeaderProvider";
 import { useCart } from "../providers/CartProvider";
+import { usePathname } from "next/navigation";
+import LogoutButton from "../buttons/LogoutButton";
 
 const Menu = () => {
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
@@ -22,7 +24,8 @@ const Menu = () => {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
-
+  const pathname = usePathname();
+  const isOffersPage = pathname === "/offers";
   const { cart, getCartItemsCount } = useCart();
 
   const cartItemCount = getCartItemsCount
@@ -230,7 +233,7 @@ const Menu = () => {
                   )}
                 </div>
               </Link>
-
+              {isOffersPage && <LogoutButton className="ml-auto" />}
               <BulletButton />
             </div>
 
