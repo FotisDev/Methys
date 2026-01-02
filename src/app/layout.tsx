@@ -4,6 +4,7 @@ import BackToTop from "@/components/hooks/BackToTop";
 import { ClientProvider } from "@/components/providers/ClientProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { BotLogger } from "@/components/bot/botLogger";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -33,7 +34,10 @@ export default function RootLayout({
         <BackToTop />
         <AuthProvider>
           <ClientProvider>
-            <main>{children}</main>
+            <main>
+              {children}
+              <BotLogger />
+            </main>
           </ClientProvider>
         </AuthProvider>
       </body>
