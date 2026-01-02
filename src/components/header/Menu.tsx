@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
-
 import BulletButton from "../sections/BulletButton";
 import DropDownMainPageSubCat from "../sections/DropDownMainPageSubCat";
 import CartSvg from "@/svgs/cartSvg";
@@ -11,10 +10,11 @@ import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
 import { useHeaderContext } from "../providers/HeaderProvider";
 import { useCart } from "../providers/CartProvider";
-import { usePathname } from "next/navigation";
 import LogoutButton from "../buttons/LogoutButton";
+import { useAuth } from "../providers/AuthProvider";
 
 const Menu = () => {
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
   const [showClothes, setShowClothes] = useState(false);
   const [showBulletMenu, setShowBulletMenu] = useState(false);
@@ -24,8 +24,6 @@ const Menu = () => {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
-  const pathname = usePathname();
-  const isOffersPage = pathname === "/offers";
   const { cart, getCartItemsCount } = useCart();
 
   const cartItemCount = getCartItemsCount
@@ -38,6 +36,14 @@ const Menu = () => {
   const navLinks = [
     { href: PAGE_URLS.ABOUT, label: "About" },
     { href: PAGE_URLS.PRODUCTS, label: "SHOP" },
+    ...(!isAuthLoading && isAuthenticated
+      ? [
+          {
+            href: "/offers",
+            label: "Offers",
+          },
+        ]
+      : []),
   ];
 
   const getValidImage = (imageUrl: string | undefined) => {
@@ -55,6 +61,7 @@ const Menu = () => {
 
     return `/images/${imageUrl}`;
   };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -95,8 +102,8 @@ const Menu = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [showClothes, showBulletMenu]);
 
   const handleMouseEnter = (label: string) => {
@@ -233,7 +240,11 @@ const Menu = () => {
                   )}
                 </div>
               </Link>
-              {isOffersPage && <LogoutButton className="ml-auto" />}
+
+              {!isAuthLoading && isAuthenticated && (
+                <LogoutButton className="ml-auto" />
+              )}
+
               <BulletButton />
             </div>
 
@@ -255,7 +266,7 @@ const Menu = () => {
       {/* Mobile Menu */}
       {showBulletMenu && (
         <nav
-          className="block lg:hidden absolute top-full left-0 z-30 w-full bg-white shadow-md transition-all duration-300 ease-in-out"
+          className="block lg:hidden absolute top-full pt-10 left-0 z-30 w-full bg-white shadow-md transition-all duration-300 ease-in-out"
           aria-label="Mobile navigation"
         >
           <ul className="flex flex-col px-4 py-4 gap-3">
@@ -302,6 +313,12 @@ const Menu = () => {
                 )}
               </Link>
             </li>
+
+            {!isAuthLoading && isAuthenticated && (
+              <li>
+                <LogoutButton className="m-4 bg-default-cold!" />
+              </li>
+            )}
           </ul>
         </nav>
       )}

@@ -41,7 +41,7 @@ export default function BulletButton() {
       </button>
 
       <div
-        className={`absolute  -top-16 -right-6 mt-14 w-[400px] h-[955px] rounded-3xl bg-vintage-brown  flex flex-col z-50 transition-transform duration-300 ${
+        className={`absolute  -top-16 -right-6 mt-14 w-[400px] h-[955px] rounded-3xl bg-default-color  flex flex-col z-50 transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

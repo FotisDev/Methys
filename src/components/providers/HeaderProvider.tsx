@@ -75,7 +75,7 @@ export function HeaderProvider({
     >
       <nav className="relative">
         {!isLoading && (
-          <Menu
+          <Menu        
           // instagram={social?.Social?.Instagram || ""}
           // facebook={social?.Social?.Facebook || ""}
           // linkedin={social?.Social?.Linkedin || ""}

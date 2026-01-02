@@ -2,13 +2,15 @@ import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import BackToTop from "@/components/hooks/BackToTop";
 import { ClientProvider } from "@/components/providers/ClientProvider";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { AuthProvider } from "@/components/providers/AuthProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
 });
+
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
@@ -26,12 +28,14 @@ export default function RootLayout({
       className={`scroll-smooth ${poppins.variable} ${roboto.variable}`}
     >
       <head />
-      <body id="mainHTML" className=" ">
-        <SpeedInsights/>
+      <body id="mainHTML" className="">
+        <SpeedInsights />
         <BackToTop />
-        <ClientProvider>
-          <main>{children}</main>
-        </ClientProvider>
+        <AuthProvider>
+          <ClientProvider>
+            <main>{children}</main>
+          </ClientProvider>
+        </AuthProvider>
       </body>
     </html>
   );

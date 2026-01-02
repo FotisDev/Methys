@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { LinkedIn } from "@/svgs/linkedIn";
 import { JSX } from "react";
@@ -9,8 +11,12 @@ import { Tiktok } from "@/svgs/tiktok";
 import { WorldShpereSvg } from "@/svgs/worldShpere";
 import Link from "next/link";
 import FoldableSectionComponent from "../foldableComponent/FoldableSection";
+import { useAuth } from "../providers/AuthProvider";
+
 
 export default function Footer() {
+  const { isAuthenticated, isLoading } = useAuth();
+
   const socials: Array<{
     name: string;
     icon: (() => JSX.Element) | null;
@@ -144,41 +150,42 @@ export default function Footer() {
           />
         </div>
       </section>
-
       <hr />
-
+      
       <div className="relative px-4 py-6">
         <div className="text-center text-sm">
           © 2025 <span className="text-vintage-green font-bold">Methys.</span>{" "}
           All Rights Reserved.
         </div>
 
-        <div
-          className="
-            flex
-            flex-col
-            sm:flex-row
-            items-center
-            gap-4
-            text-sm
-            mt-6
-            lg:absolute
-            lg:right-5
-            lg:bottom-6
-          "
-        >
-          <span className="text-vintage-green text-center">
-            For special <span className="text-red-500">Offers</span> make sure
-            to
-          </span>
-
-          <Link
-            href="/login"
-            className="w-[130px] h-[40px] bg-vintage-white text-black flex items-center justify-center rounded"
+        {!isLoading && !isAuthenticated && (
+          <div
+            className="
+              flex
+              flex-col
+              sm:flex-row
+              items-center
+              gap-4
+              text-sm
+              mt-6
+              lg:absolute
+              lg:right-5
+              lg:bottom-6
+            "
           >
-            Sign Up / Sign In
-          </Link>
-        </div>
+            <span className="text-vintage-green text-center">
+              For special <span className="text-red-500">Offers</span> make sure
+              to
+            </span>
+
+            <Link
+              href="/login"
+              className="w-[130px] h-[40px] bg-vintage-white text-black flex items-center justify-center rounded"
+            >
+              Sign Up / Sign In
+            </Link>
+          </div>
+        )}
       </div>
     </footer>
   );

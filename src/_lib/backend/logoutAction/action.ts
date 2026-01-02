@@ -2,7 +2,7 @@
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function LogoutAction() {
   const cookieStore = await cookies(); 
@@ -24,12 +24,7 @@ export async function LogoutAction() {
     }
   );
 
-  const { error } = await supabase.auth.signOut();
+  await supabase.auth.signOut();
   
-  if (error) {
-    console.error("Logout error:", error);
-    throw error;
-  }
-
-  redirect("/login");
+  revalidatePath('/', 'layout');
 }
