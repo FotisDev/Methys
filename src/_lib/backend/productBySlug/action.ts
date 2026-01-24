@@ -1,16 +1,18 @@
-'use server';
+"use server";
 
-import { supabase } from "@/_lib/supabase/client";
-import {  ProductInDetails } from "@/_lib/types";
-
+import { ProductInDetails } from "@/_lib/types";
+import { createSupabaseServerClient } from "@/_lib/supabase/server";
 export async function fetchProductBySlug(
   categoryId: number,
   slug: string
 ): Promise<ProductInDetails | null> {
   try {
+    const supabase = await createSupabaseServerClient();
+
     const { data, error } = await supabase
       .from("products")
-      .select(`
+      .select(
+        `
         id,
         name,
         price,
@@ -35,7 +37,8 @@ export async function fetchProductBySlug(
           price,
           quantity
         )
-      `)
+      `
+      )
       .eq("slug", slug)
       .eq("category_men_id", categoryId)
       .maybeSingle();
@@ -52,24 +55,22 @@ export async function fetchProductBySlug(
       return null;
     }
 
-
     const mappedData: ProductInDetails = {
       ...data,
       slug: data.slug ?? null,
       description: data.description ?? null,
-      size_description:data.size_description,
-      product_details:data.product_details,
+      size_description: data.size_description,
+      product_details: data.product_details,
       image_url: data.image_url ?? null,
       categoryformen: data.id,
-      product_variants: Array.isArray(data.product_variants) ? data.product_variants : [],
+      product_variants: Array.isArray(data.product_variants)
+        ? data.product_variants
+        : [],
     };
 
-
     return mappedData;
-
   } catch (error) {
     console.error("Unexpected error fetching product by slug:", error);
     return null;
   }
 }
-

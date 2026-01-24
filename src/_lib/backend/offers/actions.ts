@@ -31,8 +31,7 @@ export async function fetchOffers(): Promise<ProductWithDiscount[]> {
       product_details,
       image_url,
       is_offer,
-
-      categoryformen:category_men_id (
+      categoryformen:category_men_id!inner (
         id,
         name,
         slug,
