@@ -1,43 +1,33 @@
-import { supabase } from "@/_lib/helpers";
+import { getAllCategoriesWithSubcategories } from "@/_lib/backend/categoryBySlug/action";
 import CategoriesSwiper from "@/components/swipers/CategoriesSwiper";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-
 export default async function CategoriesMainPage() {
-  const { data, error } = await supabase
-    .from("categoriesformen")
-    .select("id, name")
-    .eq("parent_id", 1);
+  const allCategories = await getAllCategoriesWithSubcategories();
 
-  if (error) {
-    console.error("Error fetching categories:", error);
-    return <div>Error loading categories</div>;
-  }
+  const mainCategories = allCategories.filter(cat => cat.parent_id === null);
+  const subCategories = allCategories.filter(cat => cat.parent_id !== null);
 
-  const categories = (data || []).map((cat) => {
-  const rawName = cat.name?.toLowerCase() || "";
-  let imageName = "";
+  const slides = mainCategories.flatMap((mainCat) => {
+    const categorySubcategories = subCategories.filter(
+      sub => sub.parent_id === mainCat.id
+    );
 
-  if (rawName.includes("t-shirt")) imageName = "retroTshirt.jpg";
-  else if (rawName === "shirts") imageName = "retroshirt.jpg";
-  else if (rawName === "jackets") imageName = "retrojacket.jpg";
-  else if (rawName.includes("jeans") || rawName.includes("pants"))
-    imageName = "retrojean.jpg";
-  else if (rawName.includes("short")) imageName = "retroshort.jpg";
-  else if (rawName.includes("accessories")) imageName = "accessories.webp";
-  else if (rawName.includes("hoodie") || rawName.includes("knitwear"))
-    imageName = "retrohood.jpg";
-  else imageName = `${rawName.replace(/\s+/g, "-")}.jpg`;
+    return categorySubcategories.map((subCat) => ({
+      category: {
+        id: mainCat.id,
+        category_name: mainCat.name,
+        slug: mainCat.slug,
+        image_url: mainCat.image_url,
+      },
+      subcategory: {
+        id: subCat.id,
+        name: subCat.name,
+        slug: subCat.slug,
+        image_url: subCat.image_url,
+        parent_id: subCat.parent_id,
+      },
+    }));
+  });
 
-  const image_url = `${supabaseUrl}/storage/v1/object/public/product-images/${imageName}`;
-
-  return {
-    id: cat.id,
-    category_name: cat.name,
-    image_url,
-  };
-});
-
-
-  return <CategoriesSwiper categories={categories} />;
+  return <CategoriesSwiper categories={slides} />;
 }

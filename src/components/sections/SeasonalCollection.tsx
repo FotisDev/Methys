@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { getProductsWithStructure } from "@/_lib/backend/ProductWithStructure/action";
+import { ProductByWinterSeason } from "@/_lib/backend/ProductWithStructure/action";
 import SwiperComponent from "../swipers/SwiperComponent";
 
-export default async function NewCollectionClothes() {
-  const items = await getProductsWithStructure();
+export default async function SeasonalCollection() {
+  const items = await ProductByWinterSeason();
 
   if (!items || !Array.isArray(items)) {
     return <div>No products found</div>;
@@ -24,7 +24,7 @@ export default async function NewCollectionClothes() {
           href="/products"
           className="text-sm pl-2  text-black hover:underline"
         >
-          Autumn New Collection Just Dropped →
+          Winter New Collection Just Dropped →
         </Link>
       </div>
 

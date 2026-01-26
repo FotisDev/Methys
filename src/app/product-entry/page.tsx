@@ -8,6 +8,7 @@ import { addProductAction } from "@/_lib/backend/AddProductAction/action";
 import { supabase } from "@/_lib/supabase/client";
 import { ProductInsert, VariantInsert } from "@/_lib/types";
 import { getErrorMessage } from "@/_lib/helpers";
+import { AVAILABLE_SIZES } from "@/_lib/constants";
 
 const sizeVariantSchema = z.object({
   size: z.string(),
@@ -24,15 +25,18 @@ const productSchema = z.object({
   sizeVariants: z
     .array(sizeVariantSchema)
     .nonempty("Πρέπει να προσθέσεις τουλάχιστον ένα μέγεθος"),
+  is_winter: z.boolean(),
+  is_summer: z.boolean(),
+  is_spring: z.boolean(),
+  is_autumn: z.boolean(),
+  is_offer: z.boolean(),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
 
-const availableSizes = ["XS", "S", "M", "L", "XL"] as const;
-
 export default function AddProductForm() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
-    []
+    [],
   );
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -50,6 +54,11 @@ export default function AddProductForm() {
       sizeVariants: [],
       basePrice: 0,
       category_men_id: undefined,
+      is_autumn: false,
+      is_spring: false,
+      is_summer: false,
+      is_winter: false,
+      is_offer: false,
     },
   });
 
@@ -58,7 +67,6 @@ export default function AddProductForm() {
     name: "sizeVariants",
   });
 
-  // Φόρτωση κατηγοριών
   useEffect(() => {
     async function fetchCategories() {
       const { data, error } = await supabase
@@ -75,7 +83,6 @@ export default function AddProductForm() {
     fetchCategories();
   }, []);
 
-  // Preview εικόνας
   const imageFile = watch("image");
   useEffect(() => {
     if (imageFile?.[0]) {
@@ -88,7 +95,6 @@ export default function AddProductForm() {
     }
   }, [imageFile]);
 
-  // Upload εικόνας
   async function uploadImage(file: File): Promise<string | null> {
     setUploading(true);
     const fileExt = file.name.split(".").pop();
@@ -114,7 +120,6 @@ export default function AddProductForm() {
     return data.publicUrl;
   }
 
-  // Submit
   const onSubmit = async (formData: ProductFormValues) => {
     try {
       let imageUrl: string | null = null;
@@ -140,7 +145,12 @@ export default function AddProductForm() {
         size_description: formData.size_description ?? "",
         image_url: imageUrl ? [imageUrl] : null,
         category_men_id: formData.category_men_id,
-        is_offer: false,
+
+        is_offer: formData.is_offer,
+        is_winter: formData.is_winter,
+        is_spring: formData.is_spring,
+        is_summer: formData.is_summer,
+        is_autumn: formData.is_autumn,
       };
 
       const variants: VariantInsert[] = formData.sizeVariants.map((v) => ({
@@ -179,7 +189,6 @@ export default function AddProductForm() {
         Add new Product
       </h1>
 
-      {/* Όνομα */}
       <div>
         <label className="block text-sm font-medium mb-1">
           Name of Product
@@ -274,7 +283,7 @@ export default function AddProductForm() {
           Available Sizes
         </label>
         <div className="flex flex-wrap gap-2">
-          {availableSizes.map((size) => (
+          {AVAILABLE_SIZES.map((size) => (
             <button
               type="button"
               key={size}
@@ -319,7 +328,63 @@ export default function AddProductForm() {
           ))}
         </div>
       )}
-
+      <div className=" flex flex-row gap-4">
+        <div className="space-y-3">
+          <label className="block text-sm font-medium mb-1">
+            winter product?
+          </label>
+          <input
+            type="checkbox"
+            {...register(`is_winter`)}
+            className="border p-2 rounded flex-1"
+            min="0"
+          />
+        </div>
+        <div className="space-y-3">
+          <label className="block text-sm font-medium mb-1">
+            spring product?
+          </label>
+          <input
+            type="checkbox"
+            {...register(`is_spring`)}
+            className="border p-2 rounded flex-1"
+            min="0"
+          />
+        </div>
+        <div className="space-y-3">
+          <label className="block text-sm font-medium mb-1">
+            summer product?
+          </label>
+          <input
+            type="checkbox"
+            {...register(`is_summer`)}
+            className="border p-2 rounded flex-1"
+            min="0"
+          />
+        </div>
+        <div className="space-y-3">
+          <label className="block text-sm font-medium mb-1">
+            autumn product?
+          </label>
+          <input
+            type="checkbox"
+            {...register(`is_autumn`)}
+            className="border p-2 rounded flex-1"
+            min="0"
+          />
+        </div>
+        <div className="space-y-3">
+          <label className="block text-sm font-medium mb-1">
+            Product on sale?
+          </label>
+          <input
+            type="checkbox"
+            {...register(`is_offer`)}
+            className="border p-2 rounded flex-1"
+            min="0"
+          />
+        </div>
+      </div>
       <button
         type="submit"
         className="bg-black text-white px-6 py-3 rounded w-full hover:bg-gray-800 font-medium transition"

@@ -6,7 +6,7 @@ import PhotoGallery from "@/components/sections/photoAndVideoGallery";
 import type { Metadata } from "next";
 import React, { Suspense } from "react";
 import CategoriesMainPage from "@/components/sections/CategoriesMainPage";
-import NewCollectionClothes from "@/components/sections/NewCollection";
+import SeasonalCollection from "@/components/sections/SeasonalCollection";
 
 export const metadata: Metadata = {
   title: "UrbanValor",
@@ -20,7 +20,7 @@ export default async function Home() {
     <div>
       <HeaderProvider forceOpaque={false}>
         <Hero />
-        <NewCollectionClothes/>
+        <SeasonalCollection/>
         <Suspense>
           <PhotoGallery />
           <CategoriesMainPage />

@@ -22,3 +22,5 @@ export const DEFAULT_METADATA = {
     "Methys inspired from the essence of the daily danish fashion culture",
   openGraphImageUrl: "/AuthClothPhoto.jpg",
 };
+
+export const AVAILABLE_SIZES = ["XS", "S", "M", "L", "XL"];

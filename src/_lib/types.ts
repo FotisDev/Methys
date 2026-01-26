@@ -2,7 +2,7 @@ export type CategoryBackendType = {
   id: number;
   name: string;
   slug: string;
-  image_url?: string | null;
+  image_url: string;
   parent_id: number | null;
 };
 
@@ -78,6 +78,10 @@ export type ProductInDetails = {
   }[];
   size_description: string;
   product_details: string;
+  is_winter?:boolean;
+  is_spring?:boolean;
+  is_summer?:boolean;
+  is_autumn?:boolean;
 };
 
 export type ProductInsert = {
@@ -89,6 +93,10 @@ export type ProductInsert = {
   category_men_id: number;
   is_offer?: boolean;
   size_description?: string;
+  is_winter?: boolean;
+  is_spring?: boolean;
+  is_summer?: boolean;
+  is_autumn?: boolean;
 };
 
 export type VariantInsert = {
@@ -98,11 +106,10 @@ export type VariantInsert = {
   slug: string;
 };
 
-
-export type FAQ ={ 
+export type FAQ = {
   id: number;
   title: string;
   subtitle: string;
   description: string;
   created_at: string;
-}
+};
