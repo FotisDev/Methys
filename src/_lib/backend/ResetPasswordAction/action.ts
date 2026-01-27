@@ -1,4 +1,4 @@
-// app/reset-password/actions.ts
+
 "use server";
 
 import { createSupabaseServerClient } from "@/_lib/supabase/server";

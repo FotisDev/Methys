@@ -12,6 +12,8 @@ import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createProductSchema } from "@/components/schemas/newCollectionSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import Footer from "@/components/footer/Footer";
+import SeasonalCollection from "@/components/sections/SeasonalCollection";
+import { ProductBySpringSeason } from "@/_lib/backend/ProductWithStructure/action";
 
 export default async function ProductDetailPage({
   params,
@@ -37,7 +39,7 @@ export default async function ProductDetailPage({
     const subcategories = await getSubcategories(parentCategory.id);
 
     const currentCategory = subcategories.find(
-      (subcat) => subcat.slug === subcategorySlug
+      (subcat) => subcat.slug === subcategorySlug,
     );
     if (!currentCategory) {
       notFound();
@@ -96,7 +98,7 @@ export default async function ProductDetailPage({
                 >
                   <Image
                     src={getValidImage(
-                      product.image_url?.[0] ?? "/AuthClothPhoto.jpg"
+                      product.image_url?.[0] ?? "/AuthClothPhoto.jpg",
                     )}
                     alt={product.name}
                     fill
@@ -118,7 +120,7 @@ export default async function ProductDetailPage({
                 >
                   <Image
                     src={getValidImage(
-                      product.image_url?.[0] ?? "/AuthClothPhoto.jpg"
+                      product.image_url?.[0] ?? "/AuthClothPhoto.jpg",
                     )}
                     alt={`${product.name} - alternate view`}
                     fill
@@ -148,7 +150,7 @@ export default async function ProductDetailPage({
                       <span className="text-sm text-gray-500 line-through">
                         €
                         {(parseFloat(product.price.toString()) * 1.2).toFixed(
-                          2
+                          2,
                         )}
                       </span>
                     )}
@@ -233,7 +235,8 @@ export default async function ProductDetailPage({
 
           <Schema markup={schema} />
         </section>
-        <Footer/>
+       <div className="pl-1"><SeasonalCollection title="Checkout this collection" fetcher={ProductBySpringSeason} /></div> 
+        <Footer />
       </HeaderProvider>
     );
   } catch (error) {
@@ -263,7 +266,7 @@ export async function generateMetadata({
 
     const subcategories = await getSubcategories(parentCategory.id);
     const currentCategory = subcategories.find(
-      (subcat) => subcat.slug === subcategorySlug
+      (subcat) => subcat.slug === subcategorySlug,
     );
     if (!currentCategory) return { title: "Product Not Found" };
 

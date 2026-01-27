@@ -28,50 +28,23 @@ const ForgotPasswordPage = () => {
   });
 
   const onSubmit = async (data: ForgotPasswordForm) => {
-    setErrorMsg(null);
-    setSubmitted(false);
+  setErrorMsg(null);
+  setSubmitted(false);
 
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
-      });
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
+    });
 
-      if (error) {
-        setErrorMsg(error.message);
-      } else {
-        setSubmitted(true);
-      }
-    } catch {
-
-      setErrorMsg("An unexpected error occurred. Please try again.");
+    if (error) {
+      setErrorMsg(error.message);
+    } else {
+      setSubmitted(true);
     }
-  };
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const access_token = urlParams.get("access_token");
-    const refresh_token = urlParams.get("refresh_token");
-
-    if (access_token && refresh_token) {
-      supabase.auth
-        .setSession({
-          access_token,
-          refresh_token,
-        })
-        .then(({ data: { session }, error }) => {
-          if (error) {
-            setErrorMsg(error.message);
-          } else if (session?.user) {
-            console.log("Session set for user:", session.user.email);
-          }
-        })
-        .catch(() => {
-          setErrorMsg(
-            "Failed to set session. Please try the reset link again."
-          );
-        });
-    }
-  }, []);
+  } catch {
+    setErrorMsg("An unexpected error occurred. Please try again.");
+  }
+};
 
   if (showCreateAccount) return <CreateAccountPage />;
   if (showSignUpPage) return <SignUpPage />;

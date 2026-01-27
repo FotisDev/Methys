@@ -20,40 +20,13 @@ function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const access_token = searchParams.get("access_token");
-    const refresh_token = searchParams.get("refresh_token");
-    
-    if (access_token && refresh_token) {
-      supabase.auth.setSession({
-        access_token,
-        refresh_token,
-      });
-      
-      supabase.auth.getUser().then(({ data: { user } }) => {
-        console.log("Password reset for user:", user?.email);
-        setUserEmail(user?.email || null);
-      });
-    }
-  }, [searchParams]);
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     setError(null);
     setLoading(true);
 
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-    
-      if (!sessionData.session) {
-        setError("No active session found. Please click the reset link again.");
-        setLoading(false);
-        return;
-      }
-
       const { error: updateError } = await supabase.auth.updateUser({
         password: data.password
       });
@@ -65,15 +38,13 @@ function ResetPasswordForm() {
       }
       
       setSuccess(true);
-      await supabase.auth.signOut();
       setLoading(false);
     
       setTimeout(() => {
-        router.push(`/login?message=password-updated&email=${encodeURIComponent(userEmail || '')}`);
+        router.push('/login');
       }, 1500);
       
     } catch (err) {
-      console.error("Unexpected error:", err);
       setError("An unexpected error occurred. Please try again.");
       setLoading(false);
     }
@@ -86,11 +57,7 @@ function ResetPasswordForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
             <h2 className="text-2xl font-bold text-vintage-green mb-2">Reset Password</h2>
-            {userEmail && (
-              <p className="text-sm text-vintage-green mb-4">
-                Resetting password for: <span className="font-semibold">{userEmail}</span>
-              </p>
-            )}
+         
           </div>
 
           <div>

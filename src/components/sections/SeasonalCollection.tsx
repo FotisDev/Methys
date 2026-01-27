@@ -1,16 +1,28 @@
 import Link from "next/link";
-import { ProductByWinterSeason } from "@/_lib/backend/ProductWithStructure/action";
 import SwiperComponent from "../swipers/SwiperComponent";
+import { ProductInDetails } from "@/_lib/types";
 
-export default async function SeasonalCollection() {
-  const items = await ProductByWinterSeason();
+type ProductFetcher = () => Promise<ProductInDetails[] | null>;
+
+type SeasonalCollectionProps = {
+  title: string;
+  href?: string;
+  fetcher: ProductFetcher;
+};
+
+export default async function SeasonalCollection({
+  title,
+  href = "/product",
+  fetcher,
+}: SeasonalCollectionProps) {
+  const items = await fetcher();
 
   if (!items || !Array.isArray(items)) {
     return <div>No products found</div>;
   }
 
   const validItems = items.filter(
-    (item): item is NonNullable<typeof item> => item !== null
+    (item): item is NonNullable<typeof item> => item !== null,
   );
 
   if (validItems.length === 0) {
@@ -24,7 +36,7 @@ export default async function SeasonalCollection() {
           href="/products"
           className="text-sm pl-2  text-black hover:underline"
         >
-          Winter New Collection Just Dropped →
+          {` ${title}  →`}
         </Link>
       </div>
 

@@ -31,11 +31,11 @@ function HeartSvg({
   );
 }
 
-interface NewCollectionCardProps {
+interface SeasonalCollectionCardProps {
   item: ProductInDetails;
 }
 
-export default function NewCollectionCard({ item }: NewCollectionCardProps) {
+export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardProps) {
   const [hovered, setHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
