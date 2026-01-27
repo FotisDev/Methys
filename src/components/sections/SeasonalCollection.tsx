@@ -33,7 +33,7 @@ export default async function SeasonalCollection({
     <section className="new-collection pt-5 font-poppins bg-white">
       <div className="flex items-center justify-between mb-6">
         <Link
-          href="/products"
+          href={`${href}`}
           className="text-sm pl-2  text-black hover:underline"
         >
           {` ${title}  →`}

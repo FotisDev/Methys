@@ -2,8 +2,8 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {  useState, Suspense } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "../../../_lib/supabase/client";
 import { ResetPasswordFormData, resetPasswordSchema } from "@/_lib/utils/zod";
 import Link from "next/link";
@@ -44,8 +44,8 @@ function ResetPasswordForm() {
         router.push('/login');
       }, 1500);
       
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
+    } catch {
+      setError("An unexpected error occurred. Please try again.",);
       setLoading(false);
     }
   };
