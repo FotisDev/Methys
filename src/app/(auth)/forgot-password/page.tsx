@@ -31,9 +31,10 @@ const ForgotPasswordPage = () => {
   setErrorMsg(null);
   setSubmitted(false);
 
+  const siteUrl= process.env.NODE_END === 'development' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_SITE_URL;
   try {
     const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
+      redirectTo: `${siteUrl}/reset-password`,
     });
 
     if (error) {
