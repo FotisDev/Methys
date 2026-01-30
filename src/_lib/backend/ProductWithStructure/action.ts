@@ -3,10 +3,13 @@
 import { supabase } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
 
-export async function getProductsWithStructure(): Promise<ProductInDetails[] | null> {
+export async function getProductsWithStructure(): Promise<
+  ProductInDetails[] | null
+> {
   const { data, error } = await supabase
     .from("products")
-    .select(`
+    .select(
+      `
       id,
       name,
       slug,
@@ -31,7 +34,8 @@ export async function getProductsWithStructure(): Promise<ProductInDetails[] | n
         price,
         quantity
       )
-    `)
+    `,
+    )
     .overrideTypes<ProductInDetails[], { merge: false }>();
 
   if (error) {
@@ -46,7 +50,7 @@ export async function getProductsWithStructure(): Promise<ProductInDetails[] | n
   return data;
 }
 
-export  async function ProductBySpringSeason(): Promise<
+export async function ProductBySpringSeason(): Promise<
   ProductInDetails[] | null
 > {
   const { data, error } = await supabase
@@ -57,7 +61,7 @@ export  async function ProductBySpringSeason(): Promise<
       parent:parent_id!inner(id,name,slug)),
       product_variants(size,price,quantity)`,
     )
-    .eq('is_spring',true)
+    .eq("is_spring", true)
     .overrideTypes<ProductInDetails[], { merge: false }>();
   if (error) {
     console.error("supabase error", error.message);
@@ -67,7 +71,7 @@ export  async function ProductBySpringSeason(): Promise<
   }
   return data;
 }
-export  async function ProductByWinterSeason(): Promise<
+export async function ProductByWinterSeason(): Promise<
   ProductInDetails[] | null
 > {
   const { data, error } = await supabase
@@ -78,7 +82,7 @@ export  async function ProductByWinterSeason(): Promise<
       parent:parent_id!inner(id,name,slug)),
       product_variants(size,price,quantity)`,
     )
-    .eq('is_winter',true)
+    .eq("is_winter", true)
     .overrideTypes<ProductInDetails[], { merge: false }>();
   if (error) {
     console.error("supabase error", error.message);
@@ -99,7 +103,7 @@ export async function ProductByAutumnSeason(): Promise<
       parent:parent_id!inner(id,name,slug)),
       product_variants(size,price,quantity)`,
     )
-    .eq('is_autumn',true)
+    .eq("is_autumn", true)
     .overrideTypes<ProductInDetails[], { merge: false }>();
   if (error) {
     console.error("supabase error", error.message);
@@ -121,8 +125,29 @@ export async function ProductBySummerSeason(): Promise<
       parent:parent_id!inner(id,name,slug)),
       product_variants(size,price,quantity)`,
     )
-    .eq('is_summer',true)
+    .eq("is_summer", true)
     .overrideTypes<ProductInDetails[], { merge: false }>();
+  if (error) {
+    console.error("supabase error", error.message);
+  }
+  if (!data || data.length === 0) {
+    return [];
+  }
+  return data;
+}
+
+export async function fetchOnlineExclusive(): Promise<
+  ProductInDetails[] | null
+> {
+  const { data, error } = await supabase
+    .from("products")
+    .select(`id,name,slug,price,description,size_description,product_details,image_url,
+      categoryformen:category_men_id!inner(id,name,slug,
+      parent:parent_id!inner(id,name,slug)),
+      product_variants(size,price,quantity)`)
+    .eq("online_exclusive", true)
+    .overrideTypes<ProductInDetails[], { merge: false }>();
+
   if (error) {
     console.error("supabase error", error.message);
   }

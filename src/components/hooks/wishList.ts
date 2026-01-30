@@ -1,4 +1,4 @@
-// hooks/useWishlist.ts
+
 import { useState, useEffect } from 'react';
 
 export const useWishlist = () => {
