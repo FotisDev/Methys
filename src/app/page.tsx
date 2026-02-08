@@ -10,16 +10,27 @@ import {
   ProductBySpringSeason,
   ProductByWinterSeason,
 } from "@/_lib/backend/ProductWithStructure/action";
+import { createMetadata } from "@/components/SEO/metadata";
+import { createWebSiteSchema } from "@/_lib/schemasGenerators/createProductSchema";
+import { createOrganizationSchema } from "@/_lib/schemasGenerators/createOrganizationSchema";
+import Schema from "@/components/schemas/SchemaMarkUp";
 
-export const metadata: Metadata = {
-  title: "UrbanValor",
-  description:
-    "Browse our collection of products. Second-hand clothes is the new fashion.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return createMetadata({
+    MetaTitle: "Methys - Timeless Pieces for the Modern Individual",
+    MetaDescription:
+      "Distinctive pieces for those who value craftsmanship and character.",
+    canonical: "/",
+  });
+}
 
 export default async function Home() {
   return (
-    <div>
+    <section className="hero-section">
+      <h1>Methys</h1>
+      <p>Timeless style. Exceptional quality.</p>
+      <Schema markup={createOrganizationSchema()} />
+      <Schema markup={createWebSiteSchema()} />
       <HeaderProvider forceOpaque={false}>
         <Hero />
         <SeasonalCollection
@@ -36,6 +47,6 @@ export default async function Home() {
           <Footer />
         </Suspense>
       </HeaderProvider>
-    </div>
+    </section>
   );
 }

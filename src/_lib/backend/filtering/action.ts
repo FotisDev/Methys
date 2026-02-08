@@ -9,6 +9,33 @@ type filterProps = {
   size?: string;
 };
 
+type SupabaseProductResponse = {
+  id: number;
+  name: string;
+  slug: string | null;
+  price: string;
+  description: string | null;
+  size_description: string | null;
+  product_details: string | null;
+  image_url: string[] | null;
+  is_offer: boolean;
+  categoryformen: {
+    id: number;
+    name: string;
+    slug: string | null;
+    parent: {
+      id: number;
+      name: string;
+      slug: string | null;
+    } | null;
+  } | null;
+  product_variants: {
+    size: string;
+    price: string | null;
+    quantity: number;
+  }[];
+};
+
 export async function FilteredProducts({
   parentSlug,
   categorySlug,
@@ -16,45 +43,121 @@ export async function FilteredProducts({
   max,
   size,
 }: filterProps): Promise<ProductInDetails[] | null> {
-  let query = supabase
+  
+ 
+
+  const { data, error } = await supabase
     .from("products")
     .select(
       `
-    id,name,slug,price,description,size_description,product_details,image_url,is_offer,
-    categoryformen:category_men_id!inner(
-    id,name,slug,parent:parent_id!inner(
-    id,name,slug)),product_variants(size,price,quantity)`,
+      id,
+      name,
+      slug,
+      price,
+      description,
+      size_description,
+      product_details,
+      image_url,
+      is_offer,
+      category_men_id,
+      categoryformen:category_men_id(
+        id,
+        name,
+        slug,
+        parent_id,
+        parent:parent_id(
+          id,
+          name,
+          slug
+        )
+      ),
+      product_variants(size, price, quantity)
+    `
     )
-    .eq("categoryformen.parent.slug", parentSlug)
-    .eq("categoryformen.slug", categorySlug);
-
-  if (min) {
-    query = query.gte("product_variants.price", min);
-  }
-  if (max) {
-    query = query.lte("product_variants.price", max);
-  }
-  if (size) {
-    query = query.eq("product_variants.size", size);
-  }
-  const { data, error } = await query.overrideTypes<ProductInDetails[],{ merge: false } >();
+    .not("categoryformen", "is", null)
+    .returns<SupabaseProductResponse[]>();
 
   if (error) {
-    console.error("Error fetching products", error.message);
+    console.error("Error fetching products:", error.message);
     return null;
   }
 
-  const filteredData = data?.map((product) => ({
-    ...product,
-    product_variants: product.product_variants?.filter((variant) => {
-      if (variant.price === null) return false;  
-      let match = true;
-      if (min && variant.price < parseFloat(min)) match = false;
-      if (max && variant.price > parseFloat(max)) match = false;
-      if (size && variant.size !== size) match = false;
-      return match;
-    })
-  })).filter(product => product.product_variants && product.product_variants.length > 0);
+  if (!data || data.length === 0) {
+    console.log('No products found in database');
+    return [];
+  }
 
-  return filteredData ?? [];
+  const categoryFilteredData = data.filter((product) => {
+    const category = product.categoryformen;
+    const parent = category?.parent;
+    
+    const matchesCategory = category?.slug === categorySlug;
+    const matchesParent = parent?.slug === parentSlug;
+    
+    return matchesCategory && matchesParent;
+  });
+
+ 
+
+
+  const filteredData = categoryFilteredData
+    .map((product) => {
+      const basePrice = parseFloat(product.price);
+      
+      const filteredVariants = product.product_variants?.filter((variant) => {
+
+        const effectivePrice = variant.price !== null 
+          ? parseFloat(variant.price) 
+          : basePrice;
+        
+        if (min) {
+          const minPrice = parseFloat(min);
+          if (effectivePrice < minPrice) {
+            console.log(`    ❌ Rejected: €${effectivePrice} < min €${minPrice}`);
+            return false;
+          }
+        }
+    
+        if (max) {
+          const maxPrice = parseFloat(max);
+          if (effectivePrice > maxPrice) {
+            console.log(`    ❌ Rejected: €${effectivePrice} > max €${maxPrice}`);
+            return false;
+          }
+        }
+        
+        if (size && variant.size !== size) {
+          console.log(`    ❌ Rejected: size ${variant.size} !== ${size}`);
+          return false;
+        }
+        
+     
+        return true;
+      }).map(variant => ({
+        ...variant,
+        price: variant.price !== null ? parseFloat(variant.price) : basePrice,
+      })) || [];
+
+      console.log(`  → ${filteredVariants.length} variants match`);
+
+      return {
+        ...product,
+        price: basePrice,
+        product_variants: filteredVariants,
+      } as ProductInDetails;
+    })
+    .filter((product) => {
+      const hasVariants = product.product_variants && product.product_variants.length > 0;
+      if (!hasVariants) {
+      
+      }
+      return hasVariants;
+    });
+
+  filteredData.forEach(p => {
+    p.product_variants?.forEach(v => console.log(`    - ${v.size}: €${v.price}`));
+  });
+
+
+  return filteredData;
 }

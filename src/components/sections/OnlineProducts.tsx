@@ -46,8 +46,8 @@ export function OnlineProducts({ products, }: OnlineProductProps) {
   return (
     <section className="font-roboto text-vintage-green pt-16">
       <Breadcrumbs items={breadcrumbs} />
-      <h1 className="text-2xl font-semibold py-2">Online Exclusive</h1>
-
+      <h2 className="text-2xl font-semibold py-2">Online Exclusive</h2>
+    
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-0.5">
         {products && products.length > 0 && products.map((onlineExclusiveProduct) => {
           const availableSizes = onlineExclusiveProduct.product_variants

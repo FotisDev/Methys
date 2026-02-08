@@ -82,14 +82,16 @@ export type CategoryPageProps = {
 export interface MetadataProps {
   MetaTitle?: string;
   MetaDescription?: string;
-  OpenGraphImageUrl?: string;
   canonical?: string;
-  alternates?: Record<string, string>;
-  robots?: {
-    index?: boolean;
-    follow?: boolean;
-  };
+  OpenGraphImageUrl?: string;
+  robots?: { index?: boolean; follow?: boolean };
   other?: Record<string, string>;
+  alternates?: Record<string, string>;
+  product?: {
+    price?: string;
+    availability?: string;
+    brand?: string;
+  };
 }
 
  export interface ProductMetadataProps extends MetadataProps {

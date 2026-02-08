@@ -117,7 +117,7 @@ const WishlistPage = () => {
               />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold mb-4">Your wishlist is empty</h2>
+          <div className="text-3xl font-bold mb-4">Your wishlist is empty</div>
           <p className="text-gray-600 mb-8">
             Save your favorite items for later.
           </p>
@@ -134,7 +134,7 @@ const WishlistPage = () => {
 
   return (
     <section className="container mx-auto  px-4 py-12 font-poppins">
-      <h1 className="text-4xl font-bold text-gray-800 mb-4">My Wishlist</h1>
+      <div className="text-4xl font-bold text-gray-800 mb-4">My Wishlist</div>
       <nav className="text-sm text-gray-600 mb-10">
         <Breadcrumbs items={breadcrumbItems} />
       </nav>

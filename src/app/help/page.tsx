@@ -1,5 +1,5 @@
 import FetchFaqs from "@/_lib/backend/Faqs/action";
-import { generateFAQSchema } from "@/components/schemas/FAQSchema";
+import { generateFAQSchema } from "@/_lib/schemasGenerators/FAQSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import FaqSection from "@/components/sections/FaqSection";
 

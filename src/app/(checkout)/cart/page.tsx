@@ -14,7 +14,7 @@ const CartPage = () => {
     clearCart,
     updateQuantity,
     getCartTotal,
-    getItemPrice, // ← Now properly used!
+    getItemPrice, 
   } = useCart();
 
   const [total, setTotal] = useState(0);
@@ -82,9 +82,9 @@ const CartPage = () => {
               />
             </svg>
           </div>
-          <h2 className="text-xl sm:text-2xl text-gray-900 mb-3 sm:mb-4">
+          <span className="text-xl sm:text-2xl text-gray-900 mb-3 sm:mb-4">
             Your cart is empty
-          </h2>
+          </span>
           <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
             Looks like you havent added any items to your cart yet.
           </p>
@@ -102,9 +102,9 @@ const CartPage = () => {
   return (
     <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-12 font-poppins">
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl text-vintage-green mb-3 sm:mb-4">
+        <p className="text-2xl sm:text-3xl md:text-4xl text-vintage-green mb-3 sm:mb-4">
           Shopping Cart
-        </h1>
+        </p>
         <nav className="text-xs sm:text-sm text-vintage-green">
           <Link
             href="/products"

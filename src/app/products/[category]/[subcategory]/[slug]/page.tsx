@@ -14,6 +14,92 @@ import Schema from "@/components/schemas/SchemaMarkUp";
 import Footer from "@/components/footer/Footer";
 import SeasonalCollection from "@/components/sections/SeasonalCollection";
 import { ProductBySpringSeason } from "@/_lib/backend/ProductWithStructure/action";
+import { createMetadata } from "@/components/SEO/metadata";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{
+    category: string;
+    subcategory: string;
+    slug: string;
+  }>;
+}) {
+  const { category, subcategory, slug } = await params;
+
+  const categorySlug = decodeURIComponent(category);
+  const subcategorySlug = decodeURIComponent(subcategory);
+  const productSlug = decodeURIComponent(slug);
+
+  try {
+    const parentCategory = await getCategoryBySlug(categorySlug);
+    if (!parentCategory) {
+      return createMetadata({
+        MetaTitle: "Product Not Found | UrbanValor",
+        MetaDescription: "The product you're looking for doesn't exist.",
+        canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+        robots: { index: false, follow: false },
+      });
+    }
+
+    const subcategories = await getSubcategories(parentCategory.id);
+    const currentCategory = subcategories.find(
+      (subcat) => subcat.slug === subcategorySlug,
+    );
+
+    if (!currentCategory) {
+      return createMetadata({
+        MetaTitle: "Product Not Found | UrbanValor",
+        MetaDescription: "The product you're looking for doesn't exist.",
+        canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+        robots: { index: false, follow: false },
+      });
+    }
+
+    const product = await fetchProductBySlug(currentCategory.id, productSlug);
+
+    if (!product) {
+      return createMetadata({
+        MetaTitle: "Product Not Found | UrbanValor",
+        MetaDescription: "The product you're looking for doesn't exist.",
+        canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+        robots: { index: false, follow: false },
+      });
+    }
+
+    const inStock = product.product_variants.some((v) => v.quantity > 0);
+
+    return createMetadata({
+      MetaTitle: `${product.name} | Methys`,
+      MetaDescription:
+        product.description ??
+        "Premium clothing from Methys. Timeless style, exceptional quality.",
+      canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+      OpenGraphImageUrl: product.image_url?.[0],
+      product: {
+        price: `${product.price} EUR`,
+        availability: inStock ? "InStock" : "OutOfStock",
+        brand: "Methys",
+      },
+      other: {
+        "twitter:card": "summary_large_image",
+        "twitter:title": product.name,
+        "twitter:description": product.description ?? "",
+        "twitter:image": product.image_url?.[0] ?? "/AuthClothPhoto.jpg",
+        "product:price:amount": product.price.toString(),
+        "product:price:currency": "EUR",
+      },
+    });
+  } catch (error) {
+    console.error("Error generating product metadata:", error);
+    return createMetadata({
+      MetaTitle: "Error | Methys",
+      MetaDescription: "An error occurred while loading this product.",
+      canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+      robots: { index: false, follow: false },
+    });
+  }
+}
 
 export default async function ProductDetailPage({
   params,
@@ -88,7 +174,15 @@ export default async function ProductDetailPage({
           <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
-
+          <header className="flex flex-col  gap-3  mb-10">
+            <h1 className="text-3xl md:text-4xl font-light">
+              {product.name.toUpperCase()}
+            </h1>
+            <p className="text-lg text-vintage-brown">
+              Discover our collection of {product.name.toLowerCase()}{" "}
+              products
+            </p>
+          </header>
           <div className=" mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
               <div className="space-y-0">
@@ -235,79 +329,17 @@ export default async function ProductDetailPage({
 
           <Schema markup={schema} />
         </section>
-       <div className="pl-1"><SeasonalCollection title="Checkout this collection" fetcher={ProductBySpringSeason} /></div> 
+        <div className="pl-1">
+          <SeasonalCollection
+            title="Checkout this collection"
+            fetcher={ProductBySpringSeason}
+          />
+        </div>
         <Footer />
       </HeaderProvider>
     );
   } catch (error) {
     console.error("Error loading product:", error);
     notFound();
-  }
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{
-    category: string;
-    subcategory: string;
-    slug: string;
-  }>;
-}) {
-  const { category, subcategory, slug } = await params;
-
-  const categorySlug = decodeURIComponent(category);
-  const subcategorySlug = decodeURIComponent(subcategory);
-  const productSlug = decodeURIComponent(slug);
-
-  try {
-    const parentCategory = await getCategoryBySlug(categorySlug);
-    if (!parentCategory) return { title: "Product Not Found" };
-
-    const subcategories = await getSubcategories(parentCategory.id);
-    const currentCategory = subcategories.find(
-      (subcat) => subcat.slug === subcategorySlug,
-    );
-    if (!currentCategory) return { title: "Product Not Found" };
-
-    const product = await fetchProductBySlug(currentCategory.id, productSlug);
-    if (!product) return { title: "Product Not Found" };
-
-    const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${productSlug}`;
-
-    return {
-      title: `${product.name} | Methys`,
-      description: product.description ?? "Premium clothing from Methys.",
-      alternates: {
-        canonical: fullUrl,
-      },
-      robots: {
-        index: true,
-        follow: true,
-      },
-      authors: [{ name: "Methys" }],
-      publisher: "Methys",
-      openGraph: {
-        title: product.name,
-        description: product.description ?? "",
-        url: fullUrl,
-        images: [
-          {
-            url: product.image_url,
-            width: 800,
-            height: 800,
-            alt: product.name,
-          },
-        ],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: product.name,
-        description: product.description ?? "",
-        images: [product.image_url],
-      },
-    };
-  } catch {
-    return { title: "Product Not Found" };
   }
 }

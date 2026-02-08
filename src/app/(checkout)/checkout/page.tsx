@@ -169,7 +169,7 @@ const Checkout = () => {
               />
             </svg>
           </div>
-          <h2 className="text-2xl text-vintage-green mb-2">Order Confirmed!</h2>
+          <span className="text-2xl text-vintage-green mb-2">Order Confirmed!</span>
           <p className="text-vintage-green mb-6">
             Thank you for your purchase.
           </p>
@@ -192,7 +192,7 @@ const Checkout = () => {
   if (cart.length === 0) {
     return (
       <div className="text-center py-16">
-        <h2 className="text-2xl mb-4">Your cart is empty</h2>
+        <p className="text-2xl mb-4">Your cart is empty</p>
         <Link
           href="/products"
           className="bg-vintage-brown text-white px-8 py-3 rounded-lg hover:bg-vintage-brown"
@@ -205,7 +205,7 @@ const Checkout = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 font-poppins max-w-7xl">
-      <h1 className="text-3xl md:text-4xl text-vintage-green mb-2">Checkout</h1>
+      <span className="text-3xl md:text-4xl text-vintage-green mb-2">Checkout</span>
       <p className="text-sm text-vintage-green mb-8">
         <Link
           href="/cart"
@@ -217,14 +217,12 @@ const Checkout = () => {
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Checkout Form - Left Side */}
         <div className="lg:col-span-2">
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Billing Information */}
             <div className="bg-white rounded-xl shadow-sm border p-6">
-              <h2 className="text-xl mb-5 text-vintage-green">
+              <p className="text-xl mb-5 text-vintage-green">
                 Personal Information
-              </h2>
+              </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm  mb-1">Full Name</label>
@@ -305,11 +303,10 @@ const Checkout = () => {
               </div>
             </div>
 
-            {/* Payment Information */}
             <div className="bg-white rounded-xl shadow-sm border p-6">
-              <h2 className="text-xl mb-5 text-vintage-green">
+              <p className="text-xl mb-5 text-vintage-green">
                 Payment Details
-              </h2>
+              </p>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm  mb-1">Card Number</label>
@@ -385,7 +382,6 @@ const Checkout = () => {
           </form>
         </div>
 
-        {/* Order Summary - Right Side (Sticky on Desktop) */}
         <div className="lg:col-span-1">
           <div className="bg-gray-50 rounded-xl p-6 lg:sticky lg:top-6 border">
             <h3 className="text-xl  mb-5 text-gray-800">Order Summary</h3>

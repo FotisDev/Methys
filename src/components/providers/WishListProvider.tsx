@@ -51,10 +51,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     setWishlist((prev) => {
       const exists = prev.find((item) => item?.id === product.id);
       if (exists) {
-        // Toggle - remove if already exists
+       
         return prev.filter((item) => item?.id !== product.id);
       }
-      // Add new item
       return [...prev, product];
     });
   };

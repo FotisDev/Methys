@@ -26,11 +26,9 @@ export async function getCategoryByName(categoryName: string, parentId?: number 
       });
       return null;
     }
-
-    console.log(`Found ${data?.length || 0} categories matching "${categoryName}"`);
     
     if (data && data.length > 0) {
-      console.log("Found categories:", data);
+     
       return data[0] as CategoryBackendType;
     }
 
