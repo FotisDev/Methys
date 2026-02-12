@@ -9,12 +9,11 @@ export async function GET() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
-  // Only fetch products that are public AND not offers
   const { data: products, error } = await supabase
     .from("products")
     .select("id, created_at")
     .eq("is_public", true)
-    .eq("is_offer", false); // Exclude offer products
+    .eq("is_offer", false); 
 
   if (error) {
     console.error("Supabase error:", error);
