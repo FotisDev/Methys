@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
 import { useCart } from "@/components/providers/CartProvider";
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 
 const Checkout = () => {
   const {
@@ -103,7 +103,7 @@ const Checkout = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.from("orders").insert({
+      const { error } = await supabasePublic.from("orders").insert({
         user_id: "guest-checkout",
         items: cart.map((item) => {
           const { finalPrice } = getItemPrice(item);

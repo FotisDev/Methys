@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import SignUpPage from "../login/page";
 import Image from "next/image";
 import {
@@ -48,7 +48,7 @@ const CreateAccountPage = () => {
     setLoading(true);
 
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabasePublic.auth.signUp({
         email: data.email,
         password: data.password,
         options: {

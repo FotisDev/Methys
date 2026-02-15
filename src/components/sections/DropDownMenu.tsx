@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -32,7 +32,7 @@ export default function DropDownMenu() {
     const fetchCategories = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase
+        const { data, error } = await supabasePublic
           .from("categoriesformen")
           .select("id, name, parent_id,image_url")
           .order("parent_id", { ascending: true })

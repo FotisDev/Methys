@@ -3,7 +3,7 @@
 import { useState} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import CreateAccountPage from "../createAccount/page";
 import SignUpPage from "../login/page";
 import Link from "next/link";
@@ -33,7 +33,7 @@ const ForgotPasswordPage = () => {
 
   const siteUrl= process.env.NODE_END === 'development' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_SITE_URL;
   try {
-    const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+    const { error } = await supabasePublic.auth.resetPasswordForEmail(data.email, {
       redirectTo: `${siteUrl}/reset-password`,
     });
 

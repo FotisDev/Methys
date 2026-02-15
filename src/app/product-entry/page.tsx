@@ -5,7 +5,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addProductAction } from "@/_lib/backend/AddProductAction/action";
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInsert, VariantInsert } from "@/_lib/types";
 import { getErrorMessage } from "@/_lib/helpers";
 import { AVAILABLE_SIZES } from "@/_lib/constants";
@@ -69,7 +69,7 @@ export default function AddProductForm() {
 
   useEffect(() => {
     async function fetchCategories() {
-      const { data, error } = await supabase
+      const { data, error } = await supabasePublic
         .from("categoriesformen")
         .select("id, name")
         .order("id", { ascending: true });
@@ -103,7 +103,7 @@ export default function AddProductForm() {
       .substring(2, 9)}.${fileExt}`;
     const filePath = `products/${fileName}`;
 
-    const { error } = await supabase.storage
+    const { error } = await supabasePublic.storage
       .from("product-images")
       .upload(filePath, file);
 
@@ -114,7 +114,7 @@ export default function AddProductForm() {
       return null;
     }
 
-    const { data } = supabase.storage
+    const { data } = supabasePublic.storage
       .from("product-images")
       .getPublicUrl(filePath);
     return data.publicUrl;
