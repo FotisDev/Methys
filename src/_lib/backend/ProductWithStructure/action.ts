@@ -1,12 +1,12 @@
 "use server";
 
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
 
 export async function getProductsWithStructure(): Promise<
   ProductInDetails[] | null
 > {
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("products")
     .select(
       `
@@ -53,7 +53,7 @@ export async function getProductsWithStructure(): Promise<
 export async function ProductBySpringSeason(): Promise<
   ProductInDetails[] | null
 > {
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("products")
     .select(
       `id,name,slug,price,description,size_description,product_details,image_url,is_spring,
@@ -74,7 +74,7 @@ export async function ProductBySpringSeason(): Promise<
 export async function ProductByWinterSeason(): Promise<
   ProductInDetails[] | null
 > {
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("products")
     .select(
       `id,name,slug,price,description,size_description,product_details,image_url,is_winter,
@@ -95,7 +95,7 @@ export async function ProductByWinterSeason(): Promise<
 export async function ProductByAutumnSeason(): Promise<
   ProductInDetails[] | null
 > {
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("products")
     .select(
       `id,name,slug,price,description,size_description,product_details,image_url,is_autumn,
@@ -117,7 +117,7 @@ export async function ProductByAutumnSeason(): Promise<
 export async function ProductBySummerSeason(): Promise<
   ProductInDetails[] | null
 > {
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("products")
     .select(
       `id,name,slug,price,description,size_description,product_details,image_url,is_summer,
@@ -139,7 +139,7 @@ export async function ProductBySummerSeason(): Promise<
 export async function fetchOnlineExclusive(): Promise<
   ProductInDetails[] | null
 > {
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("products")
     .select(`id,name,slug,price,description,size_description,product_details,image_url,
       categoryformen:category_men_id!inner(id,name,slug,

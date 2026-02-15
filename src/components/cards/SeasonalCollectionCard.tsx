@@ -156,7 +156,7 @@ export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardP
                   <span
                     key={size}
                     onClick={(e) => handleSizeClick(e, size)}
-                    className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-sm transition-all duration-200 bg-gray-100${
+                    className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-sm transition-all duration-200 bg-gray-100 ${
                       selectedSize === size
                         ? `bg-vintage-green text-white `
                         : "bg-white text-vintage-green hover:bg-vintage-green hover:text-white rounded w-6 sm:w-9x"

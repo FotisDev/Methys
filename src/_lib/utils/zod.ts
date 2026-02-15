@@ -49,14 +49,12 @@ export const productSchema = z.object({
   is_offer: z.boolean().default(false),
 });
 
-// Sign In Schema
 export const signInSchema = z.object({
   email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),
   rememberMe: z.boolean().optional()
 });
 
-// Create Account Schema
 export const createAccountSchema = z.object({
   firstName: z.string().min(1, "First name is required").min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(1, "Last name is required").min(2, "Last name must be at least 2 characters"),
@@ -83,12 +81,10 @@ export const createAccountSchema = z.object({
   path: ["repeatPassword"]
 });
 
-// Forgot Password Schema
 export const forgotPasswordSchema = z.object({
   email: z.string().min(1, "Email is required").email("Please enter a valid email address")
 });
 
-// Reset Password Schema
 export const resetPasswordSchema = z
   .object({
     password: z.string().min(6, "Password must be at least 6 characters"),
@@ -99,7 +95,6 @@ export const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-// Contact Form Schema
 export const contactFormSchema = z.object({
   name: z.string().min(1, "Name is required").min(2, "Name must be at least 2 characters"),
   email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
@@ -107,7 +102,6 @@ export const contactFormSchema = z.object({
   message: z.string().min(1, "Message is required").min(10, "Message must be at least 10 characters")
 });
 
-// Product Form Schema (for admin)
 export const productFormSchema = z.object({
   name: z.string().min(1, "Product name is required").min(2, "Product name must be at least 2 characters"),
   description: z.string().min(1, "Description is required").min(10, "Description must be at least 10 characters"),
@@ -117,7 +111,6 @@ export const productFormSchema = z.object({
   images: z.array(z.string().url("Please provide valid image URLs")).min(1, "At least one image is required")
 });
 
-// User Profile Update Schema
 export const userProfileSchema = z.object({
   firstName: z.string().min(1, "First name is required").min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(1, "Last name is required").min(2, "Last name must be at least 2 characters"),
@@ -133,7 +126,6 @@ export const userProfileSchema = z.object({
   }).optional()
 });
 
-// Change Password Schema
 export const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),
   newPassword: z.string()
@@ -145,7 +137,6 @@ export const changePasswordSchema = z.object({
   path: ["confirmPassword"]
 });
 
-// Type exports for TypeScript
 export type SignInForm = z.infer<typeof signInSchema>;
 export type CreateAccountForm = z.infer<typeof createAccountSchema>;
 export type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;

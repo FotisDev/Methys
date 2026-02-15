@@ -12,9 +12,11 @@ import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createProductSchema } from "@/components/schemas/newCollectionSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import Footer from "@/components/footer/Footer";
-import SeasonalCollection from "@/components/sections/SeasonalCollection";
 import { ProductBySpringSeason } from "@/_lib/backend/ProductWithStructure/action";
 import { createMetadata } from "@/components/SEO/metadata";
+import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
+
+export const revalidate = 600;
 
 export async function generateMetadata({
   params,
@@ -174,13 +176,12 @@ export default async function ProductDetailPage({
           <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
-          <header className="flex flex-col  gap-3  mb-10">
-            <h1 className="text-3xl md:text-4xl font-light">
-              {product.name.toUpperCase()}
+          <header className="flex flex-col  gap-3 pl-8 mb-10">
+            <h1 className="text-lg md:text-2xl">
+              {product?.name.toUpperCase()}
             </h1>
             <p className="text-lg text-vintage-brown">
-              Discover our collection of {product.name.toLowerCase()}{" "}
-              products
+              Discover our collection of {product?.name.toLowerCase()} products
             </p>
           </header>
           <div className=" mx-auto px-4 sm:px-6 lg:px-8">
@@ -226,9 +227,11 @@ export default async function ProductDetailPage({
 
               <div className="lg:sticky lg:top-24 lg:h-fit space-y-8">
                 <div>
-                  <h3 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
-                    {product.name}
-                  </h3>
+                  {product.name && (
+                    <h3 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
+                      {product.name}
+                    </h3>
+                  )}
 
                   {product.description && (
                     <p className="text-sm text-gray-600 mb-4">
@@ -237,9 +240,11 @@ export default async function ProductDetailPage({
                   )}
 
                   <div className="flex items-baseline gap-3">
-                    <span className="text-xl font-normal">
-                      €{product.price}
-                    </span>
+                    {product.price && (
+                      <span className="text-xl font-normal">
+                        €{product.price}
+                      </span>
+                    )}
                     {product.is_offer && (
                       <span className="text-sm text-gray-500 line-through">
                         €
@@ -280,15 +285,21 @@ export default async function ProductDetailPage({
                 </div>
 
                 <div className="border-t pt-6">
-                  <p className="text-sm text-gray-700 leading-relaxed mb-6">
-                    {product.size_description}
-                  </p>
-                  <div className="space-y-2 text-sm ">
-                    {product.description}
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    {product.product_details}
-                  </div>
+                  {product.size_description && (
+                    <p className="text-sm text-gray-700 leading-relaxed mb-6">
+                      {product.size_description}
+                    </p>
+                  )}
+                  {product.description && (
+                    <div className="space-y-2 text-sm ">
+                      {product.description}
+                    </div>
+                  )}
+                  {product.product_details && (
+                    <div className="space-y-2 text-sm">
+                      {product.product_details}
+                    </div>
+                  )}
                 </div>
 
                 {product.product_variants?.length > 0 && (
@@ -330,7 +341,7 @@ export default async function ProductDetailPage({
           <Schema markup={schema} />
         </section>
         <div className="pl-1">
-          <SeasonalCollection
+          <SeasonalCollectionSection
             title="Checkout this collection"
             fetcher={ProductBySpringSeason}
           />

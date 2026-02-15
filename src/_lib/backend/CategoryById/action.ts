@@ -1,10 +1,10 @@
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import { CategoryBackendType } from "@/_lib/types";
 
 export async function getCategoryByName(categoryName: string, parentId?: number | null): Promise<CategoryBackendType | null> {
  
   try {
-    let query = supabase
+    let query = supabasePublic
       .from("categoriesformen")
       .select("id, name, parent_id, image_url, slug")
       .ilike("name", categoryName);

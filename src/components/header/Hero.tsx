@@ -9,7 +9,7 @@ const HeroSection = () => {
       className="flex mx-auto aspect-[4/3] sm:aspect-video font-roboto"
     >
       <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
-         {/* <Image
+        {/* <Image
           alt="Hero background showing stylish clothing"
           src="/yo.jpg"
           fill
@@ -19,6 +19,7 @@ const HeroSection = () => {
         
           
         /> */}
+
         <video
           src="/on-balcony.mp4"
           autoPlay
@@ -27,14 +28,16 @@ const HeroSection = () => {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         ></video>
-        
-        <div className="relative z-10 flex items-center ml-2 w-full h-full">
-          <Link 
-            href="/products" 
+
+        <div className="relative z-10 flex items-center ml-2 w-full h-full gap-2">
+          <Link
+            href="/products"
             className="text-vintage-white text-md hover:underline "
           >
-            Explore Our Collection
+            <h1> Methys Collection</h1>
           </Link>
+          
+          <p>Timeless style. Exceptional quality.</p>
         </div>
       </div>
     </section>

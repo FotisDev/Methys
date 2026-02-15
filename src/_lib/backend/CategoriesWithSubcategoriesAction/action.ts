@@ -1,9 +1,9 @@
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import { CategoryBackendType } from "@/_lib/types";
 
 export async function getAllCategoriesWithSubcategories(): Promise<CategoryBackendType[]> {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabasePublic
       .from("categoriesformen")
       .select("id, name, parent_id, slug, image_url")
       .order("parent_id", { ascending: true, nullsFirst: true })

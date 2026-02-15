@@ -24,7 +24,6 @@ const VideoSection = () => {
   };
 
   useEffect(() => {
-    // Listen for fullscreen changes to update the isFullScreen state
     const onFullScreenChange = () => {
       setIsFullScreen(!!document.fullscreenElement);
     };

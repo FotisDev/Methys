@@ -13,6 +13,8 @@ type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
 };
 
+export const revalidate = 600;
+
 export async function generateMetadata({
   params,
 }: {

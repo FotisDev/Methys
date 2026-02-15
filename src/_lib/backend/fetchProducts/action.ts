@@ -1,10 +1,10 @@
 "use server";
 
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
 
 export async function fetchProducts(): Promise<ProductInDetails[] | null> {
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("products")
     .select(`
       id,

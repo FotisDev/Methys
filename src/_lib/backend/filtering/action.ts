@@ -1,4 +1,4 @@
-import { supabase } from "@/_lib/supabase/client";
+import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
 
 type filterProps = {
@@ -46,7 +46,7 @@ export async function FilteredProducts({
   
  
 
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("products")
     .select(
       `

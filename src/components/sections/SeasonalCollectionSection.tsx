@@ -10,7 +10,7 @@ type SeasonalCollectionProps = {
   fetcher: ProductFetcher;
 };
 
-export default async function SeasonalCollection({
+export default async function SeasonalCollectionSection({
   title,
   href = "/product",
   fetcher,

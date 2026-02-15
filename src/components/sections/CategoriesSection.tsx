@@ -1,7 +1,7 @@
-import { getAllCategoriesWithSubcategories } from "@/_lib/backend/categoryBySlug/action";
+import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
 import CategoriesSwiper from "@/components/swipers/CategoriesSwiper";
 
-export default async function CategoriesMainPage() {
+export default async function CategoriesSection() {
   const allCategories = await getAllCategoriesWithSubcategories();
 
   const mainCategories = allCategories.filter(cat => cat.parent_id === null);

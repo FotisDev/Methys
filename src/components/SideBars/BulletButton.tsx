@@ -6,7 +6,7 @@ import Mail from '@/svgs/mail';
 import SocialsSvg from '@/svgs/Socials';
 import { useState } from 'react';
 
-export default function BulletButton() {
+export default function BulletButtonSideBar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {

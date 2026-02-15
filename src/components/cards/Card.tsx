@@ -8,10 +8,10 @@ export const Card = ({ children }: { children: React.ReactNode }) => {
  
    useEffect(() => {
      const checkScreenSize = () => {
-       setIsDesktop(window.innerWidth >= 768); // mobile cutoff
+       setIsDesktop(window.innerWidth >= 768); 
      };
  
-     checkScreenSize(); // αρχική τιμή
+     checkScreenSize();
      window.addEventListener("resize", checkScreenSize);
  
      return () => window.removeEventListener("resize", checkScreenSize);

@@ -11,6 +11,9 @@ import ProductFilterClient from "@/components/filters/Filters";
 import { createMetadata } from "@/components/SEO/metadata";
 import { Metadata } from "next";
 
+
+export const revalidate = 600;
+
 export async function generateMetadata({
   params,
 }: {

@@ -3,8 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
-import BulletButton from "../sections/BulletButton";
-import DropDownMainPageSubCat from "../sections/DropDownMainPageSubCat";
+import DropDownMenu from "../sections/DropDownMenu";
 import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
@@ -12,6 +11,7 @@ import { useHeaderContext } from "../providers/HeaderProvider";
 import { useCart } from "../providers/CartProvider";
 import LogoutButton from "../buttons/LogoutButton";
 import { useAuth } from "../providers/AuthProvider";
+import BulletButtonSideBar from "../SideBars/BulletButton";
 
 const Menu = () => {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -91,7 +91,7 @@ const Menu = () => {
         !clothesModalRef.current.contains(target)
       ) {
         const shopLink = Array.from(
-          menuRef.current?.querySelectorAll("a") || []
+          menuRef.current?.querySelectorAll("a") || [],
         ).find((link) => link.textContent?.includes("SHOP"));
 
         if (shopLink && shopLink.contains(target)) {
@@ -245,7 +245,7 @@ const Menu = () => {
                 <LogoutButton className="ml-auto" />
               )}
 
-              <BulletButton />
+              <BulletButtonSideBar />
             </div>
 
             <button
@@ -341,7 +341,7 @@ const Menu = () => {
             &times;
           </button>
           <div className="">
-            <DropDownMainPageSubCat />
+            <DropDownMenu />
           </div>
         </div>
       )}

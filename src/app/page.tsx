@@ -1,11 +1,10 @@
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Hero from "@/components/header/Hero";
-import PhotoGallery from "@/components/sections/photoAndVideoGallery";
+import PhotoVideoSection from "@/components/sections/photoAndVideoSection";
 import type { Metadata } from "next";
 import React, { Suspense } from "react";
-import CategoriesMainPage from "@/components/sections/CategoriesMainPage";
-import SeasonalCollection from "@/components/sections/SeasonalCollection";
+import CategoriesSection from "@/components/sections/CategoriesSection";
 import {
   ProductBySpringSeason,
   ProductByWinterSeason,
@@ -14,6 +13,7 @@ import { createMetadata } from "@/components/SEO/metadata";
 import { createWebSiteSchema } from "@/_lib/schemasGenerators/createProductSchema";
 import { createOrganizationSchema } from "@/_lib/schemasGenerators/createOrganizationSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
+import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
 
 export async function generateMetadata(): Promise<Metadata> {
   return createMetadata({
@@ -26,21 +26,19 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   return (
-    <section className="hero-section">
-      <h1>Methys</h1>
-      <p>Timeless style. Exceptional quality.</p>
+    <section className="home-page ">
       <Schema markup={createOrganizationSchema()} />
       <Schema markup={createWebSiteSchema()} />
       <HeaderProvider forceOpaque={false}>
         <Hero />
-        <SeasonalCollection
+        <SeasonalCollectionSection
           title="Winter Collection Just Dropped"
           fetcher={ProductByWinterSeason}
         />
         <Suspense>
-          <PhotoGallery />
-          <CategoriesMainPage />
-          <SeasonalCollection
+          <PhotoVideoSection />
+          <CategoriesSection />
+          <SeasonalCollectionSection
             title="Spring Collection Just Dropped"
             fetcher={ProductBySpringSeason}
           />

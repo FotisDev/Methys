@@ -19,7 +19,7 @@ interface MainCategory {
   image_url?: string | null;
 }
 
-export default function DropDownMainPageSubCat() {
+export default function DropDownMenu() {
   const [mainCategories, setMainCategories] = useState<MainCategory[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -108,10 +108,10 @@ export default function DropDownMainPageSubCat() {
               Online Exclusive
             </Link>
             <Link
-              href="/autumn-2025"
+              href="/seasonal-collection"
               className="text-lg text-gray-800 hover:text-gray-600 transition-colors uppercase tracking-wide"
             >
-              Autumn 2025
+              New Collection
             </Link>
           </div>
 

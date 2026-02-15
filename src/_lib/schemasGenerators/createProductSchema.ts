@@ -4,7 +4,7 @@ export function createWebSiteSchema() {
     "@type": "WebSite",
     "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#website`,
     url: process.env.NEXT_PUBLIC_SITE_URL,
-    name: "UrbanValor",
+    name: "Methys",
     description: "Distinctive pieces for those who value craftsmanship and character.",
     publisher: {
       "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#organization`,

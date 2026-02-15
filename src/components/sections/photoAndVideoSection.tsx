@@ -1,7 +1,8 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-const PhotoGallery: React.FC = () => {
+
+const PhotoVideoSection: React.FC = () => {
   return (
     <div className="w-full flex flex-col relative font-poppins">
       <div className="">
@@ -17,10 +18,10 @@ const PhotoGallery: React.FC = () => {
             />
           </div>
           <Link
-            href="/products"
+            href="/online-exclusive"
             className="absolute bottom-6 left-6  px-6 py-3 text-sm  text-vintage-white hover:underline"
           >
-            Explore more about our latest Collection
+            Explore more about our Online-exclusive collection
           </Link>
           <div className="w-full lg:w-1/2 h-1/2 lg:h-full flex items-center justify-center relative">
             <video
@@ -40,4 +41,4 @@ const PhotoGallery: React.FC = () => {
   );
 };
 
-export default PhotoGallery;
+export default PhotoVideoSection;

@@ -7,6 +7,10 @@ import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createMetadata } from "@/components/SEO/metadata";
 import type { Metadata } from "next";
 
+
+
+export const revalidate = 600;
+
 export async function generateMetadata(): Promise<Metadata> {
   return createMetadata({
     MetaTitle: "Shop All Collections | Methys",

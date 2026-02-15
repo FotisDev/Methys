@@ -10,9 +10,8 @@ export const createSupabaseBrowserClient = () =>
 
   
 
-export const supabase = createClient(
+export const supabasePublic = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
-
 

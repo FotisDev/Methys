@@ -1,17 +1,14 @@
-'use client'
-import { ProductInDetails } from "@/_lib/types";
+"use client";
+
+import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
 import Image from "next/image";
+import Link from "next/link";
+import { Breadcrumbs } from "../breadcrumb/breadcrumbSchema";
+import { useCart } from "../providers/CartProvider";
 import { useWishlist } from "../providers/WishListProvider";
 import { useState } from "react";
-import { useCart } from "../providers/CartProvider";
-import { Breadcrumbs } from "../breadcrumb/breadcrumbSchema";
-import Link from "next/link";
 import CartSvg from "@/svgs/cartSvg";
 
-type OnlineProductProps = {
-  products: ProductInDetails[] | null;
-  title?: string;
-};
 function HeartSvg({ filled, className }: { filled: boolean; className?: string }) {
   return (
     <svg
@@ -29,32 +26,45 @@ function HeartSvg({ filled, className }: { filled: boolean; className?: string }
   );
 }
 
-export function OnlineProducts({ products, }: OnlineProductProps) {
+type OffersListProps = {
+  offerProduct: ProductWithDiscount[];
+};
 
-     const { addToCart } = useCart();
-      const { addToWishlist, isInWishlist } = useWishlist();
-    
-      const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-      const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    
-     const breadcrumbs = [
-    { name: "Home", slug: "Home" },
-    { name: "Online-Exclusive", slug: "Online-Exclusive" },
+export default function OffersPageComponent({ offerProduct }: OffersListProps) {
+  const { addToCart } = useCart();
+  const { addToWishlist, isInWishlist } = useWishlist();
+
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+  if (offerProduct.length === 0) {
+    return (
+      <section className="p-36">
+        <h1 className="text-2xl font-semibold mb-4 text-vintage-green">Offers</h1>
+        <p className="text-gray-500">
+          Login is required to see our offers.
+        </p>
+      </section>
+    );
+  }
+
+  const breadcrumbs = [
+    { name: "Home", slug: "home" },
+    { name: "Offers", slug: "offers" },
   ];
-
 
   return (
     <section className="font-roboto text-vintage-green pt-16">
       <Breadcrumbs items={breadcrumbs} />
-      <h2 className="text-2xl font-semibold py-2">Online Exclusive</h2>
-    
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-0.5">
-        {products && products.length > 0 && products.map((onlineExclusiveProduct) => {
-          const availableSizes = onlineExclusiveProduct.product_variants
+      <h1 className="text-2xl font-semibold py-2">Explore our Limited Offers</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0.5">
+        {offerProduct.map((offer) => {
+          const availableSizes = offer.product_variants
             .filter((v) => v.quantity > 0)
             .map((v) => v.size);
 
-          const inWishlist = isInWishlist(onlineExclusiveProduct.id);
+          const inWishlist = isInWishlist(offer.id);
 
           const handleAddToCart = (
             e: React.MouseEvent<HTMLButtonElement>
@@ -67,12 +77,12 @@ export function OnlineProducts({ products, }: OnlineProductProps) {
               return;
             }
 
-            addToCart(onlineExclusiveProduct, selectedSize || undefined);
+            addToCart(offer, selectedSize || undefined);
 
             alert(
               selectedSize
-                ? `Added "${onlineExclusiveProduct.name}" (Size: ${selectedSize}) to cart!`
-                : `Added "${onlineExclusiveProduct.name}" to cart!`
+                ? `Added "${offer.name}" (Size: ${selectedSize}) to cart!`
+                : `Added "${offer.name}" to cart!`
             );
           };
 
@@ -81,28 +91,28 @@ export function OnlineProducts({ products, }: OnlineProductProps) {
           ) => {
             e.preventDefault();
             e.stopPropagation();
-            addToWishlist(onlineExclusiveProduct);
+            addToWishlist(offer);
           };
 
-          const defaultImg = onlineExclusiveProduct.image_url?.[0] ?? "/AuthClothPhoto.jpg";
-          const hoverImg = onlineExclusiveProduct.image_url?.[1] ?? defaultImg;
+          const defaultImg = offer.image_url?.[0] ?? "/AuthClothPhoto.jpg";
+          const hoverImg = offer.image_url?.[1] ?? defaultImg;
 
           return (
             <Link
-              key={onlineExclusiveProduct.id}
-              href={`/products/${onlineExclusiveProduct.categoryformen?.parent?.slug}/${onlineExclusiveProduct.categoryformen?.slug}/${onlineExclusiveProduct.slug}`}
+              key={offer.id}
+              href={`/products/${offer.categoryformen?.parent?.slug}/${offer.categoryformen?.slug}/${offer.slug}`}
               className="group relative block overflow-hidden bg-white transition-all duration-300"
-              onMouseEnter={() => setHoveredItem(onlineExclusiveProduct.id)}
+              onMouseEnter={() => setHoveredItem(offer.id)}
               onMouseLeave={() => setHoveredItem(null)}
             >
-              <div className="relative w-full max-w-[450px] h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[75vh] overflow-hidden">
+              <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[75vh] overflow-hidden">
                 <Image
                   src={
-                    hoveredItem === onlineExclusiveProduct.id
+                    hoveredItem === offer.id
                       ? hoverImg
                       : defaultImg
                   }
-                  alt={onlineExclusiveProduct.name}
+                  alt={offer.name}
                   className="object-cover object-center transition duration-500 ease-in-out w-full h-full"
                   fill
                 />
@@ -127,15 +137,17 @@ export function OnlineProducts({ products, }: OnlineProductProps) {
                 </button>
 
                 <div className="absolute bottom-3 left-3 bg-ext-vintage-green rounded-full text-vintage-white px-2 py-1 text-sm">
-                  <p className=" text-gray-200">
-                    €{Number(onlineExclusiveProduct.price)}
+                  <p className="line-through text-gray-200">
+                    €{Number(offer.price).toFixed(2)}
                   </p>
-                
+                  <span className="font-bold">
+                    €{offer.discountedPrice.toFixed(2)}
+                  </span>
                 </div>
               </div>
 
               <div className="px-2 py-3">
-                <h3 className="text-base md:text-lg line-clamp-1">{onlineExclusiveProduct.name}</h3>
+                <h3 className="text-base md:text-lg line-clamp-1">{offer.name}</h3>
 
                 <div className="flex gap-2 mt-2 flex-wrap">
                   {availableSizes.length > 0 ? (
