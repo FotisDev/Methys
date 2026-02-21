@@ -1,4 +1,4 @@
-// lib/redirects.ts
+
 
 export type Redirect = {
   source: string;
