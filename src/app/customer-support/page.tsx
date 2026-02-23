@@ -4,7 +4,7 @@ import SupportFormPageComponent from "@/components/pages/SupportFormPageComponen
 import Schema from "@/components/schemas/SchemaMarkUp";
 import { getSupportCategories } from "@/_lib/backend/SupportCategories/action";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
-
+import Image from "next/image";
 export const metadata = createMetadata({
   MetaTitle: "Support | Methys",
   MetaDescription:
@@ -21,7 +21,7 @@ export default async function SupportPage() {
       {schemaMarkUp && <Schema markup={schemaMarkUp} />}
       <HeaderProvider  forceOpaque={false}>
         <main className="relative min-h-screen flex items-center justify-center px-4">
-          <img
+          <Image
             src="/yo.jpg"
             alt="Support Background"
             className="fixed inset-0 w-full h-full object-cover -z-10"
@@ -30,7 +30,7 @@ export default async function SupportPage() {
           <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-8 relative z-10">
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Support</h1>
             <p className="text-gray-500 mb-6 text-sm">
-              Fill out the form below and we'll get back to you as soon as
+              Fill out the form below and we will get back to you as soon as
               possible.
             </p>
             <SupportFormPageComponent categories={supportCategories ?? []} />

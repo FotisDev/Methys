@@ -25,7 +25,7 @@ export default function SupportForm({ categories }: { categories: Category[] }) 
           Ticket submitted!
         </h2>
         <p className="text-gray-500 text-sm mt-1">
-          We'll reach out to you via email shortly.
+          We will reach out to you via email shortly.
         </p>
       </div>
     );
