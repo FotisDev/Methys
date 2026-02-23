@@ -54,7 +54,7 @@ export function AboutPageComponent(){
             </div>
 
             <div className="w-full flex flex-col lg:w-1/2 h-auto lg:h-full items-start p-10 justify-center relative">
-              <h1 className="text-vintage-green text-2xl pb-5">Our Story</h1>
+              <h2 className="text-vintage-green text-2xl pb-5">Our Story</h2>
               <p className="leading-relaxed text-vintage-green">
                 It all started with a spark — a realization that style is more
                 than just appearance; it’s expression. In Copenhagen, I learned

@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import myImageLoader from "@/_lib/utils/myImageLoader";
 
-export default function BookNow() {
+export default function BuyNow() {
   return (
     <section className="flex justify-center p-6 sm:p-12 lg:p-20 bg-white mb-12 lg:mb-24">
       <div className="flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl rounded-[72px] px-6 sm:px-12 lg:px-32 bg-amber-500 min-h-[670px] gap-10">

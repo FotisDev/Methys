@@ -3,7 +3,6 @@
 import { submitSupportTicket } from "@/_lib/backend/SupportSubmitForm/action";
 import { useActionState } from "react";
 
-
 type Category = {
   id: string;
   name: string;
@@ -22,43 +21,56 @@ export default function SupportForm({ categories }: { categories: Category[] }) 
     return (
       <div className="text-center py-10">
         <div className="text-4xl mb-3">✅</div>
-        <h2 className="text-lg font-semibold text-gray-800">Ticket submitted!</h2>
-        <p className="text-gray-500 text-sm mt-1">We'll reach out to you via email shortly.</p>
+        <h2 className="text-lg font-semibold text-gray-800">
+          Ticket submitted!
+        </h2>
+        <p className="text-gray-500 text-sm mt-1">
+          We'll reach out to you via email shortly.
+        </p>
       </div>
     );
   }
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form action={formAction} className="space-y-5 w-full ">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Name
+        </label>
         <input
           name="name"
           type="text"
           required
-          placeholder="John Doe"
+          placeholder=""
           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Email
+        </label>
         <input
           name="email"
           type="email"
           required
-          placeholder="you@example.com"
+          placeholder=""
           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Category
+        </label>
         <select
           name="category_id"
-          defaultValue={categories[0]?.id}
+          defaultValue={''}
           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
+          <option value="" disabled>
+            Select a category
+          </option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -68,7 +80,9 @@ export default function SupportForm({ categories }: { categories: Category[] }) 
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Message
+        </label>
         <textarea
           name="message"
           required
@@ -85,7 +99,7 @@ export default function SupportForm({ categories }: { categories: Category[] }) 
       <button
         type="submit"
         disabled={isPending}
-        className="w-full bg-blue-600 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition"
+        className="w-full  rounded-lg py-2.5 text-sm font-medium hover-colors disabled:opacity-50 transition"
       >
         {isPending ? "Submitting..." : "Submit Ticket"}
       </button>
