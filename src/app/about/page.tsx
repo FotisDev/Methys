@@ -8,7 +8,7 @@ export const metadata = createMetadata({
   MetaDescription:
     "Learn about Methys — our story, mission, and the team behind the product. Discover how we started and where we're headed.",
   canonical: "/about",
-  OpenGraphImageUrl: "/yo.jpg", 
+  OpenGraphImageUrl: "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about.jpg", //fetch the real image from supabase. and do this to every page you have.
   other: {
     "twitter:card": "summary_large_image",
     "twitter:title": "About Us | Methys",
