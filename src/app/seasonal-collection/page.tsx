@@ -1,10 +1,10 @@
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
-import { ProductInDetails } from "@/_lib/types";
+
 import Footer from "@/components/footer/Footer";
 import { SeasonalCollectionPageComponent } from "@/components/pages/seasonalCollectionPage";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { createMetadata } from "@/components/SEO/metadata";
-import { Metadata } from "next";
+
 
 export const metadata = createMetadata({
   MetaTitle: "Seasonal Collection | Methys",
