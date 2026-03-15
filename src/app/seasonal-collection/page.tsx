@@ -1,7 +1,25 @@
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
+import { ProductInDetails } from "@/_lib/types";
 import Footer from "@/components/footer/Footer";
 import { SeasonalCollectionPageComponent } from "@/components/pages/seasonalCollectionPage";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
+import { createMetadata } from "@/components/SEO/metadata";
+import { Metadata } from "next";
+
+export const metadata = createMetadata({
+  MetaTitle: "Seasonal Collection | Methys",
+  MetaDescription:
+    "Explore our curated seasonal collection — timeless pieces crafted for every season. Shop the latest arrivals at Methys.",
+  canonical: "/seasonal-collection",
+  OpenGraphImageUrl:
+    "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/seasonal-collection.jpg",
+  other: {
+    "twitter:card": "summary_large_image",
+    "twitter:title": "Seasonal Collection | Methys",
+    "twitter:description":
+      "Explore our curated seasonal collection — timeless pieces crafted for every season.",
+  },
+});
 
 export default async function SeasonalCollection() {
   const products = await fetchProducts();

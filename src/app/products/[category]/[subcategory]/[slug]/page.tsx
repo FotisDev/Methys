@@ -41,6 +41,14 @@ export async function generateMetadata({
         MetaDescription: "The product you're looking for doesn't exist.",
         canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
         robots: { index: false, follow: false },
+        OpenGraphImageUrl:
+          "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about.jpg", //fetch the real image from supabase. and do this to every page you have.
+        other: {
+          "twitter:card": "summary_large_image",
+          "twitter:title": "About Us | Methys",
+          "twitter:description":
+            "Learn about Methys — our story, mission, and the team behind the product.",
+        },
       });
     }
 

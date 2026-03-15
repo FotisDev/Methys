@@ -11,7 +11,6 @@ import ProductFilterClient from "@/components/filters/Filters";
 import { createMetadata } from "@/components/SEO/metadata";
 import { Metadata } from "next";
 
-
 export const revalidate = 600;
 
 export async function generateMetadata({
@@ -35,6 +34,14 @@ export async function generateMetadata({
         MetaDescription: "The category you're looking for doesn't exist.",
         canonical: `/products/${categorySlug}/${subcategorySlug}`,
         robots: { index: false, follow: false },
+        OpenGraphImageUrl:
+          "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about.jpg", //fetch the real image from supabase. and do this to every page you have.
+        other: {
+          "twitter:card": "summary_large_image",
+          "twitter:title": "About Us | Methys",
+          "twitter:description":
+            "Learn about Methys — our story, mission, and the team behind the product.",
+        },
       });
     }
 
@@ -146,13 +153,12 @@ export default async function SubcategoryPage({
         </header>
 
         <hr className="mt-4 mb-4 bg-vintage-green" />
-       
-          <ProductFilterClient
-            initialProducts={filteredProducts || []}
-            parentSlug={categorySlug}
-            categorySlug={subcategorySlug}
-          />
-     
+
+        <ProductFilterClient
+          initialProducts={filteredProducts || []}
+          parentSlug={categorySlug}
+          categorySlug={subcategorySlug}
+        />
 
         {products.length === 0 ? (
           <div className="text-center mt-20">

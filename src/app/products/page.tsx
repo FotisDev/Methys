@@ -7,15 +7,22 @@ import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createMetadata } from "@/components/SEO/metadata";
 import type { Metadata } from "next";
 
-
-
 export const revalidate = 600;
 
 export async function generateMetadata(): Promise<Metadata> {
   return createMetadata({
     MetaTitle: "Shop All Collections | Methys",
-    MetaDescription: "Discover our curated selection of premium clothing and accessories. Timeless style, exceptional quality.",
+    MetaDescription:
+      "Discover our curated selection of premium clothing and accessories. Timeless style, exceptional quality.",
     canonical: "/products",
+    OpenGraphImageUrl:
+      "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about.jpg", //fetch the real image from supabase. and do this to every page you have.
+    other: {
+      "twitter:card": "summary_large_image",
+      "twitter:title": "About Us | Methys",
+      "twitter:description":
+        "Learn about Methys — our story, mission, and the team behind the product.",
+    },
   });
 }
 
@@ -25,7 +32,7 @@ export default async function ProductList() {
 
   try {
     const categoriesData = await fetchCategories();
-    
+
     if (!categoriesData) {
       throw new Error("No categories data returned");
     }
@@ -40,11 +47,12 @@ export default async function ProductList() {
     error = err instanceof Error ? err.message : "Unknown error";
   }
 
-  const parentCategories = categories?.filter(
-    (c) =>
-      [1, 2, 30].includes(c.id) &&
-      (c.parent_id === null || c.parent_id === undefined)
-  ) || [];
+  const parentCategories =
+    categories?.filter(
+      (c) =>
+        [1, 2, 30].includes(c.id) &&
+        (c.parent_id === null || c.parent_id === undefined),
+    ) || [];
 
   if (error || !categories || categories.length === 0) {
     return (
@@ -70,7 +78,6 @@ export default async function ProductList() {
       <section className="padding-y padding-x text-vintage-green font-roboto">
         <div className="pt-16">
           <Breadcrumbs items={breadcrumbItems} />
-          
 
           <header className="mb-10 mt-6">
             <h1 className="text-3xl md:text-4xl font-light mb-4">
@@ -112,7 +119,7 @@ export default async function ProductList() {
               );
             })}
           </div>
-          
+
           <Footer />
         </div>
       </section>
