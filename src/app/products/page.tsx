@@ -16,10 +16,10 @@ export async function generateMetadata(): Promise<Metadata> {
       "Discover our curated selection of premium clothing and accessories. Timeless style, exceptional quality.",
     canonical: "/products",
     OpenGraphImageUrl:
-      "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about.jpg", //fetch the real image from supabase. and do this to every page you have.
+      "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     other: {
       "twitter:card": "summary_large_image",
-      "twitter:title": "About Us | Methys",
+      "twitter:title": "Products | Methys",
       "twitter:description":
         "Learn about Methys — our story, mission, and the team behind the product.",
     },

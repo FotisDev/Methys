@@ -5,11 +5,19 @@ import Schema from "@/components/schemas/SchemaMarkUp";
 import { getSupportCategories } from "@/_lib/backend/SupportCategories/action";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Image from "next/image";
+
 export const metadata = createMetadata({
   MetaTitle: "Support | Methys",
   MetaDescription:
     "Submit a support ticket for billing, bugs, account issues, or feature requests. Our team will get back to you shortly.",
   canonical: "/customer-support",
+  OpenGraphImageUrl:
+    "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+  other: {
+    card: "summary_large_image",
+    title: "Customer Support | Methys",
+    description: "You can create a message and contact us for any trouble.",
+  },
 });
 
 export default async function SupportPage() {
@@ -19,7 +27,7 @@ export default async function SupportPage() {
   return (
     <>
       {schemaMarkUp && <Schema markup={schemaMarkUp} />}
-      <HeaderProvider  forceOpaque={false}>
+      <HeaderProvider forceOpaque={false}>
         <main className="relative min-h-screen flex items-center justify-center px-4">
           <Image
             src="/yo.jpg"

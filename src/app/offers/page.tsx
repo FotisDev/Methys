@@ -4,6 +4,9 @@ import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Footer from "@/components/footer/Footer";
 import OffersPageComponent from "@/components/pages/offerPage";
 
+
+//SEO
+
 export default async function OfferPage() {
   const offers = await fetchOffers();
 

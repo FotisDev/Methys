@@ -35,10 +35,10 @@ export async function generateMetadata({
         canonical: `/products/${categorySlug}/${subcategorySlug}`,
         robots: { index: false, follow: false },
         OpenGraphImageUrl:
-          "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about.jpg", //fetch the real image from supabase. and do this to every page you have.
+          "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg", 
         other: {
           "twitter:card": "summary_large_image",
-          "twitter:title": "About Us | Methys",
+          "twitter:title": "Category Not Found | Methys",
           "twitter:description":
             "Learn about Methys — our story, mission, and the team behind the product.",
         },
@@ -64,7 +64,7 @@ export async function generateMetadata({
       MetaDescription: `Discover our collection of ${currentCategory.name.toLowerCase()} products. Timeless style, exceptional quality.`,
       canonical: `/products/${categorySlug}/${subcategorySlug}`,
       // Optional: Add category image
-      // OpenGraphImageUrl: currentCategory.image_url,
+      OpenGraphImageUrl: currentCategory.image_url,
     });
   } catch {
     return createMetadata({

@@ -12,7 +12,7 @@ export const metadata = createMetadata({
     "Explore our curated seasonal collection — timeless pieces crafted for every season. Shop the latest arrivals at Methys.",
   canonical: "/seasonal-collection",
   OpenGraphImageUrl:
-    "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/seasonal-collection.jpg",
+    "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   other: {
     "twitter:card": "summary_large_image",
     "twitter:title": "Seasonal Collection | Methys",
