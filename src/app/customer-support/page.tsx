@@ -33,6 +33,7 @@ export default async function SupportPage() {
             src="/yo.jpg"
             alt="Support Background"
             className="fixed inset-0 w-full h-full object-cover -z-10"
+            fill
           />
           <div className="fixed inset-0 bg-black/30 -z-5"></div>
           <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-8 relative z-10">
