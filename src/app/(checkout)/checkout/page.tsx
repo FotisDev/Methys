@@ -6,6 +6,7 @@ import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
 import { useCart } from "@/components/providers/CartProvider";
 import { supabasePublic } from "@/_lib/supabase/client";
+import { createCheckoutSession } from "@/_lib/backend/stripe/action";
 
 const Checkout = () => {
   const {
@@ -51,17 +52,17 @@ const Checkout = () => {
   const handleUpdateQuantity = (
     productId: number,
     selectedSize: string | undefined,
-    newQuantity: number
+    newQuantity: number,
   ) => {
     if (newQuantity < 1) return;
 
     const item = cart.find(
-      (i) => i.id === productId && i.selectedSize === selectedSize
+      (i) => i.id === productId && i.selectedSize === selectedSize,
     );
 
     if (item && newQuantity > item.quantity!) {
       const variant = item.product_variants.find(
-        (v) => v.size === selectedSize
+        (v) => v.size === selectedSize,
       );
       if (variant && newQuantity > variant.quantity) {
         alert("Not enough stock available!");
@@ -103,53 +104,23 @@ const Checkout = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabasePublic.from("orders").insert({
-        user_id: "guest-checkout",
-        items: cart.map((item) => {
-          const { finalPrice } = getItemPrice(item);
-          return {
-            product_id: item.id,
-            name: item.name,
-            quantity: item.quantity || 1,
-            price: finalPrice,
-            selectedSize: item.selectedSize,
-            image_url: item.image_url,
-          };
-        }),
-        total_amount: total,
-        customer_info: {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          city: formData.city,
-          zipCode: formData.zipCode,
-        },
-        payment_info: {
-          last4: formData.cardNumber.slice(-4),
-          cardHolderName: formData.cardHolderName,
-        },
-        status: "pending",
+      const { url } = await createCheckoutSession(cart, {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        zipCode: formData.zipCode,
       });
 
-      if (error) throw error;
-
-      setIsSubmitted(true);
-      clearCart();
-    } catch (err: unknown) {
-      console.error("Order submission failed:", err);
-
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "There was an Error throught proccess of payment";
-
-      alert("Order failed: " + errorMessage);
+      if (url) window.location.href = url;
+    } catch (err) {
+      console.error("Checkout failed:", err);
+      alert("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
-
   if (isSubmitted) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
@@ -169,7 +140,9 @@ const Checkout = () => {
               />
             </svg>
           </div>
-          <span className="text-2xl text-vintage-green mb-2">Order Confirmed!</span>
+          <span className="text-2xl text-vintage-green mb-2">
+            Order Confirmed!
+          </span>
           <p className="text-vintage-green mb-6">
             Thank you for your purchase.
           </p>
@@ -205,7 +178,9 @@ const Checkout = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 font-poppins max-w-7xl">
-      <span className="text-3xl md:text-4xl text-vintage-green mb-2">Checkout</span>
+      <span className="text-3xl md:text-4xl text-vintage-green mb-2">
+        Checkout
+      </span>
       <p className="text-sm text-vintage-green mb-8">
         <Link
           href="/cart"
@@ -301,83 +276,11 @@ const Checkout = () => {
                   />
                 </div>
               </div>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-sm border p-6">
-              <p className="text-xl mb-5 text-vintage-green">
-                Payment Details
-              </p>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm  mb-1">Card Number</label>
-                  <input
-                    type="text"
-                    name="cardNumber"
-                    value={formData.cardNumber}
-                    onChange={handleInputChange}
-                    placeholder="1234 5678 9012 3456"
-                    maxLength={19}
-                    className="w-full px-4 py-2.5 border rounded-lg"
-                    required
-                  />
-                  {formErrors.cardNumber && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {formErrors.cardNumber}
-                    </p>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm  mb-1">Expiry Date</label>
-                    <input
-                      type="text"
-                      name="expiryDate"
-                      value={formData.expiryDate}
-                      onChange={handleInputChange}
-                      placeholder="MM/YY"
-                      className="w-full px-4 py-2.5 border rounded-lg"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm mb-1">CVV</label>
-                    <input
-                      type="text"
-                      name="cvv"
-                      value={formData.cvv}
-                      onChange={handleInputChange}
-                      placeholder="123"
-                      maxLength={3}
-                      className="w-full px-4 py-2.5 border rounded-lg"
-                      required
-                    />
-                    {formErrors.cvv && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {formErrors.cvv}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm  mb-1">Cardholder Name</label>
-                  <input
-                    type="text"
-                    name="cardHolderName"
-                    value={formData.cardHolderName}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 border rounded-lg"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full hover-colors hover:bg-default-cold py-4 rounded-lg text-lg transition"
-            >
-              {isSubmitting ? "Processing..." : `Pay $${total.toFixed(2)}`}
+            </div> 
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting
+                ? "Redirecting to payment..."
+                : `Pay €${total.toFixed(2)}`}
             </button>
           </form>
         </div>
@@ -426,7 +329,7 @@ const Checkout = () => {
                             handleUpdateQuantity(
                               item.id,
                               item.selectedSize,
-                              (item.quantity || 1) - 1
+                              (item.quantity || 1) - 1,
                             )
                           }
                           className="w-7 h-7 rounded-full border hover:bg-gray-200"
@@ -439,7 +342,7 @@ const Checkout = () => {
                             handleUpdateQuantity(
                               item.id,
                               item.selectedSize,
-                              (item.quantity || 1) + 1
+                              (item.quantity || 1) + 1,
                             )
                           }
                           className="w-7 h-7 rounded-full border hover:bg-gray-200"
