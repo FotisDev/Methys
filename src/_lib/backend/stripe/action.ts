@@ -26,7 +26,7 @@ export async function createCheckoutSession(
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
-    customer_email: shippingInfo.email, 
+    customer_email: shippingInfo.email,
     line_items: cartItems.map((item) => ({
       price_data: {
         currency: "eur",
@@ -39,8 +39,8 @@ export async function createCheckoutSession(
       quantity: item.quantity ?? 1,
     })),
     metadata: {
-      user_id: user?.id ?? null,
-      shipping_info: JSON.stringify(shippingInfo), 
+      ...(user?.id && { user_id: user.id }),
+      shipping_info: JSON.stringify(shippingInfo),
       cart_items: JSON.stringify(
         cartItems.map((i) => ({
           id: i.id,

@@ -13,8 +13,10 @@ async function fulfillOrder(session: Stripe.Checkout.Session) {
     ? JSON.parse(session.metadata.cart_items)
     : [];
 
+  const userId = session.metadata?.user_id;
+
   const { error } = await supabaseAdmin.from("orders").insert({
-    user_id:session.metadata?.user_id !== "guest" ? session.metadata?.user_id : null,
+    user_id: userId && userId.length > 0 ? userId : null, 
     stripe_session_id: session.id,
     stripe_payment_intent_id: session.payment_intent,
     status: "paid",
