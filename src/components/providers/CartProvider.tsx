@@ -13,6 +13,8 @@ import { calculateDiscountPrice } from "@/_lib/utils/discountUtil/discountUtils"
 export type CartItem = ProductInDetails & {
   selectedSize?: string;
   quantity: number;
+  discountedPrice?: number; 
+  discountPercent?: number;
 };
 
 type CartContextType = {
@@ -20,12 +22,12 @@ type CartContextType = {
   addToCart: (
     product: ProductInDetails,
     selectedSize?: string,
-    quantity?: number
+    quantity?: number,
   ) => void;
   updateQuantity: (
     itemId: number,
     selectedSize: string | undefined,
-    quantity: number
+    quantity: number,
   ) => void;
   removeFromCart: (itemId: number, selectedSize?: string) => void;
   clearCart: () => void;
@@ -36,7 +38,7 @@ type CartContextType = {
     originalPrice: number;
     finalPrice: number;
     isDiscounted: boolean;
-  }; 
+  };
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -84,13 +86,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addToCart = (
     product: ProductInDetails,
     selectedSize?: string,
-    quantity: number = 1
+    quantity: number = 1,
   ) => {
     if (!product) return;
 
     setCart((prev) => {
       const existingItemIndex = prev.findIndex(
-        (item) => item?.id === product.id && item.selectedSize === selectedSize
+        (item) => item?.id === product.id && item.selectedSize === selectedSize,
       );
 
       if (existingItemIndex !== -1) {
@@ -114,7 +116,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const updateQuantity = (
     itemId: number,
     selectedSize: string | undefined,
-    quantity: number
+    quantity: number,
   ) => {
     if (quantity <= 0) {
       removeFromCart(itemId, selectedSize);
@@ -125,16 +127,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
       prev.map((item) =>
         item?.id === itemId && item.selectedSize === selectedSize
           ? { ...item, quantity }
-          : item
-      )
+          : item,
+      ),
     );
   };
 
   const removeFromCart = (itemId: number, selectedSize?: string) => {
     setCart((prev) =>
       prev.filter(
-        (item) => !(item?.id === itemId && item.selectedSize === selectedSize)
-      )
+        (item) => !(item?.id === itemId && item.selectedSize === selectedSize),
+      ),
     );
   };
 
@@ -156,7 +158,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const isInCart = (itemId: number, selectedSize?: string) => {
     return cart.some(
-      (item) => item?.id === itemId && item.selectedSize === selectedSize
+      (item) => item?.id === itemId && item.selectedSize === selectedSize,
     );
   };
 

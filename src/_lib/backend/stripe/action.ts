@@ -34,7 +34,9 @@ export async function createCheckoutSession(
           name: item.name,
           images: item.image_url ?? [],
         },
-        unit_amount: Math.round(item.price * 100),
+        unit_amount: Math.round(
+          (item.discountedPrice ?? item.price) * 100, 
+        ),
       },
       quantity: item.quantity ?? 1,
     })),
