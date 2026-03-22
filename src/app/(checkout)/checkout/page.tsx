@@ -5,22 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
 import { useCart } from "@/components/providers/CartProvider";
-import { supabasePublic } from "@/_lib/supabase/client";
 import { createCheckoutSession } from "@/_lib/backend/stripe/action";
 
 const Checkout = () => {
-  const {
-    cart,
-    updateQuantity,
-    removeFromCart,
-    clearCart,
-    getCartTotal,
-    getItemPrice,
-  } = useCart();
+  const { cart, updateQuantity, removeFromCart, getCartTotal, getItemPrice } =
+    useCart();
 
   const [total, setTotal] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -29,10 +21,6 @@ const Checkout = () => {
     address: "",
     city: "",
     zipCode: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-    cardHolderName: "",
   });
 
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
@@ -84,14 +72,6 @@ const Checkout = () => {
     if (!formData.address.trim()) errors.address = "Address is required";
     if (!formData.city.trim()) errors.city = "City is required";
     if (!formData.zipCode.trim()) errors.zipCode = "ZIP code is required";
-    if (!formData.cardNumber.trim()) errors.cardNumber = "Card number required";
-    else if (formData.cardNumber.replace(/\s/g, "").length !== 16)
-      errors.cardNumber = "Card number must be 16 digits";
-    if (!formData.expiryDate.trim()) errors.expiryDate = "Expiry date required";
-    if (!formData.cvv.trim()) errors.cvv = "CVV required";
-    else if (formData.cvv.length !== 3) errors.cvv = "CVV must be 3 digits";
-    if (!formData.cardHolderName.trim())
-      errors.cardHolderName = "Card holder name required";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -121,46 +101,6 @@ const Checkout = () => {
       setIsSubmitting(false);
     }
   };
-  if (isSubmitted) {
-    return (
-      <div className="container mx-auto px-4 py-16 text-center">
-        <div className="max-w-md mx-auto bg-green-50 border border-vintage-green rounded-xl p-8">
-          <div className="w-16 h-16 bg-vintage-green rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg
-              className="w-10 h-10 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-          <span className="text-2xl text-vintage-green mb-2">
-            Order Confirmed!
-          </span>
-          <p className="text-vintage-green mb-6">
-            Thank you for your purchase.
-          </p>
-          <div className="space-y-3">
-            <Link
-              href="/products"
-              className="w-full bg-vintage-brown hover:bg-default-cold text-white py-3 rounded-lg"
-            >
-              Continue Shopping
-            </Link>
-            <Link href="/" className="block text-vintage-brown hover:underline">
-              Back to Home
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (cart.length === 0) {
     return (
@@ -200,7 +140,7 @@ const Checkout = () => {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm  mb-1">Full Name</label>
+                  <label className="block text-sm mb-1">Full Name</label>
                   <input
                     type="text"
                     name="name"
@@ -241,9 +181,14 @@ const Checkout = () => {
                     className="w-full px-4 py-2.5 border rounded-lg"
                     required
                   />
+                  {formErrors.phone && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.phone}
+                    </p>
+                  )}
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm  mb-1">Address</label>
+                  <label className="block text-sm mb-1">Address</label>
                   <input
                     type="text"
                     name="address"
@@ -252,9 +197,14 @@ const Checkout = () => {
                     className="w-full px-4 py-2.5 border rounded-lg"
                     required
                   />
+                  {formErrors.address && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.address}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-sm  mb-1">City</label>
+                  <label className="block text-sm mb-1">City</label>
                   <input
                     type="text"
                     name="city"
@@ -263,9 +213,14 @@ const Checkout = () => {
                     className="w-full px-4 py-2.5 border rounded-lg"
                     required
                   />
+                  {formErrors.city && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.city}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-sm  mb-1">ZIP Code</label>
+                  <label className="block text-sm mb-1">ZIP Code</label>
                   <input
                     type="text"
                     name="zipCode"
@@ -274,9 +229,14 @@ const Checkout = () => {
                     className="w-full px-4 py-2.5 border rounded-lg"
                     required
                   />
+                  {formErrors.zipCode && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {formErrors.zipCode}
+                    </p>
+                  )}
                 </div>
               </div>
-            </div> 
+            </div>
             <button type="submit" disabled={isSubmitting}>
               {isSubmitting
                 ? "Redirecting to payment..."
@@ -287,7 +247,7 @@ const Checkout = () => {
 
         <div className="lg:col-span-1">
           <div className="bg-gray-50 rounded-xl p-6 lg:sticky lg:top-6 border">
-            <h3 className="text-xl  mb-5 text-gray-800">Order Summary</h3>
+            <h3 className="text-xl mb-5 text-gray-800">Order Summary</h3>
             <div className="space-y-4 max-h-96 overflow-y-auto">
               {cart.map((item) => {
                 const { finalPrice, originalPrice, isDiscounted } =
@@ -309,14 +269,14 @@ const Checkout = () => {
                       />
                     </div>
                     <div className="flex-1">
-                      <h4 className=" text-gray-800 truncate">{item.name}</h4>
+                      <h4 className="text-gray-800 truncate">{item.name}</h4>
                       {item.selectedSize && (
                         <p className="text-xs text-gray-600">
                           Size: {item.selectedSize}
                         </p>
                       )}
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="">${finalPrice.toFixed(2)}</span>
+                        <span>${finalPrice.toFixed(2)}</span>
                         {isDiscounted && (
                           <del className="text-xs text-gray-400">
                             ${originalPrice.toFixed(2)}
@@ -378,9 +338,9 @@ const Checkout = () => {
             </div>
 
             <div className="border-t mt-6 pt-4">
-              <div className="flex justify-between text-xl  text-gray-800">
+              <div className="flex justify-between text-xl text-gray-800">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>€{total.toFixed(2)}</span>
               </div>
             </div>
           </div>

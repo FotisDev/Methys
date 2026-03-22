@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!,
     );
   } catch (err) {
+    console.log('failed',err)
     return NextResponse.json({ error: "Webhook error" }, { status: 400 });
   }
 
