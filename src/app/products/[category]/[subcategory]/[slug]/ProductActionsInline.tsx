@@ -15,6 +15,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeError, setShowSizeError] = useState(false);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false); 
 
   const { addToCart } = useCart();
   const { addToWishlist, isInWishlist } = useWishlist();
@@ -42,12 +43,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
     }
 
     addToCart(product, selectedSize || undefined);
-
-    alert(
-      selectedSize
-        ? `Added "${product.name}" (Size: ${selectedSize}) to cart!`
-        : `Added "${product.name}" to cart!`
-    );
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000); 
   };
 
   const handleWishlistToggle = () => {
@@ -131,12 +128,16 @@ export default function ProductActions({ product }: ProductActionsProps) {
             ${
               availableSizes.length === 0
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : addedToCart
+                ? "bg-green-600 text-white"
                 : "bg-vintage-green text-white hover:bg-vintage-green/90"
             }
           `}
         >
           {availableSizes.length === 0
             ? "Out of Stock"
+            : addedToCart
+            ? "✓ Added to cart!"
             : `Add to Cart - €${product.price}`}
         </button>
 
