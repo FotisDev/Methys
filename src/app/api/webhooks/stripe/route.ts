@@ -14,7 +14,7 @@ async function fulfillOrder(session: Stripe.Checkout.Session) {
     : [];
 
   const { error } = await supabaseAdmin.from("orders").insert({
-    user_id: session.metadata?.user_id ?? null,
+    user_id:session.metadata?.user_id !== "guest" ? session.metadata?.user_id : null,
     stripe_session_id: session.id,
     stripe_payment_intent_id: session.payment_intent,
     status: "paid",
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!,
     );
   } catch (err) {
-    console.log('failed',err)
+    console.log("failed", err);
     return NextResponse.json({ error: "Webhook error" }, { status: 400 });
   }
 
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
 
     case "charge.refunded":
       const charge = event.data.object as Stripe.Charge;
-      await supabaseAdmin 
+      await supabaseAdmin
         .from("orders")
         .update({ status: "refunded" })
         .eq("stripe_payment_intent_id", charge.payment_intent);

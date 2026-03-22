@@ -39,7 +39,7 @@ export async function createCheckoutSession(
       quantity: item.quantity ?? 1,
     })),
     metadata: {
-      user_id: user?.id ?? "guest",
+      user_id: user?.id ?? null,
       shipping_info: JSON.stringify(shippingInfo), 
       cart_items: JSON.stringify(
         cartItems.map((i) => ({
@@ -52,8 +52,8 @@ export async function createCheckoutSession(
         })),
       ),
     },
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/checkout`,
+    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/canceled`,
   });
 
   return { url: session.url };
