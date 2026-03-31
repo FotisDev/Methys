@@ -18,10 +18,7 @@ const nextConfig = {
         pathname: "/app-store/marketing/guidelines/images/**",
       },
     ],
-    domains: [
-      "mpnjvzyymmtvgsrfgjjc.supabase.co",
-      "via.placeholder.com",
-    ],
+    domains: ["mpnjvzyymmtvgsrfgjjc.supabase.co", "via.placeholder.com"],
   },
 };
 

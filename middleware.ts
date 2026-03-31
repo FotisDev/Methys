@@ -1,10 +1,25 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const locales = ['en', 'el', 'da'];
+const defaultLocale = 'en';
+
 export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
+  const pathname = request.nextUrl.pathname;
+
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  if (!pathnameHasLocale) {
+    return NextResponse.redirect(
+      new URL(`/${defaultLocale}${pathname}`, request.url)
+    );
+  }
+
+  const pathnameWithoutLocale = `/${pathname.split('/').slice(2).join('/')}`;
+
+  let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -18,9 +33,7 @@ export async function middleware(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
+          supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           );
@@ -29,20 +42,20 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user && request.nextUrl.pathname.startsWith("/offers")) {
-    return NextResponse.redirect(new URL("/signIn", request.url));
+  const locale = pathname.split('/')[1]; 
+
+  if (!user && pathnameWithoutLocale.startsWith("/offers")) {
+    return NextResponse.redirect(new URL(`/${locale}/signIn`, request.url));
   }
 
-  if (!user && request.nextUrl.pathname.startsWith("/product-entry")) {
-    return NextResponse.redirect(new URL("/signIn", request.url));
+  if (!user && pathnameWithoutLocale.startsWith("/product-entry")) {
+    return NextResponse.redirect(new URL(`/${locale}/signIn`, request.url));
   }
 
-  if (user && (request.nextUrl.pathname === "/signIn" || request.nextUrl.pathname === "/createAccount")) {
-    return NextResponse.redirect(new URL("/offers", request.url));
+  if (user && (pathnameWithoutLocale === "/signIn" || pathnameWithoutLocale === "/createAccount")) {
+    return NextResponse.redirect(new URL(`/${locale}/offers`, request.url));
   }
 
   return supabaseResponse;
@@ -50,7 +63,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };
