@@ -31,7 +31,7 @@ const HeroSection = () => {
 
         <div className="relative z-10 flex items-center ml-2 w-full h-full gap-2">
           <Link
-            href="/products"
+            href="/en/products"
             className="text-vintage-white text-md hover:underline "
           >
             <h1> Methys Collection</h1>
