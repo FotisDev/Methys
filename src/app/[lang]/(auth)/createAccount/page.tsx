@@ -10,7 +10,7 @@ import Image from "next/image";
 import {
   createAccountSchema,
   type CreateAccountForm,
-} from "../../../_lib/utils/zod";
+} from "../../../../_lib/utils/zod";
 
 const CreateAccountPage = () => {
   const [showSignUpPage, setShowSignUpPage] = useState(false);

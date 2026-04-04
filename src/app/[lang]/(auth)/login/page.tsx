@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { signInSchema, type SignInForm } from "../../../_lib/utils/zod";
+import { signInSchema, type SignInForm } from "../../../../_lib/utils/zod";
 import { signInAction } from "@/_lib/backend/loginAction/action";
 import { getErrorMessage } from "@/_lib/helpers";
 

@@ -11,7 +11,7 @@ import Link from "next/link";
 import {
   ForgotPasswordForm,
   forgotPasswordSchema,
-} from "../../../_lib/utils/zod";
+} from "../../../../_lib/utils/zod";
 
 const ForgotPasswordPage = () => {
   const [showCreateAccount, setShowCreateAccount] = useState(false);
