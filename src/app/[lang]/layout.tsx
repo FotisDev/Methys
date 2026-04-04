@@ -4,7 +4,7 @@ import BackToTop from "@/components/hooks/BackToTop";
 import { ClientProvider } from "@/components/providers/ClientProvider";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-// import { BotLogger } from "@/components/bot/botLogger";
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,14 +18,16 @@ const roboto = Roboto({
   variable: "--font-roboto",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,                              // 👈 add this
 }: {
   children: React.ReactNode;
+  params: { lang: string };            // 👈 add this
 }) {
   return (
     <html
-      lang="en"
+      lang={params.lang}               // 👈 was hardcoded "en", now dynamic
       className={`scroll-smooth ${poppins.variable} ${roboto.variable}`}
     >
       <head />
@@ -36,7 +38,6 @@ export default function RootLayout({
           <ClientProvider>
             <main>
               {children}
-              {/* <BotLogger /> */}
             </main>
           </ClientProvider>
         </AuthProvider>
