@@ -18,6 +18,7 @@ interface ShippingInfo {
 export async function createCheckoutSession(
   cartItems: CartItem[],
   shippingInfo: ShippingInfo,
+  locale: string,
 ) {
   const supabase = await createSupabaseServerClient();
   const {
@@ -34,9 +35,7 @@ export async function createCheckoutSession(
           name: item.name,
           images: item.image_url ?? [],
         },
-        unit_amount: Math.round(
-          (item.discountedPrice ?? item.price) * 100, 
-        ),
+        unit_amount: Math.round((item.discountedPrice ?? item.price) * 100),
       },
       quantity: item.quantity ?? 1,
     })),
@@ -54,8 +53,8 @@ export async function createCheckoutSession(
         })),
       ),
     },
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/canceled`,
+    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/canceled`,
   });
 
   return { url: session.url };

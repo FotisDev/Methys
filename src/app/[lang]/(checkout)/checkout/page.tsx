@@ -6,6 +6,7 @@ import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
 import { useCart } from "@/components/providers/CartProvider";
 import { createCheckoutSession } from "@/_lib/backend/stripe/action";
+import { useParams } from "next/navigation";
 
 const Checkout = () => {
   const { cart, updateQuantity, removeFromCart, getCartTotal, getItemPrice } =
@@ -13,6 +14,9 @@ const Checkout = () => {
 
   const [total, setTotal] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const params = useParams();
+  const locale = params.lang as string;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -91,7 +95,7 @@ const Checkout = () => {
         address: formData.address,
         city: formData.city,
         zipCode: formData.zipCode,
-      });
+      }, locale);
 
       if (url) window.location.href = url;
     } catch (err) {
