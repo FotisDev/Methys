@@ -44,14 +44,14 @@ export async function middleware(request: NextRequest) {
   const locale = pathname.split('/')[1];
 
   if (!user && pathnameWithoutLocale.startsWith("/offers")) {
-    return NextResponse.redirect(new URL(`/${locale}/signIn`, request.url));
+    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
   }
 
   if (!user && pathnameWithoutLocale.startsWith("/product-entry")) {
-    return NextResponse.redirect(new URL(`/${locale}/signIn`, request.url));
+    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
   }
 
-  if (user && (pathnameWithoutLocale === "/signIn" || pathnameWithoutLocale === "/createAccount")) {
+  if (user && (pathnameWithoutLocale === "/login" || pathnameWithoutLocale === "/createAccount")) {
     return NextResponse.redirect(new URL(`/${locale}/offers`, request.url));
   }
 
