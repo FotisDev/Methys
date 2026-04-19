@@ -13,7 +13,6 @@ import Link from "next/link";
 import FoldableSectionComponent from "../foldableComponent/FoldableSection";
 import { useAuth } from "../providers/AuthProvider";
 
-
 export default function Footer() {
   const { isAuthenticated, isLoading } = useAuth();
 
@@ -37,7 +36,7 @@ export default function Footer() {
         { name: "Terms & Conditions", href: "/termsAndConditions" },
         { name: "Privacy Policy", href: "/privacyAndPolicy" },
         { name: "Legal Notice", href: "/legalNotice" },
-        { name: "FAQ", href: "/faq" },
+        { name: "Products", href: "/products" },
       ],
     },
     {
@@ -125,10 +124,18 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col gap-2 text-center lg:text-left">
-          <FoldableSectionComponent
+         <h3 className="text-vintage-green font-bold"> {paymentMethods.category}</h3>
+          {paymentMethods.items.map((item,index) => {
+            return (
+              <div key={index}>
+                <p>{item.name}</p>
+              </div>
+            );
+          })}
+          {/* <FoldableSectionComponent
             title={paymentMethods.category}
             items={paymentMethods.items}
-          />
+          /> */}
         </div>
 
         <div className="flex flex-col items-center lg:items-start gap-6">
@@ -151,7 +158,7 @@ export default function Footer() {
         </div>
       </section>
       <hr />
-      
+
       <div className="relative px-4 py-6">
         <div className="text-center text-sm">
           © 2025 <span className="text-vintage-green font-bold">Methys.</span>{" "}
