@@ -12,6 +12,7 @@ import { useCart } from "../providers/CartProvider";
 import LogoutButton from "../buttons/LogoutButton";
 import { useAuth } from "../providers/AuthProvider";
 import BulletButtonSideBar from "../SideBars/BulletButton";
+import LanguageSwitcher from "../LanguageSwitch/LanguageSwitch";
 
 const Menu = () => {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -244,7 +245,7 @@ const Menu = () => {
               {!isAuthLoading && isAuthenticated && (
                 <LogoutButton className="ml-auto" />
               )}
-
+              <LanguageSwitcher />
               <BulletButtonSideBar />
             </div>
 
