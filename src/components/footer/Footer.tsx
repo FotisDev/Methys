@@ -33,9 +33,9 @@ export default function Footer() {
     {
       category: "Legal Policy",
       items: [
-        { name: "Terms & Conditions", href: "/termsAndConditions" },
-        { name: "Privacy Policy", href: "/privacyAndPolicy" },
-        { name: "Legal Notice", href: "/legalNotice" },
+        { name: "Terms & Conditions", href: "/terms-conditions" },
+        { name: "Privacy Policy", href: "/privacy-policy" },
+        { name: "Legal Notice", href: "/legal-notice" },
         { name: "Products", href: "/products" },
       ],
     },
