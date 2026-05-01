@@ -39,11 +39,10 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Product Not Found | UrbanValor",
         MetaDescription: "The product you're looking for doesn't exist.",
-        canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+        canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,//ΝΑ ΔΩ ΑΥΤΟ ΑΝ ΔΟΥΛΕΥΕΙ ΣΩΣΤΑ ΓΙΑΤΙ ΠΑΙΖΕΙ ΝΑ ΕΙΝΑΙ ΕΤΟΙΜΟ ΤΟ  ΝΕΧΤ_PUBLIC ΑΠΟ ΤΗΝ CREATElOACLE METADA.
         // canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${productSlug}` production.
-        robots: { index: false, follow: false },
         OpenGraphImageUrl:
-          "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about.jpg",
+          "/storage/v1/object/public/OpenGraphImages/about.jpg",
         other: {
           "twitter:card": "summary_large_image",
           "twitter:title": "About Us | Methys",

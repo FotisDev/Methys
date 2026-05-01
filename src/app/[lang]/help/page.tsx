@@ -10,7 +10,7 @@ export const metadata = createMetadata({
     "Here are some of the most common inquiries about shiping ,founding money, and details about the products",
   canonical: "/help",
   OpenGraphImageUrl:
-    "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+    "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   other: {
     "twitter:card": "summary_large_image",
     "twitter:title": "Help | Methys",

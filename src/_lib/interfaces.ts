@@ -92,6 +92,8 @@ export interface MetadataProps {
     availability?: string;
     brand?: string;
   };
+  dateModified?:string;
+  datePublished?:string;
 }
 
  export interface ProductMetadataProps extends MetadataProps {

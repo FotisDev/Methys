@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Explore our exclusive limited-time offers with up to 20% off on selected items.",
     canonical: "/offers",
     OpenGraphImageUrl:
-      "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     other: {
       "twitter:card": "summary_large_image",
       "twitter:title": "Limited Offers | Methys",

@@ -12,7 +12,7 @@ export const metadata = createMetadata({
     "Submit a support ticket for billing, bugs, account issues, or feature requests. Our team will get back to you shortly.",
   canonical: "/customer-support",
   OpenGraphImageUrl:
-    "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+    "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   other: {
     card: "summary_large_image",
     title: "Customer Support | Methys",

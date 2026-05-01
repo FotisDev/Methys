@@ -140,7 +140,7 @@ export default function Footer() {
 
         <div className="flex flex-col items-center lg:items-start gap-6">
           <div>
-            <h3 className="font-bold">Country</h3>
+            <h3 className="text-vintage-green font-bold">Country</h3>
             <div className="flex items-center gap-2">
               <WorldShpereSvg />
               <p className="text-sm underline">International</p>

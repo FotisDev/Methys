@@ -31,9 +31,8 @@ export async function generateMetadata({
         MetaTitle: "Category Not Found |  Methys",
         MetaDescription: "The category you're looking for doesn't exist.",
         canonical: `/products/${categorySlug}`,
-        robots: { index: false, follow: false },
         OpenGraphImageUrl:
-          "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg", 
+          "/storage/v1/object/public/OpenGraphImages/about-us.jpg", 
         other: {
           "twitter:card": "summary_large_image",
           "twitter:title": "Category Not Found | Methys",

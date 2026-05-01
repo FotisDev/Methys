@@ -13,22 +13,21 @@ export async function createMetadata(metadata: MetadataProps) {
 
   if (metadata?.OpenGraphImageUrl) {
     openGraphImage =
-      process.env.NEXT_PUBLIC_IMAGE_URL + metadata.OpenGraphImageUrl;
+      process.env.NEXT_PUBLIC_SUPABASE_URL + metadata.OpenGraphImageUrl;
   }
 
   return {
     title: metaTitle,
     verification: {
       google: "VxpGe4reZ6GyzQ7rxYRnbi-JSuQ2dWPptVo-jGTFbOg",
-      yandex: "your-yandex-verification-code", 
-      bing: "your-bing-verification-code", 
+      yandex: "your-yandex-verification-code",
+      bing: "your-bing-verification-code",
       yahoo: "your-yahoo-verification-code",
     },
     description: metaDescription,
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      type: "website",
       siteName: DEFAULT_METADATA.siteName,
       url: canonicalUrl,
       images: [
@@ -39,6 +38,14 @@ export async function createMetadata(metadata: MetadataProps) {
           alt: metaTitle,
         },
       ],
+
+      ...(metadata.datePublished && {
+        publishedTime: metadata.datePublished,
+      }),
+
+      ...(metadata.dateModified && {
+        modifiedTime: metadata.dateModified,
+      }),
     },
     alternates: {
       canonical: canonicalUrl,

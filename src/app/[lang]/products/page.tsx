@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Discover our curated selection of premium clothing and accessories. Timeless style, exceptional quality.",
     canonical: "/products",
     OpenGraphImageUrl:
-      "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     other: {
       "twitter:card": "summary_large_image",
       "twitter:title": "Products | Methys",

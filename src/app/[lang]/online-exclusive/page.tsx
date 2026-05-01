@@ -9,7 +9,7 @@ export const metadata = createMetadata({
   MetaDescription:
     "Explore our curated Online Exclusive collection — timeless pieces crafted for every season. Shop the latest arrivals at Methys.",
   OpenGraphImageUrl:
-    "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+    "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   canonical: "/online-exclusive",
   other: {
     "twitter:card": "summary_large_image",

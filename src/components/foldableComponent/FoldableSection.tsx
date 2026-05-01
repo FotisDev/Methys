@@ -27,7 +27,7 @@ export default function FoldableSectionComponent({
         onClick={() => setIsOpen(!isOpen)}
         className="font-bold flex items-center justify-center lg:justify-start gap-2 w-full lg:cursor-default"
       >
-        <span>{title}</span>
+        <span className="text-vintage-green ">{title}</span>
         <span className="lg:hidden text-xl">{isOpen ? "−" : "+"}</span>
       </button>
 

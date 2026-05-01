@@ -8,7 +8,7 @@ export const metadata = createMetadata({
   MetaDescription:
     "Learn about Methys — our story, mission, and the team behind the product. Discover how we started and where we're headed.",
   canonical: "/about",
-  OpenGraphImageUrl: "https://mpnjvzyymmtvgsrfgjjc.supabase.co/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+  OpenGraphImageUrl: "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   other: {
     "twitter:card": "summary_large_image",
     "twitter:title": "About Us | Methys",
