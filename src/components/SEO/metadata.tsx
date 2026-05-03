@@ -12,9 +12,10 @@ export async function createMetadata(metadata: MetadataProps) {
   }`;
 
   if (metadata?.OpenGraphImageUrl) {
-    openGraphImage =
-      process.env.NEXT_PUBLIC_SUPABASE_URL + metadata.OpenGraphImageUrl;
-  }
+  openGraphImage = metadata.OpenGraphImageUrl.startsWith("http")
+    ? metadata.OpenGraphImageUrl
+    : `${process.env.NEXT_PUBLIC_SUPABASE_URL}${metadata.OpenGraphImageUrl}`;
+}
 
   return {
     title: metaTitle,
@@ -72,9 +73,12 @@ export async function createProductMetadata(product: ProductMetadataProps) {
     product.MetaDescription ||
     product.description ||
     DEFAULT_METADATA.metaDescription;
+    
   const openGraphImage = product.OpenGraphImageUrl
-    ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${product.OpenGraphImageUrl}`
-    : product.imageUrl || DEFAULT_METADATA.openGraphImageUrl;
+  ? product.OpenGraphImageUrl.startsWith("http")
+    ? product.OpenGraphImageUrl                                              // already full URL, use as-is
+    : `${process.env.NEXT_PUBLIC_IMAGE_URL}${product.OpenGraphImageUrl}`    // relative path, prepend base
+  : product.imageUrl || DEFAULT_METADATA.openGraphImageUrl;
 
   const canonicalUrl = `${process.env.NEXT_PUBLIC_SITE_URL}${
     product.canonical || `/products/${product.slug}`

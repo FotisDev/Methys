@@ -8,6 +8,8 @@ import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import Footer from "@/components/footer/Footer";
 import { createMetadata } from "@/components/SEO/metadata";
+import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
+import Schema from "@/components/schemas/SchemaMarkUp";
 
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
@@ -32,7 +34,7 @@ export async function generateMetadata({
         MetaDescription: "The category you're looking for doesn't exist.",
         canonical: `/products/${categorySlug}`,
         OpenGraphImageUrl:
-          "/storage/v1/object/public/OpenGraphImages/about-us.jpg", 
+          "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
         other: {
           "twitter:card": "summary_large_image",
           "twitter:title": "Category Not Found | Methys",
@@ -46,7 +48,8 @@ export async function generateMetadata({
       MetaTitle: `${foundCategory.name} |  Methys`,
       MetaDescription: `Shop our exclusive ${foundCategory.name.toLowerCase()} collection – premium quality, timeless design.`,
       canonical: `/products/${categorySlug}`,
-      OpenGraphImageUrl: foundCategory.image_url,
+      OpenGraphImageUrl:
+        "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     });
   } catch {
     return createMetadata({
@@ -102,6 +105,16 @@ export default async function CategoryPage({
   if (error || !categoryData) {
     notFound();
   }
+  const schema = createCollectionPageSchema({
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}`,
+    name: categoryData.name,
+    description: `Explore our premium ${categoryData.name.toLowerCase()} collections – timeless style, exceptional quality.`,
+    items: subcategories.map((sub) => ({
+      name: sub.name,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${sub.slug}`,
+      imageUrl: sub.image_url ?? undefined,
+    })),
+  });
 
   const breadcrumbItems = [
     { name: "Home", slug: "/" },
@@ -111,6 +124,7 @@ export default async function CategoryPage({
 
   return (
     <HeaderProvider forceOpaque={true}>
+      <Schema markup={schema} />
       <main className="relative w-full min-h-screen pt-24 pb-16 font-roboto">
         <div className="w-full  px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={breadcrumbItems} />

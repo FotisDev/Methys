@@ -6,6 +6,8 @@ import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createMetadata } from "@/components/SEO/metadata";
 import type { Metadata } from "next";
+import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
+import Schema from "@/components/schemas/SchemaMarkUp";
 
 export const revalidate = 600;
 
@@ -15,8 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     MetaDescription:
       "Discover our curated selection of premium clothing and accessories. Timeless style, exceptional quality.",
     canonical: "/products",
-    OpenGraphImageUrl:
-      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+    OpenGraphImageUrl: "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     other: {
       "twitter:card": "summary_large_image",
       "twitter:title": "Products | Methys",
@@ -68,6 +69,18 @@ export default async function ProductList() {
     );
   }
 
+  const schema = createCollectionPageSchema({
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/products`,
+    name: "Shop All Collections",
+    description:
+      "Discover our curated selection of premium clothing and accessories.",
+    items: parentCategories.map((cat) => ({
+      name: cat.name,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${cat.name.replace(/\s+/g, "-").toLowerCase()}`,
+      imageUrl: cat.image_url ?? undefined,
+    })),
+  });
+
   const breadcrumbItems = [
     { name: "Home", slug: "/" },
     { name: "Products", slug: "/products" },
@@ -75,6 +88,7 @@ export default async function ProductList() {
 
   return (
     <HeaderProvider forceOpaque={true}>
+      <Schema markup={schema} />
       <section className="padding-y padding-x text-vintage-green font-roboto">
         <div className="pt-16">
           <Breadcrumbs items={breadcrumbItems} />

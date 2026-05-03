@@ -10,6 +10,8 @@ import { FilteredProducts } from "@/_lib/backend/filtering/action";
 import ProductFilterClient from "@/components/filters/Filters";
 import { createMetadata } from "@/components/SEO/metadata";
 import { Metadata } from "next";
+import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
+import Schema from "@/components/schemas/SchemaMarkUp";
 
 export const revalidate = 600;
 
@@ -34,7 +36,7 @@ export async function generateMetadata({
         MetaDescription: "The category you're looking for doesn't exist.",
         canonical: `/products/${categorySlug}/${subcategorySlug}`,
         OpenGraphImageUrl:
-          "/storage/v1/object/public/OpenGraphImages/about-us.jpg", 
+          "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
         other: {
           "twitter:card": "summary_large_image",
           "twitter:title": "Category Not Found | Methys",
@@ -63,11 +65,12 @@ export async function generateMetadata({
       MetaDescription: `Discover our collection of ${currentCategory.name.toLowerCase()} products. Timeless style, exceptional quality.`,
       canonical: `/products/${categorySlug}/${subcategorySlug}`,
       // Optional: Add category image
-      OpenGraphImageUrl: currentCategory.image_url,
+      OpenGraphImageUrl:
+        "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     });
   } catch {
     return createMetadata({
-      MetaTitle: "Error | UrbanValor",
+      MetaTitle: "Error | Methys",
       MetaDescription: "An error occurred while loading this page.",
       canonical: `/products/${categorySlug}/${subcategorySlug}`,
       robots: { index: false, follow: false },
@@ -125,6 +128,17 @@ export default async function SubcategoryPage({
         product.categoryformen.id === currentCategory.id,
     ) ?? [];
 
+  const schema = createCollectionPageSchema({
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}`,
+    name: currentCategory.name,
+    description: `Discover our collection of ${currentCategory.name.toLowerCase()} products.`,
+    items: products.map((p) => ({
+      name: p.name,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${p.slug}`,
+      imageUrl: p.image_url?.[0] ?? undefined,
+    })),
+  });
+
   const breadcrumbItems = [
     { name: "Home", slug: "/" },
     { name: "Products", slug: "/products" },
@@ -139,6 +153,7 @@ export default async function SubcategoryPage({
 
   return (
     <HeaderProvider forceOpaque={true}>
+      <Schema markup={schema}/>
       <section className="relative w-full min-h-[80vh] pt-32 p-2 pb-32 font-roboto text-vintage-green">
         <Breadcrumbs items={breadcrumbItems} />
         <header className="flex flex-col  gap-3  mb-10">
