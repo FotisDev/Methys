@@ -83,7 +83,7 @@ export default async function ProductList() {
 
   const breadcrumbItems = [
     { name: "Home", slug: "/" },
-    { name: "Products", slug: "/collections" },
+    { name: "collections", slug: "/collections" },
   ];
 
   return (

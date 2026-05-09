@@ -1,46 +1,47 @@
-'use client';
+"use client";
 
-import { useState, useTransition } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { ProductInDetails } from '@/_lib/types';
-import SeasonalCollectionCard from '../cards/SeasonalCollectionCard';
+import { useState, useTransition } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ProductInDetails } from "@/_lib/types";
 
 type ProductFilterClientProps = {
   initialProducts: ProductInDetails[];
   parentSlug: string;
   categorySlug: string;
+  children: React.ReactNode;
 };
 
 export default function ProductFilterClient({
-  initialProducts,
   parentSlug,
   categorySlug,
+  children,
 }: ProductFilterClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-
-  const [showResults, setShowResults] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   const [filters, setFilters] = useState({
-    min: searchParams.get('min') || '',
-    max: searchParams.get('max') || '',
-    size: searchParams.get('size') || '',
+    min: searchParams.get("min") || "",
+    max: searchParams.get("max") || "",
+    size: searchParams.get("size") || "",
   });
 
   const handleFilterChange = () => {
     const params = new URLSearchParams();
-    if (filters.min) params.set('min', filters.min);
-    if (filters.max) params.set('max', filters.max);
-    if (filters.size) params.set('size', filters.size);
+    if (filters.min) params.set("min", filters.min);
+    if (filters.max) params.set("max", filters.max);
+    if (filters.size) params.set("size", filters.size);
 
     startTransition(() => {
-      router.push(`/collections/${parentSlug}/${categorySlug}?${params.toString()}`);
+      router.push(
+        `/collections/${parentSlug}/${categorySlug}?${params.toString()}`,
+      );
     });
   };
 
   const clearFilters = () => {
-    setFilters({ min: '', max: '', size: '' });
+    setFilters({ min: "", max: "", size: "" });
     startTransition(() => {
       router.push(`/collections/${parentSlug}/${categorySlug}`);
     });
@@ -48,20 +49,50 @@ export default function ProductFilterClient({
 
   return (
     <div className="w-full">
+      {/* Toolbar */}
+      <div className="flex items-center gap-4 mb-4 border-b border-vintage-green/20 pb-3">
+        <button
+          onClick={() => setShowFilters((prev) => !prev)}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-vintage-green border border-vintage-green/40 hover:border-vintage-green transition-colors rounded"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+            <line x1="10" y1="18" x2="14" y2="18" />
+          </svg>
+          {showFilters ? "HIDE FILTER" : "SHOW FILTER"}
+        </button>
 
-      <button
-        onClick={() => setShowResults(prev => !prev)}
-        className="mb-6 px-4 py-2 rounded-md bg-vintage-green text-white font-semibold"
-      >
-        {showResults ? 'Hide Filters' : 'Show Filters'}
-      </button>
+        {(filters.min || filters.max || filters.size) && (
+          <button
+            onClick={clearFilters}
+            className="text-sm text-vintage-brown underline underline-offset-2"
+          >
+            Clear all
+          </button>
+        )}
+      </div>
 
-      {showResults && (
-        <div className="flex flex-col lg:flex-row gap-8">
-        
-          <aside className="lg:w-64 space-y-6 bg-white p-6 rounded-lg shadow-sm h-fit sticky top-4">
+      {/* Sidebar + Products — same flex row */}
+      <div className="flex flex-row gap-8 items-start w-full">
+
+        {/* Sidebar */}
+        {showFilters && (
+          <aside className="w-64 flex-shrink-0 bg-white border border-gray-100 shadow-sm p-5 space-y-6">
             <div>
-              <h3 className="font-semibold mb-3 text-vintage-green">Τιμή</h3>
+              <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
+                Τιμή
+              </h3>
               <div className="space-y-2">
                 <input
                   type="number"
@@ -70,7 +101,7 @@ export default function ProductFilterClient({
                   onChange={(e) =>
                     setFilters({ ...filters, min: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
+                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-vintage-green"
                 />
                 <input
                   type="number"
@@ -79,79 +110,64 @@ export default function ProductFilterClient({
                   onChange={(e) =>
                     setFilters({ ...filters, max: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
+                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-vintage-green"
                 />
               </div>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-3 text-vintage-green">Μέγεθος</h3>
-              <select
-                value={filters.size}
-                onChange={(e) =>
-                  setFilters({ ...filters, size: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded"
-              >
-                <option value="">Όλα τα μεγέθη</option>
-                <option value="XS">XS</option>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-              </select>
+              <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
+                Μέγεθος
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {["XS", "S", "M", "L", "XL", "XXL"].map((size) => {
+                  const active = filters.size === size;
+                  return (
+                    <button
+                      key={size}
+                      type="button"
+                      onClick={() =>
+                        setFilters({ ...filters, size: active ? "" : size })
+                      }
+                      className={`w-11 h-11 border text-xs font-medium transition-all duration-150 flex items-center justify-center
+                        ${
+                          active
+                            ? "bg-vintage-green text-white border-vintage-green"
+                            : "bg-white text-vintage-green border-gray-300 hover:border-vintage-green"
+                        }`}
+                    >
+                      {size}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 pt-2">
               <button
                 onClick={handleFilterChange}
                 disabled={isPending}
-                className="w-full bg-vintage-green text-white py-2.5 rounded"
+                className="w-full bg-vintage-green text-white py-2.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity"
               >
-                {isPending ? 'Φόρτωση...' : 'Εφαρμογή φίλτρων'}
+                {isPending ? "Φόρτωση..." : "Εφαρμογή φίλτρων"}
               </button>
-
               <button
                 onClick={clearFilters}
                 disabled={isPending}
-                className="w-full bg-gray-200 text-vintage-green py-2.5 rounded"
+                className="w-full bg-gray-100 text-vintage-green py-2.5 text-sm font-semibold rounded hover:bg-gray-200 transition-colors"
               >
                 Καθαρισμός
               </button>
             </div>
           </aside>
+        )}
 
-          <div className="flex-1 relative">
-            {isPending && (
-              <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10">
-                <div className="text-vintage-green">Φόρτωση...</div>
-              </div>
-            )}
-
-            {initialProducts.length === 0 ? (
-              <div className="text-center py-12 text-gray-500">
-                <p className="text-lg">Δεν βρέθηκαν προϊόντα</p>
-                <button
-                  onClick={clearFilters}
-                  className="mt-4 text-vintage-green underline"
-                >
-                  Καθαρισμός φίλτρων
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {initialProducts.map((product) => (
-                  <SeasonalCollectionCard
-                    key={product.id}
-                    item={product}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+        {/* Product area — αυτόματα συρρικνώνεται όταν ανοίγει το sidebar */}
+        <div className="flex-1 min-w-0">
+          {children}
         </div>
-      )}
+
+      </div>
     </div>
   );
 }

@@ -166,7 +166,7 @@ export default async function ProductDetailPage({
 
     const breadcrumbItems = [
       { name: "Home", slug: "/" },
-      { name: "Products", slug: "/collections" },
+      { name: "collections", slug: "/collections" },
       { name: parentCategory.name, slug: `/collections/${categorySlug}` },
       {
         name: currentCategory.name,

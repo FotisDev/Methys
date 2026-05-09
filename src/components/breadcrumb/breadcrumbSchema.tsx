@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Fragment } from "react";
 import SchemaMarkUp from "../schemas/SchemaMarkUp";
+import BreadcrumbArrow from "@/svgs/breadcrumbArrow";
 
 type breadcrumbObject = {
   "@type": string;
@@ -45,13 +46,13 @@ export const Breadcrumbs = ({ items}: itemWithClassName) => {
             <Fragment key={index}>
               <Link
                 className={`relative block ${
-                  isLastItem ? "opacity-100" : "opacity-80"
+                  isLastItem ? "opacity-50" : "opacity-100"
                 }`}
                 href={`${item.slug}`}
               >
                 {item.name}
               </Link>
-              {!isLastItem && <span className="">/</span>}
+              {!isLastItem && <span className=""><BreadcrumbArrow className={""}/></span>}
             </Fragment>
           );
         })}
