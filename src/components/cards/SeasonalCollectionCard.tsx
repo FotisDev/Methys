@@ -95,7 +95,7 @@ export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardP
 
   return (
     <Link
-      href={`/products/${getCategoryPath()}/${item.slug ?? ""}`}
+      href={`/collections/${getCategoryPath()}/${item.slug ?? ""}`}
       className="group block overflow-hidden transition font-roboto"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

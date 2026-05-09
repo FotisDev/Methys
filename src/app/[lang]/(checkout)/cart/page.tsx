@@ -89,7 +89,7 @@ const CartPage = () => {
             Looks like you havent added any items to your cart yet.
           </p>
           <Link
-            href="/products"
+            href="/collections"
             className="bg-default-color text-white py-2.5 sm:py-3 px-6 sm:px-8 rounded-lg transition-colors duration-200 text-base sm:text-lg hover:bg-default-cold"
           >
             Start Shopping
@@ -107,7 +107,7 @@ const CartPage = () => {
         </p>
         <nav className="text-xs sm:text-sm text-vintage-green">
           <Link
-            href="/products"
+            href="/collections"
             className="hover:text-vintage-brown transition-colors"
           >
             Products
@@ -465,7 +465,7 @@ const CartPage = () => {
                 Proceed to Checkout
               </Link>
               <Link
-                href="/products"
+                href="/collections"
                 className="w-full border-2 hover-colors hover:bg-default-cold hover:text-white py-3 rounded-lg transition"
               >
                 Continue Shopping

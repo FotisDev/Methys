@@ -29,7 +29,7 @@ export default function BuyNow() {
             Contact us anytime for support and inquiries.
           </p>
           <button className="px-10 py-4 bg-white text-cyan-800 font-semibold rounded-full text-base hover:bg-gray-200 transition">
-            <Link href="/products">Buy Now</Link>
+            <Link href="/collections">Buy Now</Link>
           </button>
         </motion.div>
 

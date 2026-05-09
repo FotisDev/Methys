@@ -111,7 +111,7 @@ const Checkout = () => {
       <div className="text-center py-16">
         <p className="text-2xl mb-4">Your cart is empty</p>
         <Link
-          href="/products"
+          href="/collections"
           className="bg-vintage-brown text-white px-8 py-3 rounded-lg hover:bg-vintage-brown"
         >
           Shop Now

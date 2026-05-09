@@ -32,7 +32,7 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Category Not Found |  Methys",
         MetaDescription: "The category you're looking for doesn't exist.",
-        canonical: `/products/${categorySlug}`,
+        canonical: `/collections/${categorySlug}`,
         OpenGraphImageUrl:
           "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
         other: {
@@ -47,7 +47,7 @@ export async function generateMetadata({
     return createMetadata({
       MetaTitle: `${foundCategory.name} |  Methys`,
       MetaDescription: `Shop our exclusive ${foundCategory.name.toLowerCase()} collection – premium quality, timeless design.`,
-      canonical: `/products/${categorySlug}`,
+      canonical: `/collections/${categorySlug}`,
       OpenGraphImageUrl:
         "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     });
@@ -55,7 +55,7 @@ export async function generateMetadata({
     return createMetadata({
       MetaTitle: "Category Not Found | Methys ",
       MetaDescription: "An error occurred while loading this category.",
-      canonical: `/products/${categorySlug}`,
+      canonical: `/collections/${categorySlug}`,
       robots: { index: false, follow: false },
     });
   }
@@ -106,20 +106,20 @@ export default async function CategoryPage({
     notFound();
   }
   const schema = createCollectionPageSchema({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}`,
     name: categoryData.name,
     description: `Explore our premium ${categoryData.name.toLowerCase()} collections – timeless style, exceptional quality.`,
     items: subcategories.map((sub) => ({
       name: sub.name,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${sub.slug}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${sub.slug}`,
       imageUrl: sub.image_url ?? undefined,
     })),
   });
 
   const breadcrumbItems = [
     { name: "Home", slug: "/" },
-    { name: "Products", slug: "/products" },
-    { name: categoryData.name, slug: `/products/${categorySlug}` },
+    { name: "Products", slug: "/collections" },
+    { name: categoryData.name, slug: `/collections/${categorySlug}` },
   ];
 
   return (
@@ -166,7 +166,7 @@ export default async function CategoryPage({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 h-[120vh]">
                 {subcategories.map((subcategory) => {
-                  const href = `/products/${encodeURIComponent(
+                  const href = `/collections/${encodeURIComponent(
                     categorySlug,
                   )}/${encodeURIComponent(subcategory.slug ?? "")}`;
 

@@ -25,7 +25,7 @@ ${(products || [])
   .map(
     (product) => `
   <url>
-    <loc>${siteUrl}/products/${product.id}</loc>
+    <loc>${siteUrl}/collections/${product.id}</loc>
     <lastmod>${new Date(product.created_at).toISOString()}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>

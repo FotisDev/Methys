@@ -34,7 +34,7 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Category Not Found | Methys",
         MetaDescription: "The category you're looking for doesn't exist.",
-        canonical: `/products/${categorySlug}/${subcategorySlug}`,
+        canonical: `/collections/${categorySlug}/${subcategorySlug}`,
         OpenGraphImageUrl:
           "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
         other: {
@@ -55,7 +55,7 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Subcategory Not Found | Methys",
         MetaDescription: "The subcategory you're looking for doesn't exist.",
-        canonical: `/products/${categorySlug}/${subcategorySlug}`,
+        canonical: `/collections/${categorySlug}/${subcategorySlug}`,
         robots: { index: false, follow: false },
       });
     }
@@ -63,7 +63,7 @@ export async function generateMetadata({
     return createMetadata({
       MetaTitle: `${currentCategory.name} - ${parentCategory.name} |Methys`,
       MetaDescription: `Discover our collection of ${currentCategory.name.toLowerCase()} products. Timeless style, exceptional quality.`,
-      canonical: `/products/${categorySlug}/${subcategorySlug}`,
+      canonical: `/collections/${categorySlug}/${subcategorySlug}`,
       // Optional: Add category image
       OpenGraphImageUrl:
         "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
@@ -72,7 +72,7 @@ export async function generateMetadata({
     return createMetadata({
       MetaTitle: "Error | Methys",
       MetaDescription: "An error occurred while loading this page.",
-      canonical: `/products/${categorySlug}/${subcategorySlug}`,
+      canonical: `/collections/${categorySlug}/${subcategorySlug}`,
       robots: { index: false, follow: false },
     });
   }
@@ -129,25 +129,25 @@ export default async function SubcategoryPage({
     ) ?? [];
 
   const schema = createCollectionPageSchema({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}`,
     name: currentCategory.name,
-    description: `Discover our collection of ${currentCategory.name.toLowerCase()} products.`,
+    description: `Discover our collection of ${currentCategory.name.toLowerCase()}.`,
     items: products.map((p) => ({
       name: p.name,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${p.slug}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${p.slug}`,
       imageUrl: p.image_url?.[0] ?? undefined,
     })),
   });
 
   const breadcrumbItems = [
     { name: "Home", slug: "/" },
-    { name: "Products", slug: "/products" },
+    { name: "collections", slug: "/collections" },
   ];
 
   if (categorySlug) {
     breadcrumbItems.push({
       name: categorySlug,
-      slug: `/products/${categorySlug}/${currentCategory.name}`,
+      slug: `/collections/${categorySlug}/${currentCategory.name}`,
     });
   }
 
@@ -199,7 +199,7 @@ export default async function SubcategoryPage({
                 return (
                   <Link
                     key={product.id}
-                    href={`/products/${encodeURIComponent(
+                    href={`/collections/${encodeURIComponent(
                       categorySlug,
                     )}/${encodeURIComponent(
                       subcategorySlug,

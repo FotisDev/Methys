@@ -39,8 +39,8 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Product Not Found | UrbanValor",
         MetaDescription: "The product you're looking for doesn't exist.",
-        canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,//ΝΑ ΔΩ ΑΥΤΟ ΑΝ ΔΟΥΛΕΥΕΙ ΣΩΣΤΑ ΓΙΑΤΙ ΠΑΙΖΕΙ ΝΑ ΕΙΝΑΙ ΕΤΟΙΜΟ ΤΟ  ΝΕΧΤ_PUBLIC ΑΠΟ ΤΗΝ CREATElOACLE METADA.
-        // canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${productSlug}` production.
+        canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,//ΝΑ ΔΩ ΑΥΤΟ ΑΝ ΔΟΥΛΕΥΕΙ ΣΩΣΤΑ ΓΙΑΤΙ ΠΑΙΖΕΙ ΝΑ ΕΙΝΑΙ ΕΤΟΙΜΟ ΤΟ  ΝΕΧΤ_PUBLIC ΑΠΟ ΤΗΝ CREATElOACLE METADA.
+        // canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}` production.
         OpenGraphImageUrl:
           "/storage/v1/object/public/OpenGraphImages/about.jpg",
         other: {
@@ -61,7 +61,7 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Product Not Found | UrbanValor",
         MetaDescription: "The product you're looking for doesn't exist.",
-        canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+        canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
         robots: { index: false, follow: false },
       });
     }
@@ -72,7 +72,7 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Product Not Found | UrbanValor",
         MetaDescription: "The product you're looking for doesn't exist.",
-        canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+        canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
         robots: { index: false, follow: false },
       });
     }
@@ -84,7 +84,7 @@ export async function generateMetadata({
       MetaDescription:
         product.description ??
         "Premium clothing from Methys. Timeless style, exceptional quality.",
-      canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+      canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
       OpenGraphImageUrl: product.image_url?.[0],
       product: {
         price: `${product.price} EUR`,
@@ -105,7 +105,7 @@ export async function generateMetadata({
     return createMetadata({
       MetaTitle: "Error | Methys",
       MetaDescription: "An error occurred while loading this product.",
-      canonical: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+      canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
       robots: { index: false, follow: false },
     });
   }
@@ -146,7 +146,7 @@ export default async function ProductDetailPage({
       notFound();
     }
 
-    const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/products/${categorySlug}/${subcategorySlug}/${productSlug}`;
+    const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}`;
 
     const schema = createProductSchema({
       url: fullUrl,
@@ -166,15 +166,15 @@ export default async function ProductDetailPage({
 
     const breadcrumbItems = [
       { name: "Home", slug: "/" },
-      { name: "Products", slug: "/products" },
-      { name: parentCategory.name, slug: `/products/${categorySlug}` },
+      { name: "Products", slug: "/collections" },
+      { name: parentCategory.name, slug: `/collections/${categorySlug}` },
       {
         name: currentCategory.name,
-        slug: `/products/${categorySlug}/${subcategorySlug}`,
+        slug: `/collections/${categorySlug}/${subcategorySlug}`,
       },
       {
         name: product.name,
-        slug: `/products/${categorySlug}/${subcategorySlug}/${productSlug}`,
+        slug: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
       },
     ];
 

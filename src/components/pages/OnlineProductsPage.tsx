@@ -98,7 +98,7 @@ export function OnlineProductsPageComponent({ products }: OnlineProductProps) {
             return (
               <Link
                 key={onlineExclusiveProduct.id}
-                href={`/products/${onlineExclusiveProduct.categoryformen?.parent?.slug}/${onlineExclusiveProduct.categoryformen?.slug}/${onlineExclusiveProduct.slug}`}
+                href={`/collections/${onlineExclusiveProduct.categoryformen?.parent?.slug}/${onlineExclusiveProduct.categoryformen?.slug}/${onlineExclusiveProduct.slug}`}
                 className="group relative block overflow-hidden bg-white transition-all duration-300"
                 onMouseEnter={() => setHoveredItem(onlineExclusiveProduct.id)}
                 onMouseLeave={() => setHoveredItem(null)}

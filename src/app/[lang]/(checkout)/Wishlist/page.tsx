@@ -82,7 +82,7 @@ const WishlistPage = () => {
     const parent = item.categoryformen?.parent;
     const categorySlug = parent?.slug ?? "all";
     const subcategorySlug = item.categoryformen?.slug ?? "all";
-    return `/products/${categorySlug}/${subcategorySlug}/${item.slug}`;
+    return `/collections/${categorySlug}/${subcategorySlug}/${item.slug}`;
   };
 
   const breadcrumbItems = [
@@ -122,7 +122,7 @@ const WishlistPage = () => {
             Save your favorite items for later.
           </p>
           <Link
-            href="/products"
+            href="/collections"
             className="bg-default-color hover:bg-default-cold text-white font-medium py-3 px-10 rounded-lg transition"
           >
             Start Shopping
@@ -272,7 +272,7 @@ const WishlistPage = () => {
 
       <div className="text-center mt-16">
         <Link
-          href="/products"
+          href="/collections"
           className="bg-default-color hover:bg-default-cold text-white font-medium py-4 px-12 rounded-lg text-lg transition"
         >
           Continue Shopping

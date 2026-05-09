@@ -36,7 +36,7 @@ export default function Footer() {
         { name: "Terms & Conditions", href: "/terms-conditions" },
         { name: "Privacy Policy", href: "/privacy-policy" },
         { name: "Legal Notice", href: "/legal-notice" },
-        { name: "Products", href: "/products" },
+        { name: "Products", href: "/collections" },
       ],
     },
     {

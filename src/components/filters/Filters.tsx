@@ -35,14 +35,14 @@ export default function ProductFilterClient({
     if (filters.size) params.set('size', filters.size);
 
     startTransition(() => {
-      router.push(`/products/${parentSlug}/${categorySlug}?${params.toString()}`);
+      router.push(`/collections/${parentSlug}/${categorySlug}?${params.toString()}`);
     });
   };
 
   const clearFilters = () => {
     setFilters({ min: '', max: '', size: '' });
     startTransition(() => {
-      router.push(`/products/${parentSlug}/${categorySlug}`);
+      router.push(`/collections/${parentSlug}/${categorySlug}`);
     });
   };
 

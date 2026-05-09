@@ -25,7 +25,7 @@ export default function CategoryCard({
 }) {
   return (
     <Link
-      href={`/products/${category.slug}/${subcategory.slug}`}
+      href={`/collections/${category.slug}/${subcategory.slug}`}
       className="relative block w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]"
     >
       <Image

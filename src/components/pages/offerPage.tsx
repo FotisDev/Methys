@@ -100,7 +100,7 @@ export default function OffersPageComponent({ offerProduct }: OffersListProps) {
           return (
             <Link
               key={offer.id}
-              href={`/products/${offer.categoryformen?.parent?.slug}/${offer.categoryformen?.slug}/${offer.slug}`}
+              href={`/collections/${offer.categoryformen?.parent?.slug}/${offer.categoryformen?.slug}/${offer.slug}`}
               className="group relative block overflow-hidden bg-white transition-all duration-300"
               onMouseEnter={() => setHoveredItem(offer.id)}
               onMouseLeave={() => setHoveredItem(null)}

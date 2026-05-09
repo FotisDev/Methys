@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
     MetaTitle: "Shop All Collections | Methys",
     MetaDescription:
       "Discover our curated selection of premium clothing and accessories. Timeless style, exceptional quality.",
-    canonical: "/products",
+    canonical: "/collections",
     OpenGraphImageUrl: "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     other: {
       "twitter:card": "summary_large_image",
@@ -70,20 +70,20 @@ export default async function ProductList() {
   }
 
   const schema = createCollectionPageSchema({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/products`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections`,
     name: "Shop All Collections",
     description:
       "Discover our curated selection of premium clothing and accessories.",
     items: parentCategories.map((cat) => ({
       name: cat.name,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${cat.name.replace(/\s+/g, "-").toLowerCase()}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${cat.name.replace(/\s+/g, "-").toLowerCase()}`,
       imageUrl: cat.image_url ?? undefined,
     })),
   });
 
   const breadcrumbItems = [
     { name: "Home", slug: "/" },
-    { name: "Products", slug: "/products" },
+    { name: "Products", slug: "/collections" },
   ];
 
   return (
@@ -106,7 +106,7 @@ export default async function ProductList() {
             {parentCategories.map((category) => {
               if (!category.name) return null;
 
-              const href = `/products/${category.name
+              const href = `/collections/${category.name
                 .replace(/\s+/g, "-")
                 .toLowerCase()}`;
               const imageUrl = category.image_url ?? "/accesories.jpg";

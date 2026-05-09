@@ -5,7 +5,7 @@ export async function GET() {
 
   const sitemaps = [
     `${siteUrl}/sitemaps/static.xml`,
-    `${siteUrl}/sitemaps/products.xml`,
+    `${siteUrl}/sitemaps/collections.xml`,
     `${siteUrl}/sitemaps/categories.xml`,
   ];
 

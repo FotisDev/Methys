@@ -74,7 +74,7 @@ export default function DropDownMenu() {
   const handleNavigate = (subcategory: Category, mainCategoryName: string) => {
     const mainCategorySlug = toSlug(mainCategoryName);
     const subcategorySlug = toSlug(subcategory.name);
-    const fullPath = `/products/${mainCategorySlug}/${subcategorySlug}`;
+    const fullPath = `/collections/${mainCategorySlug}/${subcategorySlug}`;
     router.push(fullPath);
   };
 
@@ -122,11 +122,11 @@ export default function DropDownMenu() {
                   let href = "#";
 
                   if (mainCat.name.toLowerCase() === "clothing") {
-                    href = "/products/clothing";
+                    href = "/collections/clothing";
                   } else if (mainCat.name.toLowerCase() === "accessories") {
-                    href = "/products/accessories";
+                    href = "/collections/accessories";
                   } else if (mainCat.name.toLowerCase() === "kids") {
-                    href = "/products/kids";
+                    href = "/collections/kids";
                   }
 
                   return (

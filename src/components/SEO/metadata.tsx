@@ -81,7 +81,7 @@ export async function createProductMetadata(product: ProductMetadataProps) {
   : product.imageUrl || DEFAULT_METADATA.openGraphImageUrl;
 
   const canonicalUrl = `${process.env.NEXT_PUBLIC_SITE_URL}${
-    product.canonical || `/products/${product.slug}`
+    product.canonical || `/collections/${product.slug}`
   }`;
 
   return {
