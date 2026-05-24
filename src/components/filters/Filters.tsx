@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductInDetails } from "@/_lib/types";
 
 type ProductFilterClientProps = {
@@ -20,6 +20,8 @@ export default function ProductFilterClient({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [showFilters, setShowFilters] = useState(false);
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1];
 
   const [filters, setFilters] = useState({
     min: searchParams.get("min") || "",
@@ -35,7 +37,7 @@ export default function ProductFilterClient({
 
     startTransition(() => {
       router.push(
-        `/collections/${parentSlug}/${categorySlug}?${params.toString()}`,
+        `/${locale}/collections/${parentSlug}/${categorySlug}?${params.toString()}`,
       );
     });
   };
@@ -43,7 +45,7 @@ export default function ProductFilterClient({
   const clearFilters = () => {
     setFilters({ min: "", max: "", size: "" });
     startTransition(() => {
-      router.push(`/collections/${parentSlug}/${categorySlug}`);
+      router.push(`/${locale}/collections/${parentSlug}/${categorySlug}`);
     });
   };
 
@@ -84,19 +86,19 @@ export default function ProductFilterClient({
       </div>
 
       {/* Sidebar + Products — same flex row */}
-      <div className="flex flex-row gap-8 items-start w-full">
+     <div className="flex flex-col md:flex-row gap-8 items-start w-full">
 
         {/* Sidebar */}
         {showFilters && (
-          <aside className="w-64 flex-shrink-0 bg-white border border-gray-100 shadow-sm p-5 space-y-6">
+           <aside className="w-full md:w-64 flex-shrink-0 bg-white border border-gray-100 shadow-sm p-5 space-y-6">
             <div>
               <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
-                Τιμή
+                Price
               </h3>
               <div className="space-y-2">
                 <input
                   type="number"
-                  placeholder="Από €"
+                  placeholder="From €"
                   value={filters.min}
                   onChange={(e) =>
                     setFilters({ ...filters, min: e.target.value })
@@ -105,7 +107,7 @@ export default function ProductFilterClient({
                 />
                 <input
                   type="number"
-                  placeholder="Έως €"
+                  placeholder="To €"
                   value={filters.max}
                   onChange={(e) =>
                     setFilters({ ...filters, max: e.target.value })
@@ -117,7 +119,7 @@ export default function ProductFilterClient({
 
             <div>
               <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
-                Μέγεθος
+                Size
               </h3>
               <div className="flex flex-wrap gap-2">
                 {["XS", "S", "M", "L", "XL", "XXL"].map((size) => {
@@ -149,20 +151,19 @@ export default function ProductFilterClient({
                 disabled={isPending}
                 className="w-full bg-vintage-green text-white py-2.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity"
               >
-                {isPending ? "Φόρτωση..." : "Εφαρμογή φίλτρων"}
+                {isPending ? "loading..." : "Place filters"}
               </button>
               <button
                 onClick={clearFilters}
                 disabled={isPending}
                 className="w-full bg-gray-100 text-vintage-green py-2.5 text-sm font-semibold rounded hover:bg-gray-200 transition-colors"
               >
-                Καθαρισμός
+                Clear filters
               </button>
             </div>
           </aside>
         )}
 
-        {/* Product area — αυτόματα συρρικνώνεται όταν ανοίγει το sidebar */}
         <div className="flex-1 min-w-0">
           {children}
         </div>

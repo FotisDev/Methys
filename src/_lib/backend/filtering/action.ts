@@ -100,64 +100,29 @@ export async function FilteredProducts({
  
 
 
-  const filteredData = categoryFilteredData
-    .map((product) => {
-      const basePrice = parseFloat(product.price);
-      
-      const filteredVariants = product.product_variants?.filter((variant) => {
+ const filteredData = categoryFilteredData
+  .filter((product) => {
+    const basePrice = parseFloat(product.price);
 
-        const effectivePrice = variant.price !== null 
-          ? parseFloat(variant.price) 
-          : basePrice;
-        
-        if (min) {
-          const minPrice = parseFloat(min);
-          if (effectivePrice < minPrice) {
-            console.log(`    ❌ Rejected: €${effectivePrice} < min €${minPrice}`);
-            return false;
-          }
-        }
-    
-        if (max) {
-          const maxPrice = parseFloat(max);
-          if (effectivePrice > maxPrice) {
-            console.log(`    ❌ Rejected: €${effectivePrice} > max €${maxPrice}`);
-            return false;
-          }
-        }
-        
-        if (size && variant.size !== size) {
-          console.log(`    ❌ Rejected: size ${variant.size} !== ${size}`);
-          return false;
-        }
-        
-     
-        return true;
-      }).map(variant => ({
-        ...variant,
-        price: variant.price !== null ? parseFloat(variant.price) : basePrice,
-      })) || [];
+    // Filter by price on the product level
+    if (min && basePrice < parseFloat(min)) return false;
+    if (max && basePrice > parseFloat(max)) return false;
 
-      console.log(`  → ${filteredVariants.length} variants match`);
+    // Filter by size — check if at least one variant has that size
+    if (size) {
+      const hasSize = product.product_variants?.some(
+        (v) => v.size === size && v.quantity > 0
+      );
+      if (!hasSize) return false;
+    }
 
-      return {
-        ...product,
-        price: basePrice,
-        product_variants: filteredVariants,
-      } as ProductInDetails;
-    })
-    .filter((product) => {
-      const hasVariants = product.product_variants && product.product_variants.length > 0;
-      if (!hasVariants) {
-      
-      }
-      return hasVariants;
-    });
+    return true;
+  })
+  .map((product) => ({
+    ...product,
+    price: parseFloat(product.price),
+    product_variants: product.product_variants ?? [],
+  })) as ProductInDetails[];
 
-  filteredData.forEach(p => {
-    p.product_variants?.forEach(v => console.log(`    - ${v.size}: €${v.price}`));
-  });
-
-
-  return filteredData;
+return filteredData;
 }

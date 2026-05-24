@@ -155,23 +155,26 @@ export default async function SubcategoryPage({
   return (
     <HeaderProvider forceOpaque={true}>
       <Schema markup={schema} />
-      <section className="relative w-full min-h-[80vh] pt-22 p-2 pb-32 font-serif text-vintage-green">
+      <section className="relative w-full min-h-[80vh] pt-20 p-2 pb-32 font-poppins text-vintage-green">
         <Breadcrumbs items={breadcrumbItems} />
 
-        <header className="flex flex-row items-center gap-3 mb-2">
-          <h1 className="text-3xl md:text-4xl font-light">
+        <header className="flex flex-row items-center gap-3 mb-2 font-semibold">
+          <h1 className="text-base  ">
             {currentCategory.name.toUpperCase()}
           </h1>
-          <p className="text-lg text-vintage-brown">
+          {/* <p className="text-sm  sm:text-lg text-vintage-brown">
             Discover our collection of {currentCategory.name.toLowerCase()}
-          </p>
+          </p> */}
         </header>
 
-        <div className="flex flex-row gap-5 text-xl capitalize py-2">
-          {subcategories.map((item) => (
+        <div className="flex flex-row gap-5 text-xl capitalize py-2 overflow-x-auto scrollbar-hide whitespace-nowrap ">
+          {subcategories
+          .filter((item)=>item.slug != subcategorySlug)
+          .map((item) => (
             <Link
               href={`/collections/${parentCategory.slug}/${item.slug}`}
               key={item.id}
+              className="inline-block"
             >
               {item.name}
             </Link>
@@ -180,29 +183,23 @@ export default async function SubcategoryPage({
 
         <hr className="mt-2 mb-4 bg-vintage-green" />
 
-        {/* ✅ Τα products περνάνε ως children — sidebar + grid σε flex row */}
         <ProductFilterClient
           initialProducts={filteredProducts || []}
           parentSlug={categorySlug}
           categorySlug={subcategorySlug}
         >
-          {products.length === 0 ? (
-            <div className="text-center mt-20">
-              <div className="text-8xl mb-6">Still creating this page.</div>
-              <h2 className="text-2xl md:text-3xl mb-4">No products found</h2>
-              <p className="text-lg text-gray-600 max-w-md mx-auto">
-                We are working on adding products to this category. Check back soon!
-              </p>
-            </div>
+          {(filteredProducts ?? []).length === 0 ? (
+            <div>No products found</div>
           ) : (
             <>
-              <p className="text-sm text-vintage-brown mb-4">
-                {products.length}{" "}
-                {products.length === 1 ? "product" : "products"} available
+              <p className="text-sm text-vintage-brown text-right mb-4 mr-4 sm:text-lg">
+                {(filteredProducts ?? []).length}{" "}
+                {(filteredProducts ?? []).length === 1 ? "product" : "products"}{" "}
+                available
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                {products.map((product) => {
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                {(filteredProducts ?? []).map((product) => {
                   if (!product) return null;
 
                   return (
@@ -211,7 +208,7 @@ export default async function SubcategoryPage({
                       href={`/collections/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subcategorySlug)}/${encodeURIComponent(product.slug ?? "")}`}
                       className="group block bg-white border border-vintage-green/20 hover:border-vintage-green transition-all duration-300 overflow-hidden"
                     >
-                      <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
+                      <div className="relative aspect-[3/3] overflow-hidden bg-gray-50">
                         <Image
                           src={product.image_url?.[0] || "/AuthClothPhoto.jpg"}
                           alt={product.name}

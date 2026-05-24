@@ -39,7 +39,7 @@ export const Breadcrumbs = ({ items}: itemWithClassName) => {
   return (
     <section id={"breadcrumbs"} className={` mb-2 sm:mb-4 `}>
       <SchemaMarkUp markup={markup} />
-      <div className={`flex gap-2 items-center flex-wrap text-base sm:text-xl`}>
+      <div className={`flex gap-2 items-center flex-wrap text-sm`}>
         {items.map((item, index) => {
           const isLastItem = index === items.length - 1;
           return (

@@ -19,7 +19,7 @@ ${(categories || [])
   .map(
     (category) => `
   <url>
-    <loc>${siteUrl}/category/${category.slug}</loc>
+    <loc>${siteUrl}/collections/${category.slug}</loc>
     <lastmod>${new Date(category.created_at).toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

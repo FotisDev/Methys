@@ -135,10 +135,10 @@ const Menu = () => {
     "grid",
     "grid-cols-3",
     "items-center",
-    "aspect-[55/2]",
+    "aspect-[65/2]",
     "w-full",
-    "px-4",
-    "lg:px-6",
+    "px-2",
+    "lg:px-2",
     "text-xs",
     "transition-all",
     "duration-300",
@@ -169,8 +169,8 @@ const Menu = () => {
           }}
           aria-label="Main navigation"
         >
-          <div className="flex items-center justify-start">
-            <ul className="hidden lg:flex gap-4 items-center ml-4">
+          <div className="flex items-center ">
+            <ul className="hidden lg:flex gap-4 items-center ">
               {navLinks.map(({ href, label }) => (
                 <li key={label}>
                   <Link
