@@ -135,7 +135,7 @@ const Menu = () => {
     "grid",
     "grid-cols-3",
     "items-center",
-    "aspect-[65/2]",
+    "aspect-[60/2]",
     "w-full",
     "px-2",
     "lg:px-2",

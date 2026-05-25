@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useCart } from "@/components/providers/CartProvider";
 import { useWishlist } from "@/components/providers/WishListProvider";
 import { ProductInDetails } from "@/_lib/types";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import SizeGuideModal from "./SizeGuide";
 
@@ -12,10 +13,15 @@ interface ProductActionsProps {
 }
 
 export default function ProductActions({ product }: ProductActionsProps) {
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeError, setShowSizeError] = useState(false);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
-  const [addedToCart, setAddedToCart] = useState(false); 
+  const [addedToCart, setAddedToCart] = useState(false);
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const [selectedSize, setSelectedSize] = useState<string | null>(
+    searchParams.get("size"),
+  );
 
   const { addToCart } = useCart();
   const { addToWishlist, isInWishlist } = useWishlist();
@@ -33,6 +39,9 @@ export default function ProductActions({ product }: ProductActionsProps) {
     if (availableSizes.includes(size)) {
       setSelectedSize(size);
       setShowSizeError(false);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("size", size);
+      router.replace(`?${params.toString()}`, { scroll: false });
     }
   };
 
@@ -44,7 +53,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
     addToCart(product, selectedSize || undefined);
     setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000); 
+    setTimeout(() => setAddedToCart(false), 2000);
   };
 
   const handleWishlistToggle = () => {
@@ -101,8 +110,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
                       isSelected
                         ? "bg-vintage-green text-white border-vintage-green"
                         : isAvailable
-                        ? "bg-white text-vintage-green border-gray-300 hover:border-vintage-green"
-                        : "bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed line-through"
+                          ? "bg-white text-vintage-green border-gray-300 hover:border-vintage-green"
+                          : "bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed line-through"
                     }
                   `}
                 >
@@ -129,16 +138,16 @@ export default function ProductActions({ product }: ProductActionsProps) {
               availableSizes.length === 0
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : addedToCart
-                ? "bg-green-600 text-white"
-                : "bg-vintage-green text-white hover:bg-vintage-green/90"
+                  ? "bg-green-600 text-white"
+                  : "bg-vintage-green text-white hover:bg-vintage-green/90"
             }
           `}
         >
           {availableSizes.length === 0
             ? "Out of Stock"
             : addedToCart
-            ? "✓ Added to cart!"
-            : `Add to Cart - €${product.price}`}
+              ? "✓ Added to cart!"
+              : `Add to Cart - €${product.price}`}
         </button>
 
         <button
@@ -165,10 +174,21 @@ export default function ProductActions({ product }: ProductActionsProps) {
       <div className="flex items-center justify-center gap-2 pt-4">
         <span className="text-xs text-gray-500">We accept:</span>
         <div className="flex gap-2 opacity-60">
-          <div className="w-8 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">VISA</div>
-          <div className="w-8 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">MC</div>
-          <div className="w-8 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">AMEX</div>
-          <div className="w-8 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">PAY</div>
+          <div className="w-8 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+            VISA
+          </div>
+          <div className="w-14 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+            MASTERCARD
+          </div>
+          <div className="w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+            MAESTRO
+          </div>
+          <div className="w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+            PAYPAL
+          </div>
+          <div className="w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+            REVOLUT
+          </div>
         </div>
       </div>
 

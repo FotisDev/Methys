@@ -15,6 +15,7 @@ import Footer from "@/components/footer/Footer";
 import { ProductBySpringSeason } from "@/_lib/backend/ProductWithStructure/action";
 import { createMetadata } from "@/components/SEO/metadata";
 import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
+import Link from "next/link";
 
 export const revalidate = 600;
 
@@ -39,8 +40,8 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Product Not Found | UrbanValor",
         MetaDescription: "The product you're looking for doesn't exist.",
-        canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,//ΝΑ ΔΩ ΑΥΤΟ ΑΝ ΔΟΥΛΕΥΕΙ ΣΩΣΤΑ ΓΙΑΤΙ ΠΑΙΖΕΙ ΝΑ ΕΙΝΑΙ ΕΤΟΙΜΟ ΤΟ  ΝΕΧΤ_PUBLIC ΑΠΟ ΤΗΝ CREATElOACLE METADA.
-        // canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}` production.
+        // canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,//ΝΑ ΔΩ ΑΥΤΟ ΑΝ ΔΟΥΛΕΥΕΙ ΣΩΣΤΑ ΓΙΑΤΙ ΠΑΙΖΕΙ ΝΑ ΕΙΝΑΙ ΕΤΟΙΜΟ ΤΟ  ΝΕΧΤ_PUBLIC ΑΠΟ ΤΗΝ CREATElOACLE METADA.
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
         OpenGraphImageUrl:
           "/storage/v1/object/public/OpenGraphImages/about.jpg",
         other: {
@@ -152,14 +153,16 @@ export default async function ProductDetailPage({
       url: fullUrl,
       name: product.name,
       description: product.description ?? "",
-      images: [product.image_url?.[0] ?? "/AuthClothPhoto.jpg"],
+      images: product.image_url ?? ["/AuthClothPhoto.jpg"], 
       price: Number(product.price),
       currency: "EUR",
       sku: String(product.slug ?? product.id),
       brand: "Methys",
-      availability: product.product_variants.some((p) => p.quantity > 0),
-      sizes: product.product_variants.map((p) => p.size),
-      product_details: product.product_details,
+      availability: product.product_variants.some((p) => p.quantity > 0), 
+      variants: product.product_variants.map((v) => ({
+        size: v.size,
+        quantity: v.quantity,
+      })),
       category: currentCategory.name,
       id: product.id.toString(),
     });
@@ -275,7 +278,7 @@ export default async function ProductDetailPage({
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
                     <div className="mt-3 text-sm text-gray-600 leading-relaxed">
-                      <p>Expected delivery: November 26 - 28</p>
+                      <p>Expected delivery: 7 days after the order</p>
                     </div>
                   </details>
 
@@ -286,8 +289,8 @@ export default async function ProductDetailPage({
                       </span>
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
-                    <div className="mt-3 text-sm text-gray-600 leading-relaxed">
-                      <p>Need help? Contact us or check our FAQ</p>
+                    <div className="mt-3 text-sm text-vintage-brown leading-relaxed hover:underline">
+                      <Link href={'/help'}>Need help? Contact us or check our Help page</Link>
                     </div>
                   </details>
                 </div>
