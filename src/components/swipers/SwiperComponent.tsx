@@ -15,20 +15,21 @@ interface Props {
 export default function SwiperComponent({ items }: Props) {
   return (
     <Swiper
-      spaceBetween={0}
-      slidesPerView={2}
+      spaceBetween={1}
+      slidesPerView={5}
       navigation
       pagination={{ clickable: true }}
       modules={[]}
-      // modules={[Pagination, Navigation]}
       className="w-full"
       breakpoints={{
-        768: {
-          slidesPerView: 3,
-        },
-        1024: {
-          slidesPerView: 4,
-        },
+        100: { slidesPerView: 2 },
+        200: { slidesPerView: 2 },
+        300: { slidesPerView: 2 },
+        400: { slidesPerView: 2 },
+        560: { slidesPerView: 2 },
+        768: { slidesPerView: 3 },
+        1024: { slidesPerView: 4 },
+        1200: { slidesPerView: 5 },
       }}
     >
       {items.map((item) => (

@@ -19,7 +19,6 @@ const Menu = () => {
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
   const [showClothes, setShowClothes] = useState(false);
   const [showBulletMenu, setShowBulletMenu] = useState(false);
-
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -38,12 +37,7 @@ const Menu = () => {
     { href: PAGE_URLS.ABOUT, label: "About" },
     { href: PAGE_URLS.PRODUCTS, label: "SHOP" },
     ...(!isAuthLoading && isAuthenticated
-      ? [
-          {
-            href: "/offers",
-            label: "Offers",
-          },
-        ]
+      ? [{ href: "/offers", label: "Offers" }]
       : []),
   ];
 
@@ -51,15 +45,12 @@ const Menu = () => {
     if (!imageUrl || imageUrl === "null" || imageUrl === "undefined") {
       return "/images/placeholder.jpg";
     }
-
     if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
       return imageUrl;
     }
-
     if (imageUrl.startsWith("/")) {
       return imageUrl;
     }
-
     return `/images/${imageUrl}`;
   };
 
@@ -67,7 +58,6 @@ const Menu = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -98,7 +88,6 @@ const Menu = () => {
         if (shopLink && shopLink.contains(target)) {
           return;
         }
-
         setShowClothes(false);
       }
     };
@@ -169,8 +158,20 @@ const Menu = () => {
           }}
           aria-label="Main navigation"
         >
-          <div className="flex items-center ">
-            <ul className="hidden lg:flex gap-4 items-center ">
+          <div className="flex items-center">
+            <button
+              ref={toggleButtonRef}
+              aria-label="Open mobile menu"
+              className="lg:hidden text-2xl"
+              onClick={() => {
+                setShowBulletMenu(!showBulletMenu);
+                setShowClothes(false);
+              }}
+            >
+              ☰
+            </button>
+
+            <ul className="hidden lg:flex gap-4 items-center">
               {navLinks.map(({ href, label }) => (
                 <li key={label}>
                   <Link
@@ -186,80 +187,67 @@ const Menu = () => {
           </div>
 
           <div className="flex justify-center">
-            <Link href={PAGE_URLS.HOMEPAGE} className="text-lg ">
+            <Link href={PAGE_URLS.HOMEPAGE} className="text-lg">
               <div>Methys</div>
             </Link>
           </div>
-
-          <div className="flex items-center justify-end">
-            <div className="hidden lg:flex items-center gap-4">
-              <button
-                onClick={toggleWishlist}
-                className="relative group"
-                aria-label={`Wishlist with ${wishlistCount} items`}
-              >
-                <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
-                  <svg
-                    className="w-6 h-6 group-hover:text-red-500 transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                  {wishlistCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
-                      {wishlistCount > 99 ? "99+" : wishlistCount}
-                    </span>
-                  )}
-                </div>
-              </button>
-
-              <Link
-                href={PAGE_URLS.CART}
-                className="relative group"
-                aria-label={`Cart with ${cartItemCount} items`}
-              >
-                <div className="relative p-2 hover:bg-black rounded-full transition-colors group">
-                  <CartSvg
-                    className={`w-6 h-6 transition-colors ${
-                      isOpaque
-                        ? "text-vintage-green group-hover:text-white"
-                        : "text-white group-hover:text-vintage-green"
-                    }`}
+          <div className="flex items-center justify-end gap-1">
+            <button
+              onClick={toggleWishlist}
+              className="relative group"
+              aria-label={`Wishlist with ${wishlistCount} items`}
+            >
+              <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <svg
+                  className="w-5 h-5 lg:w-6 lg:h-6 group-hover:text-red-500 transition-colors"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                   />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-vintage-white text-red-500 text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
-                      {cartItemCount > 99 ? "99+" : cartItemCount}
-                    </span>
-                  )}
-                </div>
-              </Link>
+                </svg>
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
+                    {wishlistCount > 99 ? "99+" : wishlistCount}
+                  </span>
+                )}
+              </div>
+            </button>
 
+            <Link
+              href={PAGE_URLS.CART}
+              className="relative group"
+              aria-label={`Cart with ${cartItemCount} items`}
+            >
+              <div className="relative p-2 hover:bg-black rounded-full transition-colors group">
+                <CartSvg
+                  className={`w-5 h-5 lg:w-6 lg:h-6 transition-colors ${
+                    isOpaque
+                      ? "text-vintage-green group-hover:text-white"
+                      : "text-white group-hover:text-vintage-green"
+                  }`}
+                />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-vintage-white text-red-500 text-xs rounded-full w-5 h-5 flex items-center justify-center min-w-[20px]">
+                    {cartItemCount > 99 ? "99+" : cartItemCount}
+                  </span>
+                )}
+              </div>
+            </Link>
+
+            <div className="hidden lg:flex items-center gap-4">
               {!isAuthLoading && isAuthenticated && (
                 <LogoutButton className="ml-auto" />
               )}
               <LanguageSwitcher />
               <BulletButtonSideBar />
             </div>
-
-            <button
-              ref={toggleButtonRef}
-              aria-label="Open mobile menu"
-              className="lg:hidden text-3xl"
-              onClick={() => {
-                setShowBulletMenu(!showBulletMenu);
-                setShowClothes(false);
-              }}
-            >
-              ☰
-            </button>
           </div>
         </nav>
       </div>
@@ -282,38 +270,6 @@ const Menu = () => {
                 </Link>
               </li>
             ))}
-
-            <li>
-              <button
-                onClick={() => {
-                  toggleWishlist();
-                  setShowBulletMenu(false);
-                }}
-                className="w-full flex items-center justify-between text-left text-black py-2 border-b border-gray-200"
-              >
-                <span>Wishlist</span>
-                {wishlistCount > 0 && (
-                  <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[24px] text-center">
-                    {wishlistCount > 99 ? "99+" : wishlistCount}
-                  </span>
-                )}
-              </button>
-            </li>
-
-            <li>
-              <Link
-                href={PAGE_URLS.CART}
-                onClick={() => setShowBulletMenu(false)}
-                className="flex items-center justify-between text-left text-black py-2 border-b border-gray-200"
-              >
-                <span>Cart</span>
-                {cartItemCount > 0 && (
-                  <span className="bg-vintage-brown text-white text-xs rounded-full px-2 py-1 min-w-[24px] text-center">
-                    {cartItemCount > 99 ? "99+" : cartItemCount}
-                  </span>
-                )}
-              </Link>
-            </li>
 
             {!isAuthLoading && isAuthenticated && (
               <li>
@@ -341,7 +297,7 @@ const Menu = () => {
           >
             &times;
           </button>
-          <div className="">
+          <div>
             <DropDownMenu />
           </div>
         </div>

@@ -81,85 +81,79 @@ export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardP
   const getCategoryPath = (): string => {
     const category = item.categoryformen;
     const parent = category?.parent;
-
     if (parent?.slug && category?.slug) {
       return `${parent.slug}/${category.slug}`;
     }
-
     return category?.slug ?? "uncategorized";
   };
 
   const defaultImg = item.image_url?.[0] ?? "/Articles.jpg";
   const hoverImg = item.image_url?.[1] ?? defaultImg;
 
+  const isNew = true; 
 
   return (
     <Link
       href={`/collections/${getCategoryPath()}/${item.slug ?? ""}`}
-      className="group block overflow-hidden transition font-roboto"
+      className="font-roboto  "
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <section className="relative w-full bg-white ">
-        <div className="relative w-full h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[70vh]">
-          <Image
-            src={hovered ? hoverImg : defaultImg}
-            alt={item.name}
-            fill
-            sizes="(max-width: 640px) 100vw,
-           (max-width: 768px) 50vw,
-           (max-width: 1024px) 33vw,
-           25vw"
-            className="object-cover object-center transition duration-500 ease-in-out"
-            quality={100}
-            priority
+      <div className="relative w-full overflow-hidden bg-[#f5f4f0]"  style={{ aspectRatio: "3/4" }}>
+        <Image
+          src={hovered ? hoverImg : defaultImg}
+          alt={item.name}
+          fill
+          className="object-cover object-center transition duration-500 ease-in-out"
+          quality={100}
+          priority
+        />
+        {isNew && (
+          <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest font-medium text-white z-10">
+            New In
+          </span>
+        )}
+        <button
+          onClick={handleWishlistToggle}
+          className="absolute top-2 right-2 p-1.5 z-10"
+          aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <HeartSvg
+            filled={inWishlist}
+            className={`w-5 h-5 transition-colors drop-shadow-sm ${
+              inWishlist ? "text-red-500" : "text-white hover:text-red-400"
+            }`}
           />
+        </button>
+      </div>
 
-          {/* Wishlist Button */}
-          <button
-            onClick={handleWishlistToggle}
-            className="absolute top-3 left-3 p-3 sm:p-4 bg-white/80 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition duration-300 z-10 hover:bg-white"
-            aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            <HeartSvg
-              filled={inWishlist}
-              className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
-                inWishlist ? "text-red-500" : "text-gray-700"
-              }`}
-            />
-          </button>
-
-          {/* Add to Cart Button */}
+      <div className="pt-2 pb-3 px-5 text-vintage-green">
+        <div className="flex items-baseline justify-between gap-2">
+          <h3 className="text-sm font-medium line-clamp-1 leading-snug flex-1">
+            {item.name}
+          </h3>
+          <p className="text-sm shrink-0">${item.price}</p>
           <button
             onClick={handleAddToCart}
-            className="absolute top-3 right-3 p-3 sm:p-4 bg-white/80 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition duration-300 z-10 hover:bg-white"
             aria-label="Add to cart"
+            className="shrink-0 text-black hover:text-default-color transition-opacity"
           >
-            <CartSvg className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+            <CartSvg className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Product Info */}
-        <div className="relative pt-3 text-vintage-green">
-          <h3 className="text-base left-3 top-1 line-clamp-1 bg-white">
-            {item.name}
-          </h3>
-
-          <div className="text-xs md:text-base text-vintage-green/70 block flex-wrap min-h-[2.5rem]">
-            {hovered && item.size_description ? (
-              <p className="text-sm sm:text-base text-vintage-green/90 py-1">
-                {item.size_description}
-              </p>
-            ) : availableSizes.length > 0 ? (
-              <div className="flex gap-1  flex-wrap bg-white">
+        <div className="mt-1 h-5 overflow-hidden">
+          {hovered ? (
+            availableSizes.length > 0 ? (
+              <div className="flex gap-1 flex-wrap">
                 {availableSizes.map((size) => (
                   <span
                     key={size}
                     onClick={(e) => handleSizeClick(e, size)}
-                    className={`cursor-pointer w-5 text-center h-8 py-1 sm:py-1.5 text-xs sm:text-sm md:text-sm transition-all duration-200 bg-gray-100 ${
+                    className={`cursor-pointer text-[11px] px-1 py-0.5 transition-all duration-150 border ${
                       selectedSize === size
-                        ? `bg-vintage-green text-white `
-                        : "bg-white text-vintage-green hover:bg-vintage-green hover:text-white rounded w-6 sm:w-9x"
+                        ? "border-vintage-green bg-vintage-green text-white"
+                        : "border-transparent text-vintage-green/70 hover:border-vintage-green/50"
                     }`}
                   >
                     {size}
@@ -167,17 +161,17 @@ export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardP
                 ))}
               </div>
             ) : (
-              <span className="text-red-500 text-xs sm:text-sm md:text-base">
-                Sold Out
-              </span>
-            )}
-          </div>
-
-          <p className="absolute right-3 sm:right-4 md:right-5 lg:right-6 top-3 text-base">
-            ${item.price}
-          </p>
+              <span className="text-xs text-red-500">Sold Out</span>
+            )
+          ) : (
+            item.size_description ? (
+              <p className="text-xs text-vintage-green/60 line-clamp-1">
+                {item.size_description}
+              </p>
+            ) : null
+          )}
         </div>
-      </section>
+      </div>
     </Link>
   );
 }

@@ -23,7 +23,7 @@ export default async function OnlineExclusiveProducts() {
 
   return (
     <HeaderProvider forceOpaque={true}>
-      <section className="padding-y padding-x bg-white">
+      <section className="padding-y px-0.5 bg-white">
         <OnlineProductsPageComponent products={onlineProducts} title={""} />
       </section>
       <Footer />

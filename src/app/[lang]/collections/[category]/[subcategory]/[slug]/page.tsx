@@ -187,14 +187,6 @@ export default async function ProductDetailPage({
           <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
-          <header className="flex flex-col  gap-3 pl-8 mb-10">
-            <h1 className="text-lg md:text-2xl">
-              {product?.name.toUpperCase()}
-            </h1>
-            <p className="text-lg text-vintage-brown">
-              Discover our collection of {product?.name.toLowerCase()} products
-            </p>
-          </header>
           <div className=" mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
               <div className="space-y-0">
@@ -218,21 +210,6 @@ export default async function ProductDetailPage({
                       NEW IN
                     </div>
                   )}
-                </div>
-
-                <div
-                  className="relative bg-gray-50 overflow-hidden mt-0"
-                  style={{ aspectRatio: "3/4" }}
-                >
-                  <Image
-                    src={getValidImage(
-                      product.image_url?.[0] ?? "/AuthClothPhoto.jpg",
-                    )}
-                    alt={`${product.name} - alternate view`}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover object-center"
-                  />
                 </div>
               </div>
 
@@ -353,7 +330,7 @@ export default async function ProductDetailPage({
         </section>
         <div className="pl-1">
           <SeasonalCollectionSection
-            title="Checkout this collection"
+            title="Our Recommendations"
             fetcher={ProductBySpringSeason}
           />
         </div>

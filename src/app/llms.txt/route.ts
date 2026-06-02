@@ -1,4 +1,4 @@
-// app/llms.txt/route.ts
+
 import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 import { NextResponse } from "next/server";

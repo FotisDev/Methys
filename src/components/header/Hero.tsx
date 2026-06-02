@@ -6,7 +6,7 @@ const HeroSection = () => {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="flex mx-auto aspect-[4/3] sm:aspect-video font-roboto"
+      className="flex mx-auto aspect-[4/5] sm:aspect-video font-roboto"
     >
       <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
         {/* <Image
@@ -26,7 +26,7 @@ const HeroSection = () => {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full min-h-[460px] object-cover"
         ></video>
 
         <div className="relative z-10 flex items-center ml-2 w-full h-full gap-2">
