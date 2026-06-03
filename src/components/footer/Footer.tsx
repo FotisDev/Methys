@@ -161,7 +161,7 @@ export default function Footer() {
 
       <div className="relative px-4 py-6">
         <div className="text-center text-sm">
-          © 2025 <span className="text-vintage-green font-bold">Methys.</span>{" "}
+          © 2026 <span className="text-vintage-green font-bold">Methys.</span>{" "}
           All Rights Reserved.
         </div>
 
