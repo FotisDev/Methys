@@ -23,7 +23,7 @@ const PhotoVideoSection: React.FC = () => {
         </div>
         <div className="hidden lg:block w-1/2 h-full relative">
           <video
-            src="/man-window.mp4"
+            src="/https://orvzr4xhmehppcl6.public.blob.vercel-storage.com/man-window.mp4"
             autoPlay
             muted
             loop

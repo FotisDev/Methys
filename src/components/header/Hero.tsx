@@ -23,7 +23,7 @@ const HeroSection = () => {
         </video>
 
         <Image
-          src="/on-balcony.png"
+          src="https://orvzr4xhmehppcl6.public.blob.vercel-storage.com/on-balcony.mp4"
           alt="Hero background"
           fill
           priority
