@@ -45,6 +45,7 @@ const VideoSection = () => {
             muted
             loop
             playsInline
+             preload="none" 
             className="w-full h-full object-cover rounded sm:rounded"
             src="/videos/Awareness-16-9.mp4"
           />
