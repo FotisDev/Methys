@@ -23,17 +23,19 @@ const PhotoVideoSection: React.FC = () => {
         </div>
         <div className="hidden lg:block w-1/2 h-full relative">
           <video
-            src="/https://orvzr4xhmehppcl6.public.blob.vercel-storage.com/man-window.mp4"
             autoPlay
             muted
             loop
             playsInline
-            className="w-full h-full object-cover"
+            preload="metadata"
+            className="w-full h-full object-cover rounded sm:rounded"
           >
-            Your browser does not support the video tag.
+            <source
+              src="https://orvzr4xhmehppcl6.public.blob.vercel-storage.com/man-window.mp4"
+              type="video/mp4"
+            />
           </video>
         </div>
-
       </div>
     </div>
   );
