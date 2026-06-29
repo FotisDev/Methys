@@ -4,6 +4,7 @@ export type CategoryBackendType = {
   slug: string;
   image_url: string;
   parent_id: number | null;
+  blur_data_url?: string | null;
 };
 
 export type PageProps = {
@@ -82,6 +83,7 @@ export type ProductInDetails = {
   is_spring?:boolean;
   is_summer?:boolean;
   is_autumn?:boolean;
+  blur_data_url?: string | null;
 };
 
 export type ProductInsert = {
@@ -97,6 +99,7 @@ export type ProductInsert = {
   is_spring?: boolean;
   is_summer?: boolean;
   is_autumn?: boolean;
+  blur_data_url?: string | null;
 };
 
 export type VariantInsert = {

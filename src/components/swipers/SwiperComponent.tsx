@@ -32,9 +32,9 @@ export default function SwiperComponent({ items }: Props) {
         1200: { slidesPerView: 5 },
       }}
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <SwiperSlide key={item.id}>
-          <SeasonalCollectionCard item={item} />
+          <SeasonalCollectionCard item={item} priority={index < 2} />
         </SwiperSlide>
       ))}
     </Swiper>

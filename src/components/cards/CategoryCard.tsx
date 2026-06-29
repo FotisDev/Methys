@@ -6,6 +6,7 @@ type CategoryType = {
   category_name: string;
   slug: string;
   image_url: string;
+  blur_data_url?: string;
 };
 
 type SubcategoryType = {
@@ -14,15 +15,20 @@ type SubcategoryType = {
   slug: string;
   image_url: string;
   parent_id: number | null;
+  blur_data_url?: string;
 };
 
-export default function CategoryCard({ 
-  category, 
-  subcategory 
-}: { 
+export default function CategoryCard({
+  category,
+  subcategory,
+  priority = false,
+}: {
   category: CategoryType;
   subcategory: SubcategoryType;
+  priority?: boolean;
 }) {
+  const blurDataUrl = subcategory.blur_data_url ?? category.blur_data_url;
+
   return (
     <Link
       href={`/collections/${category.slug}/${subcategory.slug}`}
@@ -34,8 +40,9 @@ export default function CategoryCard({
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
         className="object-cover object-center"
-        priority
-        unoptimized
+        priority={priority}
+        placeholder={blurDataUrl ? "blur" : "empty"}
+        blurDataURL={blurDataUrl}
       />
       <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 text-vintage-white font-poppins">
         <p className="text-xs sm:text-sm opacity-80">Autumn 2025</p>

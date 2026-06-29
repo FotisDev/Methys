@@ -5,7 +5,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "mpnjvzyymmtvgsrfgjjc.supabase.co",
-        pathname: "/storage/v1/object/public/product-images/**",
+        pathname: "/storage/v1/object/public/**",
       },
       {
         protocol: "https",
@@ -18,7 +18,6 @@ const nextConfig = {
         pathname: "/app-store/marketing/guidelines/images/**",
       },
     ],
-    domains: ["mpnjvzyymmtvgsrfgjjc.supabase.co", "via.placeholder.com"],
   },
 };
 

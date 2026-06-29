@@ -4,7 +4,7 @@ import { getCategoryBySlug, getSubcategories } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { notFound } from "next/navigation";
 import { CategoryBackendType } from "@/_lib/types";
-import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
+import { fetchProductThumbnailsByCategoryIds } from "@/_lib/backend/fetchCategoryThumbnail/action";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import Footer from "@/components/footer/Footer";
 import { createMetadata } from "@/components/SEO/metadata";
@@ -82,19 +82,16 @@ export default async function CategoryPage({
 
     categoryData = foundCategory;
 
-    const [subcategoriesData, allProducts] = await Promise.all([
-      getSubcategories(foundCategory.id),
-      fetchProducts(),
-    ]);
+    const subcategoriesData = await getSubcategories(foundCategory.id);
+
+    const thumbnailMap = await fetchProductThumbnailsByCategoryIds(
+      subcategoriesData.map((s) => s.id),
+    );
 
     subcategories = subcategoriesData.map((subcat) => {
-      const product = allProducts?.find(
-        (p) => p?.categoryformen?.id === subcat.id && p?.image_url,
-      );
-
       return {
         ...subcat,
-        image_url: subcat?.image_url ?? product?.image_url?.[0],
+        image_url: subcat?.image_url ?? thumbnailMap[subcat.id],
       } as SubcategoryWithImage;
     });
   } catch (err) {
@@ -155,7 +152,7 @@ export default async function CategoryPage({
                 No subcategories yet
               </h2>
               <p className="text-lg text-gray-600 max-w-md mx-auto">
-                We’re working on adding new collections. Check back soon!
+                We're working on adding new collections. Check back soon!
               </p>
             </section>
           ) : (

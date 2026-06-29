@@ -2,44 +2,36 @@
 
 import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
+import { unstable_cache } from "next/cache";
 
-export async function fetchProducts(): Promise<ProductInDetails[] | null> {
-  const { data, error } = await supabasePublic
-    .from("products")
-    .select(`
-      id,
-      name,
-      slug,
-      price,
-      description,
-      size_description,
-      product_details,
-      image_url,
-      is_offer,
-      categoryformen:category_men_id!inner (
+export const fetchProducts = unstable_cache(
+  async (): Promise<ProductInDetails[] | null> => {
+    const { data, error } = await supabasePublic
+      .from("products")
+      .select(`
         id,
         name,
         slug,
-        parent:parent_id!inner (
-          id,
-          name,
-          slug
-        )
-      ),
-      product_variants (
-        size,
         price,
-        quantity
-      )
-    `)
-    .overrideTypes<ProductInDetails[], { merge: false }>(); 
+        description,
+        size_description,
+        product_details,
+        image_url,
+        is_offer,
+        categoryformen:category_men_id!inner (
+          id, name, slug,
+          parent:parent_id!inner ( id, name, slug )
+        ),
+        product_variants ( size, price, quantity )
+      `)
+      .overrideTypes<ProductInDetails[], { merge: false }>();
 
-  if (error) {
-    console.error("Error fetching products:", error.message);
-    return null;
-  }
-
-  if (!data || data.length === 0) return [];
-
-  return data;
-}
+    if (error) {
+      console.error("Error fetching products:", error.message);
+      return null;
+    }
+    return data ?? [];
+  },
+  ["all-products"],         
+  { revalidate: 800, tags: ["products"] }  
+);

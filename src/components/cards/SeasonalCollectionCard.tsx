@@ -33,9 +33,13 @@ function HeartSvg({
 
 interface SeasonalCollectionCardProps {
   item: ProductInDetails;
+  priority?: boolean;
 }
 
-export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardProps) {
+export default function SeasonalCollectionCard({
+  item,
+  priority = false,
+}: SeasonalCollectionCardProps) {
   const [hovered, setHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
@@ -44,7 +48,7 @@ export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardP
 
   const inWishlist = isInWishlist(item.id);
 
-  const availableSizes = item.product_variants
+  const availableSizes = (item.product_variants ?? [])
     .filter((variant) => variant.quantity > 0)
     .map((variant) => variant.size);
 
@@ -90,7 +94,7 @@ export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardP
   const defaultImg = item.image_url?.[0] ?? "/Articles.jpg";
   const hoverImg = item.image_url?.[1] ?? defaultImg;
 
-  const isNew = true; 
+  const isNew = true;
 
   return (
     <Link
@@ -99,14 +103,19 @@ export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardP
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="relative w-full overflow-hidden bg-[#f5f4f0]"  style={{ aspectRatio: "3/4" }}>
+      <div
+        className="relative w-full overflow-hidden bg-[#f5f4f0]"
+        style={{ aspectRatio: "3/4" }}
+      >
         <Image
           src={hovered ? hoverImg : defaultImg}
           alt={item.name}
           fill
           className="object-cover object-center transition duration-500 ease-in-out"
-          quality={100}
-          priority
+          quality={75}
+          priority={priority}
+          placeholder={item.blur_data_url ? "blur" : "empty"}
+          blurDataURL={item.blur_data_url ?? undefined}
         />
         {isNew && (
           <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest font-medium text-white z-10">
@@ -163,13 +172,11 @@ export default function SeasonalCollectionCard({ item }: SeasonalCollectionCardP
             ) : (
               <span className="text-xs text-red-500">Sold Out</span>
             )
-          ) : (
-            item.size_description ? (
-              <p className="text-xs text-vintage-green/60 line-clamp-1">
-                {item.size_description}
-              </p>
-            ) : null
-          )}
+          ) : item.size_description ? (
+            <p className="text-xs text-vintage-green/60 line-clamp-1">
+              {item.size_description}
+            </p>
+          ) : null}
         </div>
       </div>
     </Link>

@@ -2,12 +2,14 @@
 
 import { ProductInsert, VariantInsert } from "@/_lib/types";
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
+import { generateBlurDataUrl } from "@/_lib/utils/generateBlurDataUrl";
+import { revalidateTag } from "next/cache";
 
 export async function addProductAction(
   productData: ProductInsert,
   variants: VariantInsert[]
 ) {
-  const supabase = await createSupabaseServerClient(); 
+  const supabase = await createSupabaseServerClient();
 
   const { data: { user }, error: userError } = await supabase.auth.getUser();
 
@@ -25,9 +27,14 @@ export async function addProductAction(
     throw new Error("You dont have privilages of Admin.");
   }
 
+  const firstImage = productData.image_url?.[0];
+  const blurDataUrl = firstImage
+    ? await generateBlurDataUrl(firstImage)
+    : null;
+
   const { data: product, error: productError } = await supabase
     .from("products")
-    .insert(productData)
+    .insert({ ...productData, blur_data_url: blurDataUrl })
     .select()
     .single();
 
@@ -43,6 +50,8 @@ export async function addProductAction(
     .insert(finalVariants);
 
   if (variantError) throw new Error(variantError.message);
+
+  revalidateTag("products");
 
   return product;
 }

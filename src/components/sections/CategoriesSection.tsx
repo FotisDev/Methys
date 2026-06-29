@@ -18,6 +18,7 @@ export default async function CategoriesSection() {
         category_name: mainCat.name,
         slug: mainCat.slug,
         image_url: mainCat.image_url,
+        blur_data_url: mainCat.blur_data_url ?? undefined,
       },
       subcategory: {
         id: subCat.id,
@@ -25,6 +26,7 @@ export default async function CategoriesSection() {
         slug: subCat.slug,
         image_url: subCat.image_url,
         parent_id: subCat.parent_id,
+        blur_data_url: subCat.blur_data_url ?? undefined,
       },
     }));
   });
