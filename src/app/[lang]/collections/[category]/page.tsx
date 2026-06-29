@@ -152,7 +152,7 @@ export default async function CategoryPage({
                 No subcategories yet
               </h2>
               <p className="text-lg text-gray-600 max-w-md mx-auto">
-                We're working on adding new collections. Check back soon!
+                We are working on adding new collections. Check back soon!
               </p>
             </section>
           ) : (
