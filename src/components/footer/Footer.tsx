@@ -50,13 +50,12 @@ export default function Footer() {
     {
       category: "Payment Methods",
       items: [
-        { name: "Paypal", href: "/" },
-        { name: "MasterCard", href: "/" },
-        { name: "Revolut", href: "/" },
-        { name: "Klarna", href: "/" },
-        { name: "Stripe", href: "/" },
+        {
+          name: "Stripe",
+          href: "/",
+          Ιcon: "/stripe2.png",
+        },
       ],
-      Icon: "/paymentMethods.png",
     },
   ];
 
@@ -108,36 +107,34 @@ export default function Footer() {
             })}
           </div>
         </div>
-
         <div className="flex flex-col gap-2 text-center lg:text-left">
           <FoldableSectionComponent
             title={legalPolicyColumn.category}
             items={legalPolicyColumn.items}
           />
         </div>
-
         <div className="flex flex-col gap-2 text-center lg:text-left">
           <FoldableSectionComponent
             title={quickLinksColumn.category}
             items={quickLinksColumn.items}
           />
         </div>
-
         <div className="flex flex-col gap-2 text-center lg:text-left">
-         <h3 className="text-vintage-green font-bold"> {paymentMethods.category}</h3>
-          {paymentMethods.items.map((item,index) => {
-            return (
-              <div key={index}>
-                <p>{item.name}</p>
-              </div>
-            );
-          })}
-          {/* <FoldableSectionComponent
-            title={paymentMethods.category}
-            items={paymentMethods.items}
-          /> */}
+          <h3 className="text-vintage-green font-bold">
+            {paymentMethods.category}
+          </h3>
+          <div className="flex gap-2 justify-center lg:justify-start">
+            {paymentMethods.items.map((item, index) => (
+              <Image
+                key={index}
+                src={item.Ιcon}
+                alt={item.name}
+                width={50}
+                height={50}
+              />
+            ))}
+          </div>
         </div>
-
         <div className="flex flex-col items-center lg:items-start gap-6">
           <div>
             <h3 className="text-vintage-green font-bold">Country</h3>
@@ -148,7 +145,7 @@ export default function Footer() {
           </div>
 
           <Image
-            src="/paymentMethods.png"
+            src="/stripe.png"
             alt="Payment Methods"
             className="w-40 sm:w-48 lg:w-60"
             width={240}
