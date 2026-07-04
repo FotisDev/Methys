@@ -4,23 +4,37 @@ import { NextResponse, type NextRequest } from "next/server";
 const locales = ["en", "el", "da", "de"];
 const defaultLocale = "en";
 
-export async function middleware(request: NextRequest) {
-  console.log("middleware hit:", request.nextUrl.pathname);
+// Μόνο αυτά τα paths χρειάζονται auth check
+const protectedPaths = ["/offers", "/product-entry"];
+const authPaths = ["/login", "/createAccount"];
 
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  // 1. Locale redirect — γρήγορο, χωρίς Supabase
   const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
   if (!pathnameHasLocale) {
-    console.log("redirecting to:", `/${defaultLocale}${pathname}`);
     return NextResponse.redirect(
-      new URL(`/${defaultLocale}${pathname}`, request.url),
+      new URL(`/${defaultLocale}${pathname}`, request.url)
     );
   }
 
   const pathnameWithoutLocale = `/${pathname.split("/").slice(2).join("/")}`;
+  const locale = pathname.split("/")[1];
+
+  // 2. Αν δεν είναι protected/auth path, skip το Supabase εντελώς
+  const needsAuthCheck =
+    protectedPaths.some((p) => pathnameWithoutLocale.startsWith(p)) ||
+    authPaths.some((p) => pathnameWithoutLocale === p);
+
+  if (!needsAuthCheck) {
+    return NextResponse.next();
+  }
+
+  // 3. Supabase μόνο για protected paths
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -33,35 +47,24 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
+            request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
+            supabaseResponse.cookies.set(name, value, options)
           );
         },
       },
-    },
+    }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const locale = pathname.split("/")[1];
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user && pathnameWithoutLocale.startsWith("/offers")) {
+  if (!user && protectedPaths.some((p) => pathnameWithoutLocale.startsWith(p))) {
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
   }
 
-  if (!user && pathnameWithoutLocale.startsWith("/product-entry")) {
-    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
-  }
-
-  if (
-    user &&
-    (pathnameWithoutLocale === "/login" ||
-      pathnameWithoutLocale === "/createAccount")
-  ) {
+  if (user && authPaths.some((p) => pathnameWithoutLocale === p)) {
     return NextResponse.redirect(new URL(`/${locale}/offers`, request.url));
   }
 
