@@ -67,9 +67,9 @@ export default function Footer() {
           grid-cols-1
           sm:grid-cols-1
           md:grid-cols-1
-          lg:grid-cols-5
-          gap-8
-          px-2
+          lg:grid-cols-4
+          gap-12
+          px-3
           py-10
          
           
@@ -134,24 +134,16 @@ export default function Footer() {
               />
             ))}
           </div>
-        </div>
-        <div className="flex flex-col items-center lg:items-start gap-6">
-          <div>
+          <div className="flex flex-col gap-1 pt-5 ">
             <h3 className="text-vintage-green font-bold">Country</h3>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center lg:justify-start gap-2">
               <WorldShpereSvg />
               <p className="text-sm underline">International</p>
             </div>
           </div>
-
-          <Image
-            src="/stripe.png"
-            alt="Payment Methods"
-            className="w-40 sm:w-48 lg:w-60"
-            width={240}
-            height={60}
-            unoptimized
-          />
+        </div>
+        <div className="flex flex-col items-center lg:items-start gap-6">
+          
         </div>
       </section>
       <hr />
