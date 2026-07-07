@@ -1,4 +1,4 @@
-import { supabasePublic } from "@/_lib/supabase/client";
+import { getProductsWithStructure } from "@/_lib/backend/ProductWithStructure/action";
 import { ProductInDetails } from "@/_lib/types";
 
 type filterProps = {
@@ -9,32 +9,32 @@ type filterProps = {
   size?: string;
 };
 
-type SupabaseProductResponse = {
-  id: number;
-  name: string;
-  slug: string | null;
-  price: string;
-  description: string | null;
-  size_description: string | null;
-  product_details: string | null;
-  image_url: string[] | null;
-  is_offer: boolean;
-  categoryformen: {
-    id: number;
-    name: string;
-    slug: string | null;
-    parent: {
-      id: number;
-      name: string;
-      slug: string | null;
-    } | null;
-  } | null;
-  product_variants: {
-    size: string;
-    price: string | null;
-    quantity: number;
-  }[];
-};
+// type SupabaseProductResponse = {
+//   id: number;
+//   name: string;
+//   slug: string | null;
+//   price: string;
+//   description: string | null;
+//   size_description: string | null;
+//   product_details: string | null;
+//   image_url: string[] | null;
+//   is_offer: boolean;
+//   categoryformen: {
+//     id: number;
+//     name: string;
+//     slug: string | null;
+//     parent: {
+//       id: number;
+//       name: string;
+//       slug: string | null;
+//     } | null;
+//   } | null;
+//   product_variants: {
+//     size: string;
+//     price: string | null;
+//     quantity: number;
+//   }[];
+// };
 
 export async function FilteredProducts({
   parentSlug,
@@ -43,86 +43,43 @@ export async function FilteredProducts({
   max,
   size,
 }: filterProps): Promise<ProductInDetails[] | null> {
+  const data = await getProductsWithStructure(); 
   
- 
-
-  const { data, error } = await supabasePublic
-    .from("products")
-    .select(
-      `
-      id,
-      name,
-      slug,
-      price,
-      description,
-      size_description,
-      product_details,
-      image_url,
-      is_offer,
-      category_men_id,
-      categoryformen:category_men_id(
-        id,
-        name,
-        slug,
-        parent_id,
-        parent:parent_id(
-          id,
-          name,
-          slug
-        )
-      ),
-      product_variants(size, price, quantity)
-    `
-    )
-    .not("categoryformen", "is", null)
-    .returns<SupabaseProductResponse[]>();
-
-  if (error) {
-    console.error("Error fetching products:", error.message);
+  if (!data) {
+    console.error("Error fetching products for filtering");
     return null;
   }
 
-  if (!data || data.length === 0) {
-    console.log('No products found in database');
+  if (data.length === 0) {
     return [];
   }
 
   const categoryFilteredData = data.filter((product) => {
     const category = product.categoryformen;
     const parent = category?.parent;
-    
+
     const matchesCategory = category?.slug === categorySlug;
     const matchesParent = parent?.slug === parentSlug;
-    
+
     return matchesCategory && matchesParent;
   });
 
- 
+  const minNum = min ? parseFloat(min) : undefined;
+  const maxNum = max ? parseFloat(max) : undefined;
 
+  const filteredData = categoryFilteredData.filter((product) => {
+    if (minNum !== undefined && product.price < minNum) return false;
+    if (maxNum !== undefined && product.price > maxNum) return false;
 
- const filteredData = categoryFilteredData
-  .filter((product) => {
-    const basePrice = parseFloat(product.price);
-
-    // Filter by price on the product level
-    if (min && basePrice < parseFloat(min)) return false;
-    if (max && basePrice > parseFloat(max)) return false;
-
-    // Filter by size — check if at least one variant has that size
     if (size) {
-      const hasSize = product.product_variants?.some(
-        (v) => v.size === size && v.quantity > 0
+      const hasSize = product.product_variants.some(
+        (v) => v.size === size && v.quantity > 0,
       );
       if (!hasSize) return false;
     }
 
     return true;
-  })
-  .map((product) => ({
-    ...product,
-    price: parseFloat(product.price),
-    product_variants: product.product_variants ?? [],
-  })) as ProductInDetails[];
+  });
 
-return filteredData;
+  return filteredData;
 }

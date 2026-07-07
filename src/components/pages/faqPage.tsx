@@ -19,8 +19,8 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
   };
 
   return (
-    <HeaderProvider  forceOpaque={false}>
-      <section className="w-full custom-container-4xl padding-x padding-y font-poppins p-5 bg-default-color pt-20 md:pt-24">
+    <HeaderProvider  forceOpaque={true}>
+      <section className="w-full custom-container-4xl padding-x padding-y font-poppins p-5 bg-white pt-20 md:pt-24">
         <div className="flex flex-col justify-center items-center">
           <p className="text-vintage-brown text-lg font-semibold pt-20">{subtitle}</p>
           <h2 className="text-vintage-green text-5xl mb-8 pt-5">{title}</h2>

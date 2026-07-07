@@ -1,60 +1,70 @@
+"use server";
+
 import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
+import { unstable_cache } from "next/cache";
 
-export async function fetchProductBySlug(
-  categoryId: number,
-  slug: string
-): Promise<ProductInDetails | null> {
-  try {
-    const { data, error } = await supabasePublic
-      .from("products")
-      .select(`
-        id,
-        name,
-        price,
-        description,
-        size_description,
-        product_details,
-        image_url,
-        slug,
-        is_offer,
-        categoryformen:category_men_id!inner(
+export const fetchProductBySlug = unstable_cache(
+  async (
+    categoryId: number,
+    slug: string,
+  ): Promise<ProductInDetails | null> => {
+    try {
+      const { data, error } = await supabasePublic
+        .from("products")
+        .select(`
           id,
           name,
-          slug,
-          parent:parent_id!inner(id, name, slug)
-        ),
-        product_variants (
-          size,
           price,
-          quantity
-        )
-      `)
-      .eq("slug", slug)
-      .eq("category_men_id", categoryId)
-      .maybeSingle();
+          description,
+          size_description,
+          product_details,
+          image_url,
+          slug,
+          is_offer,
+          categoryformen:category_men_id!inner(
+            id,
+            name,
+            slug,
+            parent:parent_id!inner(id, name, slug)
+          ),
+          product_variants (
+            size,
+            price,
+            quantity
+          )
+        `)
+        .eq("slug", slug)
+        .eq("category_men_id", categoryId)
+        .maybeSingle();
 
-    if (error) {
-      console.error("Error fetching product by slug:", error.message);
+      if (error) {
+        console.error("Error fetching product by slug:", error.message);
+        return null;
+      }
+
+      if (!data) return null;
+
+      return {
+        ...data,
+        slug: data.slug ?? null,
+        description: data.description ?? null,
+        size_description: data.size_description ?? null,
+        product_details: data.product_details ?? null,
+        image_url: data.image_url ?? null,
+        categoryformen: data.id ?? null, 
+        product_variants: Array.isArray(data.product_variants)
+          ? data.product_variants
+          : [],
+      } as ProductInDetails;
+    } catch (error) {
+      console.error("Unexpected error fetching product by slug:", error);
       return null;
     }
-
-    if (!data) return null;
-
-    return {
-      ...data,
-      slug: data.slug ?? null,
-      description: data.description ?? null,
-      size_description: data.size_description ?? null,
-      product_details: data.product_details ?? null,
-      image_url: data.image_url ?? null,
-      categoryformen: data.id ?? null,
-      product_variants: Array.isArray(data.product_variants)
-        ? data.product_variants
-        : [],
-    };
-  } catch (error) {
-    console.error("Unexpected error fetching product by slug:", error);
-    return null;
-  }
-}
+  },
+  ["product-by-slug"],
+  {
+    revalidate: 3600,
+    tags: ["products"],
+  },
+);
