@@ -111,6 +111,7 @@ export default function SeasonalCollectionCard({
           src={hovered ? hoverImg : defaultImg}
           alt={item.name}
           fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
           className="object-cover object-center transition duration-500 ease-in-out"
           quality={75}
           priority={priority}

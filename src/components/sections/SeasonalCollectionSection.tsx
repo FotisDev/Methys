@@ -12,7 +12,7 @@ type SeasonalCollectionProps = {
 
 export default async function SeasonalCollectionSection({
   title,
-  href = "/product",
+  href = "/collections",
   fetcher,
 }: SeasonalCollectionProps) {
   const items = await fetcher();

@@ -6,14 +6,15 @@ import type { Metadata } from "next";
 import React, { Suspense } from "react";
 import CategoriesSection from "@/components/sections/CategoriesSection";
 import {
-  ProductBySpringSeason,
-  ProductByWinterSeason,
+  ProductByAutumnSeason,
+  ProductBySummerSeason,
 } from "@/_lib/backend/ProductWithStructure/action";
 import { createMetadata } from "@/components/SEO/metadata";
 import { createWebSiteSchema } from "@/_lib/schemasGenerators/createProductSchema";
 import { createOrganizationSchema } from "@/_lib/schemasGenerators/createOrganizationSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
+import SeasonalCollectionSkeleton from "@/components/skeletons/SeasonalCollectionSkeleton";
 
 export async function generateMetadata(): Promise<Metadata> {
   return createMetadata({
@@ -26,24 +27,37 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   return (
-    <section className="home-page ">
+    <section className="home-page">
       <Schema markup={createOrganizationSchema()} />
       <Schema markup={createWebSiteSchema()} />
       <HeaderProvider forceOpaque={false}>
-        <Hero />
-        <SeasonalCollectionSection
-          title="Winter Collection Just Dropped"
-          fetcher={ProductByWinterSeason}
-        />
-        <Suspense>
-          <PhotoVideoSection />
-          <CategoriesSection />
-          <SeasonalCollectionSection
-            title="Spring Collection Just Dropped"
-            fetcher={ProductBySpringSeason}
-          />
-          <Footer />
+        <Suspense >
+          <Hero />
         </Suspense>
+
+        <Suspense fallback={<SeasonalCollectionSkeleton />}>
+          <SeasonalCollectionSection
+            title="Summer Collection Just Dropped"
+            fetcher={ProductBySummerSeason}
+          />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <PhotoVideoSection />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <CategoriesSection />
+        </Suspense>
+
+        <Suspense fallback={<SeasonalCollectionSkeleton />}>
+          <SeasonalCollectionSection
+            title="Autumn Collection Just Dropped"
+            fetcher={ProductByAutumnSeason}
+          />
+        </Suspense>
+
+        <Footer />
       </HeaderProvider>
     </section>
   );

@@ -66,6 +66,7 @@ function createSeasonalFetcher(column: string, cacheKey: string, tag: string) {
           parent:parent_id!inner(id,name,slug)),
           product_variants(size,price,quantity)`)
         .eq(column, true)
+        .limit(7)
         .overrideTypes<ProductInDetails[], { merge: false }>();
 
       if (error) {
