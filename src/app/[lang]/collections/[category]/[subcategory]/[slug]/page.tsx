@@ -130,30 +130,30 @@ export default async function ProductDetailPage({
 
   try {
     const parentCategory = await getCategoryBySlug(categorySlug);
-console.log("DEBUG parentCategory:", parentCategory, "categorySlug:", categorySlug);
-if (!parentCategory || parentCategory.parent_id !== null) {
-  console.log("DEBUG -> notFound triggered by parentCategory check");
-  notFound();
-}
+    // console.log("DEBUG parentCategory:", parentCategory, "categorySlug:", categorySlug);
+    if (!parentCategory || parentCategory.parent_id !== null) {
+      // console.log("DEBUG -> notFound triggered by parentCategory check");
+      notFound();
+    }
 
-const subcategories = await getSubcategories(parentCategory.id);
-console.log("DEBUG subcategories:", subcategories);
+    const subcategories = await getSubcategories(parentCategory.id);
+    // console.log("DEBUG subcategories:", subcategories);
 
-const currentCategory = subcategories.find(
-  (subcat) => subcat.slug === subcategorySlug,
-);
-console.log("DEBUG currentCategory:", currentCategory, "subcategorySlug:", subcategorySlug);
-if (!currentCategory) {
-  console.log("DEBUG -> notFound triggered by currentCategory check");
-  notFound();
-}
+    const currentCategory = subcategories.find(
+      (subcat) => subcat.slug === subcategorySlug,
+    );
+    // console.log("DEBUG currentCategory:", currentCategory, "subcategorySlug:", subcategorySlug);
+    if (!currentCategory) {
+      // console.log("DEBUG -> notFound triggered by currentCategory check");
+      notFound();
+    }
 
-const product = await fetchProductBySlug(currentCategory.id, productSlug);
-console.log("DEBUG product:", product, "productSlug:", productSlug, "currentCategory.id:", currentCategory.id);
-if (!product) {
-  console.log("DEBUG -> notFound triggered by product check");
-  notFound();
-}
+    const product = await fetchProductBySlug(currentCategory.id, productSlug);
+    // console.log("DEBUG product:", product, "productSlug:", productSlug, "currentCategory.id:", currentCategory.id);
+    if (!product) {
+      // console.log("DEBUG -> notFound triggered by product check");
+      notFound();
+    }
 
     const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}`;
 
@@ -161,12 +161,12 @@ if (!product) {
       url: fullUrl,
       name: product.name,
       description: product.description ?? "",
-      images: product.image_url ?? ["/AuthClothPhoto.jpg"], 
+      images: product.image_url ?? ["/AuthClothPhoto.jpg"],
       price: Number(product.price),
       currency: "EUR",
       sku: String(product.slug ?? product.id),
       brand: "Methys",
-      availability: product.product_variants.some((p) => p.quantity > 0), 
+      availability: product.product_variants.some((p) => p.quantity > 0),
       variants: product.product_variants.map((v) => ({
         size: v.size,
         quantity: v.quantity,
@@ -190,7 +190,7 @@ if (!product) {
     ];
 
     return (
-      <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
+      <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
         <section className="relative w-full pt-20 pb-32 font-roboto text-vintage-green">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
             <Breadcrumbs items={breadcrumbItems} />
@@ -215,7 +215,7 @@ if (!product) {
 
                   {product.is_offer && (
                     <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 tracking-wider">
-                      NEW IN
+                      New Offer
                     </div>
                   )}
                 </div>
@@ -275,7 +275,9 @@ if (!product) {
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
                     <div className="mt-3 text-sm text-vintage-brown leading-relaxed hover:underline">
-                      <Link href={'/help'}>Need help? Contact us or check our Help page</Link>
+                      <Link href={"/help"}>
+                        Need help? Contact us or check our Help page
+                      </Link>
                     </div>
                   </details>
                 </div>
