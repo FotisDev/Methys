@@ -3,6 +3,8 @@ import { generateFAQSchema } from "@/_lib/schemasGenerators/FAQSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import FaqSection from "@/components/pages/faqPage";
 import { createMetadata } from "@/components/SEO/metadata";
+import { HeaderProvider } from "@/components/providers/HeaderProvider";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 export const metadata = createMetadata({
   MetaTitle: "Frequently Asked Question | Methys",
@@ -25,7 +27,7 @@ export default async function FAQPage() {
   const schemaMarkup = generateFAQSchema(faqs);
 
   return (
-    <>
+    <HeaderProvider  forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       {schemaMarkup && <Schema markup={schemaMarkup} />}
 
       <FaqSection
@@ -33,6 +35,6 @@ export default async function FAQPage() {
         title="Everything you need to know about our services"
         subtitle="Frequently Asked Questions"
       />
-    </>
+    </HeaderProvider>
   );
 }
