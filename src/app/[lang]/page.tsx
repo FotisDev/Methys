@@ -15,6 +15,7 @@ import { createOrganizationSchema } from "@/_lib/schemasGenerators/createOrganiz
 import Schema from "@/components/schemas/SchemaMarkUp";
 import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
 import SeasonalCollectionSkeleton from "@/components/skeletons/SeasonalCollectionSkeleton";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 export async function generateMetadata(): Promise<Metadata> {
   return createMetadata({
@@ -30,8 +31,8 @@ export default async function Home() {
     <section className="home-page">
       <Schema markup={createOrganizationSchema()} />
       <Schema markup={createWebSiteSchema()} />
-      <HeaderProvider forceOpaque={false}>
-        <Suspense >
+      <HeaderProvider forceOpaque={false} dropDownMenu={<DropDownMenu />}>
+        <Suspense>
           <Hero />
         </Suspense>
 

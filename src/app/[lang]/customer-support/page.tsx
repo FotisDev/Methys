@@ -5,6 +5,7 @@ import Schema from "@/components/schemas/SchemaMarkUp";
 import { getSupportCategories } from "@/_lib/backend/SupportCategories/action";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Image from "next/image";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 export const metadata = createMetadata({
   MetaTitle: "Support | Methys",
@@ -27,7 +28,7 @@ export default async function SupportPage() {
   return (
     <>
       {schemaMarkUp && <Schema markup={schemaMarkUp} />}
-      <HeaderProvider forceOpaque={false}>
+      <HeaderProvider forceOpaque={false} dropDownMenu={<DropDownMenu/>}>
         <main className="relative min-h-screen flex items-center justify-center px-4">
           <Image
             src="/yo.jpg"

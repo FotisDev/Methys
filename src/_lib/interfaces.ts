@@ -105,3 +105,16 @@ export interface MetadataProps {
   currency?: string;
   inStock?: boolean;
 }
+
+export interface SubCategoryData {
+  id: string;
+  name: string;
+  parent_id: string | null;
+}
+
+export interface MainCategoryData {
+  id: string;
+  name: string;
+  subcategories: SubCategoryData[];
+  image_url?: string | null;
+}

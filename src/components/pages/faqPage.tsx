@@ -2,7 +2,6 @@
 
 import { FAQ } from "@/_lib/types";
 import { useState } from "react";
-import { HeaderProvider } from "../providers/HeaderProvider";
 import Footer from "../footer/Footer";
 
 interface FaqSectionProps {
@@ -19,10 +18,12 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
   };
 
   return (
-    <HeaderProvider  forceOpaque={true}>
+    <>
       <section className="w-full custom-container-4xl padding-x padding-y font-poppins p-5 bg-white pt-20 md:pt-24">
         <div className="flex flex-col justify-center items-center">
-          <p className="text-vintage-brown text-lg font-semibold pt-20">{subtitle}</p>
+          <p className="text-vintage-brown text-lg font-semibold pt-20">
+            {subtitle}
+          </p>
           <h2 className="text-vintage-green text-5xl mb-8 pt-5">{title}</h2>
 
           {faqs.length === 0 ? (
@@ -30,7 +31,10 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
           ) : (
             <div className="w-full max-w-7xl bg-white px-5 rounded-xl">
               {faqs.map((faq) => (
-                <div key={faq.id} className="border-b border-default-color py-12">
+                <div
+                  key={faq.id}
+                  className="border-b border-default-color py-12"
+                >
                   <button
                     onClick={() => toggleFaq(faq.id)}
                     className="flex justify-between items-start w-full text-left group"
@@ -54,7 +58,9 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
                       {faq.subtitle && (
                         <p className="font-medium mb-2">{faq.subtitle}</p>
                       )}
-                      <p className="text-black font-semibold font-roboto text-lg">{faq.description}</p>
+                      <p className="text-black font-semibold font-roboto text-lg">
+                        {faq.description}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -64,6 +70,6 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
         </div>
       </section>
       <Footer />
-    </HeaderProvider>
+    </>
   );
 }

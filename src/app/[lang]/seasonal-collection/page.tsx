@@ -1,6 +1,7 @@
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 
 import Footer from "@/components/footer/Footer";
+import DropDownMenu from "@/components/header/DropDownMenu";
 import { SeasonalCollectionPageComponent } from "@/components/pages/seasonalCollectionPage";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { createMetadata } from "@/components/SEO/metadata";
@@ -25,7 +26,7 @@ export default async function SeasonalCollection() {
   const products = await fetchProducts();
 
   return (
-    <HeaderProvider forceOpaque={true}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <section className="padding-y padding-x bg-white">
         <SeasonalCollectionPageComponent products={products} title={""} />
       </section>

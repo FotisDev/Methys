@@ -1,5 +1,6 @@
 "use server";
 
+import { MainCategoryData } from "@/_lib/interfaces";
 import { supabasePublic } from "@/_lib/supabase/client";
 import { CategoryBackendType } from "@/_lib/types";
 import { unstable_cache } from "next/cache";
@@ -42,7 +43,44 @@ export const getCategoryByName = unstable_cache(
   },
   ["category-by-name"],
   {
-    revalidate: 3600, 
+    revalidate: 3600,
+    tags: ["categories"],
+  },
+);
+
+export const getMainCategories = unstable_cache(
+  async (): Promise<MainCategoryData[]> => {
+    const { data, error } = await supabasePublic
+      .from("categoriesformen")
+      .select("id,name,parent_id,image_url")
+      .order("parent_id", { ascending: true })
+      .order("name", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching main categories", error.message);
+    }
+
+    if (!data) return [];
+
+    const mainCats = data.filter((cat) => cat.parent_id === null);
+    const subCats = data.filter((cat) => cat.parent_id !== null);
+
+    return mainCats.map((mainCat) => ({
+      id: String(mainCat.id),
+      name: mainCat.name,
+      image_url: mainCat.image_url,
+      subcategories: subCats
+        .filter((subCat) => subCat.parent_id === mainCat.id)
+        .map((subCat) => ({
+          id: String(subCat.id),
+          name: subCat.name,
+          parent_id: String(subCat.parent_id),
+        })),
+    }));
+  },
+  ["main-categories"],
+  {
+    revalidate: 86000,
     tags: ["categories"],
   },
 );

@@ -1,75 +1,33 @@
 "use client";
 
-import { supabasePublic } from "@/_lib/supabase/client";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
-interface Category {
+type Category = {
   id: string;
   name: string;
   parent_id: string | null;
-}
+};
 
-interface MainCategory {
+type MainCategory = {
   id: string;
   name: string;
   subcategories: Category[];
   image_url?: string | null;
-}
+};
 
-export default function DropDownMenu() {
-  const [mainCategories, setMainCategories] = useState<MainCategory[]>([]);
-  const [loading, setLoading] = useState(false);
+type DropDownMenuClientProps = {
+  mainCategories: MainCategory[];
+};
+
+export default function DropDownMenuClient({ mainCategories }: DropDownMenuClientProps) {
+
   const router = useRouter();
 
   const toSlug = (name: string) => {
     return name.toLowerCase().replace(/\s+/g, "-");
   };
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabasePublic
-          .from("categoriesformen")
-          .select("id, name, parent_id,image_url")
-          .order("parent_id", { ascending: true })
-          .order("name", { ascending: true });
-
-        if (error) {
-          console.error("Error fetching categories:", error);
-          return;
-        }
-
-        if (data) {
-          const mainCats = data.filter((cat) => cat.parent_id === null);
-          const subCats = data.filter((cat) => cat.parent_id !== null);
-
-          const organizedCategories = mainCats.map((mainCat) => ({
-            id: String(mainCat.id),
-            name: mainCat.name,
-            image_url: mainCat.image_url,
-            subcategories: subCats
-              .filter((subCat) => subCat.parent_id === mainCat.id)
-              .map((subCat) => ({
-                id: String(subCat.id),
-                name: subCat.name,
-                parent_id: String(subCat.parent_id),
-              })),
-          }));
-          setMainCategories(organizedCategories);
-        }
-      } catch (err) {
-        console.error("Unexpected error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   const handleNavigate = (subcategory: Category, mainCategoryName: string) => {
     const mainCategorySlug = toSlug(mainCategoryName);
@@ -77,18 +35,6 @@ export default function DropDownMenu() {
     const fullPath = `/collections/${mainCategorySlug}/${subcategorySlug}`;
     router.push(fullPath);
   };
-
-  if (loading) {
-    return (
-      <div className="fixed left-0 right-0 w-screen bg-white z-50">
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
-          <div className="text-center">
-            <p>Loading categories...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <nav className="fixed left-0 right-0 w-screen bg-white z-50">
@@ -169,7 +115,6 @@ export default function DropDownMenu() {
                             width={320}
                             height={320}
                             quality={90}
-                            priority
                           />
                         </Link>
                       )}

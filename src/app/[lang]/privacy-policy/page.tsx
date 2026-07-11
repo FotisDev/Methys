@@ -2,6 +2,7 @@ import getPrivacyPolicy, {
   PrivacyPolicyBackendType,
 } from "@/_lib/backend/privacyPolicy/action";
 import Footer from "@/components/footer/Footer";
+import DropDownMenu from "@/components/header/DropDownMenu";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { createMetadata } from "@/components/SEO/metadata";
 
@@ -34,7 +35,7 @@ export default async function PrivacyPolicy() {
   if (!privacyPolicy) return <p>Page not found</p>;
 
   return (
-    <HeaderProvider forceOpaque={true}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <section
         aria-label="Privacy & Policy"
         className="mt-16 font-serif custom-container-4xl padding-x padding-y"

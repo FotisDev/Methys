@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
-import DropDownMenu from "../sections/DropDownMenu";
 import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
 import { useWishlist } from "../hooks/wishList";
@@ -14,7 +13,8 @@ import { useAuth } from "../providers/AuthProvider";
 import BulletButtonSideBar from "../SideBars/BulletButton";
 import LanguageSwitcher from "../LanguageSwitch/LanguageSwitch";
 
-const Menu = () => {
+const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
+
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
   const [showClothes, setShowClothes] = useState(false);
@@ -298,7 +298,7 @@ const Menu = () => {
             &times;
           </button>
           <div>
-            <DropDownMenu />
+            {dropDownMenu}
           </div>
         </div>
       )}

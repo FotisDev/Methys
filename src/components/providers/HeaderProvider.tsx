@@ -25,15 +25,17 @@ const HeaderContext = createContext<HeaderContextType | undefined>(undefined);
 export function HeaderProvider({
   children,
   forceOpaque = false,
+  dropDownMenu,
 }: {
   children: ReactNode;
   forceOpaque: boolean;
+  dropDownMenu: ReactNode;
 }) {
   const [contact, setContact] = useState<ContactPageProps | null>(null);
   const [social, setSocial] = useState<SocialProps | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(true);
-  
+
   useEffect(() => {
     const mockContact: ContactPageProps = {
       Contact: {
@@ -58,9 +60,9 @@ export function HeaderProvider({
     setIsLoading(false);
   }, []);
 
-  const setMenuVisible = (visible:boolean) =>{
+  const setMenuVisible = (visible: boolean) => {
     setIsMenuVisible(visible);
-  }
+  };
 
   return (
     <HeaderContext.Provider
@@ -75,13 +77,14 @@ export function HeaderProvider({
     >
       <nav className="relative">
         {!isLoading && (
-          <Menu        
-          // instagram={social?.Social?.Instagram || ""}
-          // facebook={social?.Social?.Facebook || ""}
-          // linkedin={social?.Social?.Linkedin || ""}
-          // email={contact?.Contact?.Email || ""}
-          // telephone={contact?.Contact?.Telephone || ""}
-          // stationsList={[]} // just send empty array for now
+          <Menu
+            dropDownMenu={dropDownMenu}
+            // instagram={social?.Social?.Instagram || ""}
+            // facebook={social?.Social?.Facebook || ""}
+            // linkedin={social?.Social?.Linkedin || ""}
+            // email={contact?.Contact?.Email || ""}
+            // telephone={contact?.Contact?.Telephone || ""}
+            // stationsList={[]} // just send empty array for now
           />
         )}
       </nav>

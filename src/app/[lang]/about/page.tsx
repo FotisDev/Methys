@@ -2,6 +2,7 @@ import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { AboutPageComponent } from "@/components/pages/aboutPageComponent";
 import { createMetadata } from "@/components/SEO/metadata";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 export const metadata = createMetadata({
   MetaTitle: "About Us | Methys",
@@ -19,7 +20,7 @@ export const metadata = createMetadata({
 
 export default function About() {
   return (
-    <HeaderProvider forceOpaque>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <AboutPageComponent />
       <Footer />
     </HeaderProvider>

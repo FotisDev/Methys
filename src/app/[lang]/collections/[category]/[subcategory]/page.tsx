@@ -12,6 +12,7 @@ import { createMetadata } from "@/components/SEO/metadata";
 import { Metadata } from "next";
 import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 export const revalidate = 600;
 
@@ -153,7 +154,7 @@ export default async function SubcategoryPage({
   ];
 
   return (
-    <HeaderProvider forceOpaque={true}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <Schema markup={schema} />
       <section className="relative w-full min-h-[80vh] pt-20 p-2 pb-32 font-poppins text-vintage-green">
         <Breadcrumbs items={breadcrumbItems} />

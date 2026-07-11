@@ -10,6 +10,7 @@ import Footer from "@/components/footer/Footer";
 import { createMetadata } from "@/components/SEO/metadata";
 import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
@@ -120,7 +121,7 @@ export default async function CategoryPage({
   ];
 
   return (
-    <HeaderProvider forceOpaque={true}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <Schema markup={schema} />
       <main className="relative w-full min-h-screen pt-24 pb-16 font-roboto">
         <div className="w-full  px-4 sm:px-6 lg:px-8">

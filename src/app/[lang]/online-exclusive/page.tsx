@@ -3,6 +3,7 @@ import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { OnlineProductsPageComponent } from "@/components/pages/OnlineProductsPage";
 import { createMetadata } from "@/components/SEO/metadata";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 export const metadata = createMetadata({
   MetaTitle: "Online Exclusive | Methys",
@@ -22,7 +23,7 @@ export default async function OnlineExclusiveProducts() {
   const onlineProducts = await fetchOnlineExclusive();
 
   return (
-    <HeaderProvider forceOpaque={true}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <section className="padding-y px-0.5 bg-white">
         <OnlineProductsPageComponent products={onlineProducts} title={""} />
       </section>

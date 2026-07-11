@@ -16,6 +16,7 @@ import { ProductBySpringSeason } from "@/_lib/backend/ProductWithStructure/actio
 import { createMetadata } from "@/components/SEO/metadata";
 import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
 import Link from "next/link";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 export const revalidate = 600;
 
@@ -129,23 +130,30 @@ export default async function ProductDetailPage({
 
   try {
     const parentCategory = await getCategoryBySlug(categorySlug);
-    if (!parentCategory || parentCategory.parent_id !== null) {
-      notFound();
-    }
+console.log("DEBUG parentCategory:", parentCategory, "categorySlug:", categorySlug);
+if (!parentCategory || parentCategory.parent_id !== null) {
+  console.log("DEBUG -> notFound triggered by parentCategory check");
+  notFound();
+}
 
-    const subcategories = await getSubcategories(parentCategory.id);
+const subcategories = await getSubcategories(parentCategory.id);
+console.log("DEBUG subcategories:", subcategories);
 
-    const currentCategory = subcategories.find(
-      (subcat) => subcat.slug === subcategorySlug,
-    );
-    if (!currentCategory) {
-      notFound();
-    }
+const currentCategory = subcategories.find(
+  (subcat) => subcat.slug === subcategorySlug,
+);
+console.log("DEBUG currentCategory:", currentCategory, "subcategorySlug:", subcategorySlug);
+if (!currentCategory) {
+  console.log("DEBUG -> notFound triggered by currentCategory check");
+  notFound();
+}
 
-    const product = await fetchProductBySlug(currentCategory.id, productSlug);
-    if (!product) {
-      notFound();
-    }
+const product = await fetchProductBySlug(currentCategory.id, productSlug);
+console.log("DEBUG product:", product, "productSlug:", productSlug, "currentCategory.id:", currentCategory.id);
+if (!product) {
+  console.log("DEBUG -> notFound triggered by product check");
+  notFound();
+}
 
     const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}`;
 
@@ -182,7 +190,7 @@ export default async function ProductDetailPage({
     ];
 
     return (
-      <HeaderProvider forceOpaque={true}>
+      <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
         <section className="relative w-full pt-20 pb-32 font-roboto text-vintage-green">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
             <Breadcrumbs items={breadcrumbItems} />

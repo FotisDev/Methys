@@ -8,6 +8,7 @@ import { createMetadata } from "@/components/SEO/metadata";
 import type { Metadata } from "next";
 import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 export const revalidate = 600;
 
@@ -87,7 +88,7 @@ export default async function ProductList() {
   ];
 
   return (
-    <HeaderProvider forceOpaque={true}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <Schema markup={schema} />
       <section className="padding-y padding-x text-vintage-green font-roboto">
         <div className="pt-16">

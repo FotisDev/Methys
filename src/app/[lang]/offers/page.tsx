@@ -1,9 +1,11 @@
+'use server'
 import { fetchOffers } from "@/_lib/backend/offers/actions";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Footer from "@/components/footer/Footer";
 import OffersPageComponent from "@/components/pages/offerPage";
 import { Metadata } from "next";
 import { createMetadata } from "@/components/SEO/metadata";
+import DropDownMenu from "@/components/header/DropDownMenu";
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -25,9 +27,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function OfferPage() {
   const offers = await fetchOffers();
-
+  
   return (
-    <HeaderProvider forceOpaque={true}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <section className="padding-y padding-x bg-white">
         <OffersPageComponent offerProduct={offers} />
       </section>

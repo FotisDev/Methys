@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import CustomerSupport from '@/svgs/customerSupport';
-import Mail from '@/svgs/mail';
-import SocialsSvg from '@/svgs/Socials';
+// import Mail from '@/svgs/mail';
+// import SocialsSvg from '@/svgs/Socials';
 import { useState } from 'react';
 
 export default function BulletButtonSideBar() {
@@ -19,9 +19,9 @@ export default function BulletButtonSideBar() {
   };
 
   const messages = [
-    { id: 1, label: 'Support & Email', href: '/support', icon: <Mail /> },
+    // { id: 1, label: 'Support & Email', href: '/support', icon: <Mail /> },
     { id: 2, label: 'Customer Support', href: '/customer-support', icon: <CustomerSupport /> },
-    { id: 3, label: 'Stay Connected', href: '/stay-connected', icon: <SocialsSvg /> },
+    // { id: 3, label: 'Stay Connected', href: '/stay-connected', icon: <SocialsSvg /> },
   ];
 
   return (
