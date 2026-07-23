@@ -194,7 +194,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
           <div className="flex items-center justify-end gap-1">
             <button
               onClick={toggleWishlist}
-              className="relative group"
+              className="relative group cursor-pointer"
               aria-label={`Wishlist with ${wishlistCount} items`}
             >
               <div className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -255,7 +255,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
       {/* Mobile Menu */}
       {showBulletMenu && (
         <nav
-          className="block lg:hidden absolute top-full pt-10 left-0 z-30 w-full bg-white shadow-md transition-all duration-300 ease-in-out"
+          className="block lg:hidden absolute top-full pt-10 left-0 z-30 w-full bg-white shadow-md transition-all duration-300 ease-in-out cursor-pointer"
           aria-label="Mobile navigation"
         >
           <ul className="flex flex-col px-4 py-4 gap-3">
@@ -283,7 +283,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
       {showClothes && (
         <div
           ref={clothesModalRef}
-          className="fixed top-16 left-0 z-40 h-auto max-h-[calc(100vh-4rem)] w-auto bg-white shadow-lg rounded-r-3xl transition-transform duration-300 transform translate-x-0"
+          className="fixed top-16 left-0 z-40 h-auto max-h-[calc(100vh-4rem)] w-auto bg-white shadow-lg rounded-r-3xl transition-transform duration-300 transform translate-x-0 "
           style={{
             transform: showClothes ? "translateX(0)" : "translateX(-100%)",
             minWidth: "320px",

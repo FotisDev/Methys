@@ -30,7 +30,7 @@ export default function BulletButtonSideBar() {
       <button
         type="button"
         aria-label="Toggle Menu"
-        className="text-center w-12 h-12 text-vintage-green bg-none px-2 py-1 rounded-full flex items-center justify-center"
+        className="text-center w-12 h-12 text-vintage-green bg-none px-2 py-1 rounded-full flex items-center justify-center cursor-pointer"
         onClick={toggleMenu}
       >
         <div className="flex flex-col items-center gap-1">

@@ -138,7 +138,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
               availableSizes.length === 0
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : addedToCart
-                  ? "bg-green-600 text-white"
+                  ? "bg-default-cold text-white"
                   : "bg-vintage-green text-white hover:bg-vintage-green/90"
             }
           `}

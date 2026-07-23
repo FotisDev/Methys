@@ -78,7 +78,7 @@ export default function DropDownMenuClient({ mainCategories }: DropDownMenuClien
                   return (
                     <div
                       key={mainCat.id}
-                      className="flex-1 flex flex-col items-start"
+                      className="flex-1 flex flex-col items-start "
                     >
                       <div className="flex-1 w-full">
                         <h3 className="text-gray-800 text-lg capitalize mb-2">
@@ -90,7 +90,7 @@ export default function DropDownMenuClient({ mainCategories }: DropDownMenuClien
                             mainCat.subcategories.map((subCat) => (
                               <button
                                 key={subCat.id}
-                                className="py-1 text-gray-700 text-sm hover:text-gray-900 hover:underline transition-colors whitespace-nowrap capitalize"
+                                className="py-1 text-gray-700 text-sm hover:text-gray-900 hover:underline transition-colors whitespace-nowrap capitalize  cursor-pointer"
                                 onClick={() =>
                                   handleNavigate(subCat, mainCat.name)
                                 }

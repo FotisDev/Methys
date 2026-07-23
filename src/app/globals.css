@@ -7,13 +7,16 @@
 
   --font-poppins: var(--font-poppins), sans-serif;
   --font-roboto: var(--font-roboto), sans-serif;
-  --color-vintage-brown: #A97447;
-  --color-vintage-green: #3B3B1A;
+  --color-vintage-brown: #cecece;
+  --color-vintage-green: #141620;
   --color-default-color:#D1D3D4;
   --color-default-cold:#1B3C53;
   --color-default-yellow:#FF9D00;
-  --color-vintage-white:#F2EAD7;
-  --color-seasalt:#f8f9fa
+  --color-vintage-white:#E4DBDB;
+  --color-seasalt:#f8f9fa;
+  --color-gray-aca:#acacac;
+  --color-white-fb:#fbfbfb;
+  --color-white-f6:#f6f6f6;
 }
 
 :root {

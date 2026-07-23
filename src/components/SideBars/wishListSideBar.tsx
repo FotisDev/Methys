@@ -77,7 +77,7 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-vintage-green rounded-full transition-colors"
+            className="p-2 hover:bg-vintage-green hover:text-white rounded-full transition-colors cursor-pointer"
           >
             <svg
               className="w-6 h-6"
@@ -113,7 +113,7 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
               <p className="text-gray-600 mb-6">
                 Save your favorite products to review them later.
               </p>
-              <button onClick={onClose} className="py-3 px-6 hover-colors">
+              <button onClick={onClose} className="py-3 px-6 hover-colors cursor-pointer">
                 Start Shopping
               </button>
             </div>

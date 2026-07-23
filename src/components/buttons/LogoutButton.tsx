@@ -29,7 +29,7 @@ export default function LogoutButton({className = ""}:{className?:string}){
         <button
         onClick={handleLogout}
         disabled={loading}
-        className={`bg-default-cold hover:bg-default-yellow text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+        className={`bg-vintage-green hover:bg-white-fb text-white hover:text-vintage-green px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
         >
             {loading? 'Logging out...':"Logout"}
         </button>

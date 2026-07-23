@@ -11,6 +11,7 @@ import { createMetadata } from "@/components/SEO/metadata";
 import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import { getCategoryByName } from "@/_lib/backend/CategoryById/action";
 
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
@@ -75,7 +76,7 @@ export default async function CategoryPage({
   let error: string | null = null;
 
   try {
-    const foundCategory = await getCategoryBySlug(categorySlug);
+    const foundCategory = await getCategoryByName(categorySlug);
 
     if (!foundCategory || foundCategory.parent_id !== null) {
       throw new Error(`Main category "${categorySlug}" not found`);
