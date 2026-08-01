@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import {
-  getCategoryBySlug,
-  getSubcategories,
-  getValidImage,
-} from "@/_lib/helpers";
+import { getValidImage } from "@/_lib/helpers";
+import { getCategoryBySlug } from "@/_lib/backend/CategoryById/action";
+import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import ProductActionsInline from "./ProductActionsInline";
 import { fetchProductBySlug } from "@/_lib/backend/productBySlug/action";
@@ -41,7 +39,6 @@ export async function generateMetadata({
       return createMetadata({
         MetaTitle: "Product Not Found | UrbanValor",
         MetaDescription: "The product you're looking for doesn't exist.",
-        // canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,//ΝΑ ΔΩ ΑΥΤΟ ΑΝ ΔΟΥΛΕΥΕΙ ΣΩΣΤΑ ΓΙΑΤΙ ΠΑΙΖΕΙ ΝΑ ΕΙΝΑΙ ΕΤΟΙΜΟ ΤΟ  ΝΕΧΤ_PUBLIC ΑΠΟ ΤΗΝ CREATElOACLE METADA.
         canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
         OpenGraphImageUrl:
           "/storage/v1/object/public/OpenGraphImages/about.jpg",
@@ -54,7 +51,10 @@ export async function generateMetadata({
       });
     }
 
-    const subcategories = await getSubcategories(parentCategory.id);
+    const allCategories = await getAllCategoriesWithSubcategories();
+    const subcategories = allCategories.filter(
+      (cat) => cat.parent_id === parentCategory.id,
+    );
     const currentCategory = subcategories.find(
       (subcat) => subcat.slug === subcategorySlug,
     );
@@ -130,28 +130,24 @@ export default async function ProductDetailPage({
 
   try {
     const parentCategory = await getCategoryBySlug(categorySlug);
-    // console.log("DEBUG parentCategory:", parentCategory, "categorySlug:", categorySlug);
     if (!parentCategory || parentCategory.parent_id !== null) {
-      // console.log("DEBUG -> notFound triggered by parentCategory check");
       notFound();
     }
 
-    const subcategories = await getSubcategories(parentCategory.id);
-    // console.log("DEBUG subcategories:", subcategories);
+    const allCategories = await getAllCategoriesWithSubcategories();
+    const subcategories = allCategories.filter(
+      (cat) => cat.parent_id === parentCategory.id,
+    );
 
     const currentCategory = subcategories.find(
       (subcat) => subcat.slug === subcategorySlug,
     );
-    // console.log("DEBUG currentCategory:", currentCategory, "subcategorySlug:", subcategorySlug);
     if (!currentCategory) {
-      // console.log("DEBUG -> notFound triggered by currentCategory check");
       notFound();
     }
 
     const product = await fetchProductBySlug(currentCategory.id, productSlug);
-    // console.log("DEBUG product:", product, "productSlug:", productSlug, "currentCategory.id:", currentCategory.id);
     if (!product) {
-      // console.log("DEBUG -> notFound triggered by product check");
       notFound();
     }
 
@@ -191,11 +187,11 @@ export default async function ProductDetailPage({
 
     return (
       <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
-        <section className="relative w-full pt-20 pb-32 font-roboto text-vintage-green">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <section className="relative w-full pt-20 font-roboto text-vintage-green">
+          <div className="mx-auto px-4 sm:px-6">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
-          <div className=" mx-auto px-4 sm:px-6 lg:px-8">
+          <div className=" mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
               <div className="space-y-0">
                 <div
@@ -338,7 +334,7 @@ export default async function ProductDetailPage({
 
           <Schema markup={schema} />
         </section>
-        <div className="pl-1">
+        <div className="px-4 sm:px-6">
           <SeasonalCollectionSection
             title="Our Recommendations"
             fetcher={ProductBySpringSeason}

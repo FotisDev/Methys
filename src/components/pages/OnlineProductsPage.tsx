@@ -10,7 +10,7 @@ type OnlineProductProps = {
 
 export function OnlineProductsPageComponent({ products }: OnlineProductProps) {
   const breadcrumbs = [
-    { name: "Home", slug: "Home" },
+    { name: "Home", slug: "/" },
     { name: "Online-Exclusive", slug: "Online-Exclusive" },
   ];
 

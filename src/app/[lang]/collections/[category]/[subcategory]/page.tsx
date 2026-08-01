@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getCategoryBySlug, getSubcategories } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Footer from "@/components/footer/Footer";
 import { getProductsWithStructure } from "@/_lib/backend/ProductWithStructure/action";
@@ -13,6 +12,8 @@ import { Metadata } from "next";
 import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import { getCategoryBySlug } from "@/_lib/backend/CategoryById/action";
+import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
 
 export const revalidate = 600;
 
@@ -47,7 +48,10 @@ export async function generateMetadata({
       });
     }
 
-    const subcategories = await getSubcategories(parentCategory.id);
+    const allCategories = await getAllCategoriesWithSubcategories();
+    const subcategories = allCategories.filter(
+      (cat) => cat.parent_id === parentCategory.id,
+    );
     const currentCategory = subcategories.find(
       (subcat) => subcat.slug?.toLowerCase() === subcategorySlug.toLowerCase(),
     );
@@ -65,7 +69,6 @@ export async function generateMetadata({
       MetaTitle: `${currentCategory.name} - ${parentCategory.name} | Methys`,
       MetaDescription: `Discover our collection of ${currentCategory.name.toLowerCase()} products. Timeless style, exceptional quality.`,
       canonical: `/collections/${categorySlug}/${subcategorySlug}`,
-      // Optional: Add category image
       OpenGraphImageUrl:
         "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     });
@@ -101,7 +104,10 @@ export default async function SubcategoryPage({
     notFound();
   }
 
-  const subcategories = await getSubcategories(parentCategory.id);
+  const allCategories = await getAllCategoriesWithSubcategories();
+  const subcategories = allCategories.filter(
+    (cat) => cat.parent_id === parentCategory.id,
+  );
 
   const currentCategory = subcategories.find(
     (subcat) => subcat.slug?.toLowerCase() === subcategorySlug.toLowerCase(),
@@ -163,9 +169,6 @@ export default async function SubcategoryPage({
           <h1 className="text-base  ">
             {currentCategory.name.toUpperCase()}
           </h1>
-          {/* <p className="text-sm  sm:text-lg text-vintage-brown">
-            Discover our collection of {currentCategory.name.toLowerCase()}
-          </p> */}
         </header>
 
         <div className="flex flex-row gap-5 text-xl capitalize py-2 overflow-x-auto scrollbar-hide whitespace-nowrap ">

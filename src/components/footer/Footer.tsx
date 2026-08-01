@@ -60,7 +60,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full font-robboto bg-white">
+    <footer className="w-full font-robboto bg-white padding-x">
       <section
         className="
           grid
@@ -146,7 +146,7 @@ export default function Footer() {
           
         </div>
       </section>
-      <hr />
+      <hr className=""/>
 
       <div className="relative px-4 py-6">
         <div className="text-center text-sm">
@@ -176,7 +176,7 @@ export default function Footer() {
 
             <Link
               href="/login"
-              className="w-[130px] h-[40px] bg-vintage-white text-black flex items-center justify-center rounded"
+              className="w-[130px] h-[40px] border border-vintage-green bg-white text-vintage-green flex items-center justify-center rounded hover:bg-vintage-green hover:text-white"
             >
               Sign Up / Sign In
             </Link>

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCategoryBySlug, getSubcategories } from "@/_lib/helpers";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { notFound } from "next/navigation";
 import { CategoryBackendType } from "@/_lib/types";
@@ -11,7 +10,9 @@ import { createMetadata } from "@/components/SEO/metadata";
 import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import DropDownMenu from "@/components/header/DropDownMenu";
-import { getCategoryByName } from "@/_lib/backend/CategoryById/action";
+import { getCategoryBySlug } from "@/_lib/backend/CategoryById/action";
+import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
+import RightArrowIcon from "@/svgs/RightArrowIcon";
 
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
@@ -28,11 +29,12 @@ export async function generateMetadata({
   const categorySlug = decodeURIComponent(category);
 
   try {
+   
     const foundCategory = await getCategoryBySlug(categorySlug);
 
     if (!foundCategory || foundCategory.parent_id !== null) {
       return createMetadata({
-        MetaTitle: "Category Not Found |  Methys",
+        MetaTitle: "Category Not Found | Methys",
         MetaDescription: "The category you're looking for doesn't exist.",
         canonical: `/collections/${categorySlug}`,
         OpenGraphImageUrl:
@@ -47,7 +49,7 @@ export async function generateMetadata({
     }
 
     return createMetadata({
-      MetaTitle: `${foundCategory.name} |  Methys`,
+      MetaTitle: `${foundCategory.name} | Methys`,
       MetaDescription: `Shop our exclusive ${foundCategory.name.toLowerCase()} collection – premium quality, timeless design.`,
       canonical: `/collections/${categorySlug}`,
       OpenGraphImageUrl:
@@ -55,13 +57,15 @@ export async function generateMetadata({
     });
   } catch {
     return createMetadata({
-      MetaTitle: "Category Not Found | Methys ",
+      MetaTitle: "Category Not Found | Methys",
       MetaDescription: "An error occurred while loading this category.",
       canonical: `/collections/${categorySlug}`,
       robots: { index: false, follow: false },
     });
   }
 }
+
+const PRIORITY_IMAGE_COUNT = 4;
 
 export default async function CategoryPage({
   params,
@@ -76,7 +80,7 @@ export default async function CategoryPage({
   let error: string | null = null;
 
   try {
-    const foundCategory = await getCategoryByName(categorySlug);
+    const foundCategory = await getCategoryBySlug(categorySlug);
 
     if (!foundCategory || foundCategory.parent_id !== null) {
       throw new Error(`Main category "${categorySlug}" not found`);
@@ -84,7 +88,10 @@ export default async function CategoryPage({
 
     categoryData = foundCategory;
 
-    const subcategoriesData = await getSubcategories(foundCategory.id);
+    const allCategories = await getAllCategoriesWithSubcategories();
+    const subcategoriesData = allCategories.filter(
+      (cat) => cat.parent_id === foundCategory.id,
+    );
 
     const thumbnailMap = await fetchProductThumbnailsByCategoryIds(
       subcategoriesData.map((s) => s.id),
@@ -124,8 +131,8 @@ export default async function CategoryPage({
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <Schema markup={schema} />
-      <main className="relative w-full min-h-screen pt-24 pb-16 font-roboto">
-        <div className="w-full  px-4 sm:px-6 lg:px-8">
+      <main className="relative w-full min-h-screen pt-24 font-roboto">
+        <div className="w-full  px-4 sm:px-6 ">
           <Breadcrumbs items={breadcrumbItems} />
           <header className="mb-5">
             <h1 className="text-3xl md:text-4xl font-light mb-4 text-vintage-green">
@@ -137,15 +144,13 @@ export default async function CategoryPage({
             </p>
           </header>
 
-          <hr className="pb-3 border-vintage-green/30" />
-
           {subcategories.length === 0 ? (
             <section
               className="text-center py-20"
               aria-labelledby="no-subcategories"
             >
-              <div className="text-8xl mb-6" role="img" aria-label="Empty box">
-                Empty Box
+              <div className="text-8xl mb-6" aria-hidden="true">
+                📦
               </div>
               <h2
                 id="no-subcategories"
@@ -163,8 +168,8 @@ export default async function CategoryPage({
                 {categoryData.name} Subcategories
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 h-[120vh]">
-                {subcategories.map((subcategory) => {
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {subcategories.map((subcategory, index) => {
                   const href = `/collections/${encodeURIComponent(
                     categorySlug,
                   )}/${encodeURIComponent(subcategory.slug ?? "")}`;
@@ -184,17 +189,17 @@ export default async function CategoryPage({
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
-                          priority
+                          priority={index < PRIORITY_IMAGE_COUNT}
                         />
 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                          <h2 className="text-2xl font-semibold mb-2 tracking-wide">
+                          <h2 className="text-2xl font-semibold  tracking-wide capitalize">
                             {subcategory.name}
                           </h2>
-                          <p className="text-sm opacity-90 font-medium">
-                            Shop Collection
+                          <p className="text-sm opacity-90 font-medium flex flex-row hover:underline">
+                           Shop <span><RightArrowIcon className='w-5 h-5 text-white-fb'/></span>
                           </p>
                         </div>
                       </Link>

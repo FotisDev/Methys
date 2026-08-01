@@ -1,5 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
+
 import { CategoryBackendType } from "./types";
+import { unstable_cache } from "next/cache";
+import { cache } from "react";
+import { supabasePublic } from "./supabase/client";
 
 export type User = {
   id: string;
@@ -10,69 +13,31 @@ export type User = {
   birthday: string | null;
 };
 
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+export const fetchCategories = cache(
+  unstable_cache(
+    async (): Promise<CategoryBackendType[] | null> => {
+      const { data, error } = await supabasePublic
+        .from("categoriesformen")
+        .select("id, name, parent_id, image_url, slug")
+        .order("id", { ascending: true });
+
+      if (error || !data) {
+        console.error("Error fetching categories:", error?.message);
+        return null;
+      }
+
+      return data as CategoryBackendType[];
+    },
+    ["categories-hub"],
+    { revalidate: 3600, tags: ["categories"] },
+  ),
 );
 
-export async function fetchCategories(): Promise<CategoryBackendType[] | null> {
-  const { data, error } = await supabase
-    .from("categoriesformen")
-    .select("id, name, parent_id, image_url")
-    .order("id", { ascending: true });
-
-  if (error || !data) {
-    console.error("Error fetching categories:", error?.message);
-    return null;
-  }
-
-  return data as CategoryBackendType[];
-}
-
-export async function getSubcategories(
-  parentId: number
-): Promise<CategoryBackendType[]> {
-  const { data, error } = await supabase
-    .from("categoriesformen")
-    .select("id, name, parent_id, slug,image_url")
-    .eq("parent_id", parentId)
-    .order("id", { ascending: true });
-
-  if (error) {
-    console.error("Error fetching subcategories:", error);
-    return [];
-  }
-
-  return data || [];
-}
-
-export async function getCategoryBySlug(
-  slug: string,
-  parentId?: number | null
-): Promise<CategoryBackendType | null> {
-  let query = supabase
-    .from("categoriesformen")
-    .select("id, name, parent_id, slug,image_url")
-    .eq("slug", slug);
-
-  if (parentId !== null && parentId !== undefined) {
-    query = query.eq("parent_id", parentId);
-  }
-
-  const { data, error } = await query.maybeSingle();
-
-  if (error) {
-    console.error("Supabase error in getCategoryBySlug:", error);
-    return null;
-  }
-
-  return data ?? null;
-}
-
 export async function getCategoryById(
-  categoryId: number
+  categoryId: number,
 ): Promise<CategoryBackendType | null> {
-  const { data, error } = await supabase
+  const { data, error } = await supabasePublic
     .from("categoriesformen")
     .select("id,name, parent_id,image_url")
     .eq("id", categoryId)
@@ -87,7 +52,7 @@ export async function getCategoryById(
 }
 
 export async function getCategoryPath(
-  categoryId: number
+  categoryId: number,
 ): Promise<CategoryBackendType[]> {
   const path: CategoryBackendType[] = [];
   let currentId = categoryId;
@@ -104,7 +69,7 @@ export async function getCategoryPath(
 }
 
 export async function getCategoryHierarchy(
-  categoryId: number
+  categoryId: number,
 ): Promise<CategoryBackendType[]> {
   return await getCategoryPath(categoryId);
 }

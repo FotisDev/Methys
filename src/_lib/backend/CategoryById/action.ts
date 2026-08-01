@@ -4,6 +4,7 @@ import { MainCategoryData } from "@/_lib/interfaces";
 import { supabasePublic } from "@/_lib/supabase/client";
 import { CategoryBackendType } from "@/_lib/types";
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 export const getCategoryByName = unstable_cache(
   async (
@@ -46,6 +47,32 @@ export const getCategoryByName = unstable_cache(
     revalidate: 3600,
     tags: ["categories"],
   },
+);
+
+export const getCategoryBySlug = cache(
+  unstable_cache(
+    async (
+      slug: string,
+      parent_id?: number | null,
+    ): Promise<CategoryBackendType | null> => {
+      let query = supabasePublic
+        .from("categoriesformen")
+        .select("id, name, parent_id, slug, image_url")
+        .eq("slug", slug);
+
+      if (parent_id !== null && parent_id !== undefined) {
+        query = query.eq("parent_id", parent_id);
+      }
+      const { data, error } = await query.maybeSingle();
+      if (error) {
+        console.error("Supabase error in getCategoryBySlug", error);
+        return null;
+      }
+      return data ?? null;
+    },
+    ["category-by-slug"],
+    { revalidate: 3600, tags: ["categories"] },
+  ),
 );
 
 export const getMainCategories = unstable_cache(

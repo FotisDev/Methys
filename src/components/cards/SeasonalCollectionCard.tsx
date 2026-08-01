@@ -82,7 +82,7 @@ export default function SeasonalCollectionCard({
     addToWishlist(item);
   };
 
-  const getCategoryPath = (): string => {
+  const buildCategoryHref = (): string => {
     const category = item.categoryformen;
     const parent = category?.parent;
     if (parent?.slug && category?.slug) {
@@ -98,7 +98,7 @@ export default function SeasonalCollectionCard({
 
   return (
     <Link
-      href={`/collections/${getCategoryPath()}/${item.slug ?? ""}`}
+      href={`/collections/${buildCategoryHref()}/${item.slug ?? ""}`}
       className="font-roboto  "
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
