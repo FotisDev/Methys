@@ -118,7 +118,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
 
   const navbarClasses = [
     "fixed",
-    "font-poppins",
+    "font-serif",
     "top-0",
     "z-50",
     "grid",
@@ -127,14 +127,12 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
     "aspect-[60/2]",
     "w-full",
     "px-2",
-    "lg:px-2",
+    "lg:px-4",
     "text-xs",
     "transition-all",
     "duration-300",
-    "border",
-    "border-gray-50",
-    "shadow",
-    "shadow-gray-50",
+    "border-b",
+    "border-gray-aca/30",
   ];
 
   if (isOpaque) {

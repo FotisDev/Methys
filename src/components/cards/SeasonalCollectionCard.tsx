@@ -146,9 +146,9 @@ export default function SeasonalCollectionCard({
           <button
             onClick={handleAddToCart}
             aria-label="Add to cart"
-            className="shrink-0 text-black hover:text-default-color transition-opacity"
+            className="shrink-0 text-gray-aca hover:text-black transition-opacity cursor-pointer"
           >
-            <CartSvg className="w-4 h-4" />
+            <CartSvg className="w-4 h-4 " />
           </button>
         </div>
 

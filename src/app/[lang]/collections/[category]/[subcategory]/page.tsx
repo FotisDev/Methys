@@ -160,29 +160,29 @@ export default async function SubcategoryPage({
   ];
 
   return (
-    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <Schema markup={schema} />
-      <section className="relative w-full min-h-[80vh] pt-20 p-2 pb-32 font-poppins text-vintage-green">
-        <Breadcrumbs items={breadcrumbItems} />
+      <section className="relative w-full min-h-[80vh] pt-20  pb-32 font-serif text-vintage-green">
+        <div className="pl-4">
+          <Breadcrumbs items={breadcrumbItems} />
+        </div>
 
-        <header className="flex flex-row items-center gap-3 mb-2 font-semibold">
-          <h1 className="text-base  ">
-            {currentCategory.name.toUpperCase()}
-          </h1>
+        <header className="flex flex-row items-center tracking-wide pl-4">
+          <h1 className="text-lg capitalize ">{currentCategory.name}</h1>
         </header>
 
-        <div className="flex flex-row gap-5 text-xl capitalize py-2 overflow-x-auto scrollbar-hide whitespace-nowrap ">
+        <div className="flex flex-row gap-5 text-black text-xs uppercase p-4 overflow-x-auto scrollbar-hide tracking-wide whitespace-nowrap ">
           {subcategories
-          .filter((item)=>item.slug != subcategorySlug)
-          .map((item) => (
-            <Link
-              href={`/collections/${parentCategory.slug}/${item.slug}`}
-              key={item.id}
-              className="inline-block"
-            >
-              {item.name}
-            </Link>
-          ))}
+            .filter((item) => item.slug != subcategorySlug)
+            .map((item) => (
+              <Link
+                href={`/collections/${parentCategory.slug}/${item.slug}`}
+                key={item.id}
+                className="inline-block"
+              >
+                {item.name}
+              </Link>
+            ))}
         </div>
 
         <hr className="mt-2 mb-4 bg-vintage-green" />
