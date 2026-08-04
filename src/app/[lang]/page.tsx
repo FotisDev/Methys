@@ -38,7 +38,7 @@ export default async function Home() {
 
         <Suspense fallback={<SeasonalCollectionSkeleton />}>
           <SeasonalCollectionSection
-            title="Summer Collection Just Dropped"
+            title="Shop Now"
             fetcher={ProductBySummerSeason}
           />
         </Suspense>

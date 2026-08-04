@@ -26,7 +26,6 @@ const LanguageSwitcher = () => {
     setIsOpen(false);
   };
 
-  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -44,7 +43,7 @@ const LanguageSwitcher = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex items-center gap-1 text-xs font-medium uppercase hover:opacity-80 transition-opacity cursor-pointer"
+        className="flex items-center gap-1 text-sm uppercase hover:opacity-80 transition-opacity cursor-pointer"
       >
         {LOCALE_LABELS[currentLocale] ?? currentLocale.toUpperCase()}
         <svg

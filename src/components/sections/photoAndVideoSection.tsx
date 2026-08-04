@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const PhotoVideoSection: React.FC = () => {
   return (
-    <div className="w-full relative font-poppins">
+    <div className="w-full relative font-serif">
       <div className="flex flex-col lg:flex-row h-[50vh] md:h-[70vh] lg:h-[100vh]">
         <div className="w-full lg:w-1/2 h-full relative">
           <Image
