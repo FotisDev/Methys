@@ -5,16 +5,16 @@ import Link from "next/link";
 import { PAGE_URLS } from "@/_lib/constants";
 import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
-import { useWishlist } from "../hooks/wishList";
 import { useHeaderContext } from "../providers/HeaderProvider";
-import { useCart } from "../providers/CartProvider";
 import LogoutButton from "../buttons/LogoutButton";
 import { useAuth } from "../providers/AuthProvider";
-import BulletButtonSideBar from "../SideBars/BulletButton";
+// import BulletButtonSideBar from "../SideBars/BulletButton";
 import LanguageSwitcher from "../LanguageSwitch/LanguageSwitch";
+import CartSideBar from "../SideBars/cartSideBar";
+import { useShoppingCartHook } from "../hooks/shoppingCartHook";
+import { useWishlistHook } from "../hooks/wishListHook";
 
 const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
-
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
   const [showClothes, setShowClothes] = useState(false);
@@ -24,14 +24,21 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
-  const { cart, getCartItemsCount } = useCart();
+  
 
-  const cartItemCount = getCartItemsCount
-    ? getCartItemsCount()
-    : cart.reduce((sum, item) => sum + (item?.quantity || 0), 0);
+  // const cartItemCount = getCartItemsCount
+  //   ? getCartItemsCount()
+  //   : cart.reduce((sum, item) => sum + (item?.quantity || 0), 0);
 
   const { isWishlistOpen, wishlistCount, toggleWishlist, closeWishlist } =
-    useWishlist();
+    useWishlistHook();
+
+  const {
+    isShoppingCartOpen,
+    ShoppingCartCount,
+    toggleShoppingCart,
+    closeShoppingCart,
+  } = useShoppingCartHook();
 
   const navLinks = [
     { href: PAGE_URLS.ABOUT, label: "About" },
@@ -136,7 +143,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   ];
 
   if (isOpaque) {
-    navbarClasses.push("bg-white", "text-vintage-green");
+    navbarClasses.push("bg-white", "text-vintage-green",);
   } else {
     navbarClasses.push("text-white border-none shadow-none");
   }
@@ -147,7 +154,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
         <nav
           className={navbarClasses.join(" ")}
           ref={menuRef}
-          style={{ zIndex: 1000 }}
+          style={{ zIndex: 20 }}
           onMouseEnter={() => setIsNavbarHovered(true)}
           onMouseLeave={() => {
             if (!showClothes) {
@@ -211,33 +218,35 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
                   />
                 </svg>
                 {wishlistCount > 0 && (
-                  <span className={`absolute top-1 right-1  text-[10px] rounded-full w-3 h-3 flex items-center justify-center  ${isOpaque ? "bg-vintage-green text-white":"bg-white text-vintage-green"}`}>
+                  <span
+                    className={`absolute top-1 right-1  text-[10px] rounded-full w-3 h-3 flex items-center justify-center  ${isOpaque ? "bg-vintage-green text-white" : "bg-white text-vintage-green"}`}
+                  >
                     {wishlistCount > 99 ? "99+" : wishlistCount}
                   </span>
                 )}
               </div>
             </button>
 
-            <Link
-              href={PAGE_URLS.CART}
-              className="relative group"
-              aria-label={`Cart with ${cartItemCount} items`}
+            <button
+              onClick={toggleShoppingCart}
+              className="relative group cursor-pointer"
+              aria-label={`Cart with ${ShoppingCartCount} items`}
             >
-              <div className="relative p-1 sm:p-3 lg:p-2  rounded-full transition-colors group">
+              <div className="relative p-1 sm:p-3 lg:p-2 rounded-full transition-colors group">
                 <CartSvg
                   className={`w-5 h-5 lg:w-6 lg:h-6 transition-colors ${
-                    isOpaque
-                      ? "text-vintage-green "
-                      : "text-white "
+                    isOpaque ? "text-vintage-green " : "text-white "
                   }`}
                 />
-                {cartItemCount > 0 && (
-                  <span className={`absolute top-1 right-1  text-[10px] rounded-full w-3 h-3 flex items-center justify-center ${isOpaque ? "bg-vintage-green text-white":"bg-white text-vintage-green"}`}>
-                    {cartItemCount > 99 ? "99+" : cartItemCount}
+                {ShoppingCartCount > 0 && (
+                  <span
+                    className={`absolute top-1 right-1 text-[10px] rounded-full w-3 h-3 flex items-center justify-center ${isOpaque ? "bg-vintage-green text-white" : isShoppingCartOpen ? 'text-white' : "bg-white text-vintage-green"}`}
+                  >
+                    {ShoppingCartCount > 99 ? "99+" : ShoppingCartCount}
                   </span>
                 )}
               </div>
-            </Link>
+            </button>
 
             <div className="hidden lg:flex items-center gap-4">
               {!isAuthLoading && isAuthenticated && (
@@ -295,14 +304,17 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
           >
             &times;
           </button>
-          <div>
-            {dropDownMenu}
-          </div>
+          <div>{dropDownMenu}</div>
         </div>
       )}
       <WishlistSidebar
         isOpen={isWishlistOpen}
         onClose={closeWishlist}
+        getValidImage={getValidImage}
+      />
+      <CartSideBar
+        isOpen={isShoppingCartOpen}
+        onClose={closeShoppingCart}
         getValidImage={getValidImage}
       />
     </div>

@@ -1,6 +1,7 @@
 "use client";
 import GenericSwiper from "@/components/swipers/GenericSwiper";
 import CategoryCard from "@/components/cards/CategoryCard";
+import RightArrowIcon from "@/svgs/RightArrowIcon";
 
 type Slide = {
   category: {
@@ -33,6 +34,10 @@ export default function CategoriesSwiper({
 
   return (
     <div className="w-full pt-1">
+      <div className="flex flex-row p-4">
+        <p className="">Explore categories</p>
+        <span><RightArrowIcon className="w-5 h-5 mt-0.5"/></span>
+      </div>
       <GenericSwiper
         items={categories}
         slidesPerView={1}

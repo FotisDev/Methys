@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 
-export const useWishlist = () => {
+export const useWishlistHook = () => {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(0);
 

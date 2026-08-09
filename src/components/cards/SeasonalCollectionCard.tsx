@@ -8,12 +8,14 @@ import { useCart } from "../providers/CartProvider";
 import { useWishlist } from "../providers/WishListProvider";
 import { ProductInDetails } from "@/_lib/types";
 import { HeartSvg } from "@/svgs/hearthIcon";
+import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
 
 
 
 interface SeasonalCollectionCardProps {
   item: ProductInDetails;
   priority?: boolean;
+  offer?:ProductWithDiscount;
 }
 
 export default function SeasonalCollectionCard({

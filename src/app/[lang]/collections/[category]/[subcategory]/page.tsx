@@ -162,7 +162,7 @@ export default async function SubcategoryPage({
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <Schema markup={schema} />
-      <section className="relative w-full min-h-[80vh] pt-20  pb-32 font-serif text-vintage-green">
+      <section className="relative w-full min-h-[80vh] pt-[70px]  pb-12 font-serif text-vintage-green">
         <div className="pl-4">
           <Breadcrumbs items={breadcrumbItems} />
         </div>

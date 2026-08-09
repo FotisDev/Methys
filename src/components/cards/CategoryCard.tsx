@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import RightArrowIcon from "@/svgs/RightArrowIcon";
 
 type CategoryType = {
   id: number;
@@ -45,11 +46,15 @@ export default function CategoryCard({
         blurDataURL={blurDataUrl}
       />
       <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 text-vintage-white font-poppins">
-        <p className="text-xs sm:text-sm opacity-80">Autumn 2025</p>
-        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">
-          {category.category_name}
-        </h3>
-        <p className="text-xs sm:text-sm opacity-90">{subcategory.name}</p>
+        <h2 className="text-base lg:text-xl capitalize sm:text-sm opacity-90">
+          {subcategory.name}
+        </h2>
+        <div className=" flex flex-row">
+          <p className="text-[10px] hover:underline ">Shop Now</p> 
+          <span>
+            <RightArrowIcon className="w-4 h-4" />
+          </span>
+        </div>
       </div>
     </Link>
   );
