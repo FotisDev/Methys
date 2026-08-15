@@ -191,32 +191,58 @@ export default async function ProductDetailPage({
           <div className="mx-auto px-4 sm:px-6">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
-          <div className=" mx-auto px-4 sm:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-              <div className="space-y-0">
-                <div
-                  className="relative bg-gray-50 overflow-hidden"
-                  style={{ aspectRatio: "3/4" }}
-                >
-                  <Image
-                    src={getValidImage(
-                      product.image_url?.[0] ?? "/AuthClothPhoto.jpg",
-                    )}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover object-center"
-                    priority
-                  />
 
-                  {product.is_offer && (
-                    <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 tracking-wider">
-                      New Offer
-                    </div>
-                  )}
-                </div>
+          <div className="mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+              {/* LEFT IMAGES */}
+              <div
+                className="
+                          flex lg:grid lg:grid-cols-2
+                          gap-2
+                          overflow-x-auto lg:overflow-visible
+                          snap-x snap-mandatory lg:snap-none
+                          -mx-4 px-4 lg:mx-0 lg:px-0
+                          scrollbar-hide
+                        "
+              >
+                {product.image_url?.map((img, i) => (
+                  <div
+                    key={i}
+                    className="
+                              relative bg-gray-50 overflow-hidden shrink-0
+                              w-[85vw] sm:w-[70vw] lg:w-auto
+                              snap-center lg:snap-none
+                            "
+                    style={{ aspectRatio: "3/4" }}
+                  >
+                    <Image
+                      src={getValidImage(img ?? "/AuthClothPhoto.jpg")}
+                      alt={i === 0 ? product.name : `${product.name} ${i + 1}`}
+                      fill
+                      sizes="(max-width: 1024px) 85vw, 25vw"
+                      className="object-cover object-center"
+                      priority={i === 0}
+                    />
+
+                    {i === 0 && product.is_offer && (
+                      <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 tracking-wider">
+                        New Offer
+                      </div>
+                    )}
+
+                    {i === 0 && (
+                      <button
+                        aria-label="Add to wishlist"
+                        className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition"
+                      >
+                        ♡
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
 
+              {/*RIGHT BAR */}
               <div className="lg:sticky lg:top-24 lg:h-fit space-y-8">
                 <div>
                   {product.name && (
@@ -334,6 +360,7 @@ export default async function ProductDetailPage({
 
           <Schema markup={schema} />
         </section>
+
         <div className="px-4 sm:px-6">
           <SeasonalCollectionSection
             title="Our Recommendations"
