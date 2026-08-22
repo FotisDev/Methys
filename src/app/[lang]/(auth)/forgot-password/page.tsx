@@ -84,7 +84,7 @@ const ForgotPasswordPage = () => {
 
       {/* RIGHT */}
       <div className="w-full md:w-1/2 flex flex-col bg-gray-50 items-center justify-center relative py-10 px-6">
-        <div className="absolute top-4 right-4 md:top-28 md:right-24 font-poppins text-sm md:text-lg">
+        <div className="absolute top-4 right-4 md:top-28 md:right-24 fond-sans text-sm md:text-lg">
           <label className="text-lg text-black">New user?</label>
           <span>
             <Link
@@ -102,17 +102,17 @@ const ForgotPasswordPage = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-[440px] mt-8 flex flex-col gap-4 px-4"
         >
-          <label className="text-start font-poppins text-sm md:text-base text-vintage-green">
+          <label className="text-start fond-sans text-sm md:text-base text-vintage-green">
             Your email
           </label>
           <input
             type="email"
-            className="w-full h-12 md:h-14 rounded-3xl text-center text-base font-poppins border border-vintage-green"
+            className="w-full h-12 md:h-14 rounded-3xl text-center text-base fond-sans border border-vintage-green"
             placeholder="Enter your email"
             {...register("email")}
           />
           {errors.email && (
-            <span className="text-red-600 text-sm font-poppins">
+            <span className="text-red-600 text-sm fond-sans">
               {errors.email.message}
             </span>
           )}
@@ -132,7 +132,7 @@ const ForgotPasswordPage = () => {
             <Link
               href="/login"
               onClick={() => setShowSignUpPage(true)}
-              className="text-sm text-vintage-green font-poppins hover:underline"
+              className="text-sm text-vintage-green fond-sans hover:underline"
             >
               Back to sign in
             </Link>

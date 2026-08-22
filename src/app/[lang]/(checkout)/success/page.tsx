@@ -1,7 +1,5 @@
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
 type SearchParams = Promise<{ session_id?: string }>;
 
 export default async function SuccessPage({
@@ -14,6 +12,8 @@ export default async function SuccessPage({
   if (!session_id) {
     return <div>Invalid Session</div>;
   }
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   const session = await stripe.checkout.sessions.retrieve(session_id);
 
   return (

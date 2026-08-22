@@ -58,7 +58,7 @@ export default function ButtonsInRow({
           <button
             key={key}
             onClick={() => setSelectedKey(key)}
-            className={`text-gray-500 font-poppins text-lg px-6 py-3 rounded-[40px] transition duration-300
+            className={`text-gray-500 fond-sans text-lg px-6 py-3 rounded-[40px] transition duration-300
               ${selectedKey === key ? "bg-[#dd8d14] text-white" : "hover:bg-[#dce3e9]"}`}
           >
             {data![key].title}

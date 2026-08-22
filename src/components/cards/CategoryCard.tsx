@@ -45,7 +45,7 @@ export default function CategoryCard({
         placeholder={blurDataUrl ? "blur" : "empty"}
         blurDataURL={blurDataUrl}
       />
-      <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 text-vintage-white font-poppins">
+      <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 text-vintage-white fond-sans">
         <h2 className="text-base lg:text-xl capitalize sm:text-sm opacity-90">
           {subcategory.name}
         </h2>

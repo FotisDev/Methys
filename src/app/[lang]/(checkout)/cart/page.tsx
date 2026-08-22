@@ -65,7 +65,7 @@ const CartPage = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8 sm:py-12 font-poppins text-center">
+      <div className="container mx-auto px-4 py-8 sm:py-12 fond-sans text-center">
         <div className="max-w-md mx-auto">
           <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
             <svg
@@ -100,7 +100,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-12 font-poppins">
+    <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-12 fond-sans">
       <div className="mb-6 sm:mb-8">
         <p className="text-2xl sm:text-3xl md:text-4xl text-vintage-green mb-3 sm:mb-4">
           Shopping Cart

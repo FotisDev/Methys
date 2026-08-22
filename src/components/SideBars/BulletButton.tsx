@@ -25,7 +25,7 @@ export default function BulletButtonSideBar() {
   ];
 
   return (
-    <div className="relative z-50 font-poppins">
+    <div className="relative z-50 fond-sans">
      
       <button
         type="button"

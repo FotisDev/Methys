@@ -58,7 +58,7 @@ export default async function ProductList() {
 
   if (error || !categories || categories.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-vintage-green font-poppins text-xl">
+      <div className="flex flex-col items-center justify-center min-h-screen text-vintage-green fond-sans text-xl">
         <p>{error || "No categories found."}</p>
         <Link
           href="/"

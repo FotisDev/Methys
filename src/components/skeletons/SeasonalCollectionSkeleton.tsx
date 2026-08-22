@@ -1,7 +1,7 @@
 // src/components/sections/SeasonalCollectionSkeleton.tsx
 export default function SeasonalCollectionSkeleton() {
   return (
-    <section className="new-collection pb-1 sm:pb-12 md:pb-20 lg:pb-1 pt-5 font-poppins bg-white">
+    <section className="new-collection pb-1 sm:pb-12 md:pb-20 lg:pb-1 pt-5 fond-sans bg-white">
       <div className="mb-6 h-4 w-48 bg-gray-200 animate-pulse rounded ml-2" />
 
       <div className="flex gap-1 overflow-hidden px-2">

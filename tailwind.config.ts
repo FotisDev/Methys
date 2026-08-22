@@ -11,8 +11,6 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        poppins: ["var(--font-poppins)"],
-        roboto: ["var(--font-roboto)"],
       },
 
       colors: {

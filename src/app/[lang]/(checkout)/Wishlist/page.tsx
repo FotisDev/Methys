@@ -100,7 +100,7 @@ const WishlistPage = () => {
 
   if (wishlistItems.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-16 text-center font-poppins">
+      <div className="container mx-auto px-4 py-16 text-center fond-sans">
         <div className="max-w-md mx-auto">
           <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg
@@ -133,7 +133,7 @@ const WishlistPage = () => {
   }
 
   return (
-    <section className="container mx-auto  px-4 py-12 font-poppins">
+    <section className="container mx-auto  px-4 py-12 fond-sans">
       <div className="text-4xl font-bold text-gray-800 mb-4">My Wishlist</div>
       <nav className="text-sm text-gray-600 mb-10">
         <Breadcrumbs items={breadcrumbItems} />

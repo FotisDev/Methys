@@ -121,7 +121,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 font-poppins max-w-7xl">
+    <div className="container mx-auto px-4 py-8 fond-sans max-w-7xl">
       <span className="text-3xl md:text-4xl text-vintage-green mb-2">
         Checkout
       </span>

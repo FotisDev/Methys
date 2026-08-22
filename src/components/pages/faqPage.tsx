@@ -19,7 +19,7 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
 
   return (
     <>
-      <section className="w-full custom-container-4xl padding-x padding-y font-poppins p-5 bg-white-fb pt-20 md:pt-24">
+      <section className="w-full custom-container-4xl padding-x padding-y fond-sans p-5 bg-white-fb pt-20 md:pt-24">
         <div className="flex flex-col justify-center items-center">
           <p className="text-vintage-green text-lg font-semibold pt-20">
             {subtitle}
