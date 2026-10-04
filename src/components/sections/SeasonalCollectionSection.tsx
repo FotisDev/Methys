@@ -10,14 +10,21 @@ type SeasonalCollectionProps = {
   title: string;
   href?: string;
   fetcher: ProductFetcher;
+  // Pass it when known: falling back to getLocale() reads headers(), which
+  // forces the whole page to render dynamically.
+  locale?: string;
 };
 
 export default async function SeasonalCollectionSection({
   title,
   href = "/collections",
   fetcher,
+  locale: localeProp,
 }: SeasonalCollectionProps) {
-  const [rawItems, locale] = await Promise.all([fetcher(), getLocale()]);
+  const [rawItems, locale] = await Promise.all([
+    fetcher(),
+    localeProp ?? getLocale(),
+  ]);
   const [items, t] = await Promise.all([translateProducts(rawItems, locale), getT(locale)]);
 
   if (!items || !Array.isArray(items)) {

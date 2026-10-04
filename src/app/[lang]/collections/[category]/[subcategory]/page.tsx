@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "@/components/LocaleLink/LocaleLink";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Footer from "@/components/footer/Footer";
-import { getProductsWithStructure } from "@/_lib/backend/ProductWithStructure/action";
+import { getProductsByCategoryId } from "@/_lib/backend/ProductWithStructure/action";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { FilteredProducts } from "@/_lib/backend/filtering/action";
 import ProductFilterClient from "@/components/filters/Filters";
@@ -12,7 +12,6 @@ import { Metadata } from "next";
 import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import DropDownMenu from "@/components/header/DropDownMenu";
-import { getCategoryBySlug } from "@/_lib/backend/CategoryById/action";
 import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
 import { getT } from "@/i18n/server";
 import { translateProducts } from "@/_lib/backend/translations/action";
@@ -37,9 +36,12 @@ export async function generateMetadata({
   const t = await getT(lang);
 
   try {
-    const parentCategory = await getCategoryBySlug(categorySlug);
+    const allCategories = await getAllCategoriesWithSubcategories();
+    const parentCategory = allCategories.find(
+      (cat) => cat.slug === categorySlug && cat.parent_id === null,
+    );
 
-    if (!parentCategory || parentCategory.parent_id !== null) {
+    if (!parentCategory) {
       return createMetadata({
         locale: lang,
         MetaTitle: t("collections.categoryNotFoundTitle"),
@@ -49,7 +51,6 @@ export async function generateMetadata({
       });
     }
 
-    const allCategories = await getAllCategoriesWithSubcategories();
     const subcategories = allCategories.filter(
       (cat) => cat.parent_id === parentCategory.id,
     );
@@ -107,13 +108,15 @@ export default async function SubcategoryPage({
   const subcategorySlug = decodeURIComponent(subcategory);
   const filters = await searchParams;
 
-  const parentCategory = await getCategoryBySlug(categorySlug);
+  const allCategories = await getAllCategoriesWithSubcategories();
+  const parentCategory = allCategories.find(
+    (cat) => cat.slug === categorySlug && cat.parent_id === null,
+  );
 
-  if (!parentCategory || parentCategory.parent_id !== null) {
+  if (!parentCategory) {
     notFound();
   }
 
-  const allCategories = await getAllCategoriesWithSubcategories();
   const subcategories = allCategories.filter(
     (cat) => cat.parent_id === parentCategory.id,
   );
@@ -126,23 +129,17 @@ export default async function SubcategoryPage({
     notFound();
   }
 
-  const allProducts = await getProductsWithStructure();
+  const [products, filtered] = await Promise.all([
+    getProductsByCategoryId(currentCategory.id).then((p) => p ?? []),
+    FilteredProducts({
+      categoryId: currentCategory.id,
+      min: filters?.min,
+      max: filters?.max,
+      size: filters?.size,
+    }),
+  ]);
 
-  const filteredProducts = await translateProducts(await FilteredProducts({
-    parentSlug: categorySlug,
-    categorySlug: subcategorySlug,
-    min: filters?.min,
-    max: filters?.max,
-    size: filters?.size,
-  }), locale);
-
-  const products =
-    allProducts?.filter(
-      (product) =>
-        product &&
-        product.categoryformen &&
-        product.categoryformen.id === currentCategory.id,
-    ) ?? [];
+  const filteredProducts = await translateProducts(filtered, locale);
 
   const categoryName = translateCategory(t, currentCategory.slug, currentCategory.name);
   const parentName = translateCategory(t, parentCategory.slug, parentCategory.name);

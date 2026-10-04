@@ -1,7 +1,6 @@
-import { notFound } from "next/navigation";
+import { notFound, unstable_rethrow } from "next/navigation";
 import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
-import { getCategoryBySlug } from "@/_lib/backend/CategoryById/action";
 import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import ProductActionsInline from "./ProductActionsInline";
@@ -51,12 +50,14 @@ export async function generateMetadata({
     });
 
   try {
-    const parentCategory = await getCategoryBySlug(categorySlug);
+    const allCategories = await getAllCategoriesWithSubcategories();
+    const parentCategory = allCategories.find(
+      (cat) => cat.slug === categorySlug && cat.parent_id === null,
+    );
     if (!parentCategory) {
       return notFoundMetadata();
     }
 
-    const allCategories = await getAllCategoriesWithSubcategories();
     const subcategories = allCategories.filter(
       (cat) => cat.parent_id === parentCategory.id,
     );
@@ -92,6 +93,7 @@ export async function generateMetadata({
       },
     });
   } catch (error) {
+    unstable_rethrow(error);
     console.error("Error generating product metadata:", error);
     return createMetadata({
       locale,
@@ -122,12 +124,14 @@ export default async function ProductDetailPage({
   const productSlug = decodeURIComponent(slug);
 
   try {
-    const parentCategory = await getCategoryBySlug(categorySlug);
-    if (!parentCategory || parentCategory.parent_id !== null) {
+    const allCategories = await getAllCategoriesWithSubcategories();
+    const parentCategory = allCategories.find(
+      (cat) => cat.slug === categorySlug && cat.parent_id === null,
+    );
+    if (!parentCategory) {
       notFound();
     }
 
-    const allCategories = await getAllCategoriesWithSubcategories();
     const subcategories = allCategories.filter(
       (cat) => cat.parent_id === parentCategory.id,
     );
@@ -363,12 +367,14 @@ export default async function ProductDetailPage({
           <SeasonalCollectionSection
             title={t("product.recommendations")}
             fetcher={ProductBySpringSeason}
+            locale={locale}
           />
         </div>
         <Footer />
       </HeaderProvider>
     );
   } catch (error) {
+    unstable_rethrow(error);
     console.error("Error loading product:", error);
     notFound();
   }

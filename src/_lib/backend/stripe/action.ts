@@ -24,23 +24,29 @@ export async function createCheckoutSession(
   promotionCodeId?: string,
 ) {
   const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   // Prices come from the database, never from the client's cart (localStorage
   // can be edited). getProductPricing is the same helper the storefront uses.
-  const { data: products, error: productsError } = await supabase
-    .from("products")
-    .select("id, name, price, image_url, is_offer, product_variants (size, price, quantity)")
-    .in("id", cartItems.map((item) => item.id));
+  const [
+    {
+      data: { user },
+    },
+    { data: products, error: productsError },
+  ] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase
+      .from("products")
+      .select("id, name, price, image_url, is_offer, product_variants (size, price, quantity)")
+      .in("id", cartItems.map((item) => item.id)),
+  ]);
 
   if (productsError || !products) {
     throw new Error("Could not load products for checkout");
   }
 
+  const productsById = new Map(products.map((p) => [p.id, p]));
+
   const lineItems = cartItems.map((item) => {
-    const product = products.find((p) => p.id === item.id);
+    const product = productsById.get(item.id);
     if (!product) {
       throw new Error(`Product ${item.id} is no longer available`);
     }

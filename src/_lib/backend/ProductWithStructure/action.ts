@@ -1,8 +1,7 @@
-"use server";
-
 import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 export const getProductsWithStructure = unstable_cache(
   async (): Promise<ProductInDetails[] | null> => {
@@ -52,8 +51,36 @@ export const getProductsWithStructure = unstable_cache(
   ['all-products'],
   {
     revalidate:3600,
-    tags:['products-with-structure']
+    tags:['products', 'products-with-structure']
   }
+);
+
+// Per-category list for collection pages. Keeps cache entries small (the full
+// catalog can exceed the 2 MB data-cache limit) and avoids loading every product
+// just to filter in JS.
+export const getProductsByCategoryId = cache(
+  unstable_cache(
+    async (categoryId: number): Promise<ProductInDetails[] | null> => {
+      const { data, error } = await supabasePublic
+        .from("products")
+        .select(
+          `id,name,slug,price,description,size_description,product_details,image_url,is_offer,
+          categoryformen:category_men_id!inner(id,name,slug,
+          parent:parent_id!inner(id,name,slug)),
+          product_variants(size,price,quantity)`,
+        )
+        .eq("category_men_id", categoryId)
+        .overrideTypes<ProductInDetails[], { merge: false }>();
+
+      if (error) {
+        console.error("Supabase error:", error.message);
+        return null;
+      }
+      return data ?? [];
+    },
+    ["products-by-category"],
+    { revalidate: 3600, tags: ["products"] },
+  ),
 );
 
 function createSeasonalFetcher(column: string, cacheKey: string, tag: string) {
@@ -76,7 +103,7 @@ function createSeasonalFetcher(column: string, cacheKey: string, tag: string) {
       return data ?? [];
     },
     [cacheKey],
-    { revalidate: 3600, tags: [tag] },
+    { revalidate: 3600, tags: ["products", tag] },
   );
 }
 
@@ -109,6 +136,6 @@ export const fetchOnlineExclusive = unstable_cache(
   ["products-online-exclusive"],
   {
     revalidate: 3600,
-    tags: ["fetch-online-exclusive"],
+    tags: ["products", "fetch-online-exclusive"],
   },
 );

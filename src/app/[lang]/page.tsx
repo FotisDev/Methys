@@ -50,6 +50,7 @@ export default async function Home({ params }: PageProps) {
           <SeasonalCollectionSection
             title={t("home.shopNow")}
             fetcher={ProductBySummerSeason}
+            locale={locale}
           />
         </Suspense>
 
@@ -65,6 +66,7 @@ export default async function Home({ params }: PageProps) {
           <SeasonalCollectionSection
             title={t("home.autumnCollection")}
             fetcher={ProductByAutumnSeason}
+            locale={locale}
           />
         </Suspense>
 

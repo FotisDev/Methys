@@ -2,6 +2,7 @@
 
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import { Resend } from "resend";
+import { after } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -57,18 +58,26 @@ export async function submitSupportTicket(
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
 
-    await resend.emails.send({
-      from: "Support <onboarding@resend.dev>",
-      to: "fotislir@outlook.com",
-      subject: `New Support Ticket from ${name}`,
-      html: `
-        <h2>New Support Ticket</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Category ID:</strong> ${category_id}</p>
-        <p><strong>Message:</strong></p>
-        <p>${safeMessage}</p>
-      `,
+    // The ticket is already saved, so the notification email doesn't need to
+    // hold up the response.
+    after(async () => {
+      try {
+        await resend.emails.send({
+          from: "Support <onboarding@resend.dev>",
+          to: "fotislir@outlook.com",
+          subject: `New Support Ticket from ${name}`,
+          html: `
+            <h2>New Support Ticket</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Category ID:</strong> ${category_id}</p>
+            <p><strong>Message:</strong></p>
+            <p>${safeMessage}</p>
+          `,
+        });
+      } catch (err) {
+        console.error("Support ticket email failed:", err);
+      }
     });
 
     return {

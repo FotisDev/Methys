@@ -1,5 +1,3 @@
-"use server";
-
 import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInDetails } from "@/_lib/types";
 import { unstable_cache } from "next/cache";

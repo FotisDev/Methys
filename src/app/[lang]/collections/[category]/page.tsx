@@ -83,15 +83,17 @@ export default async function CategoryPage({
   let error: string | null = null;
 
   try {
-    const foundCategory = await getCategoryBySlug(categorySlug);
+    const allCategories = await getAllCategoriesWithSubcategories();
+    const foundCategory = allCategories.find(
+      (cat) => cat.slug === categorySlug && cat.parent_id === null,
+    );
 
-    if (!foundCategory || foundCategory.parent_id !== null) {
+    if (!foundCategory) {
       throw new Error(`Main category "${categorySlug}" not found`);
     }
 
     categoryData = foundCategory;
 
-    const allCategories = await getAllCategoriesWithSubcategories();
     const subcategoriesData = allCategories.filter(
       (cat) => cat.parent_id === foundCategory.id,
     );
