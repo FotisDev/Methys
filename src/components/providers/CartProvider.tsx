@@ -8,7 +8,7 @@ import {
   ReactNode,
 } from "react";
 import { ProductInDetails } from "@/_lib/types";
-import { calculateDiscountPrice } from "@/_lib/utils/discountUtil/discountUtils";
+import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 
 export type CartItem = ProductInDetails & {
   selectedSize?: string;
@@ -67,21 +67,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [cart, isLoaded]);
 
-  const getItemPrice = (item: CartItem) => {
-    const basePrice = item.selectedSize
-      ? item.product_variants.find((v) => v.size === item.selectedSize)
-          ?.price || item.price
-      : item.price;
-
-    const originalPrice = parseFloat(String(basePrice)) || 0;
-    const finalPrice = calculateDiscountPrice(originalPrice, item.is_offer);
-
-    return {
-      originalPrice,
-      finalPrice,
-      isDiscounted: !!item.is_offer,
-    };
-  };
+  const getItemPrice = (item: CartItem) =>
+    getProductPricing(item, item.selectedSize);
 
   const addToCart = (
     product: ProductInDetails,

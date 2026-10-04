@@ -2,43 +2,45 @@
 
 import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { Breadcrumbs } from "../breadcrumb/breadcrumbSchema";
 import { useCart } from "../providers/CartProvider";
 import { useWishlist } from "../providers/WishListProvider";
 import { useState, MouseEvent } from "react";
 import CartSvg from "@/svgs/cartSvg";
 import { HeartSvg } from "@/svgs/hearthIcon";
+import { useFormatPrice, useLocale, useT } from "@/i18n/client";
 
 type OffersListProps = {
   offerProduct: ProductWithDiscount[];
 };
 
 export default function OffersPageComponent({ offerProduct }: OffersListProps) {
+  const t = useT();
+  const locale = useLocale();
+
   if (offerProduct.length === 0) {
     return (
-      <section className="p-36">
-        <h1 className="text-2xl font-semibold mb-4 text-vintage-green">
-          Offers
+      <section className="font-serif text-vintage-green pt-16 min-h-[50vh]">
+        <h1 className="text-lg py-2">
+          {t("offers.title")}
         </h1>
-        <p className="text-gray-500">Login is required to see our offers.</p>
+        <p className="text-gray-500">{t("offers.loginRequired")}</p>
       </section>
     );
   }
 
   const breadcrumbs = [
-    { name: "Home", slug: "home" },
-    { name: "Offers", slug: "offers" },
+    { name: t("breadcrumbs.home"), slug: "/" },
+    { name: t("offers.title"), slug: "/offers" },
   ];
 
   return (
-    <section className="font-serif text-vintage-green">
-      <div className="pt-10">
-        <Breadcrumbs items={breadcrumbs} />
-      </div>
-      <h1 className="text-2xl py-1">Explore our Limited Offers</h1>
+    <section className="font-serif text-vintage-green pt-16 ">
+      <Breadcrumbs items={breadcrumbs} locale={locale} />
+      <h1 className="text-lg  py-2">{t("offers.heading")}</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-0.5 gap-y-8">
         {offerProduct.map((offer) => (
           <OfferCard key={offer.id} offer={offer} />
         ))}
@@ -49,8 +51,11 @@ export default function OffersPageComponent({ offerProduct }: OffersListProps) {
 
 function OfferCard({ offer }: { offer: ProductWithDiscount }) {
   const [hovered, setHovered] = useState(false);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   const { addToCart } = useCart();
+  const t = useT();
+  const formatPrice = useFormatPrice();
   const { addToWishlist, isInWishlist } = useWishlist();
 
   const inWishlist = isInWishlist(offer.id);
@@ -59,12 +64,29 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
     .filter((variant) => variant.quantity > 0)
     .map((variant) => variant.size);
 
+  const handleSizeClick = (e: MouseEvent<HTMLSpanElement>, size: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedSize(size);
+  };
+
   const handleAddToCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
-    addToCart(offer);
-    alert(`Added "${offer.name}" to cart!`);
+    if (availableSizes.length === 0) {
+      alert(t("product.outOfStock"));
+      return;
+    }
+
+    if (!selectedSize) {
+      setHovered(true);
+      alert(t("wishlist.selectSizeFirst"));
+      return;
+    }
+
+    addToCart(offer, selectedSize);
+    alert(t("product.addedToCartWithSize", { name: offer.name, size: selectedSize }));
   };
 
   const handleWishlistToggle = (e: MouseEvent<HTMLButtonElement>) => {
@@ -97,13 +119,13 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
         />
 
         <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest bg-ext-vintage-green text-vintage-white px-2 py-1 z-10">
-          Offer
+          {t("product.offer")}
         </span>
 
         <button
           onClick={handleWishlistToggle}
           className="absolute top-2 right-2 p-1.5 z-10"
-          aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={inWishlist ? t("product.removeFromWishlist") : t("product.addToWishlist")}
         >
           <HeartSvg
             filled={inWishlist}
@@ -121,15 +143,15 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
           </h3>
           <p className="text-sm shrink-0 flex items-center gap-1">
             <span className="line-through text-gray-400 text-xs">
-              €{Number(offer.price).toFixed(2)}
+              {formatPrice(offer.price)}
             </span>
             <span className="font-bold">
-              €{offer.discountedPrice.toFixed(2)}
+              {formatPrice(offer.discountedPrice)}
             </span>
           </p>
           <button
             onClick={handleAddToCart}
-            aria-label="Add to cart"
+            aria-label={t("common.addToCart")}
             className="shrink-0 text-gray-aca hover:text-black transition-opacity cursor-pointer"
           >
             <CartSvg className="w-4 h-4" />
@@ -137,24 +159,31 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
         </div>
 
         <div className="mt-1 h-5 overflow-hidden">
-          {hovered && offer.size_description ? (
+          {hovered ? (
+            availableSizes.length > 0 ? (
+              <div className="flex gap-1 flex-wrap">
+                {availableSizes.map((size) => (
+                  <span
+                    key={size}
+                    onClick={(e) => handleSizeClick(e, size)}
+                    className={`cursor-pointer text-[11px] px-1 py-0.5 transition-all duration-150 border ${
+                      selectedSize === size
+                        ? "border-vintage-green bg-vintage-green text-white"
+                        : "border-transparent text-vintage-green/70 hover:border-vintage-green/50"
+                    }`}
+                  >
+                    {size}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <span className="text-xs text-red-500">{t("product.soldOut")}</span>
+            )
+          ) : offer.size_description ? (
             <p className="text-xs text-vintage-green/60 line-clamp-1">
               {offer.size_description}
             </p>
-          ) : availableSizes.length > 0 ? (
-            <div className="flex gap-1 flex-wrap">
-              {availableSizes.map((size) => (
-                <span
-                  key={size}
-                  className="text-[11px] px-1 py-0.5 border border-transparent text-vintage-green/70"
-                >
-                  {size}
-                </span>
-              ))}
-            </div>
-          ) : (
-            <span className="text-xs text-red-500">Sold Out</span>
-          )}
+          ) : null}
         </div>
       </div>
     </Link>

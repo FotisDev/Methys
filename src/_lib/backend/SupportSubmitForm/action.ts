@@ -23,11 +23,11 @@ export async function submitSupportTicket(
     const message = (formData.get("message") as string)?.trim();
 
     if (!name || !email || !category_id  || !message) {
-      return { status: "error", message: "All fields are required." };
+      return { status: "error", message: "support.errors.required" };
     }
 
     if(!category_id || typeof category_id !=='string'){
-      return {status:'error',message:"invalid category"};
+      return { status: "error", message: "support.errors.invalidCategory" };
     }
 
     const { data: categoryExists } = await supabase
@@ -37,7 +37,7 @@ export async function submitSupportTicket(
       .maybeSingle();
 
     if (!categoryExists) {
-      return { status: "error", message: "Selected category does not exist." };
+      return { status: "error", message: "support.errors.invalidCategory" };
     }
 
     const { error } = await supabase.from("support_tickets").insert([
@@ -50,7 +50,7 @@ export async function submitSupportTicket(
     ]);
 
     if (error) {
-      return { status: "error", message: "Failed to submit ticket." };
+      return { status: "error", message: "support.errors.failed" };
     }
 
     const safeMessage = message
@@ -79,7 +79,7 @@ export async function submitSupportTicket(
     console.error("Support ticket error:", err);
     return {
       status: "error",
-      message: "Something went wrong. Please try again.",
+      message: "support.errors.failed",
     };
   }
 }

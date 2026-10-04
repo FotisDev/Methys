@@ -6,7 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { supabasePublic } from "@/_lib/supabase/client";
 import CreateAccountPage from "../createAccount/page";
 import SignUpPage from "../login/page";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
+import { useLocale, useT } from "@/i18n/client";
+import { rich } from "@/i18n/rich";
+import { translateDynamic } from "@/i18n/translate";
 
 import {
   ForgotPasswordForm,
@@ -18,6 +21,8 @@ const ForgotPasswordPage = () => {
   const [showSignUpPage, setShowSignUpPage] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const t = useT();
+  const locale = useLocale();
 
   const {
     register,
@@ -31,19 +36,19 @@ const ForgotPasswordPage = () => {
   setErrorMsg(null);
   setSubmitted(false);
 
-  const siteUrl= process.env.NODE_END === 'development' ? 'http://localhost:3000' : process.env.NEXT_PUBLIC_SITE_URL;
   try {
     const { error } = await supabasePublic.auth.resetPasswordForEmail(data.email, {
-      redirectTo: `${siteUrl}/reset-password`,
+      redirectTo: `${window.location.origin}/${locale}/reset-password`,
     });
 
     if (error) {
-      setErrorMsg(error.message);
+      console.error("Password reset request failed:", error.message);
+      setErrorMsg(t("auth.genericError"));
     } else {
       setSubmitted(true);
     }
   } catch {
-    setErrorMsg("An unexpected error occurred. Please try again.");
+    setErrorMsg(t("auth.genericError"));
   }
 };
 
@@ -56,7 +61,7 @@ const ForgotPasswordPage = () => {
       <div className="relative w-full md:w-1/2 h-[70vh] md:h-auto flex flex-col justify-between">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('AuthClothPhoto.jpg')" }}
+          style={{ backgroundImage: "url('/AuthClothPhoto.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/90 to-gray-50" />
         <div className="relative z-10 p-6 md:p-8 text-white">
@@ -66,18 +71,18 @@ const ForgotPasswordPage = () => {
 
           <section className="flex flex-col mt-10 md:mt-48">
             <h1 className="text-3xl md:text-7xl font-bold mb-3 md:mb-4 text-vintage-green">
-              Dress Beyond Limits..
+              {t("auth.heroTitle")}
             </h1>
             <p className="text-lg md:text-4xl font-roboto text-vintage-green">
-              Elevate your everyday. Explore styles designed to turn heads
-              crafted for those who don’t settle.
+              {t("auth.heroText")}
             </p>
           </section>
         </div>
         <div className="relative z-10 p-6 md:p-8">
           <p className="text-sm md:text-xl text-white">
-            2025 <span className="text-default-yellow">UrbanValor</span>. All
-            rights reserved.
+            {rich(t("auth.copyright", { year: new Date().getFullYear() }), {
+              brand: <span className="text-default-yellow">Methys</span>,
+            })}
           </p>
         </div>
       </div>
@@ -85,7 +90,7 @@ const ForgotPasswordPage = () => {
       {/* RIGHT */}
       <div className="w-full md:w-1/2 flex flex-col bg-gray-50 items-center justify-center relative py-10 px-6">
         <div className="absolute top-4 right-4 md:top-28 md:right-24 fond-sans text-sm md:text-lg">
-          <label className="text-lg text-black">New user?</label>
+          <label className="text-lg text-black">{t("auth.newUser")}</label>
           <span>
             <Link
               href="/createAccount"
@@ -93,7 +98,7 @@ const ForgotPasswordPage = () => {
               className="text-lg text-vintage-green hover:underline"
             
             >
-              Create an account
+              {" "}{t("auth.createAccountLink")}
             </Link>
           </span>
         </div>
@@ -103,30 +108,30 @@ const ForgotPasswordPage = () => {
           className="w-full max-w-[440px] mt-8 flex flex-col gap-4 px-4"
         >
           <label className="text-start fond-sans text-sm md:text-base text-vintage-green">
-            Your email
+            {t("auth.yourEmail")}
           </label>
           <input
             type="email"
             className="w-full h-12 md:h-14 rounded-3xl text-center text-base fond-sans border border-vintage-green"
-            placeholder="Enter your email"
+            placeholder={t("auth.enterEmail")}
             {...register("email")}
           />
           {errors.email && (
             <span className="text-red-600 text-sm fond-sans">
-              {errors.email.message}
+              {translateDynamic(t, errors.email.message ?? "", errors.email.message ?? "")}
             </span>
           )}
           {errorMsg && <span className="text-red-600 text-sm">{errorMsg}</span>}
           {submitted && (
             <span className="text-vintage-green text-sm">
-              Check your email for the reset link.
+              {t("auth.resetLinkSent")}
             </span>
           )}
           <button
             type="submit"
             className="w-full h-12 md:h-14 rounded-3xl hover-colors"
           >
-            Submit
+            {t("auth.submit")}
           </button>
           <div className="flex justify-start">
             <Link
@@ -134,7 +139,7 @@ const ForgotPasswordPage = () => {
               onClick={() => setShowSignUpPage(true)}
               className="text-sm text-vintage-green fond-sans hover:underline"
             >
-              Back to sign in
+              {t("auth.backToSignIn")}
             </Link>
           </div>
         </form>

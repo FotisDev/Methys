@@ -80,18 +80,13 @@ export type CategoryPageProps = {
 };
 
 export interface MetadataProps {
+  locale: string;
   MetaTitle?: string;
   MetaDescription?: string;
   canonical?: string;
   OpenGraphImageUrl?: string;
   robots?: { index?: boolean; follow?: boolean };
   other?: Record<string, string>;
-  alternates?: Record<string, string>;
-  product?: {
-    price?: string;
-    availability?: string;
-    brand?: string;
-  };
   dateModified?:string;
   datePublished?:string;
 }

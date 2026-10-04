@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 
 export default function Newsletter() {
   return (
@@ -42,7 +42,7 @@ export default function Newsletter() {
             <p className="  text-xs sm:text-sm lg:text-[16px] opacity-80">
               By subscribing, you agree to our{" "}
               <Link
-                href="/terms"
+                href="/terms-conditions"
                 className="underline hover:opacity-100  hover:text-vintage-green hover:font-bold transition-opacity"
               >
                 Terms & Conditions

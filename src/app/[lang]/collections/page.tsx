@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { fetchCategories } from "@/_lib/helpers";
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
@@ -9,26 +9,33 @@ import type { Metadata } from "next";
 import { createCollectionPageSchema } from "@/_lib/schemasGenerators/collectionPageSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import { getT } from "@/i18n/server";
+import { translateCategory } from "@/i18n/translate";
+import { defaultLocale, isLocale } from "@/i18n.config";
+
+type PageProps = { params: Promise<{ lang: string }> };
 
 export const revalidate = 600;
 
-export async function generateMetadata(): Promise<Metadata> {
+const categoryPath = (cat: { name: string; slug?: string | null }) =>
+  `/collections/${cat.slug ?? cat.name.replace(/\s+/g, "-").toLowerCase()}`;
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  const t = await getT(lang);
   return createMetadata({
-    MetaTitle: "Shop All Collections | Methys",
-    MetaDescription:
-      "Discover our curated selection of premium clothing and accessories. Timeless style, exceptional quality.",
+    locale: lang,
+    MetaTitle: t("collections.metaTitle"),
+    MetaDescription: t("collections.metaDescription"),
     canonical: "/collections",
     OpenGraphImageUrl: "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
-    other: {
-      "twitter:card": "summary_large_image",
-      "twitter:title": "Products | Methys",
-      "twitter:description":
-        "Learn about Methys — our story, mission, and the team behind the product.",
-    },
   });
 }
 
-export default async function ProductList() {
+export default async function ProductList({ params }: PageProps) {
+  const { lang } = await params;
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const t = await getT(locale);
   let categories = null;
   let error = null;
 
@@ -59,32 +66,32 @@ export default async function ProductList() {
   if (error || !categories || categories.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-vintage-green fond-sans text-xl">
-        <p>{error || "No categories found."}</p>
+        <p>{t("nav.noCategories")}</p>
         <Link
           href="/"
           className="mt-4 px-4 py-2 text-sm font-medium text-vintage-green rounded-lg transition-colors"
         >
-          Back to homepage
+          {t("common.backToHomepage")}
         </Link>
       </div>
     );
   }
 
   const schema = createCollectionPageSchema({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections`,
-    name: "Shop All Collections",
-    description:
-      "Discover our curated selection of premium clothing and accessories.",
+    locale,
+    path: "/collections",
+    name: t("collections.title"),
+    description: t("collections.subtitle"),
     items: parentCategories.map((cat) => ({
-      name: cat.name,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${cat.name.replace(/\s+/g, "-").toLowerCase()}`,
+      name: translateCategory(t, cat.slug, cat.name),
+      path: categoryPath(cat),
       imageUrl: cat.image_url ?? undefined,
     })),
   });
 
   const breadcrumbItems = [
-    { name: "Home", slug: "/" },
-    { name: "collections", slug: "/collections" },
+    { name: t("breadcrumbs.home"), slug: "/" },
+    { name: t("breadcrumbs.collections"), slug: "/collections" },
   ];
 
   return (
@@ -92,14 +99,14 @@ export default async function ProductList() {
       <Schema markup={schema} />
       <section className="padding-y padding-x text-vintage-green font-roboto">
         <div className="pt-16">
-          <Breadcrumbs items={breadcrumbItems} />
+          <Breadcrumbs items={breadcrumbItems} locale={locale} />
 
           <header className="mb-10 mt-6">
             <h1 className="text-3xl md:text-4xl font-light mb-4">
-              Shop All Collections
+              {t("collections.title")}
             </h1>
             <p className="text-lg text-vintage-brown">
-              Discover our curated selection of premium clothing and accessories
+              {t("collections.subtitle")}
             </p>
           </header>
 
@@ -107,9 +114,7 @@ export default async function ProductList() {
             {parentCategories.map((category) => {
               if (!category.name) return null;
 
-              const href = `/collections/${category.name
-                .replace(/\s+/g, "-")
-                .toLowerCase()}`;
+              const href = categoryPath(category);
               const imageUrl = category.image_url ?? "/accesories.jpg";
 
               return (
@@ -121,14 +126,14 @@ export default async function ProductList() {
                   <div className="absolute inset-0 overflow-hidden">
                     <Image
                       src={imageUrl}
-                      alt={`${category.name} collection`}
+                      alt={t("collections.categoryAlt", { name: translateCategory(t, category.slug, category.name) })}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
                     />
                   </div>
 
                   <span className="absolute bottom-2 left-2 px-3 py-1 hover-colors rounded-md capitalize text-sm">
-                    {category.name}
+                    {translateCategory(t, category.slug, category.name)}
                   </span>
                 </Link>
               );

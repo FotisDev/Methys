@@ -49,16 +49,17 @@ export const productSchema = z.object({
   is_offer: z.boolean().default(false),
 });
 
+// Messages in these customer-facing schemas are i18n keys ("validation.*"), translated in the forms.
 export const signInSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),
+  email: z.string().min(1, "validation.emailRequired").email("validation.emailInvalid"),
+  password: z.string().min(1, "validation.passwordRequired").min(6, "validation.passwordMin6"),
   rememberMe: z.boolean().optional()
 });
 
 export const createAccountSchema = z.object({
-  firstName: z.string().min(1, "First name is required").min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(1, "Last name is required").min(2, "Last name must be at least 2 characters"),
-  birthday: z.string().min(1, "Birthday is required").refine((date) => {
+  firstName: z.string().min(1, "validation.firstNameRequired").min(2, "validation.firstNameMin"),
+  lastName: z.string().min(1, "validation.lastNameRequired").min(2, "validation.lastNameMin"),
+  birthday: z.string().min(1, "validation.birthdayRequired").refine((date) => {
     const today = new Date();
     const birthDate = new Date(date);
     const age = today.getFullYear() - birthDate.getFullYear();
@@ -68,30 +69,30 @@ export const createAccountSchema = z.object({
       return age - 1 >= 13;
     }
     return age >= 13;
-  }, "You must be at least 13 years old"),
-  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
-  telephone: z.string().min(1, "Telephone is required").regex(/^\+?[\d\s\-\(\)]+$/, "Please enter a valid phone number"),
+  }, "validation.minAge"),
+  email: z.string().min(1, "validation.emailRequired").email("validation.emailInvalid"),
+  telephone: z.string().min(1, "validation.telephoneRequired").regex(/^\+?[\d\s\-\(\)]+$/, "validation.telephoneInvalid"),
   password: z.string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
-  repeatPassword: z.string().min(1, "Please confirm your password"),
-  acceptTerms: z.boolean().refine((val) => val === true, "You must accept the Terms and Conditions")
+    .min(8, "validation.passwordMin8")
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "validation.passwordComplexity"),
+  repeatPassword: z.string().min(1, "validation.confirmPassword"),
+  acceptTerms: z.boolean().refine((val) => val === true, "validation.acceptTerms")
 }).refine((data) => data.password === data.repeatPassword, {
-  message: "Passwords do not match",
+  message: "validation.passwordsMismatch",
   path: ["repeatPassword"]
 });
 
 export const forgotPasswordSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Please enter a valid email address")
+  email: z.string().min(1, "validation.emailRequired").email("validation.emailInvalid")
 });
 
 export const resetPasswordSchema = z
   .object({
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(6, "validation.passwordMin6"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "validation.passwordsMismatch",
     path: ["confirmPassword"],
   });
 

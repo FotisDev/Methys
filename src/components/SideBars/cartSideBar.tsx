@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { useCart } from "../providers/CartProvider";
 import type { CartItem } from "../providers/CartProvider";
+import { useFormatPrice, useT } from "@/i18n/client";
+import { translateCount } from "@/i18n/translate";
 
 interface CartSideBarProps {
   isOpen: boolean;
@@ -16,7 +18,9 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
   onClose,
   getValidImage,
 }) => {
-  const { cart, updateQuantity, removeFromCart, getCartTotal } = useCart();
+  const { cart, updateQuantity, removeFromCart, getCartTotal, getItemPrice } = useCart();
+  const t = useT();
+  const formatPrice = useFormatPrice();
 
   const validCartlistItems = cart.filter(
     (item): item is NonNullable<CartItem> => item !== null,
@@ -54,10 +58,10 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
         }`}
       >
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
-          <span className="text-lg text-vintage-green">Cart</span>
+          <span className="text-lg text-vintage-green">{t("cart.title")}</span>
           <button
             onClick={onClose}
-            aria-label="Close cart"
+            aria-label={t("cart.close")}
             className="p-1 hover:opacity-60 transition-opacity cursor-pointer"
           >
             <svg
@@ -79,12 +83,12 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
         <div className="flex flex-col flex-1 min-h-0">
           {validCartlistItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <p className="text-lg text-gray-900 mb-4">Your cart is empty</p>
+              <p className="text-lg text-gray-900 mb-4">{t("cart.empty")}</p>
               <button
                 onClick={onClose}
                 className="py-3 px-6 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
               >
-                Start Shopping
+                {t("common.startShopping")}
               </button>
             </div>
           ) : (
@@ -109,11 +113,16 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
 
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div className="flex items-start justify-between gap-3">
-                        <h4 className="text-sm text-vintage-green leading-snug">
+                        <p className="text-sm text-vintage-green leading-snug">
                           {item.name}
-                        </h4>
-                        <span className="text-sm text-vintage-green shrink-0">
-                          €{(item.discountedPrice ?? item.price).toFixed(2)}
+                        </p>
+                        <span className="text-sm text-vintage-green shrink-0 flex flex-col items-end">
+                          {formatPrice(getItemPrice(item).finalPrice)}
+                          {getItemPrice(item).isDiscounted && (
+                            <del className="text-xs text-gray-400">
+                              {formatPrice(getItemPrice(item).originalPrice)}
+                            </del>
+                          )}
                         </span>
                       </div>
 
@@ -134,7 +143,7 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
                               )
                             }
                             className="w-7 h-7 flex items-center justify-center text-vintage-green hover:bg-gray-100 cursor-pointer"
-                            aria-label="Decrease quantity"
+                            aria-label={t("cart.decreaseQuantity")}
                           >
                             −
                           </button>
@@ -150,7 +159,7 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
                               )
                             }
                             className="w-7 h-7 flex items-center justify-center text-vintage-green hover:bg-gray-100 cursor-pointer"
-                            aria-label="Increase quantity"
+                            aria-label={t("cart.increaseQuantity")}
                           >
                             +
                           </button>
@@ -162,7 +171,7 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
                           }
                           className="text-xs underline text-vintage-green hover:text-vintage-brown transition-colors cursor-pointer"
                         >
-                          Remove
+                          {t("common.remove")}
                         </button>
                       </div>
                     </div>
@@ -173,25 +182,24 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
               <div className="border-t border-gray-200 px-6 py-4 space-y-2 bg-white">
                 <div className="flex justify-between text-sm text-vintage-green">
                   <span>
-                    Subtotal ({validCartlistItems.length} item
-                    {validCartlistItems.length > 1 ? "s" : ""})
+                    {t("cart.subtotal")} ({translateCount(t, "common.items", validCartlistItems.length)})
                   </span>
-                  <span>€{subtotal.toFixed(2)}</span>
+                  <span>{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm text-vintage-green">
-                  <span>Shipping</span>
-                  <span>Calculated at checkout</span>
+                  <span>{t("cart.shipping")}</span>
+                  <span>{t("cart.calculatedAtCheckout")}</span>
                 </div>
                 <div className="flex justify-between text-base pt-2 border-t border-gray-200 mt-2 text-vintage-green">
-                  <span className="font-medium">Total</span>
-                  <span className="font-medium">€{subtotal.toFixed(2)}</span>
+                  <span className="font-medium">{t("cart.total")}</span>
+                  <span className="font-medium">{formatPrice(subtotal)}</span>
                 </div>
               </div>
 
               <div className="px-6 pb-6 pt-2 bg-white">
                 <Link href="/checkout" onClick={onClose}>
                   <button className="w-full bg-vintage-green text-white py-3.5 uppercase text-xs tracking-widest hover:opacity-90 transition-opacity cursor-pointer">
-                    Checkout
+                    {t("cart.checkout")}
                   </button>
                 </Link>
               </div>

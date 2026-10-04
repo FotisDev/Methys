@@ -6,15 +6,21 @@ import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWith
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import ProductActionsInline from "./ProductActionsInline";
 import { fetchProductBySlug } from "@/_lib/backend/productBySlug/action";
+import { translateProduct } from "@/_lib/backend/translations/action";
+import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createProductSchema } from "@/components/schemas/newCollectionSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import Footer from "@/components/footer/Footer";
 import { ProductBySpringSeason } from "@/_lib/backend/ProductWithStructure/action";
 import { createMetadata } from "@/components/SEO/metadata";
+import { absoluteUrl } from "@/components/SEO/urls";
 import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import { getT } from "@/i18n/server";
+import { formatPrice, translateCategory } from "@/i18n/translate";
+import { defaultLocale, isLocale } from "@/i18n.config";
 
 export const revalidate = 600;
 
@@ -25,30 +31,29 @@ export async function generateMetadata({
     category: string;
     subcategory: string;
     slug: string;
+    lang: string;
   }>;
 }) {
-  const { category, subcategory, slug } = await params;
+  const { category, subcategory, slug, lang } = await params;
 
   const categorySlug = decodeURIComponent(category);
   const subcategorySlug = decodeURIComponent(subcategory);
   const productSlug = decodeURIComponent(slug);
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const t = await getT(locale);
+  const notFoundMetadata = () =>
+    createMetadata({
+      locale,
+      MetaTitle: t("product.notFoundTitle"),
+      MetaDescription: t("product.notFoundDescription"),
+      canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
+      robots: { index: false, follow: false },
+    });
 
   try {
     const parentCategory = await getCategoryBySlug(categorySlug);
     if (!parentCategory) {
-      return createMetadata({
-        MetaTitle: "Product Not Found | UrbanValor",
-        MetaDescription: "The product you're looking for doesn't exist.",
-        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
-        OpenGraphImageUrl:
-          "/storage/v1/object/public/OpenGraphImages/about.jpg",
-        other: {
-          "twitter:card": "summary_large_image",
-          "twitter:title": "About Us | Methys",
-          "twitter:description":
-            "Learn about Methys — our story, mission, and the team behind the product.",
-        },
-      });
+      return notFoundMetadata();
     }
 
     const allCategories = await getAllCategoriesWithSubcategories();
@@ -60,53 +65,38 @@ export async function generateMetadata({
     );
 
     if (!currentCategory) {
-      return createMetadata({
-        MetaTitle: "Product Not Found | UrbanValor",
-        MetaDescription: "The product you're looking for doesn't exist.",
-        canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
-        robots: { index: false, follow: false },
-      });
+      return notFoundMetadata();
     }
 
-    const product = await fetchProductBySlug(currentCategory.id, productSlug);
+    const product = await translateProduct(
+      await fetchProductBySlug(currentCategory.id, productSlug),
+      locale,
+    );
 
     if (!product) {
-      return createMetadata({
-        MetaTitle: "Product Not Found | UrbanValor",
-        MetaDescription: "The product you're looking for doesn't exist.",
-        canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
-        robots: { index: false, follow: false },
-      });
+      return notFoundMetadata();
     }
 
     const inStock = product.product_variants.some((v) => v.quantity > 0);
 
     return createMetadata({
-      MetaTitle: `${product.name} | Methys`,
-      MetaDescription:
-        product.description ??
-        "Premium clothing from Methys. Timeless style, exceptional quality.",
+      locale,
+      MetaTitle: t("product.metaTitle", { name: product.name }),
+      MetaDescription: product.description ?? t("product.defaultDescription"),
       canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
       OpenGraphImageUrl: product.image_url?.[0],
-      product: {
-        price: `${product.price} EUR`,
-        availability: inStock ? "InStock" : "OutOfStock",
-        brand: "Methys",
-      },
       other: {
-        "twitter:card": "summary_large_image",
-        "twitter:title": product.name,
-        "twitter:description": product.description ?? "",
-        "twitter:image": product.image_url?.[0] ?? "/AuthClothPhoto.jpg",
-        "product:price:amount": product.price.toString(),
+        "product:availability": inStock ? "in stock" : "out of stock",
+        "product:price:amount": getProductPricing(product).finalPrice.toString(),
         "product:price:currency": "EUR",
       },
     });
   } catch (error) {
     console.error("Error generating product metadata:", error);
     return createMetadata({
-      MetaTitle: "Error | Methys",
-      MetaDescription: "An error occurred while loading this product.",
+      locale,
+      MetaTitle: t("common.errorTitle"),
+      MetaDescription: t("common.errorLoading"),
       canonical: `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
       robots: { index: false, follow: false },
     });
@@ -120,9 +110,12 @@ export default async function ProductDetailPage({
     category: string;
     subcategory: string;
     slug: string;
+    lang: string;
   }>;
 }) {
-  const { category, subcategory, slug } = await params;
+  const { category, subcategory, slug, lang } = await params;
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const t = await getT(locale);
 
   const categorySlug = decodeURIComponent(category);
   const subcategorySlug = decodeURIComponent(subcategory);
@@ -146,19 +139,28 @@ export default async function ProductDetailPage({
       notFound();
     }
 
-    const product = await fetchProductBySlug(currentCategory.id, productSlug);
+    const product = await translateProduct(
+      await fetchProductBySlug(currentCategory.id, productSlug),
+      locale,
+    );
     if (!product) {
       notFound();
     }
 
-    const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${productSlug}`;
+    const fullUrl = absoluteUrl(
+      `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
+      locale,
+    );
+    const pricing = getProductPricing(product);
+    const parentName = translateCategory(t, parentCategory.slug, parentCategory.name);
+    const categoryName = translateCategory(t, currentCategory.slug, currentCategory.name);
 
     const schema = createProductSchema({
       url: fullUrl,
       name: product.name,
       description: product.description ?? "",
       images: product.image_url ?? ["/AuthClothPhoto.jpg"],
-      price: Number(product.price),
+      price: pricing.finalPrice,
       currency: "EUR",
       sku: String(product.slug ?? product.id),
       brand: "Methys",
@@ -167,16 +169,17 @@ export default async function ProductDetailPage({
         size: v.size,
         quantity: v.quantity,
       })),
-      category: currentCategory.name,
+      category: categoryName,
       id: product.id.toString(),
+      sizeLabel: t("sizeGuide.size"),
     });
 
     const breadcrumbItems = [
-      { name: "Home", slug: "/" },
-      { name: "collections", slug: "/collections" },
-      { name: parentCategory.name, slug: `/collections/${categorySlug}` },
+      { name: t("breadcrumbs.home"), slug: "/" },
+      { name: t("breadcrumbs.collections"), slug: "/collections" },
+      { name: parentName, slug: `/collections/${categorySlug}` },
       {
-        name: currentCategory.name,
+        name: categoryName,
         slug: `/collections/${categorySlug}/${subcategorySlug}`,
       },
       {
@@ -189,7 +192,7 @@ export default async function ProductDetailPage({
       <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
         <section className="relative w-full pt-20 font-roboto text-vintage-green">
           <div className="mx-auto px-4 sm:px-6">
-            <Breadcrumbs items={breadcrumbItems} />
+            <Breadcrumbs items={breadcrumbItems} locale={locale} />
           </div>
 
           <div className="mx-auto px-4 sm:px-6">
@@ -217,7 +220,7 @@ export default async function ProductDetailPage({
                   >
                     <Image
                       src={getValidImage(img ?? "/AuthClothPhoto.jpg")}
-                      alt={i === 0 ? product.name : `${product.name} ${i + 1}`}
+                      alt={i === 0 ? product.name : t("sizeGuide.imageAlt", { name: product.name, index: i + 1 })}
                       fill
                       sizes="(max-width: 1024px) 85vw, 25vw"
                       className="object-cover object-center"
@@ -226,13 +229,13 @@ export default async function ProductDetailPage({
 
                     {i === 0 && product.is_offer && (
                       <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 tracking-wider">
-                        New Offer
+                        {t("product.newOffer")}
                       </div>
                     )}
 
                     {i === 0 && (
                       <button
-                        aria-label="Add to wishlist"
+                        aria-label={t("product.addToWishlist")}
                         className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition"
                       >
                         ♡
@@ -246,9 +249,9 @@ export default async function ProductDetailPage({
               <div className="lg:sticky lg:top-24 lg:h-fit space-y-8">
                 <div>
                   {product.name && (
-                    <h3 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
+                    <h1 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
                       {product.name}
-                    </h3>
+                    </h1>
                   )}
 
                   {product.description && (
@@ -258,17 +261,12 @@ export default async function ProductDetailPage({
                   )}
 
                   <div className="flex items-baseline gap-3">
-                    {product.price && (
-                      <span className="text-xl font-normal">
-                        €{product.price}
-                      </span>
-                    )}
-                    {product.is_offer && (
+                    <span className="text-xl font-normal">
+                      {formatPrice(pricing.finalPrice, locale)}
+                    </span>
+                    {pricing.isDiscounted && (
                       <span className="text-sm text-gray-500 line-through">
-                        €
-                        {(parseFloat(product.price.toString()) * 1.2).toFixed(
-                          2,
-                        )}
+                        {formatPrice(pricing.originalPrice, locale)}
                       </span>
                     )}
                   </div>
@@ -280,25 +278,25 @@ export default async function ProductDetailPage({
                   <details className="group">
                     <summary className="flex justify-between items-center cursor-pointer list-none">
                       <span className="text-sm font-medium">
-                        Free delivery over €150
+                        {t("product.freeDelivery", { amount: formatPrice(150, locale) })}
                       </span>
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
                     <div className="mt-3 text-sm text-gray-600 leading-relaxed">
-                      <p>Expected delivery: 7 days after the order</p>
+                      <p>{t("product.expectedDelivery")}</p>
                     </div>
                   </details>
 
                   <details className="group border-t pt-4">
                     <summary className="flex justify-between items-center cursor-pointer list-none">
                       <span className="text-sm font-medium">
-                        Extended returns until January 23rd
+                        {t("product.extendedReturns")}
                       </span>
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
                     <div className="mt-3 text-sm text-vintage-brown leading-relaxed hover:underline">
                       <Link href={"/help"}>
-                        Need help? Contact us or check our Help page
+                        {t("product.needHelp")}
                       </Link>
                     </div>
                   </details>
@@ -325,7 +323,7 @@ export default async function ProductDetailPage({
                 {product.product_variants?.length > 0 && (
                   <div className="border-t pt-6">
                     <h3 className="text-sm font-medium mb-3">
-                      Size & Stock Information
+                      {t("product.sizeStockInfo")}
                     </h3>
                     <div className="space-y-2">
                       {product.product_variants.map((variant, index) => (
@@ -333,7 +331,7 @@ export default async function ProductDetailPage({
                           key={index}
                           className="flex justify-between items-center text-sm py-2 border-b border-gray-100"
                         >
-                          <span>Size {variant.size}</span>
+                          <span>{t("product.sizeLabel", { size: variant.size })}</span>
                           <span
                             className={
                               variant.quantity > 0
@@ -342,8 +340,8 @@ export default async function ProductDetailPage({
                             }
                           >
                             {variant.quantity > 0
-                              ? `${variant.quantity} in stock`
-                              : "Out of stock"}
+                              ? t("product.inStock", { count: variant.quantity })
+                              : t("product.outOfStock")}
                           </span>
                         </div>
                       ))}
@@ -352,7 +350,7 @@ export default async function ProductDetailPage({
                 )}
 
                 <div className="text-xs text-gray-500">
-                  Product ID: #{product.id}
+                  {t("product.productId", { id: product.id })}
                 </div>
               </div>
             </div>
@@ -363,7 +361,7 @@ export default async function ProductDetailPage({
 
         <div className="px-4 sm:px-6">
           <SeasonalCollectionSection
-            title="Our Recommendations"
+            title={t("product.recommendations")}
             fetcher={ProductBySpringSeason}
           />
         </div>

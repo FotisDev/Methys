@@ -1,34 +1,54 @@
-import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js";
+import { urlSetResponse } from "@/components/SEO/sitemap";
+
+export const revalidate = 3600;
+
+type CategoryRow = {
+  id: number;
+  slug: string | null;
+  parent_id: number | null;
+  created_at: string | null;
+};
 
 export async function GET() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!
-
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  );
 
-  const { data: categories } = await supabase
-    .from('categoriesformen')
-    .select('slug, created_at')
+  const { data, error } = await supabase
+    .from("categoriesformen")
+    .select("id, slug, parent_id, created_at");
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${(categories || [])
-  .map(
-    (category) => `
-  <url>
-    <loc>${siteUrl}/collections/${category.slug}</loc>
-    <lastmod>${new Date(category.created_at).toISOString()}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`
-  )
-  .join('')}
-</urlset>`
+  if (error) {
+    console.error("Sitemap categories error:", error.message);
+  }
 
-  return new NextResponse(xml, {
-    headers: { 'Content-Type': 'application/xml' },
-  })
+  const categories = (data ?? []) as CategoryRow[];
+  const byId = new Map(categories.map((c) => [c.id, c]));
+
+  const entries = categories.flatMap((category) => {
+    if (!category.slug) return [];
+
+    if (category.parent_id === null) {
+      return [
+        {
+          path: `/collections/${category.slug}`,
+          lastmod: category.created_at,
+        },
+      ];
+    }
+
+    const parent = byId.get(category.parent_id);
+    if (!parent?.slug) return [];
+
+    return [
+      {
+        path: `/collections/${parent.slug}/${category.slug}`,
+        lastmod: category.created_at,
+      },
+    ];
+  });
+
+  return urlSetResponse(entries);
 }

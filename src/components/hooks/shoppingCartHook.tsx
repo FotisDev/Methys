@@ -25,12 +25,22 @@ export const useShoppingCartHook = () => {
       updateShoppingCartCount();
     };
 
+    window.addEventListener("cartUpdated", handleShoppingCartUpdate);
     window.addEventListener("shoppingCartUpdated", handleShoppingCartUpdate);
-    return () =>
+    return () => {
+      window.removeEventListener("cartUpdated", handleShoppingCartUpdate);
       window.removeEventListener(
         "shoppingCartUpdated",
         handleShoppingCartUpdate,
       );
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleOpenShoppingCart = () => setIsShoppingCartOpen(true);
+    window.addEventListener("openShoppingCart", handleOpenShoppingCart);
+    return () =>
+      window.removeEventListener("openShoppingCart", handleOpenShoppingCart);
   }, []);
 
   const openShoppingCart = () => setIsShoppingCartOpen(true);

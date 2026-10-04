@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import Link, { useLocalizedPath } from "@/components/LocaleLink/LocaleLink";
+import { useT } from "@/i18n/client";
+import { translateCategory } from "@/i18n/translate";
 
 type Category = {
   id: string;
@@ -25,6 +27,8 @@ export default function DropDownMenuClient({
   mainCategories,
 }: DropDownMenuClientProps) {
   const router = useRouter();
+  const localizePath = useLocalizedPath();
+  const t = useT();
 
   const toSlug = (name: string) => {
     return name.toLowerCase().replace(/\s+/g, "-");
@@ -34,7 +38,7 @@ export default function DropDownMenuClient({
     const mainCategorySlug = toSlug(mainCategoryName);
     const subcategorySlug = toSlug(subcategory.name);
     const fullPath = `/collections/${mainCategorySlug}/${subcategorySlug}`;
-    router.push(fullPath);
+    router.push(localizePath(fullPath));
   };
 
   return (
@@ -46,19 +50,19 @@ export default function DropDownMenuClient({
               href="/offers"
               className="text-[16px] text-vintage-green uppercase tracking-wide hover:underline"
             >
-              See Our Offers
+              {t("nav.seeOurOffers")}
             </Link>
             <Link
               href="/online-exclusive"
               className="text-[16px] text-vintage-green uppercase tracking-wide hover:underline"
             >
-              Online Exclusive
+              {t("nav.onlineExclusive")}
             </Link>
             <Link
               href="/seasonal-collection"
               className="text-[16px] text-vintage-green uppercase tracking-wide hover:underline"
             >
-              New Collection
+              {t("nav.newCollection")}
             </Link>
           </div>
         </div>
@@ -82,9 +86,9 @@ export default function DropDownMenuClient({
                     className="flex-1 flex flex-col gap-4 items-start"
                   >
                     <div className="flex-1 w-full">
-                      <h3 className="text-vintage-green text-lg capitalize pb-3">
-                        {mainCat.name}
-                      </h3>
+                      <p className="text-vintage-green text-lg capitalize pb-3">
+                        {translateCategory(t, null, mainCat.name)}
+                      </p>
 
                       <div className="flex flex-col items-start gap-2 ">
                         {mainCat.subcategories.length > 0 ? (
@@ -96,12 +100,12 @@ export default function DropDownMenuClient({
                                 handleNavigate(subCat, mainCat.name)
                               }
                             >
-                              {subCat.name}
+                              {translateCategory(t, null, subCat.name)}
                             </button>
                           ))
                         ) : (
                           <p className="text-gray-500 text-sm">
-                            No subcategories
+                            {t("nav.noSubcategories")}
                           </p>
                         )}
                       </div>
@@ -111,7 +115,7 @@ export default function DropDownMenuClient({
                       <Link href={href} className="w-full">
                         <Image
                           src={mainCat.image_url.trim()}
-                          alt={mainCat.name}
+                          alt={translateCategory(t, null, mainCat.name)}
                           className="w-full max-w-[382px] max-h-[214px] object-cover cursor-pointer hover:opacity-90 transition"
                           width={320}
                           height={299}
@@ -128,7 +132,7 @@ export default function DropDownMenuClient({
 
         {mainCategories.length === 0 && (
           <div className="text-center">
-            <p className="text-gray-500">No categories available</p>
+            <p className="text-gray-500">{t("nav.noCategories")}</p>
           </div>
         )}
       </div>

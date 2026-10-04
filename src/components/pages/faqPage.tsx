@@ -3,6 +3,7 @@
 import { FAQ } from "@/_lib/types";
 import { useState } from "react";
 import Footer from "../footer/Footer";
+import { useT } from "@/i18n/client";
 
 interface FaqSectionProps {
   title?: string;
@@ -12,6 +13,7 @@ interface FaqSectionProps {
 
 export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
   const [openId, setOpenId] = useState<number | null>(null);
+  const t = useT();
 
   const toggleFaq = (id: number) => {
     setOpenId(openId === id ? null : id);
@@ -24,10 +26,10 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
           <p className="text-vintage-green text-lg font-semibold pt-20">
             {subtitle}
           </p>
-          <h2 className="text-default-cold text-2xl lg:text-5xl mb-8 pt-5 px-2">{title}</h2>
+          <h1 className="text-default-cold text-2xl lg:text-5xl mb-8 pt-5 px-2">{title}</h1>
 
           {faqs.length === 0 ? (
-            <p>No FAQs found.</p>
+            <p>{t("help.noFaqs")}</p>
           ) : (
             <div className="w-full max-w-7xl bg-white-f6 px-5 rounded-xl">
               {faqs.map((faq) => (

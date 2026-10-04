@@ -1,6 +1,10 @@
-import Link from "next/link";
+"use client";
+
+import Link from "@/components/LocaleLink/LocaleLink";
 import Image from "next/image";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
+import { useT } from "@/i18n/client";
+import { translateCategory } from "@/i18n/translate";
 
 type CategoryType = {
   id: number;
@@ -28,7 +32,10 @@ export default function CategoryCard({
   subcategory: SubcategoryType;
   priority?: boolean;
 }) {
+  const t = useT();
   const blurDataUrl = subcategory.blur_data_url ?? category.blur_data_url;
+  const categoryName = translateCategory(t, category.slug, category.category_name);
+  const subcategoryName = translateCategory(t, subcategory.slug, subcategory.name);
 
   return (
     <Link
@@ -37,7 +44,7 @@ export default function CategoryCard({
     >
       <Image
         src={subcategory.image_url || category.image_url || "/yo.jpg"}
-        alt={`${category.category_name} - ${subcategory.name}`}
+        alt={`${categoryName} - ${subcategoryName}`}
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
         className="object-cover object-center"
@@ -46,11 +53,11 @@ export default function CategoryCard({
         blurDataURL={blurDataUrl}
       />
       <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 text-vintage-white fond-sans">
-        <h2 className="text-base lg:text-xl capitalize sm:text-sm opacity-90">
-          {subcategory.name}
-        </h2>
+        <h3 className="text-base lg:text-xl capitalize sm:text-sm opacity-90">
+          {subcategoryName}
+        </h3>
         <div className=" flex flex-row">
-          <p className="text-[10px] hover:underline ">Shop Now</p> 
+          <p className="text-[10px] hover:underline ">{t("home.shopNow")}</p>
           <span>
             <RightArrowIcon className="w-4 h-4" />
           </span>

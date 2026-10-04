@@ -1,27 +1,32 @@
 # syntax=docker/dockerfile:1
 
 # ---- deps ----
-FROM node:20.18.1-alpine3.21 AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # ---- builder ----
-FROM node:20.18.1-alpine3.21 AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# NEXT_PUBLIC_* values are baked into the build (canonicals, sitemaps, robots.txt).
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG NEXT_PUBLIC_SITE_URL=https://methys.vercel.app
+ARG NEXT_PUBLIC_IS_LIVE_SITE=false
 ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_IS_LIVE_SITE=$NEXT_PUBLIC_IS_LIVE_SITE
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npm run build
 
 # ---- runner ----
-FROM node:20.18.1-alpine3.21 AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

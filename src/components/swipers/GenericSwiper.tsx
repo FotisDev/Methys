@@ -5,6 +5,7 @@ import { Navigation } from "swiper/modules";
 
 
 import type { SwiperOptions } from "swiper/types";
+import { useT } from "@/i18n/client";
 
 type SwiperBreakpoints = Record<number, SwiperOptions>;
 
@@ -33,10 +34,11 @@ export default function GenericSwiper<T>({
   breakpoints,
   className = "",
 }: GenericSwiperProps<T>) {
+  const t = useT();
   if (!items || items.length === 0) {
     return (
       <div className="flex justify-center items-center h-[50vh] bg-gray-50">
-        <p className="text-vintage-white text-lg">No content available.</p>
+        <p className="text-vintage-white text-lg">{t("common.noContent")}</p>
       </div>
     );
   }

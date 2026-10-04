@@ -1,7 +1,9 @@
 "use client";
 import GenericSwiper from "@/components/swipers/GenericSwiper";
 import CategoryCard from "@/components/cards/CategoryCard";
+import { useT } from "@/i18n/client";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
+import Link from "@/components/LocaleLink/LocaleLink";
 
 type Slide = {
   category: {
@@ -26,18 +28,21 @@ export default function CategoriesSwiper({
 }: {
   categories: Slide[];
 }) {
+  const t = useT();
   if (!categories?.length) {
     return (
-      <p className="text-center text-vintage-white">No categories found.</p>
+      <p className="text-center text-vintage-white">{t("nav.noCategories")}</p>
     );
   }
 
   return (
     <div className="w-full pt-1">
-      <div className="flex flex-row p-4">
-        <p className="">Explore categories</p>
-        <span><RightArrowIcon className="w-5 h-5 mt-0.5"/></span>
-      </div>
+      <h2 className="p-4 text-base font-normal">
+        <Link href="/collections" className="inline-flex flex-row hover:underline">
+          {t("home.exploreCategories")}
+          <span><RightArrowIcon className="w-5 h-5 mt-0.5"/></span>
+        </Link>
+      </h2>
       <GenericSwiper
         items={categories}
         slidesPerView={1}

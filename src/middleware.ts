@@ -1,8 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-
-const locales = ["en", "el", "da", "de"];
-const defaultLocale = "en";
+import { defaultLocale, locales } from "@/i18n.config";
+import { LOCALE_HEADER } from "@/i18n/constants";
 
 // Μόνο αυτά τα paths χρειάζονται auth check
 const protectedPaths = ["/offers", "/product-entry"];
@@ -17,13 +16,19 @@ export async function middleware(request: NextRequest) {
   );
 
   if (!pathnameHasLocale) {
+    // 308 so search engines consolidate signals on the locale-prefixed URL.
     return NextResponse.redirect(
-      new URL(`/${defaultLocale}${pathname}`, request.url)
+      new URL(`/${defaultLocale}${pathname}${request.nextUrl.search}`, request.url),
+      308
     );
   }
 
   const pathnameWithoutLocale = `/${pathname.split("/").slice(2).join("/")}`;
   const locale = pathname.split("/")[1];
+
+  // Lets server components read the locale without receiving the [lang] param.
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(LOCALE_HEADER, locale);
 
   // 2. Αν δεν είναι protected/auth path, skip το Supabase εντελώς
   const needsAuthCheck =
@@ -31,11 +36,11 @@ export async function middleware(request: NextRequest) {
     authPaths.some((p) => pathnameWithoutLocale === p);
 
   if (!needsAuthCheck) {
-    return NextResponse.next();
+    return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
   // 3. Supabase μόνο για protected paths
-  let supabaseResponse = NextResponse.next({ request });
+  let supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -49,7 +54,8 @@ export async function middleware(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
-          supabaseResponse = NextResponse.next({ request });
+          requestHeaders.set("cookie", request.headers.get("cookie") ?? "");
+          supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           );

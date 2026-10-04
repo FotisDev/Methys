@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { PAGE_URLS } from "@/_lib/constants";
 import CartSvg from "@/svgs/cartSvg";
 import WishlistSidebar from "../SideBars/wishListSideBar";
@@ -13,8 +13,10 @@ import LanguageSwitcher from "../LanguageSwitch/LanguageSwitch";
 import CartSideBar from "../SideBars/cartSideBar";
 import { useShoppingCartHook } from "../hooks/shoppingCartHook";
 import { useWishlistHook } from "../hooks/wishListHook";
+import { useT } from "@/i18n/client";
 
 const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
+  const t = useT();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { forceOpaque: forceOpaqueFromContext } = useHeaderContext();
   const [showClothes, setShowClothes] = useState(false);
@@ -41,10 +43,10 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   } = useShoppingCartHook();
 
   const navLinks = [
-    { href: PAGE_URLS.ABOUT, label: "About" },
-    { href: PAGE_URLS.PRODUCTS, label: "SHOP" },
+    { id: "about", href: PAGE_URLS.ABOUT, label: t("nav.about") },
+    { id: "shop", href: PAGE_URLS.PRODUCTS, label: t("nav.shop") },
     ...(!isAuthLoading && isAuthenticated
-      ? [{ href: "/offers", label: "Offers" }]
+      ? [{ id: "offers", href: PAGE_URLS.OFFERS, label: t("nav.offers") }]
       : []),
   ];
 
@@ -88,9 +90,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
         clothesModalRef.current &&
         !clothesModalRef.current.contains(target)
       ) {
-        const shopLink = Array.from(
-          menuRef.current?.querySelectorAll("a") || [],
-        ).find((link) => link.textContent?.includes("SHOP"));
+        const shopLink = menuRef.current?.querySelector('a[data-nav-id="shop"]');
 
         if (shopLink && shopLink.contains(target)) {
           return;
@@ -103,16 +103,16 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [showClothes, showBulletMenu]);
 
-  const handleMouseEnter = (label: string) => {
-    if (label === "SHOP") {
+  const handleMouseEnter = (id: string) => {
+    if (id === "shop") {
       setShowClothes(true);
     } else {
       setShowClothes(false);
     }
   };
 
-  const handleMobileClick = (label: string) => {
-    if (label === "SHOP") {
+  const handleMobileClick = (id: string) => {
+    if (id === "shop") {
       setShowClothes((prev) => !prev);
     } else {
       setShowClothes(false);
@@ -161,12 +161,12 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
               setIsNavbarHovered(false);
             }
           }}
-          aria-label="Main navigation"
+          aria-label={t("nav.mainNavigation")}
         >
           <div className="flex items-center">
             <button
               ref={toggleButtonRef}
-              aria-label="Open mobile menu"
+              aria-label={t("nav.openMobileMenu")}
               className="lg:hidden text-2xl"
               onClick={() => {
                 setShowBulletMenu(!showBulletMenu);
@@ -177,12 +177,13 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
             </button>
 
             <ul className="hidden lg:flex gap-4 items-center">
-              {navLinks.map(({ href, label }) => (
-                <li key={label}>
+              {navLinks.map(({ id, href, label }) => (
+                <li key={id}>
                   <Link
                     href={href}
+                    data-nav-id={id}
                     className="uppercase hover:underline"
-                    onMouseEnter={() => handleMouseEnter(label)}
+                    onMouseEnter={() => handleMouseEnter(id)}
                   >
                     {label}
                   </Link>
@@ -200,7 +201,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
             <button
               onClick={toggleWishlist}
               className="relative group cursor-pointer"
-              aria-label={`Wishlist with ${wishlistCount} items`}
+              aria-label={t("nav.wishlistWithCount", { count: wishlistCount })}
             >
               <div className="relative p-2 rounded-full">
                 <svg
@@ -230,7 +231,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
             <button
               onClick={toggleShoppingCart}
               className="relative group cursor-pointer"
-              aria-label={`Cart with ${ShoppingCartCount} items`}
+              aria-label={t("nav.cartWithCount", { count: ShoppingCartCount })}
             >
               <div className="relative p-1 sm:p-3 lg:p-2 rounded-full transition-colors group">
                 <CartSvg
@@ -263,14 +264,14 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
       {showBulletMenu && (
         <nav
           className="block lg:hidden absolute top-full pt-10 left-0 z-30 w-full bg-white shadow-md transition-all duration-300 ease-in-out cursor-pointer"
-          aria-label="Mobile navigation"
+          aria-label={t("nav.mobileNavigation")}
         >
           <ul className="flex flex-col px-4 py-4 gap-3">
-            {navLinks.map(({ href, label }) => (
-              <li key={label}>
+            {navLinks.map(({ id, href, label }) => (
+              <li key={id}>
                 <Link
                   href={href}
-                  onClick={() => handleMobileClick(label)}
+                  onClick={() => handleMobileClick(id)}
                   className="block text-left text-black py-2 border-b border-gray-200"
                 >
                   {label}
@@ -300,7 +301,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
             type="button"
             className="absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-vintage-green"
             onClick={() => setShowClothes(false)}
-            aria-label="Close clothes menu"
+            aria-label={t("nav.closeShopMenu")}
           >
             &times;
           </button>

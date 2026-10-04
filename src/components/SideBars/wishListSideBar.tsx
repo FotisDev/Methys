@@ -2,10 +2,13 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { useWishlist } from "../providers/WishListProvider";
 import { useCart } from "../providers/CartProvider";
 import { ProductInDetails } from "@/_lib/types";
+import { useFormatPrice, useT } from "@/i18n/client";
+import { translateCount } from "@/i18n/translate";
+import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 
 interface WishlistSidebarProps {
   isOpen: boolean;
@@ -20,6 +23,8 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
 }) => {
   const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
   const { addToCart } = useCart();
+  const t = useT();
+  const formatPrice = useFormatPrice();
   const [selectedSizes, setSelectedSizes] = useState<Record<number, string>>({});
 
   const handleSizeSelect = (itemId: number, size: string) => {
@@ -30,7 +35,7 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
     if (!item) return;
 
     if (availableSizes.length > 0 && !selectedSizes[item.id]) {
-      alert("Please select a size first.");
+      alert(t("wishlist.selectSizeFirst"));
       return;
     }
 
@@ -38,13 +43,13 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
 
     const productName =
       item.name.length > 20 ? item.name.substring(0, 20) + "..." : item.name;
-    alert(`${productName} added to cart!`);
+    alert(t("wishlist.addedToCart", { name: productName }));
   };
 
   const handleClearWishlist = () => {
     if (
       wishlist.length > 0 &&
-      window.confirm("Are you sure you want to clear your entire wishlist?")
+      window.confirm(t("wishlist.confirmClear"))
     ) {
       clearWishlist();
     }
@@ -74,11 +79,11 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
       >
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
           <span className="text-lg text-vintage-green">
-            Wishlist{validWishlistItems.length > 0 ? ` (${validWishlistItems.length})` : ""}
+            {t("wishlist.title")}{validWishlistItems.length > 0 ? ` (${validWishlistItems.length})` : ""}
           </span>
           <button
             onClick={onClose}
-            aria-label="Close wishlist"
+            aria-label={t("wishlist.close")}
             className="p-1 hover:opacity-60 transition-opacity cursor-pointer"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,15 +95,15 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
         <div className="flex flex-col flex-1 min-h-0">
           {validWishlistItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <p className="text-lg text-gray-900 mb-2">Your wishlist is empty</p>
+              <p className="text-lg text-gray-900 mb-2">{t("wishlist.empty")}</p>
               <p className="text-sm text-gray-600 mb-6">
-                Save your favorite products to review them later.
+                {t("wishlist.emptyHint")}
               </p>
               <button
                 onClick={onClose}
                 className="py-3 px-6 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
               >
-                Start Shopping
+                {t("common.startShopping")}
               </button>
             </div>
           ) : (
@@ -108,7 +113,7 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                   onClick={handleClearWishlist}
                   className="text-xs underline text-vintage-green hover:text-vintage-brown transition-colors cursor-pointer"
                 >
-                  Clear All ({validWishlistItems.length} item{validWishlistItems.length > 1 ? "s" : ""})
+                  {t("wishlist.clearAll")} ({translateCount(t, "common.items", validWishlistItems.length)})
                 </button>
               </div>
 
@@ -134,11 +139,11 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
 
                       <div className="flex-1 min-w-0 flex flex-col justify-between">
                         <div className="flex items-start justify-between gap-3">
-                          <h4 className="text-sm text-vintage-green leading-snug line-clamp-2">
+                          <p className="text-sm text-vintage-green leading-snug line-clamp-2">
                             {item.name}
-                          </h4>
+                          </p>
                           <span className="text-sm text-vintage-green shrink-0">
-                            €{item.price.toFixed(2)}
+                            {formatPrice(getProductPricing(item).finalPrice)}
                           </span>
                         </div>
 
@@ -165,14 +170,14 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                             onClick={() => handleAddToCart(item, availableSizes)}
                             className="text-xs uppercase tracking-wide border border-vintage-green text-vintage-green px-3 py-1.5 hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
                           >
-                            Add to Cart
+                            {t("common.addToCart")}
                           </button>
 
                           <button
                             onClick={() => handleRemoveFromWishlist(item.id)}
                             className="text-xs underline text-vintage-green hover:text-vintage-brown transition-colors cursor-pointer"
                           >
-                            Remove
+                            {t("common.remove")}
                           </button>
                         </div>
                       </div>
@@ -187,11 +192,11 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                     onClick={onClose}
                     className="flex-1 py-3 px-4 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
                   >
-                    Continue Shopping
+                    {t("common.continueShopping")}
                   </button>
                   <Link href="/Wishlist" className="flex-1" onClick={onClose}>
                     <button className="w-full bg-vintage-green text-white py-3 px-4 hover:opacity-90 transition-opacity cursor-pointer">
-                      View All
+                      {t("wishlist.viewAll")}
                     </button>
                   </Link>
                 </div>

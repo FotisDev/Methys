@@ -1,7 +1,9 @@
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { Fragment } from "react";
 import SchemaMarkUp from "../schemas/SchemaMarkUp";
 import BreadcrumbArrow from "@/svgs/breadcrumbArrow";
+import { absoluteUrl } from "@/components/SEO/urls";
+import type { Locale } from "@/i18n.config";
 
 type breadcrumbObject = {
   "@type": string;
@@ -11,12 +13,13 @@ type breadcrumbObject = {
 }[];
 
 export type itemWithClassName = {
+  locale: Locale;
   items: {
     name: string;
     slug: string;
   }[];
 };
-export const Breadcrumbs = ({ items}: itemWithClassName) => {
+export const Breadcrumbs = ({ items, locale }: itemWithClassName) => {
   const breadcrumbs: breadcrumbObject = [];
 
   if (items && items.length > 0) {
@@ -25,7 +28,7 @@ export const Breadcrumbs = ({ items}: itemWithClassName) => {
         "@type": "ListItem",
         position: i + 1,
         name: item.name,
-        item: `${process.env.NEXT_PUBLIC_SITE_URL}${item.slug}`,
+        item: absoluteUrl(item.slug, locale),
       });
     });
   }

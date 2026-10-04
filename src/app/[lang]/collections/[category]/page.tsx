@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { notFound } from "next/navigation";
 import { CategoryBackendType } from "@/_lib/types";
@@ -13,6 +13,9 @@ import DropDownMenu from "@/components/header/DropDownMenu";
 import { getCategoryBySlug } from "@/_lib/backend/CategoryById/action";
 import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
+import { getT } from "@/i18n/server";
+import { translateCategory } from "@/i18n/translate";
+import { defaultLocale, isLocale } from "@/i18n.config";
 
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
@@ -23,10 +26,11 @@ export const revalidate = 600;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ category: string; lang: string }>;
 }) {
-  const { category } = await params;
+  const { category, lang } = await params;
   const categorySlug = decodeURIComponent(category);
+  const t = await getT(lang);
 
   try {
    
@@ -34,31 +38,28 @@ export async function generateMetadata({
 
     if (!foundCategory || foundCategory.parent_id !== null) {
       return createMetadata({
-        MetaTitle: "Category Not Found | Methys",
-        MetaDescription: "The category you're looking for doesn't exist.",
+        locale: lang,
+        MetaTitle: t("collections.categoryNotFoundTitle"),
+        MetaDescription: t("collections.categoryNotFoundDescription"),
         canonical: `/collections/${categorySlug}`,
-        OpenGraphImageUrl:
-          "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
-        other: {
-          "twitter:card": "summary_large_image",
-          "twitter:title": "Category Not Found | Methys",
-          "twitter:description":
-            "Learn about Methys — our story, mission, and the team behind the product.",
-        },
+        robots: { index: false, follow: false },
       });
     }
 
+    const name = translateCategory(t, foundCategory.slug, foundCategory.name);
     return createMetadata({
-      MetaTitle: `${foundCategory.name} | Methys`,
-      MetaDescription: `Shop our exclusive ${foundCategory.name.toLowerCase()} collection – premium quality, timeless design.`,
+      locale: lang,
+      MetaTitle: t("collections.categoryMetaTitle", { name }),
+      MetaDescription: t("collections.categoryMetaDescription", { name }),
       canonical: `/collections/${categorySlug}`,
       OpenGraphImageUrl:
         "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     });
   } catch {
     return createMetadata({
-      MetaTitle: "Category Not Found | Methys",
-      MetaDescription: "An error occurred while loading this category.",
+      locale: lang,
+      MetaTitle: t("collections.categoryNotFoundTitle"),
+      MetaDescription: t("common.errorLoading"),
       canonical: `/collections/${categorySlug}`,
       robots: { index: false, follow: false },
     });
@@ -70,10 +71,12 @@ const PRIORITY_IMAGE_COUNT = 4;
 export default async function CategoryPage({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ category: string; lang: string }>;
 }) {
-  const { category } = await params;
+  const { category, lang } = await params;
   const categorySlug = decodeURIComponent(category);
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const t = await getT(locale);
 
   let categoryData: CategoryBackendType | null = null;
   let subcategories: SubcategoryWithImage[] = [];
@@ -111,21 +114,24 @@ export default async function CategoryPage({
   if (error || !categoryData) {
     notFound();
   }
+  const categoryName = translateCategory(t, categoryData.slug, categoryData.name);
+  const categoryIntro = t("collections.categoryIntro", { name: categoryName });
   const schema = createCollectionPageSchema({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}`,
-    name: categoryData.name,
-    description: `Explore our premium ${categoryData.name.toLowerCase()} collections – timeless style, exceptional quality.`,
+    locale,
+    path: `/collections/${categorySlug}`,
+    name: categoryName,
+    description: categoryIntro,
     items: subcategories.map((sub) => ({
-      name: sub.name,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${sub.slug}`,
+      name: translateCategory(t, sub.slug, sub.name),
+      path: `/collections/${categorySlug}/${sub.slug}`,
       imageUrl: sub.image_url ?? undefined,
     })),
   });
 
   const breadcrumbItems = [
-    { name: "Home", slug: "/" },
-    { name: "collections", slug: "/collections" },
-    { name: categoryData.name, slug: `/collections/${categorySlug}` },
+    { name: t("breadcrumbs.home"), slug: "/" },
+    { name: t("breadcrumbs.collections"), slug: "/collections" },
+    { name: categoryName, slug: `/collections/${categorySlug}` },
   ];
 
   return (
@@ -133,14 +139,13 @@ export default async function CategoryPage({
       <Schema markup={schema} />
       <main className="relative w-full min-h-screen pt-24 font-roboto">
         <div className="w-full  px-4 sm:px-6 ">
-          <Breadcrumbs items={breadcrumbItems} />
+          <Breadcrumbs items={breadcrumbItems} locale={locale} />
           <header className="mb-5">
             <h1 className="text-3xl md:text-4xl font-light mb-4 text-vintage-green">
-              {categoryData.name}
+              {categoryName}
             </h1>
             <p className="text-lg text-vintage-brown max-w-2xl">
-              Explore our premium {categoryData.name.toLowerCase()} collections
-              – timeless style, exceptional quality.
+              {categoryIntro}
             </p>
           </header>
 
@@ -156,16 +161,16 @@ export default async function CategoryPage({
                 id="no-subcategories"
                 className="text-3xl font-semibold mb-4 text-vintage-green"
               >
-                No subcategories yet
+                {t("collections.noSubcategoriesTitle")}
               </h2>
               <p className="text-lg text-gray-600 max-w-md mx-auto">
-                We are working on adding new collections. Check back soon!
+                {t("collections.noSubcategoriesText")}
               </p>
             </section>
           ) : (
             <section aria-labelledby="subcategories-heading">
               <h2 id="subcategories-heading" className="sr-only">
-                {categoryData.name} Subcategories
+                {t("collections.subcategoriesHeading", { name: categoryName })}
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -185,7 +190,7 @@ export default async function CategoryPage({
                       >
                         <Image
                           src={subcategory.image_url}
-                          alt={`${subcategory.name} collection`}
+                          alt={t("collections.categoryAlt", { name: translateCategory(t, subcategory.slug, subcategory.name) })}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -196,10 +201,10 @@ export default async function CategoryPage({
 
                         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                           <h2 className="text-2xl font-semibold  tracking-wide capitalize">
-                            {subcategory.name}
+                            {translateCategory(t, subcategory.slug, subcategory.name)}
                           </h2>
                           <p className="text-sm opacity-90 font-medium flex flex-row hover:underline">
-                           Shop <span><RightArrowIcon className='w-5 h-5 text-white-fb'/></span>
+                           {t("collections.shop")} <span><RightArrowIcon className='w-5 h-5 text-white-fb'/></span>
                           </p>
                         </div>
                       </Link>

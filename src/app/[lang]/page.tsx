@@ -16,21 +16,31 @@ import Schema from "@/components/schemas/SchemaMarkUp";
 import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
 import SeasonalCollectionSkeleton from "@/components/skeletons/SeasonalCollectionSkeleton";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import { getT } from "@/i18n/server";
+import { isLocale, defaultLocale } from "@/i18n.config";
 
-export async function generateMetadata(): Promise<Metadata> {
+type PageProps = { params: Promise<{ lang: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  const t = await getT(lang);
   return createMetadata({
-    MetaTitle: "Methys - Timeless Pieces for the Modern Individual",
-    MetaDescription:
-      "Distinctive pieces for those who value craftsmanship and character.",
+    locale: lang,
+    MetaTitle: t("home.metaTitle"),
+    MetaDescription: t("home.metaDescription"),
     canonical: "/",
   });
 }
 
-export default async function Home() {
+export default async function Home({ params }: PageProps) {
+  const { lang } = await params;
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const t = await getT(locale);
+
   return (
     <section className="home-page">
-      <Schema markup={createOrganizationSchema()} />
-      <Schema markup={createWebSiteSchema()} />
+      <Schema markup={createOrganizationSchema(locale)} />
+      <Schema markup={createWebSiteSchema(locale, t("home.metaDescription"))} />
       <HeaderProvider forceOpaque={false} dropDownMenu={<DropDownMenu />}>
         <Suspense>
           <Hero />
@@ -38,7 +48,7 @@ export default async function Home() {
 
         <Suspense fallback={<SeasonalCollectionSkeleton />}>
           <SeasonalCollectionSection
-            title="Shop Now"
+            title={t("home.shopNow")}
             fetcher={ProductBySummerSeason}
           />
         </Suspense>
@@ -53,7 +63,7 @@ export default async function Home() {
 
         <Suspense fallback={<SeasonalCollectionSkeleton />}>
           <SeasonalCollectionSection
-            title="Autumn Collection Just Dropped"
+            title={t("home.autumnCollection")}
             fetcher={ProductByAutumnSeason}
           />
         </Suspense>

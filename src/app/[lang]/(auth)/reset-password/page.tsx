@@ -6,7 +6,9 @@ import {  useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { supabasePublic } from "../../../../_lib/supabase/client";
 import { ResetPasswordFormData, resetPasswordSchema } from "@/_lib/utils/zod";
-import Link from "next/link";
+import Link, { useLocalizedPath } from "@/components/LocaleLink/LocaleLink";
+import { useT } from "@/i18n/client";
+import { translateDynamic } from "@/i18n/translate";
 
 function ResetPasswordForm() {
   const {
@@ -21,6 +23,9 @@ function ResetPasswordForm() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const localizePath = useLocalizedPath();
+  const t = useT();
+  const tv = (message?: string) => (message ? translateDynamic(t, message, message) : "");
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     setError(null);
@@ -32,7 +37,8 @@ function ResetPasswordForm() {
       });
       
       if (updateError) {
-        setError('Password update failed: ' + updateError.message);
+        console.error("Password update failed:", updateError.message);
+        setError(t("auth.passwordUpdateFailed"));
         setLoading(false);
         return;
       }
@@ -41,11 +47,11 @@ function ResetPasswordForm() {
       setLoading(false);
     
       setTimeout(() => {
-        router.push('/login');
+        router.push(localizePath('/login'));
       }, 1500);
       
     } catch {
-      setError("An unexpected error occurred. Please try again.",);
+      setError(t("auth.genericError"));
       setLoading(false);
     }
   };
@@ -56,37 +62,37 @@ function ResetPasswordForm() {
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-vintage-green mb-2">Reset Password</h2>
+            <h1 className="text-2xl font-bold text-vintage-green mb-2">{t("auth.resetPassword")}</h1>
          
           </div>
 
           <div>
             <label className="block text-sm font-medium text-vintage-green mb-2">
-              New Password
+              {t("auth.newPassword")}
             </label>
             <input
               type="password"
               {...register("password")}
               className="w-full px-3 py-2 border border-vintage-green rounded-md"
-              placeholder="Enter new password"
+              placeholder={t("auth.enterNewPassword")}
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+              <p className="text-red-500 text-sm mt-1">{tv(errors.password.message)}</p>
             )}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Confirm Password
+              {t("auth.confirmPassword")}
             </label>
             <input
               type="password"
               {...register("confirmPassword")}
               className="w-full px-3 py-2 border border-vintage-green rounded-md"
-              placeholder="Confirm new password"
+              placeholder={t("auth.confirmNewPassword")}
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
+              <p className="text-red-500 text-sm mt-1">{tv(errors.confirmPassword.message)}</p>
             )}
           </div>
 
@@ -99,7 +105,7 @@ function ResetPasswordForm() {
           {success && (
             <div className="bg-green-50 border border-green-200 rounded-md p-4">
               <p className="text-green-600 text-sm">
-                Password updated successfully! Redirecting to login...
+                {t("auth.passwordUpdated")}
               </p>
             </div>
           )}
@@ -109,17 +115,17 @@ function ResetPasswordForm() {
             disabled={loading}
             className="w-full hover-colors py-2 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Updating..." : "Update Password"}
+            {loading ? t("auth.updating") : t("auth.updatePassword")}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Remember your password?
+            {t("auth.rememberPassword")}
             <Link
               href={'/login'}
               className="font-medium text-vintage-green ml-1"             >
-              Sign in
+              {t("auth.signIn")}
             </Link>
           </p>
         </div>

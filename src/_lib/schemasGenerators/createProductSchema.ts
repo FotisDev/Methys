@@ -1,21 +1,18 @@
-export function createWebSiteSchema() {
+import { absoluteUrl } from "@/components/SEO/urls";
+import { localeMeta, type Locale } from "@/i18n.config";
+import { ORGANIZATION_ID, WEBSITE_ID } from "./createOrganizationSchema";
+
+export function createWebSiteSchema(locale: Locale, description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#website`,
-    url: process.env.NEXT_PUBLIC_SITE_URL,
+    "@id": WEBSITE_ID,
+    url: absoluteUrl("/", locale),
     name: "Methys",
-    description: "Distinctive pieces for those who value craftsmanship and character.",
+    description,
+    inLanguage: localeMeta[locale].htmlLang,
     publisher: {
-      "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#organization`,
-    },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${process.env.NEXT_PUBLIC_SITE_URL}/search?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
+      "@id": ORGANIZATION_ID,
     },
   };
 }

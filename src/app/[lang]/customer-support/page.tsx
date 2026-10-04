@@ -5,25 +5,34 @@ import Schema from "@/components/schemas/SchemaMarkUp";
 import { getSupportCategories } from "@/_lib/backend/SupportCategories/action";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Image from "next/image";
+import Link from "@/components/LocaleLink/LocaleLink";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import { getT } from "@/i18n/server";
+import { defaultLocale, isLocale } from "@/i18n.config";
 
-export const metadata = createMetadata({
-  MetaTitle: "Support | Methys",
-  MetaDescription:
-    "Submit a support ticket for billing, bugs, account issues, or feature requests. Our team will get back to you shortly.",
-  canonical: "/customer-support",
-  OpenGraphImageUrl:
-    "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
-  other: {
-    card: "summary_large_image",
-    title: "Customer Support | Methys",
-    description: "You can create a message and contact us for any trouble.",
-  },
-});
+type PageProps = { params: Promise<{ lang: string }> };
 
-export default async function SupportPage() {
-  const supportCategories = await getSupportCategories();
-  const schemaMarkUp = getSupportPageStructuredData();
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  const t = await getT(lang);
+  return createMetadata({
+    locale: lang,
+    MetaTitle: t("support.metaTitle"),
+    MetaDescription: t("support.metaDescription"),
+    canonical: "/customer-support",
+    OpenGraphImageUrl:
+      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+  });
+}
+
+export default async function SupportPage({ params }: PageProps) {
+  const { lang } = await params;
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const [supportCategories, t] = await Promise.all([getSupportCategories(), getT(locale)]);
+  const schemaMarkUp = getSupportPageStructuredData(locale, {
+    name: t("support.metaTitle"),
+    description: t("support.metaDescription"),
+  });
 
   return (
     <>
@@ -32,25 +41,24 @@ export default async function SupportPage() {
         <main className="relative min-h-screen flex items-center justify-center px-4">
           <Image
             src="/yo.jpg"
-            alt="Support Background"
+            alt=""
             className="fixed inset-0 w-full h-full object-cover -z-10"
             fill
           />
           <div className="fixed inset-0 bg-black/30 -z-5"></div>
           <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-8 relative z-10">
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Support</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">{t("support.title")}</h1>
             <p className="text-gray-500 mb-6 text-sm">
-              Fill out the form below and we will get back to you as soon as
-              possible.
+              {t("support.intro")}
             </p>
             <SupportFormPageComponent categories={supportCategories ?? []} />
             <div className="mt-6 text-center">
-              <a
-                href={"/"}
+              <Link
+                href="/"
                 className="text-vintage-green font-bold hover:underline"
               >
-                Go to main page
-              </a>
+                {t("support.goToMainPage")}
+              </Link>
             </div>
           </div>
         </main>

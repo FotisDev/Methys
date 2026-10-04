@@ -2,17 +2,18 @@
 
 import { supabasePublic } from "@/_lib/supabase/client";
 import { unstable_cache } from "next/cache";
+import { translatePage } from "@/_lib/backend/translations/action";
 
 export type PrivacyPolicyBackendType = {
   title: string;
   content: string;
   slug: string;
-  id: number;
+  id: string;
   updated_at: string;
   created_at: string;
 };
 
-const getPrivacyPolicy = unstable_cache(
+const fetchEnglishPrivacyPolicy = unstable_cache(
   async (): Promise<PrivacyPolicyBackendType | null> => {
     const { data, error } = await supabasePublic
       .from("pages")
@@ -34,4 +35,8 @@ const getPrivacyPolicy = unstable_cache(
   },
 );
 
-export default getPrivacyPolicy;
+export default async function getPrivacyPolicy(
+  locale = "en",
+): Promise<PrivacyPolicyBackendType | null> {
+  return translatePage(await fetchEnglishPrivacyPolicy(), locale);
+}

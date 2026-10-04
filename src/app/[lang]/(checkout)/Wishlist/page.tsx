@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
 import { ProductInDetails } from "@/_lib/types";
 import { useCart } from "@/components/providers/CartProvider";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
+import { useFormatPrice, useLocale, useT } from "@/i18n/client";
+import { translateCount } from "@/i18n/translate";
+import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 
 interface WishlistItem extends ProductInDetails {
   addedToWishlist?: string;
@@ -14,6 +17,9 @@ interface WishlistItem extends ProductInDetails {
 
 const WishlistPage = () => {
   const { addToCart, isInCart } = useCart();
+  const t = useT();
+  const locale = useLocale();
+  const formatPrice = useFormatPrice();
 
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +47,7 @@ const WishlistPage = () => {
   };
 
   const clearWishlist = () => {
-    if (confirm("Clear entire wishlist?")) {
+    if (confirm(t("wishlist.confirmClear"))) {
       saveWishlist([]);
     }
   };
@@ -56,9 +62,9 @@ const WishlistPage = () => {
     });
 
     if (added > 0) {
-      alert(`${added} item${added > 1 ? "s" : ""} added to cart!`);
+      alert(t("wishlist.addedAllToCart", { items: translateCount(t, "common.items", added) }));
     } else {
-      alert("Nothing new to add — items are out of stock or already in cart.");
+      alert(t("wishlist.nothingToAdd"));
     }
   };
 
@@ -86,8 +92,8 @@ const WishlistPage = () => {
   };
 
   const breadcrumbItems = [
-    { name: "Home", slug: "/" },
-    { name: "Wishlist", slug: `/Wishlist` },
+    { name: t("breadcrumbs.home"), slug: "/" },
+    { name: t("wishlist.title"), slug: `/Wishlist` },
   ];
 
   if (isLoading) {
@@ -117,15 +123,15 @@ const WishlistPage = () => {
               />
             </svg>
           </div>
-          <div className="text-3xl font-bold mb-4">Your wishlist is empty</div>
+          <h1 className="text-3xl font-bold mb-4">{t("wishlist.empty")}</h1>
           <p className="text-gray-600 mb-8">
-            Save your favorite items for later.
+            {t("wishlist.emptyHint")}
           </p>
           <Link
             href="/collections"
             className="bg-default-color hover:bg-default-cold text-white font-medium py-3 px-10 rounded-lg transition"
           >
-            Start Shopping
+            {t("common.startShopping")}
           </Link>
         </div>
       </div>
@@ -134,27 +140,27 @@ const WishlistPage = () => {
 
   return (
     <section className="container mx-auto  px-4 py-12 fond-sans">
-      <div className="text-4xl font-bold text-gray-800 mb-4">My Wishlist</div>
+      <h1 className="text-4xl font-bold text-gray-800 mb-4">{t("wishlist.myWishlist")}</h1>
       <nav className="text-sm text-gray-600 mb-10">
-        <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} locale={locale} />
       </nav>
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
         <p className="text-lg">
-          {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"}
+          {translateCount(t, "common.items", wishlistItems.length)}
         </p>
         <div className="flex gap-3">
           <button
             onClick={moveAllToCart}
             className="px-6 py-2.5 bg-default-color text-white rounded-lg hover:bg-default-cold transition"
           >
-            Add All to Cart
+            {t("wishlist.addAllToCart")}
           </button>
           <button
             onClick={clearWishlist}
             className="px-6 py-2.5 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition"
           >
-            Clear Wishlist
+            {t("wishlist.clear")}
           </button>
         </div>
       </div>
@@ -224,15 +230,15 @@ const WishlistPage = () => {
                     {item.is_offer ? (
                       <div className="flex items-center gap-2">
                         <del className="text-gray-400">
-                          ${item.price.toFixed(2)}
+                          {formatPrice(item.price)}
                         </del>
                         <span className="text-xl  text-vintage-green">
-                          ${(item.price * 0.8).toFixed(2)}
+                          {formatPrice(getProductPricing(item).finalPrice)}
                         </span>
                       </div>
                     ) : (
                       <span className="text-xl font-bold">
-                        ${item.price.toFixed(2)}
+                        {formatPrice(item.price)}
                       </span>
                     )}
                   </div>
@@ -243,10 +249,10 @@ const WishlistPage = () => {
                     }`}
                   >
                     {outOfStock
-                      ? "Out of stock"
+                      ? t("product.outOfStock")
                       : hasSizes(item)
                       ? item.product_variants[0].size
-                      : `${stock} left`}
+                      : t("wishlist.left", { count: stock })}
                   </span>
                 </div>
 
@@ -255,13 +261,13 @@ const WishlistPage = () => {
                     href={getProductUrl(item)}
                     className="block text-center w-full py-3 border hover-colors border-gray-300 rounded-lg transition"
                   >
-                    View Details
+                    {t("collections.viewDetails")}
                   </Link>
                 </div>
 
                 {item.addedToWishlist && (
                   <p className="text-xs text-gray-500 text-center mt-4">
-                    Added {new Date(item.addedToWishlist).toLocaleDateString()}
+                    {t("wishlist.addedOn", { date: new Date(item.addedToWishlist).toLocaleDateString(locale) })}
                   </p>
                 )}
               </div>
@@ -275,7 +281,7 @@ const WishlistPage = () => {
           href="/collections"
           className="bg-default-color hover:bg-default-cold text-white font-medium py-4 px-12 rounded-lg text-lg transition"
         >
-          Continue Shopping
+          {t("common.continueShopping")}
         </Link>
       </div>
     </section>

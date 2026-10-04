@@ -5,39 +5,41 @@ import Footer from "@/components/footer/Footer";
 import DropDownMenu from "@/components/header/DropDownMenu";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { createMetadata } from "@/components/SEO/metadata";
+import { notFound } from "next/navigation";
+import { getT } from "@/i18n/server";
+import { defaultLocale, isLocale } from "@/i18n.config";
 
-export async function generateMetadata() {
-  const privacyPolicy = await getPrivacyPolicy();
+type PageProps = { params: Promise<{ lang: string }> };
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const [privacyPolicy, t] = await Promise.all([getPrivacyPolicy(locale), getT(locale)]);
 
   return createMetadata({
-    MetaTitle: "Privacy Policy | Methys",
-    MetaDescription:
-      "Learn how Methys collects, uses, and protects your personal data.",
+    locale,
+    MetaTitle: t("privacy.metaTitle"),
+    MetaDescription: t("privacy.metaDescription"),
     OpenGraphImageUrl:
       "/storage/v1/object/public/OpenGraphImages/privacy-policy.jpg",
     canonical: "/privacy-policy",
     dateModified: privacyPolicy?.updated_at,
     datePublished: privacyPolicy?.created_at,
-
-    other: {
-      "twitter:card": "summary_large_image",
-      "twitter:title": "Privacy Policy | Methys",
-      "twitter:description":
-        "Learn how Methys handles your personal data, cookies, and your rights.",
-    },
   });
 }
 
-export default async function PrivacyPolicy() {
+export default async function PrivacyPolicy({ params }: PageProps) {
+  const { lang } = await params;
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const t = await getT(locale);
+  const privacyPolicy: PrivacyPolicyBackendType | null = await getPrivacyPolicy(locale);
 
-  const privacyPolicy: PrivacyPolicyBackendType | null = await getPrivacyPolicy();
-
-  if (!privacyPolicy) return <p>Page not found</p>;
+  if (!privacyPolicy) notFound();
 
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
       <section
-        aria-label="Privacy & Policy"
+        aria-label={t("privacy.title")}
         className="mt-16 font-serif custom-container-4xl padding-x padding-y"
       >
         <div className=" whitespace-pre-line flex flex-col items-center ">
@@ -49,9 +51,9 @@ export default async function PrivacyPolicy() {
             dangerouslySetInnerHTML={{ __html: privacyPolicy.content }}
           />
           <p className="text-sm opacity-70 pt-10">
-            Last updated:{" "}
+            {t("privacy.lastUpdated")}{" "}
             <time dateTime={privacyPolicy.updated_at}>
-              {new Date(privacyPolicy.updated_at).toLocaleDateString()}
+              {new Date(privacyPolicy.updated_at).toLocaleDateString(locale)}
             </time>
           </p>
         </div>

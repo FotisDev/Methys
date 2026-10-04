@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import Footer from "@/components/footer/Footer";
 import { getProductsWithStructure } from "@/_lib/backend/ProductWithStructure/action";
@@ -14,6 +14,11 @@ import Schema from "@/components/schemas/SchemaMarkUp";
 import DropDownMenu from "@/components/header/DropDownMenu";
 import { getCategoryBySlug } from "@/_lib/backend/CategoryById/action";
 import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
+import { getT } from "@/i18n/server";
+import { translateProducts } from "@/_lib/backend/translations/action";
+import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
+import { formatPrice, translateCategory, translateCount } from "@/i18n/translate";
+import { defaultLocale, isLocale } from "@/i18n.config";
 
 export const revalidate = 600;
 
@@ -23,28 +28,24 @@ export async function generateMetadata({
   params: Promise<{
     category: string;
     subcategory: string;
+    lang: string;
   }>;
 }): Promise<Metadata> {
-  const { category, subcategory } = await params;
+  const { category, subcategory, lang } = await params;
   const categorySlug = decodeURIComponent(category);
   const subcategorySlug = decodeURIComponent(subcategory);
+  const t = await getT(lang);
 
   try {
     const parentCategory = await getCategoryBySlug(categorySlug);
 
     if (!parentCategory || parentCategory.parent_id !== null) {
       return createMetadata({
-        MetaTitle: "Category Not Found | Methys",
-        MetaDescription: "The category you're looking for doesn't exist.",
+        locale: lang,
+        MetaTitle: t("collections.categoryNotFoundTitle"),
+        MetaDescription: t("collections.categoryNotFoundDescription"),
         canonical: `/collections/${categorySlug}/${subcategorySlug}`,
-        OpenGraphImageUrl:
-          "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
-        other: {
-          "twitter:card": "summary_large_image",
-          "twitter:title": "Category Not Found | Methys",
-          "twitter:description":
-            "Learn about Methys — our story, mission, and the team behind the product.",
-        },
+        robots: { index: false, follow: false },
       });
     }
 
@@ -58,24 +59,29 @@ export async function generateMetadata({
 
     if (!currentCategory) {
       return createMetadata({
-        MetaTitle: "Subcategory Not Found | Methys",
-        MetaDescription: "The subcategory you're looking for doesn't exist.",
+        locale: lang,
+        MetaTitle: t("collections.categoryNotFoundTitle"),
+        MetaDescription: t("collections.categoryNotFoundDescription"),
         canonical: `/collections/${categorySlug}/${subcategorySlug}`,
         robots: { index: false, follow: false },
       });
     }
 
+    const name = translateCategory(t, currentCategory.slug, currentCategory.name);
+    const parentName = translateCategory(t, parentCategory.slug, parentCategory.name);
     return createMetadata({
-      MetaTitle: `${currentCategory.name} - ${parentCategory.name} | Methys`,
-      MetaDescription: `Discover our collection of ${currentCategory.name.toLowerCase()} products. Timeless style, exceptional quality.`,
+      locale: lang,
+      MetaTitle: t("collections.subcategoryMetaTitle", { name, parent: parentName }),
+      MetaDescription: t("collections.subcategoryMetaDescription", { name }),
       canonical: `/collections/${categorySlug}/${subcategorySlug}`,
       OpenGraphImageUrl:
         "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
     });
   } catch {
     return createMetadata({
-      MetaTitle: "Error | Methys",
-      MetaDescription: "An error occurred while loading this page.",
+      locale: lang,
+      MetaTitle: t("common.errorTitle"),
+      MetaDescription: t("common.errorLoading"),
       canonical: `/collections/${categorySlug}/${subcategorySlug}`,
       robots: { index: false, follow: false },
     });
@@ -89,10 +95,13 @@ export default async function SubcategoryPage({
   params: Promise<{
     category: string;
     subcategory: string;
+    lang: string;
   }>;
   searchParams: Promise<{ min?: string; max?: string; size?: string }>;
 }) {
-  const { category, subcategory } = await params;
+  const { category, subcategory, lang } = await params;
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const t = await getT(locale);
 
   const categorySlug = decodeURIComponent(category);
   const subcategorySlug = decodeURIComponent(subcategory);
@@ -119,13 +128,13 @@ export default async function SubcategoryPage({
 
   const allProducts = await getProductsWithStructure();
 
-  const filteredProducts = await FilteredProducts({
+  const filteredProducts = await translateProducts(await FilteredProducts({
     parentSlug: categorySlug,
     categorySlug: subcategorySlug,
     min: filters?.min,
     max: filters?.max,
     size: filters?.size,
-  });
+  }), locale);
 
   const products =
     allProducts?.filter(
@@ -135,26 +144,29 @@ export default async function SubcategoryPage({
         product.categoryformen.id === currentCategory.id,
     ) ?? [];
 
+  const categoryName = translateCategory(t, currentCategory.slug, currentCategory.name);
+  const parentName = translateCategory(t, parentCategory.slug, parentCategory.name);
   const schema = createCollectionPageSchema({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}`,
-    name: currentCategory.name,
-    description: `Discover our collection of ${currentCategory.name.toLowerCase()}.`,
+    locale,
+    path: `/collections/${categorySlug}/${subcategorySlug}`,
+    name: categoryName,
+    description: t("collections.subcategoryMetaDescription", { name: categoryName }),
     items: products.map((p) => ({
       name: p.name,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/collections/${categorySlug}/${subcategorySlug}/${p.slug}`,
+      path: `/collections/${categorySlug}/${subcategorySlug}/${p.slug}`,
       imageUrl: p.image_url?.[0] ?? undefined,
     })),
   });
 
   const breadcrumbItems = [
-    { name: "Home", slug: "/" },
-    { name: "collections", slug: "/collections" },
+    { name: t("breadcrumbs.home"), slug: "/" },
+    { name: t("breadcrumbs.collections"), slug: "/collections" },
     {
-      name: parentCategory.name,
+      name: parentName,
       slug: `/collections/${parentCategory.slug}`,
     },
     {
-      name: currentCategory.name,
+      name: categoryName,
       slug: `/collections/${parentCategory.slug}/${currentCategory.slug}`,
     },
   ];
@@ -164,11 +176,11 @@ export default async function SubcategoryPage({
       <Schema markup={schema} />
       <section className="relative w-full min-h-[80vh] pt-[70px]  pb-12 font-serif text-vintage-green">
         <div className="pl-4">
-          <Breadcrumbs items={breadcrumbItems} />
+          <Breadcrumbs items={breadcrumbItems} locale={locale} />
         </div>
 
         <header className="flex flex-row items-center tracking-wide pl-4">
-          <h1 className="text-lg capitalize ">{currentCategory.name}</h1>
+          <h1 className="text-lg capitalize ">{categoryName}</h1>
         </header>
 
         <div className="flex flex-row gap-5 text-black text-xs uppercase p-4 overflow-x-auto scrollbar-hide tracking-wide whitespace-nowrap ">
@@ -180,7 +192,7 @@ export default async function SubcategoryPage({
                 key={item.id}
                 className="inline-block"
               >
-                {item.name}
+                {translateCategory(t, item.slug, item.name)}
               </Link>
             ))}
         </div>
@@ -193,13 +205,11 @@ export default async function SubcategoryPage({
           categorySlug={subcategorySlug}
         >
           {(filteredProducts ?? []).length === 0 ? (
-            <div>No products found</div>
+            <div>{t("common.noProductsFound")}</div>
           ) : (
             <>
               <p className="text-sm text-vintage-brown text-right mb-4 mr-4 sm:text-lg">
-                {(filteredProducts ?? []).length}{" "}
-                {(filteredProducts ?? []).length === 1 ? "product" : "products"}{" "}
-                available
+                {translateCount(t, "collections.productsAvailable", (filteredProducts ?? []).length)}
               </p>
 
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -223,18 +233,18 @@ export default async function SubcategoryPage({
                         />
                         {product.is_offer && (
                           <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 rounded">
-                            Offer
+                            {t("product.offer")}
                           </div>
                         )}
                         {product.price && (
                           <div className="absolute top-4 right-4 bg-white text-vintage-green px-3 py-1.5 rounded-lg text-sm font-medium shadow">
-                            €{product.price}
+                            {formatPrice(getProductPricing(product).finalPrice, locale)}
                           </div>
                         )}
                       </div>
 
                       <div className="p-4">
-                        <h3 className="text-base font-medium line-clamp-2 mb-1 group-hover:text-vintage-brown transition">
+                        <h3 className="text-base font-medium line-clamp-2 mb-1 text-vintage-green">
                           {product.name}
                         </h3>
                         {product.description && (
@@ -242,8 +252,9 @@ export default async function SubcategoryPage({
                             {product.description}
                           </p>
                         )}
-                        <span className="text-sm text-vintage-brown font-medium">
-                          View Details →
+                        <span className="inline-flex items-center gap-1 text-sm font-medium text-gray-500 underline-offset-4 transition-colors group-hover:text-vintage-green group-hover:underline">
+                          {t("collections.viewDetails")}
+                          <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
                         </span>
                       </div>
                     </Link>

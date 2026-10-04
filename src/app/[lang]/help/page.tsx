@@ -5,24 +5,28 @@ import FaqSection from "@/components/pages/faqPage";
 import { createMetadata } from "@/components/SEO/metadata";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import { getT } from "@/i18n/server";
+import { defaultLocale, isLocale } from "@/i18n.config";
 
-export const metadata = createMetadata({
-  MetaTitle: "Frequently Asked Question | Methys",
-  MetaDescription:
-    "Here are some of the most common inquiries about shiping ,founding money, and details about the products",
-  canonical: "/help",
-  OpenGraphImageUrl:
-    "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
-  other: {
-    "twitter:card": "summary_large_image",
-    "twitter:title": "Help | Methys",
-    "twitter:description":
-      "Questions and Answers in the most common inquiries about our products",
-  },
-});
+type PageProps = { params: Promise<{ lang: string }> };
 
-export default async function FAQPage() {
-  const faqs = await FetchFaqs();
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  const t = await getT(lang);
+  return createMetadata({
+    locale: lang,
+    MetaTitle: t("help.metaTitle"),
+    MetaDescription: t("help.metaDescription"),
+    canonical: "/help",
+    OpenGraphImageUrl:
+      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+  });
+}
+
+export default async function FAQPage({ params }: PageProps) {
+  const { lang } = await params;
+  const locale = isLocale(lang) ? lang : defaultLocale;
+  const [faqs, t] = await Promise.all([FetchFaqs(locale), getT(locale)]);
 
   const schemaMarkup = generateFAQSchema(faqs);
 
@@ -32,8 +36,8 @@ export default async function FAQPage() {
 
       <FaqSection
         faqs={faqs}
-        title="Everything you need to know about our services"
-        subtitle="Frequently Asked Questions"
+        title={t("help.title")}
+        subtitle={t("help.subtitle")}
       />
     </HeaderProvider>
   );

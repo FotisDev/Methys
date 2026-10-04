@@ -9,12 +9,15 @@ import { Instagram } from "@/svgs/instagram";
 import { Facebook } from "@/svgs/facebook";
 import { Tiktok } from "@/svgs/tiktok";
 import { WorldShpereSvg } from "@/svgs/worldShpere";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import FoldableSectionComponent from "../foldableComponent/FoldableSection";
 import { useAuth } from "../providers/AuthProvider";
+import { useT } from "@/i18n/client";
+import { rich } from "@/i18n/rich";
 
 export default function Footer() {
   const { isAuthenticated, isLoading } = useAuth();
+  const t = useT();
 
   const socials: Array<{
     name: string;
@@ -31,24 +34,24 @@ export default function Footer() {
 
   const [legalPolicyColumn, quickLinksColumn, paymentMethods] = [
     {
-      category: "Legal Policy",
+      category: t("footer.legalPolicy"),
       items: [
-        { name: "Terms & Conditions", href: "/terms-conditions" },
-        { name: "Privacy Policy", href: "/privacy-policy" },
-        { name: "Legal Notice", href: "/legal-notice" },
-        { name: "Collections", href: "/collections" },
+        { name: t("footer.termsConditions"), href: "/terms-conditions" },
+        { name: t("footer.privacyPolicy"), href: "/privacy-policy" },
+        { name: t("footer.legalNotice"), href: "/legal-notice" },
+        { name: t("footer.collections"), href: "/collections" },
       ],
     },
     {
-      category: "Quick Links",
+      category: t("footer.quickLinks"),
       items: [
-        { name: "Home", href: "/" },
-        { name: "About", href: "/about" },
-        { name: "Help", href: "/help" },
+        { name: t("footer.home"), href: "/" },
+        { name: t("footer.about"), href: "/about" },
+        { name: t("footer.help"), href: "/help" },
       ],
     },
     {
-      category: "Payment Methods",
+      category: t("footer.paymentMethods"),
       items: [
         {
           name: "Stripe",
@@ -77,21 +80,22 @@ export default function Footer() {
       >
         <div className="flex flex-col gap-6 w-full sm:w-96 lg:w-full">
           <h3 className="font-bold text-vintage-green">
-            Join The Methys Community
+            {t("footer.joinCommunity")}
           </h3>
 
           <p className="text-sm">
-            Get a heads up about latest Collections, events and collaborations
+            {t("footer.newsletterText")}
           </p>
 
           <form className="flex w-full">
             <input
               type="email"
-              placeholder="Enter your Email"
+              placeholder={t("footer.emailPlaceholder")}
+              aria-label={t("footer.emailPlaceholder")}
               required
               className="border border-default-color w-full p-2 text-sm"
             />
-            <button type="submit" className="bg-default-cold text-white w-16">
+            <button type="submit" className="bg-default-cold text-white w-16" aria-label={t("footer.subscribe")}>
               →
             </button>
           </form>
@@ -135,10 +139,10 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex flex-col gap-1 pt-5 ">
-            <h3 className="text-vintage-green font-bold">Country</h3>
+            <h3 className="text-vintage-green font-bold">{t("footer.country")}</h3>
             <div className="flex items-center justify-center lg:justify-start gap-2">
               <WorldShpereSvg />
-              <p className="text-sm underline">International</p>
+              <p className="text-sm underline">{t("footer.international")}</p>
             </div>
           </div>
         </div>
@@ -150,8 +154,9 @@ export default function Footer() {
 
       <div className="relative px-4 py-6">
         <div className="text-center text-sm">
-          © 2026 <span className="text-vintage-green font-bold">Methys.</span>{" "}
-          All Rights Reserved.
+          {rich(t("footer.copyright", { year: new Date().getFullYear() }), {
+            brand: <span className="text-vintage-green font-bold">Methys.</span>,
+          })}
         </div>
 
         {!isLoading && !isAuthenticated && (
@@ -170,15 +175,16 @@ export default function Footer() {
             "
           >
             <span className="text-vintage-green text-center">
-              For special <span className="text-red-500">Offers</span> make sure
-              to
+              {rich(t("footer.specialOffers"), {
+                offers: <span className="text-red-500">{t("footer.offers")}</span>,
+              })}
             </span>
 
             <Link
               href="/login"
               className="w-[130px] h-[40px] border border-vintage-green bg-white text-vintage-green flex items-center justify-center rounded hover:bg-vintage-green hover:text-white"
             >
-              Sign Up / Sign In
+              {t("footer.signUpSignIn")}
             </Link>
           </div>
         )}

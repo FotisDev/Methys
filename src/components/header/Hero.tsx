@@ -1,8 +1,10 @@
 "use client";
 //import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
+import { useT } from "@/i18n/client";
 
 const HeroSection = () => {
+  const t = useT();
   return (
     <section
       aria-labelledby="hero-heading"
@@ -36,13 +38,13 @@ const HeroSection = () => {
 
         <div className="relative z-10 flex items-center ml-2 w-full h-full gap-2 ">
           <Link
-            href="/en/collections"
+            href="/collections"
             className="text-white-f6 text-md hover:underline "
           >
-            <h1> Methys Collection</h1>
+            <h1>{t("hero.title")}</h1>
           </Link>
 
-          <p className="text-vintage-green">Timeless style. Exceptional quality.</p>
+          <p className="text-vintage-green">{t("hero.tagline")}</p>
         </div>
       </div>
     </section>

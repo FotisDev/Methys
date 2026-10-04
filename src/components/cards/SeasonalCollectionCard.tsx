@@ -2,13 +2,15 @@
 
 import CartSvg from "@/svgs/cartSvg";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import { useState, MouseEvent } from "react";
 import { useCart } from "../providers/CartProvider";
 import { useWishlist } from "../providers/WishListProvider";
 import { ProductInDetails } from "@/_lib/types";
 import { HeartSvg } from "@/svgs/hearthIcon";
 import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
+import { useFormatPrice, useT } from "@/i18n/client";
+import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 
 
 
@@ -26,9 +28,12 @@ export default function SeasonalCollectionCard({
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   const { addToCart } = useCart();
+  const t = useT();
+  const formatPrice = useFormatPrice();
   const { addToWishlist, isInWishlist } = useWishlist();
 
   const inWishlist = isInWishlist(item.id);
+  const pricing = getProductPricing(item);
 
   const availableSizes = (item.product_variants ?? [])
     .filter((variant) => variant.quantity > 0)
@@ -45,7 +50,7 @@ export default function SeasonalCollectionCard({
     e.stopPropagation();
 
     if (!selectedSize && availableSizes.length > 0) {
-      alert("Please select a size first");
+      alert(t("wishlist.selectSizeFirst"));
       return;
     }
 
@@ -53,8 +58,8 @@ export default function SeasonalCollectionCard({
 
     alert(
       selectedSize
-        ? `Added "${item.name}" (Size: ${selectedSize}) to cart!`
-        : `Added "${item.name}" to cart!`
+        ? t("product.addedToCartWithSize", { name: item.name, size: selectedSize })
+        : t("product.addedToCart", { name: item.name })
     );
   };
 
@@ -102,13 +107,13 @@ export default function SeasonalCollectionCard({
         />
         {isNew && (
           <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest  text-default-color z-10">
-            New In
+            {t("product.newIn")}
           </span>
         )}
         <button
           onClick={handleWishlistToggle}
           className="absolute top-2 right-2 p-1.5 z-10"
-          aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+          aria-label={inWishlist ? t("product.removeFromWishlist") : t("product.addToWishlist")}
         >
           <HeartSvg
             filled={inWishlist}
@@ -124,10 +129,19 @@ export default function SeasonalCollectionCard({
           <h3 className="text-sm font-medium line-clamp-1 leading-snug flex-1">
             {item.name}
           </h3>
-          <p className="text-sm shrink-0">${item.price}</p>
+          <p className="text-sm shrink-0 flex items-center gap-1">
+            {pricing.isDiscounted && (
+              <span className="line-through text-gray-400 text-xs">
+                {formatPrice(pricing.originalPrice)}
+              </span>
+            )}
+            <span className={pricing.isDiscounted ? "font-bold" : undefined}>
+              {formatPrice(pricing.finalPrice)}
+            </span>
+          </p>
           <button
             onClick={handleAddToCart}
-            aria-label="Add to cart"
+            aria-label={t("common.addToCart")}
             className="shrink-0 text-gray-aca hover:text-black transition-opacity cursor-pointer"
           >
             <CartSvg className="w-4 h-4 " />
@@ -153,7 +167,7 @@ export default function SeasonalCollectionCard({
                 ))}
               </div>
             ) : (
-              <span className="text-xs text-red-500">Sold Out</span>
+              <span className="text-xs text-red-500">{t("product.soldOut")}</span>
             )
           ) : item.size_description ? (
             <p className="text-xs text-vintage-green/60 line-clamp-1">

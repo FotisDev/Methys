@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from "@/components/LocaleLink/LocaleLink";
 import CustomerSupport from '@/svgs/customerSupport';
 // import Mail from '@/svgs/mail';
 // import SocialsSvg from '@/svgs/Socials';

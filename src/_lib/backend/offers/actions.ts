@@ -2,6 +2,7 @@
 
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import type { ProductInDetails } from "@/_lib/types";
+import { DISCOUNT_PERCENT, getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 
 export interface ProductWithDiscount extends ProductInDetails {
   discountedPrice: number;
@@ -42,11 +43,9 @@ export async function fetchOffers(): Promise<ProductWithDiscount[]> {
     return [];
   }
 
-  const discountPercent = 20;
-
   return data.map((p) => ({
     ...p,
-    discountedPrice: p.price * (1 - discountPercent / 100),
-    discountPercent,
+    discountedPrice: getProductPricing(p).finalPrice,
+    discountPercent: DISCOUNT_PERCENT,
   }));
 }

@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductInDetails } from "@/_lib/types";
+import { useT } from "@/i18n/client";
 
 type ProductFilterClientProps = {
   initialProducts: ProductInDetails[];
@@ -17,6 +18,7 @@ export default function ProductFilterClient({
   children,
 }: ProductFilterClientProps) {
   const router = useRouter();
+  const t = useT();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [showFilters, setShowFilters] = useState(false);
@@ -55,7 +57,7 @@ export default function ProductFilterClient({
       <div className="flex items-center gap-4 mb-4 border-b border-vintage-green/20 pb-3">
         <button
           onClick={() => setShowFilters((prev) => !prev)}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-vintage-green border border-vintage-green/40 hover:border-vintage-green transition-colors rounded"
+          className="uppercase flex items-center gap-2 px-4 py-2 text-sm font-semibold text-vintage-green border border-vintage-green/40 hover:border-vintage-green transition-colors rounded"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +74,7 @@ export default function ProductFilterClient({
             <line x1="8" y1="12" x2="16" y2="12" />
             <line x1="10" y1="18" x2="14" y2="18" />
           </svg>
-          {showFilters ? "HIDE FILTER" : "SHOW FILTER"}
+          {showFilters ? t("filters.hide") : t("filters.show")}
         </button>
 
         {(filters.min || filters.max || filters.size) && (
@@ -80,7 +82,7 @@ export default function ProductFilterClient({
             onClick={clearFilters}
             className="text-sm text-vintage-brown underline underline-offset-2"
           >
-            Clear all
+            {t("filters.clearAll")}
           </button>
         )}
       </div>
@@ -93,12 +95,12 @@ export default function ProductFilterClient({
            <aside className="w-full md:w-64 flex-shrink-0 bg-white border border-gray-100 shadow-sm p-5 space-y-6">
             <div>
               <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
-                Price
+                {t("filters.price")}
               </h3>
               <div className="space-y-2">
                 <input
                   type="number"
-                  placeholder="From €"
+                  placeholder={t("filters.priceFrom")}
                   value={filters.min}
                   onChange={(e) =>
                     setFilters({ ...filters, min: e.target.value })
@@ -107,7 +109,7 @@ export default function ProductFilterClient({
                 />
                 <input
                   type="number"
-                  placeholder="To €"
+                  placeholder={t("filters.priceTo")}
                   value={filters.max}
                   onChange={(e) =>
                     setFilters({ ...filters, max: e.target.value })
@@ -119,7 +121,7 @@ export default function ProductFilterClient({
 
             <div>
               <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
-                Size
+                {t("filters.size")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {["XS", "S", "M", "L", "XL", "XXL"].map((size) => {
@@ -151,14 +153,14 @@ export default function ProductFilterClient({
                 disabled={isPending}
                 className="w-full bg-vintage-green text-white py-2.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity"
               >
-                {isPending ? "loading..." : "Place filters"}
+                {isPending ? t("common.loading") : t("filters.apply")}
               </button>
               <button
                 onClick={clearFilters}
                 disabled={isPending}
                 className="w-full bg-gray-100 text-vintage-green py-2.5 text-sm font-semibold rounded hover:bg-gray-200 transition-colors"
               >
-                Clear filters
+                {t("filters.clear")}
               </button>
             </div>
           </aside>

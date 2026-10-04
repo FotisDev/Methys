@@ -1,40 +1,57 @@
-import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { urlSetResponse } from "@/components/SEO/sitemap";
+
+export const revalidate = 3600;
+
+type SlugRef = { slug: string | null };
+type ProductRow = {
+  slug: string | null;
+  created_at: string | null;
+  categoryformen:
+    | (SlugRef & { parent: SlugRef | SlugRef[] | null })
+    | (SlugRef & { parent: SlugRef | SlugRef[] | null })[]
+    | null;
+};
+
+const first = <T,>(value: T | T[] | null | undefined) =>
+  Array.isArray(value) ? value[0] : value;
 
 export async function GET() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
-
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
-  const { data: products, error } = await supabase
+  const { data, error } = await supabase
     .from("products")
-    .select("id, created_at")
+    .select(
+      `slug, created_at,
+       categoryformen:category_men_id!inner (
+         slug,
+         parent:parent_id!inner ( slug )
+       )`,
+    )
     .eq("is_public", true)
-    .eq("is_offer", false); 
+    .eq("is_offer", false);
 
   if (error) {
-    console.error("Supabase error:", error);
+    console.error("Sitemap products error:", error.message);
   }
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${(products || [])
-  .map(
-    (product) => `
-  <url>
-    <loc>${siteUrl}/collections/${product.id}</loc>
-    <lastmod>${new Date(product.created_at).toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>`,
-  )
-  .join("")}
-</urlset>`;
+  const entries = ((data ?? []) as unknown as ProductRow[]).flatMap(
+    (product) => {
+      const category = first(product.categoryformen);
+      const parent = first(category?.parent);
+      if (!product.slug || !category?.slug || !parent?.slug) return [];
 
-  return new NextResponse(xml, {
-    headers: { "Content-Type": "application/xml" },
-  });
+      return [
+        {
+          path: `/collections/${parent.slug}/${category.slug}/${product.slug}`,
+          lastmod: product.created_at,
+        },
+      ];
+    },
+  );
+
+  return urlSetResponse(entries);
 }

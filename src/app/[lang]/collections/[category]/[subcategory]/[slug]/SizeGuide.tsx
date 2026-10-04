@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useT } from "@/i18n/client";
 
 interface SizeGuideModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ export default function SizeGuideModal({
   productImages = [],
 }: SizeGuideModalProps) {
   const [unit, setUnit] = useState<"cm" | "inch">("cm");
+  const t = useT();
 
   if (!isOpen) return null;
 
@@ -55,11 +57,11 @@ export default function SizeGuideModal({
         >
           {/* Header */}
           <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10">
-            <h2 className="text-xl font-light">Size guide</h2>
+            <h2 className="text-xl font-light">{t("sizeGuide.title")}</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-full transition"
-              aria-label="Close"
+              aria-label={t("common.close")}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +95,7 @@ export default function SizeGuideModal({
                   >
                     <Image
                       src={image}
-                      alt={`${productName} view ${index + 1}`}
+                      alt={t("sizeGuide.imageAlt", { name: productName, index: index + 1 })}
                       fill
                       sizes="80px"
                       className="object-cover"
@@ -105,17 +107,14 @@ export default function SizeGuideModal({
 
             {/* Fit Information */}
             <div className="space-y-2 text-sm">
-              <p>- Loose fit</p>
-              <p>- The model is 185 cm and wears a size M</p>
-              <p>
-                - This style has a loose fit and will sit more relaxed on your
-                body.
-              </p>
+              <p>- {t("sizeGuide.looseFit")}</p>
+              <p>- {t("sizeGuide.modelInfo")}</p>
+              <p>- {t("sizeGuide.fitDescription")}</p>
             </div>
 
             {/* Measurement Unit Toggle */}
             <div className="flex items-center gap-4">
-              <span className="text-sm font-medium">Measurement unit</span>
+              <span className="text-sm font-medium">{t("sizeGuide.unit")}</span>
               <div className="flex border border-gray-300 rounded overflow-hidden">
                 <button
                   onClick={() => setUnit("cm")}
@@ -146,10 +145,10 @@ export default function SizeGuideModal({
                 <thead>
                   <tr className="border-b-2 border-gray-900">
                     <th className="text-left py-3 px-4 text-sm font-medium">
-                      Size
+                      {t("sizeGuide.size")}
                     </th>
                     <th className="text-left py-3 px-4 text-sm font-medium">
-                      A: Chest
+                      {t("sizeGuide.chest")}
                     </th>
                   </tr>
                 </thead>
@@ -173,9 +172,9 @@ export default function SizeGuideModal({
 
             {/* How to Measure */}
             <div className="space-y-4">
-              <h3 className="text-base font-medium">How to measure</h3>
+              <h3 className="text-base font-medium">{t("sizeGuide.howToMeasure")}</h3>
               <p className="text-sm">
-                A: Measure the circumference around your chest
+                {t("sizeGuide.chestInstructions")}
               </p>
 
               {/* Measurement Diagram */}

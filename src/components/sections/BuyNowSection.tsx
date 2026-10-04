@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import Link from "@/components/LocaleLink/LocaleLink";
 import Image from "next/image";
 import myImageLoader from "@/_lib/utils/myImageLoader";
 

@@ -1,28 +1,37 @@
-export function getAboutPageStructuredData() {
+import { absoluteUrl } from "@/components/SEO/urls";
+import { localeMeta, type Locale } from "@/i18n.config";
+import {
+  ORGANIZATION_ID,
+  ORGANIZATION_SAME_AS,
+  WEBSITE_ID,
+} from "./createOrganizationSchema";
+
+export function getAboutPageStructuredData(
+  locale: Locale,
+  { name, description }: { name: string; description: string },
+) {
+  const url = absoluteUrl("/about", locale);
+
   return {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/about#webpage`,
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/about`,
-    name: "About Us | Methys",
-    description:
-      "Learn about Methys — our story, mission, and the team behind the product. Discover how we started and where we're headed.",
-    inLanguage: "en",
+    "@id": `${url}#webpage`,
+    url,
+    name,
+    description,
+    inLanguage: localeMeta[locale].htmlLang,
     isPartOf: {
-      "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#website`,
+      "@id": WEBSITE_ID,
     },
     about: {
       "@type": "Organization",
-      "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#organization`,
+      "@id": ORGANIZATION_ID,
       name: "Methys",
-      url: process.env.NEXT_PUBLIC_SITE_URL,
-      sameAs: [
-        "https://www.instagram.com/methys", 
-        "https://www.facebook.com/methys",
-      ],
+      url: absoluteUrl("/", locale),
+      sameAs: ORGANIZATION_SAME_AS,
       founder: {
         "@type": "Person",
-        name: "Fotis Lyrantzakis", 
+        name: "Fotis Lyrantzakis",
         nationality: "Greek",
       },
       foundingLocation: {

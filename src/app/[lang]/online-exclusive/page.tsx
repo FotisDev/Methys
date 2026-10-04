@@ -1,26 +1,29 @@
 import { fetchOnlineExclusive } from "@/_lib/backend/ProductWithStructure/action";
+import { translateProducts } from "@/_lib/backend/translations/action";
 import Footer from "@/components/footer/Footer";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { OnlineProductsPageComponent } from "@/components/pages/OnlineProductsPage";
 import { createMetadata } from "@/components/SEO/metadata";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import { getT } from "@/i18n/server";
 
-export const metadata = createMetadata({
-  MetaTitle: "Online Exclusive | Methys",
-  MetaDescription:
-    "Explore our curated Online Exclusive collection — timeless pieces crafted for every season. Shop the latest arrivals at Methys.",
-  OpenGraphImageUrl:
-    "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
-  canonical: "/online-exclusive",
-  other: {
-    "twitter:card": "summary_large_image",
-    "twitter:title": "Online Exclusive | Methys",
-    "twitter:description":
-      "Explore our Online Exclusive collection — timeless pieces crafted for every season.",
-  },
-});
-export default async function OnlineExclusiveProducts() {
-  const onlineProducts = await fetchOnlineExclusive();
+type PageProps = { params: Promise<{ lang: string }> };
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  const t = await getT(lang);
+  return createMetadata({
+    locale: lang,
+    MetaTitle: t("onlineExclusive.metaTitle"),
+    MetaDescription: t("onlineExclusive.metaDescription"),
+    canonical: "/online-exclusive",
+    OpenGraphImageUrl:
+      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+  });
+}
+export default async function OnlineExclusiveProducts({ params }: PageProps) {
+  const { lang } = await params;
+  const onlineProducts = await translateProducts(await fetchOnlineExclusive(), lang);
 
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>

@@ -1,3 +1,6 @@
+import { absoluteAssetUrl } from "@/components/SEO/urls";
+import { ORGANIZATION_ID } from "@/_lib/schemasGenerators/createOrganizationSchema";
+
 export type ProductVariant = {
   size: string;
   quantity: number;
@@ -18,10 +21,13 @@ export type CreateProductSchemaParams = {
   category: string;
   id: string;
   product_details?: string;
+  sizeLabel?: string;
 };
  
 export function createProductSchema(p: CreateProductSchemaParams) {
   const baseId = `${p.url}#product-group`;
+  const images = p.images.map(absoluteAssetUrl);
+  const seller = { "@type": "Organization", "@id": ORGANIZATION_ID, name: p.brand };
  
   const variants = p.variants.map((v) => {
     const variantSku = v.sku ?? `${p.sku}-${v.size.toUpperCase()}`;
@@ -31,9 +37,9 @@ export function createProductSchema(p: CreateProductSchemaParams) {
     return {
       "@type": "Product",
       "@id": `${p.url}#variant-${v.size.toLowerCase()}`,
-      name: `${p.name} — Size ${v.size}`,
+      name: `${p.name} — ${p.sizeLabel ?? "Size"} ${v.size}`,
       description: p.description,
-      image: p.images,
+      image: images,
       sku: variantSku,
       size: v.size,
       url: variantUrl,
@@ -41,6 +47,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
         "@type": "Brand",
         name: p.brand,
       },
+      inProductGroupWithID: p.sku,
       isVariantOf: { "@id": baseId },
       offers: {
         "@type": "Offer",
@@ -51,10 +58,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
         itemCondition: "https://schema.org/NewCondition",
-        seller: {
-          "@type": "Organization",
-          name: p.brand,
-        },
+        seller,
       },
     };
   });
@@ -68,7 +72,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
       url: p.url,
       name: p.name,
       description: p.description,
-      image: p.images,
+      image: images,
       sku: p.sku,
       brand: {
         "@type": "Brand",
@@ -84,10 +88,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
         itemCondition: "https://schema.org/NewCondition",
-        seller: {
-          "@type": "Organization",
-          name: p.brand,
-        },
+        seller,
       },
     };
   }
@@ -99,7 +100,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
     url: p.url,
     name: p.name,
     description: p.description,
-    image: p.images,
+    image: images,
     brand: {
       "@type": "Brand",
       name: p.brand,

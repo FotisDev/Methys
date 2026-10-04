@@ -3,8 +3,9 @@
 import { supabasePublic } from "@/_lib/supabase/client";
 import { FAQ } from "@/_lib/types";
 import { unstable_cache } from "next/cache";
+import { translateFaqs } from "@/_lib/backend/translations/action";
 
-const FetchFaqs = unstable_cache(
+const fetchEnglishFaqs = unstable_cache(
   async (): Promise<FAQ[]> => {
     const { data, error } = await supabasePublic
       .from("help")
@@ -25,4 +26,6 @@ const FetchFaqs = unstable_cache(
   },
 );
 
-export default FetchFaqs;
+export default async function FetchFaqs(locale = "en"): Promise<FAQ[]> {
+  return translateFaqs(await fetchEnglishFaqs(), locale);
+}

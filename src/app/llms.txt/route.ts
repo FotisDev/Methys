@@ -2,18 +2,15 @@
 import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWithSubcategoriesAction/action";
 import { fetchProducts } from "@/_lib/backend/fetchProducts/action";
 import { NextResponse } from "next/server";
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://methys.vercel.app";
+import { absoluteUrl } from "@/components/SEO/urls";
 
 const STATIC_PAGES = [
   { url: "/",                 label: "Home",              description: "Timeless style. Exceptional quality. Shop the latest men's clothing, kids fashion and accessories from Methys." },
-  { url: "/en/collections",   label: "All Collections",   description: "Browse all Methys collections including menswear, kids clothing and accessories." },
-  { url: "/en/online-exclusive", label: "Online Exclusive",  description: "Shop Methys online-exclusive pieces available only on the website." },
-  { url: "/en/about",            label: "About",             description: "Learn about the Methys brand, its values and commitment to craftsmanship." },
-  { url: "/en/help",             label: "Help & Support",    description: "Get help with orders, returns, sizing and more." },
-  { url: "/en/terms-conditions", label: "Terms & Conditions",description: "Methys terms and conditions of sale and use." },
-  { url: "/en/privacy-policy",   label: "Privacy Policy",    description: "How Methys collects, uses and protects your personal data." },
-  { url: "/en/legal-notice",     label: "Legal Notice",      description: "Legal information and notices for Methys." },
+  { url: "/collections",   label: "All Collections",   description: "Browse all Methys collections including menswear, kids clothing and accessories." },
+  { url: "/online-exclusive", label: "Online Exclusive",  description: "Shop Methys online-exclusive pieces available only on the website." },
+  { url: "/about",            label: "About",             description: "Learn about the Methys brand, its values and commitment to craftsmanship." },
+  { url: "/help",             label: "Help & Support",    description: "Get help with orders, returns, sizing and more." },
+  { url: "/privacy-policy",   label: "Privacy Policy",    description: "How Methys collects, uses and protects your personal data." },
 ];
 
 function toLabel(str: string): string {
@@ -30,15 +27,12 @@ export async function GET() {
 
   const lines: string[] = [];
 
-  lines.push(`## Allowed AI Crawlers\n`);
-  lines.push(`deepseek, google-extended, perplexity, anthropic, openai\n`);
-  lines.push(`# ${BASE_URL} llms.txt\n`);
-  lines.push(`## Language: English (en)\n`);
+  lines.push(`# Methys\n`);
   lines.push(`> Methys is a premium menswear and kids fashion brand offering timeless, high-quality clothing, footwear and accessories. Distinctive pieces for those who value craftsmanship and character.\n`);
 
   lines.push(`## Main Pages\n`);
   for (const page of STATIC_PAGES) {
-    lines.push(`- [${page.label}](${BASE_URL}${page.url}): ${page.description}`);
+    lines.push(`- [${page.label}](${absoluteUrl(page.url)}): ${page.description}`);
   }
   lines.push("");
 
@@ -51,7 +45,7 @@ export async function GET() {
 
     lines.push(`## ${toLabel(parent.name)}\n`);
     for (const sub of subs) {
-      lines.push(`- [${toLabel(sub.name)}](${BASE_URL}/collections/${parent.slug}/${sub.slug}): Shop Methys ${parent.name.toLowerCase()} – ${sub.name.toLowerCase()}.`);
+      lines.push(`- [${toLabel(sub.name)}](${absoluteUrl(`/collections/${parent.slug}/${sub.slug}`)}): Shop Methys ${parent.name.toLowerCase()} – ${sub.name.toLowerCase()}.`);
     }
     lines.push("");
   }
@@ -68,8 +62,8 @@ export async function GET() {
 
     if (!parentSlug || !category?.slug || !product.slug) continue;
 
-    const url   = `${BASE_URL}/collections/${parentSlug}/${category.slug}/${product.slug}`;
-    const price = product.price ? `$${product.price}` : "";
+    const url   = absoluteUrl(`/collections/${parentSlug}/${category.slug}/${product.slug}`);
+    const price = product.price ? `€${product.price}` : "";
     const sizes = Array.isArray(product.product_variants) && product.product_variants.length > 0
       ? [...new Set(product.product_variants.map((v) => v.size))].join(", ")
       : "";

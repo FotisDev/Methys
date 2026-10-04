@@ -4,11 +4,13 @@
 
 import DiagonalArrow from "@/svgs/DiagonalArrow";
 import {useEffect, useState} from "react";
+import { useT } from "@/i18n/client";
 
 
 export default function BackToTop() {
 
     const [isVisible, setIsVisible] = useState(false);
+    const t = useT();
 
     const handleScroll = () => {
         if (window.scrollY > 400) {
@@ -27,7 +29,7 @@ export default function BackToTop() {
     }, []);
 
     return (
-        <a aria-label="Button" href={'#mainHTML'} className={`size-10 fixed bottom-[2%] right-4 z-[100] ${isVisible ? '' : 'opacity-0'} transition`}>
+        <a aria-label={t("common.backToTop")} href={'#mainHTML'} className={`size-10 fixed bottom-[2%] right-4 z-[100] ${isVisible ? '' : 'opacity-0'} transition`}>
             <DiagonalArrow />
         </a>
     );

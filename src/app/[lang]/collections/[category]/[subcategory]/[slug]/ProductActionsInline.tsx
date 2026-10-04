@@ -7,6 +7,8 @@ import { ProductInDetails } from "@/_lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import SizeGuideModal from "./SizeGuide";
+import { useFormatPrice, useT } from "@/i18n/client";
+import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 
 interface ProductActionsProps {
   product: ProductInDetails;
@@ -17,6 +19,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const router = useRouter();
+  const t = useT();
+  const formatPrice = useFormatPrice();
 
   const searchParams = useSearchParams();
   const [selectedSize, setSelectedSize] = useState<string | null>(
@@ -54,6 +58,12 @@ export default function ProductActions({ product }: ProductActionsProps) {
     addToCart(product, selectedSize || undefined);
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
+
+    // Menu.tsx owns the actual cart drawer, and its open/closed state
+    // is local to its own instance of useShoppingCartHook — this
+    // component has no direct way to reach into it. Dispatching a
+    // window event is how the two talk to each other.
+    window.dispatchEvent(new Event("openShoppingCart"));
   };
 
   const handleWishlistToggle = () => {
@@ -65,13 +75,13 @@ export default function ProductActions({ product }: ProductActionsProps) {
       {/* Color Selector */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium">Color: Mountain Grey Brown</h3>
+          <h3 className="text-sm font-medium">{t("product.color", { color: t("product.defaultColor") })}</h3>
         </div>
         <div className="flex gap-2">
           <button className="relative w-16 h-16 border-2 border-vintage-green rounded overflow-hidden">
             <Image
               src={product.image_url?.[0] ?? "/Articles.jpg"}
-              alt="Mountain Grey Brown"
+              alt={t("product.defaultColor")}
               fill
               className="object-cover"
             />
@@ -84,13 +94,13 @@ export default function ProductActions({ product }: ProductActionsProps) {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium">
-              Size: {selectedSize || "Please select"}
+              {t("product.sizeLabel", { size: selectedSize || t("product.pleaseSelect") })}
             </h3>
             <button
               className="text-xs underline hover:no-underline"
               onClick={() => setIsSizeGuideOpen(true)}
             >
-              Size guide +
+              {t("product.sizeGuide")} +
             </button>
           </div>
 
@@ -122,7 +132,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
           </div>
 
           {showSizeError && (
-            <p className="text-red-500 text-sm mt-2">Please select a size</p>
+            <p className="text-red-500 text-sm mt-2">{t("product.selectSize")}</p>
           )}
         </div>
       )}
@@ -144,10 +154,10 @@ export default function ProductActions({ product }: ProductActionsProps) {
           `}
         >
           {availableSizes.length === 0
-            ? "Out of Stock"
+            ? t("product.outOfStock")
             : addedToCart
-              ? "✓ Added to cart!"
-              : `Add to Cart - €${product.price}`}
+              ? `✓ ${t("product.addedToCartShort")}`
+              : `${t("common.addToCart")} - ${formatPrice(getProductPricing(product, selectedSize).finalPrice)}`}
         </button>
 
         <button
@@ -166,13 +176,13 @@ export default function ProductActions({ product }: ProductActionsProps) {
           >
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
-          {inWishlist ? "In Wishlist" : "Add to Wishlist"}
+          {inWishlist ? t("product.inWishlist") : t("product.addToWishlist")}
         </button>
       </div>
 
       {/* Payment Methods */}
       <div className="flex items-center justify-center gap-2 pt-4">
-        <span className="text-xs text-gray-500">We accept:</span>
+        <span className="text-xs text-gray-500">{t("product.weAccept")}</span>
         <div className="flex gap-2 opacity-60">
           <div className="w-8 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
             VISA
