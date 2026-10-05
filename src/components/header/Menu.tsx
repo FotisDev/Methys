@@ -127,7 +127,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   const navbarClasses = [
     "fixed",
     "font-serif",
-    "top-8",
+    "top-0",
     "z-50",
     "grid",
     "grid-cols-3",
@@ -292,7 +292,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
       {showClothes && (
         <div
           ref={clothesModalRef}
-          className="fixed top-24 left-0 z-40 h-auto max-h-[calc(100vh-6rem)] w-auto bg-white shadow-lg rounded-r-3xl transition-transform duration-300 transform translate-x-0 "
+          className="fixed top-16 left-0 z-40 h-auto max-h-[calc(100vh-4rem)] w-auto bg-white shadow-lg rounded-r-3xl transition-transform duration-300 transform translate-x-0 "
           style={{
             transform: showClothes ? "translateX(0)" : "translateX(-100%)",
             minWidth: "320px",

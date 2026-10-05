@@ -5,6 +5,10 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # eslint-config-next and the lint plugins only support ESLint <= 9.
+      - dependency-name: eslint
+        update-types: [version-update:semver-major]
     groups:
       # One PR for all minor/patch bumps instead of one per package.
       minor-and-patch:
