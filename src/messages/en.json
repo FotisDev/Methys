@@ -16,19 +16,19 @@
     "errorLoading": "An error occurred while loading this page."
   },
   "home": {
-    "metaTitle": "Methys - Timeless Pieces for the Modern Individual",
-    "metaDescription": "Distinctive pieces for those who value craftsmanship and character.",
+    "metaTitle": "Methys | Menswear with Copenhagen Style & Greek Soul",
+    "metaDescription": "Shop Methys menswear, kids' clothing and accessories — clean Scandinavian lines with Greek character. Free delivery on orders over €150.",
     "shopNow": "Shop Now",
     "autumnCollection": "Autumn Collection Just Dropped",
     "exploreCategories": "Explore categories"
   },
   "hero": {
     "title": "Methys Collection",
-    "tagline": "Timeless style. Exceptional quality."
+    "tagline": "Copenhagen style. Greek soul."
   },
   "photoVideo": {
     "imageAlt": "Model wearing pieces from the Methys online-exclusive collection",
-    "exploreOnlineExclusive": "Explore more about our Online-exclusive collection"
+    "exploreOnlineExclusive": "Shop the Online Exclusives — only available here"
   },
   "nav": {
     "about": "About",
@@ -85,7 +85,7 @@
     "items": "Cart Items",
     "clear": "Clear Cart",
     "confirmClear": "Are you sure you want to clear your cart?",
-    "emptyHint": "Looks like you haven't added any items to your cart yet.",
+    "emptyHint": "Your next favourite piece is waiting. Start with our latest arrivals.",
     "stockLimit": "Cannot add more than available stock!",
     "sale": "Sale",
     "onSale": "On Sale",
@@ -101,7 +101,7 @@
     "title": "Wishlist",
     "close": "Close wishlist",
     "empty": "Your wishlist is empty",
-    "emptyHint": "Save your favorite products to review them later.",
+    "emptyHint": "Tap the heart on any product to save it here for later.",
     "clearAll": "Clear All",
     "confirmClear": "Are you sure you want to clear your entire wishlist?",
     "selectSizeFirst": "Please select a size first.",
@@ -127,7 +127,7 @@
     "help": "Help",
     "paymentMethods": "Payment Methods",
     "joinCommunity": "Join The Methys Community",
-    "newsletterText": "Get a heads up about latest Collections, events and collaborations",
+    "newsletterText": "Sign up and get {percent}% off your first order, plus first access to new drops and member offers.",
     "emailPlaceholder": "Enter your Email",
     "subscribe": "Subscribe",
     "country": "Country",
@@ -144,12 +144,12 @@
   "onlineExclusive": {
     "title": "Online Exclusive",
     "metaTitle": "Online Exclusive | Methys",
-    "metaDescription": "Explore our curated Online Exclusive collection — timeless pieces crafted for every season. Shop the latest arrivals at Methys."
+    "metaDescription": "Shop Methys Online Exclusives — pieces you'll only find on our website. Free delivery on orders over €150."
   },
   "seasonalCollection": {
     "title": "Seasonal Collection",
     "metaTitle": "Seasonal Collection | Methys",
-    "metaDescription": "Explore our curated seasonal collection — timeless pieces crafted for every season. Shop the latest arrivals at Methys."
+    "metaDescription": "Discover the latest Methys seasonal collection — fresh menswear with clean lines and real character. Free delivery on orders over €150."
   },
   "product": {
     "newIn": "New In",
@@ -160,7 +160,7 @@
     "addedToCartWithSize": "Added \"{name}\" (Size: {size}) to cart!",
     "offer": "Offer",
     "metaTitle": "{name} | Methys",
-    "defaultDescription": "Premium clothing from Methys. Timeless style, exceptional quality.",
+    "defaultDescription": "Menswear from Methys — clean lines, timeless style and real character. Free delivery on orders over €150.",
     "notFoundTitle": "Product Not Found | Methys",
     "notFoundDescription": "The product you're looking for doesn't exist.",
     "newOffer": "New Offer",
@@ -175,13 +175,14 @@
     "addedToCartShort": "Added to cart!",
     "weAccept": "We accept:",
     "freeDelivery": "Free delivery over {amount}",
-    "expectedDelivery": "Expected delivery: 7 days after the order",
+    "expectedDelivery": "Expected delivery: within 7 days of ordering",
     "extendedReturns": "Extended returns until January 23rd",
     "needHelp": "Need help? Contact us or check our Help page",
     "sizeStockInfo": "Size & Stock Information",
     "inStock": "{count} in stock",
     "productId": "Product ID: #{id}",
-    "recommendations": "Our Recommendations"
+    "recommendations": "Our Recommendations",
+    "onlyLeft": "Only {count} left"
   },
   "filters": {
     "show": "Show filter",
@@ -197,8 +198,8 @@
   "auth": {
     "logout": "Logout",
     "loggingOut": "Logging out...",
-    "heroTitle": "Dress Beyond Limits..",
-    "heroText": "Elevate your everyday. Explore styles designed to turn heads, crafted for those who don’t settle.",
+    "heroTitle": "Dress Beyond Limits.",
+    "heroText": "Elevate your everyday. Sign in or create a free account to unlock member-only offers.",
     "copyright": "{year} {brand}. All rights reserved.",
     "newUser": "New user?",
     "createAccountLink": "Create an account",
@@ -246,9 +247,9 @@
   },
   "collections": {
     "metaTitle": "Shop All Collections | Methys",
-    "metaDescription": "Discover our curated selection of premium clothing and accessories. Timeless style, exceptional quality.",
+    "metaDescription": "Shop all Methys collections: menswear, kids' clothing and accessories with clean lines and real character. Free delivery on orders over €150.",
     "title": "Shop All Collections",
-    "subtitle": "Discover our curated selection of premium clothing and accessories",
+    "subtitle": "Menswear, kids' clothing and accessories — clean lines, real character.",
     "categoryAlt": "{name} collection",
     "categoryNotFoundTitle": "Category Not Found | Methys",
     "categoryNotFoundDescription": "The category you're looking for doesn't exist.",
@@ -279,18 +280,18 @@
   },
   "about": {
     "metaTitle": "About Us | Methys",
-    "metaDescription": "Learn about Methys — our story, mission, and the team behind the product. Discover how we started and where we're headed.",
+    "metaDescription": "The Methys story: how life in Copenhagen inspired a Greek founder to create menswear with clean lines and real character.",
     "title": "About us",
-    "intro": "Me, a clueless person about fashion back then from Greece, happened to travel permanently to Copenhagen for work. I was observing people and their styles — I was overwhelmed and excited, seeing stylish people walking down the streets with elegance. I said to myself that I also liked being stylish. Even though these people had amazing styles, I kept noticing small details: “That jacket would be perfect if it were green,” or “Those shoes would look better if the sole was thinner.” I realized I had opinions but no control — I wasn’t the one designing or wearing them. I wanted to change that. When I came back to Greece, I saw the style was missing, and at that exact moment, the idea came to my mind. I had to create a brand for men clothing that looked exactly the way I envisioned. Even if no one chose it, I had to try — because trying, even when you fail, is worth it.",
+    "intro": "Years ago I moved from Greece to Copenhagen for work, knowing almost nothing about fashion. On its streets I saw people dressed with an effortless elegance — and I wanted that for myself. But I kept noticing small details I would change: “That jacket would be perfect in green.” “Those shoes need a thinner sole.” I had opinions, but no say in how the clothes were made. When I returned to Greece, I saw that this kind of everyday style was missing. That was the moment Methys began: a menswear brand that looks exactly the way I imagined it. I knew it might not work. I started it anyway — because trying is always worth it.",
     "videoUnsupported": "Your browser does not support the video tag.",
     "imageAlt": "Methys clothing laid out in the studio",
     "storyTitle": "Our Story",
-    "story": "It all started with a spark — a realization that style is more than just appearance; it’s expression. In Copenhagen, I learned to appreciate the art of dressing with detail and purpose. Returning to Greece, I noticed the gap — a lack of that unique everyday elegance. That’s when I decided to create a brand that would bring style, confidence, and refinement to men’s clothing. Methys was born from that desire — to design pieces that reflect individuality and the courage to be different."
+    "story": "It all began with one idea: style isn't just how you look — it's how you express yourself. Copenhagen taught me to dress with detail and purpose. Greece gave me the warmth and character I wanted every piece to carry. Methys brings the two together: menswear for men who want to look sharp every day and have the confidence to stand out."
   },
   "help": {
     "metaTitle": "Frequently Asked Questions | Methys",
     "metaDescription": "Answers to the most common questions about shipping, refunds and our products.",
-    "title": "Everything you need to know about our services",
+    "title": "Questions about shipping, returns or sizing? Start here.",
     "subtitle": "Frequently Asked Questions",
     "noFaqs": "No FAQs found."
   },
@@ -298,7 +299,7 @@
     "metaTitle": "Support | Methys",
     "metaDescription": "Submit a support ticket for billing, bugs, account issues, or feature requests. Our team will get back to you shortly.",
     "title": "Support",
-    "intro": "Fill out the form below and we will get back to you as soon as possible.",
+    "intro": "Need help with an order, sizing or anything else? Send us a message and we'll reply by email as soon as possible.",
     "goToMainPage": "Go to main page",
     "form": {
       "submitted": "Ticket submitted!",
@@ -320,10 +321,10 @@
   },
   "offers": {
     "metaTitle": "Limited Offers | Methys",
-    "metaDescription": "Explore our exclusive limited-time offers with up to 20% off on selected items.",
+    "metaDescription": "Members-only offers at Methys: up to 20% off selected pieces for a limited time. Sign in to shop the deals.",
     "title": "Offers",
     "heading": "Explore our Limited Offers",
-    "loginRequired": "Login is required to see our offers."
+    "loginRequired": "Our offers are for members only. Sign in or create a free account to unlock them."
   },
   "privacy": {
     "metaTitle": "Privacy Policy | Methys",
@@ -425,5 +426,61 @@
     "account": "Account",
     "feature-request": "Feature Request",
     "other": "Other"
+  },
+  "shipping": {
+    "remaining": "You're {amount} away from free delivery",
+    "unlocked": "You've unlocked free delivery!",
+    "progressLabel": "Progress towards free delivery",
+    "standard": "Standard delivery",
+    "free": "Free delivery"
+  },
+  "newsletter": {
+    "subscribing": "Subscribing...",
+    "success": "Almost done! Check your inbox and confirm your email to get your {percent}% code.",
+    "already": "You're already subscribed. Thanks for being part of Methys!",
+    "failed": "Something went wrong. Please try again.",
+    "emailSubject": "Your {percent}% welcome code from Methys",
+    "emailHeading": "Welcome to Methys",
+    "emailBody": "Thanks for joining. Here's {percent}% off your first order — enter this code at checkout:",
+    "emailNote": "The code can be used once.",
+    "emailCta": "Shop now",
+    "consent": "You can unsubscribe at any time. Read our {privacyPolicy}.",
+    "confirmEmailSubject": "Confirm your Methys subscription",
+    "confirmEmailHeading": "One more step",
+    "confirmEmailBody": "Tap the button below to confirm your subscription and get {percent}% off your first order.",
+    "confirmEmailButton": "Confirm subscription",
+    "confirmEmailIgnore": "Didn't sign up? Just ignore this email and you won't be subscribed.",
+    "metaTitle": "Newsletter | Methys",
+    "confirmPageTitle": "Confirm your subscription",
+    "confirmPageText": "Click below to get news about new drops and member offers — and {percent}% off your first order.",
+    "confirmButton": "Confirm subscription",
+    "confirming": "Confirming...",
+    "confirmed": "You're subscribed! Here's your {percent}% welcome code — we've emailed it to you too.",
+    "alreadyConfirmed": "You're subscribed. Welcome to Methys!",
+    "invalidLink": "This link is invalid or has expired. Please sign up again using the form at the bottom of any page."
+  },
+  "reviews": {
+    "title": "Customer Reviews",
+    "count_one": "{count} review",
+    "count_other": "{count} reviews",
+    "noReviews": "No reviews yet. Bought this piece? Be the first to review it.",
+    "stars": "{rating} out of 5 stars",
+    "verifiedBuyer": "Verified buyer",
+    "writeReview": "Write a review",
+    "rating": "Your rating",
+    "reviewTitle": "Title (optional)",
+    "body": "Your review",
+    "bodyPlaceholder": "What did you like? How are the fit and quality?",
+    "submit": "Submit review",
+    "submitting": "Submitting...",
+    "thanks": "Thanks! Your review has been posted.",
+    "loginToReview": "Sign in to review products you've bought.",
+    "notPurchased": "Only customers who bought this product can review it.",
+    "alreadyReviewed": "You've already reviewed this product. Thank you!",
+    "errors": {
+      "rating": "Please choose a rating.",
+      "body": "Please write at least 10 characters.",
+      "failed": "We couldn't post your review. Please try again."
+    }
   }
 }

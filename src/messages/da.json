@@ -16,19 +16,19 @@
     "errorLoading": "Der opstod en fejl under indlæsning af siden."
   },
   "home": {
-    "metaTitle": "Methys - Tidløse styles til det moderne menneske",
-    "metaDescription": "Markante styles til dem, der værdsætter håndværk og karakter.",
+    "metaTitle": "Methys | Herretøj med københavnsk stil og græsk sjæl",
+    "metaDescription": "Shop herretøj, børnetøj og accessories fra Methys — rene skandinaviske linjer med græsk karakter. Gratis levering ved køb over 150 €.",
     "shopNow": "Shop nu",
     "autumnCollection": "Efterårskollektionen er landet",
     "exploreCategories": "Udforsk kategorier"
   },
   "hero": {
     "title": "Methys-kollektionen",
-    "tagline": "Tidløs stil. Enestående kvalitet."
+    "tagline": "Københavnsk stil. Græsk sjæl."
   },
   "photoVideo": {
     "imageAlt": "Model i styles fra Methys' online-eksklusive kollektion",
-    "exploreOnlineExclusive": "Udforsk vores online-eksklusive kollektion"
+    "exploreOnlineExclusive": "Shop vores online-eksklusive styles — kun her"
   },
   "nav": {
     "about": "Om os",
@@ -85,7 +85,7 @@
     "items": "Varer i kurven",
     "clear": "Tøm kurv",
     "confirmClear": "Er du sikker på, at du vil tømme din kurv?",
-    "emptyHint": "Det ser ud til, at du ikke har lagt nogen varer i kurven endnu.",
+    "emptyHint": "Dit næste yndlingsstykke venter. Start med vores nyheder.",
     "stockLimit": "Du kan ikke tilføje flere end lagerbeholdningen!",
     "sale": "Udsalg",
     "onSale": "På udsalg",
@@ -101,7 +101,7 @@
     "title": "Ønskeliste",
     "close": "Luk ønskeliste",
     "empty": "Din ønskeliste er tom",
-    "emptyHint": "Gem dine yndlingsprodukter, så du kan se dem igen senere.",
+    "emptyHint": "Tryk på hjertet ved et produkt for at gemme det her til senere.",
     "clearAll": "Ryd alle",
     "confirmClear": "Er du sikker på, at du vil rydde hele din ønskeliste?",
     "selectSizeFirst": "Vælg venligst en størrelse først.",
@@ -127,7 +127,7 @@
     "help": "Hjælp",
     "paymentMethods": "Betalingsmetoder",
     "joinCommunity": "Bliv en del af Methys-fællesskabet",
-    "newsletterText": "Hør først om nye kollektioner, events og samarbejder",
+    "newsletterText": "Tilmeld dig og få {percent} % rabat på din første ordre — plus først adgang til nye drops og medlemstilbud.",
     "emailPlaceholder": "Indtast din e-mail",
     "subscribe": "Tilmeld",
     "country": "Land",
@@ -144,12 +144,12 @@
   "onlineExclusive": {
     "title": "Online-eksklusivt",
     "metaTitle": "Online-eksklusivt | Methys",
-    "metaDescription": "Udforsk vores udvalgte online-eksklusive kollektion — tidløse styles til alle årstider. Shop de nyeste styles hos Methys."
+    "metaDescription": "Shop Methys' online-eksklusive styles — som du kun finder på vores website. Gratis levering ved køb over 150 €."
   },
   "seasonalCollection": {
     "title": "Sæsonkollektion",
     "metaTitle": "Sæsonkollektion | Methys",
-    "metaDescription": "Udforsk vores udvalgte sæsonkollektion — tidløse styles til alle årstider. Shop de nyeste styles hos Methys."
+    "metaDescription": "Oplev den nyeste sæsonkollektion fra Methys — nyt herretøj med rene linjer og ægte karakter. Gratis levering ved køb over 150 €."
   },
   "product": {
     "newIn": "Nyhed",
@@ -160,7 +160,7 @@
     "addedToCartWithSize": "\"{name}\" (størrelse: {size}) er lagt i kurven!",
     "offer": "Tilbud",
     "metaTitle": "{name} | Methys",
-    "defaultDescription": "Premium tøj fra Methys. Tidløs stil, enestående kvalitet.",
+    "defaultDescription": "Herretøj fra Methys — rene linjer, tidløs stil og ægte karakter. Gratis levering ved køb over 150 €.",
     "notFoundTitle": "Produktet blev ikke fundet | Methys",
     "notFoundDescription": "Det produkt, du leder efter, findes ikke.",
     "newOffer": "Nyt tilbud",
@@ -175,13 +175,14 @@
     "addedToCartShort": "Lagt i kurven!",
     "weAccept": "Vi modtager:",
     "freeDelivery": "Gratis levering ved køb over {amount}",
-    "expectedDelivery": "Forventet levering: 7 dage efter bestilling",
+    "expectedDelivery": "Forventet levering: inden for 7 dage efter bestilling",
     "extendedReturns": "Forlænget returret til 23. januar",
     "needHelp": "Brug for hjælp? Kontakt os eller se vores hjælpeside",
     "sizeStockInfo": "Størrelser & lagerstatus",
     "inStock": "{count} på lager",
     "productId": "Produkt-ID: #{id}",
-    "recommendations": "Vores anbefalinger"
+    "recommendations": "Vores anbefalinger",
+    "onlyLeft": "Kun {count} tilbage"
   },
   "filters": {
     "show": "Vis filtre",
@@ -197,8 +198,8 @@
   "auth": {
     "logout": "Log ud",
     "loggingOut": "Logger ud...",
-    "heroTitle": "Klæd dig uden grænser..",
-    "heroText": "Løft din hverdag. Udforsk styles, der får folk til at vende sig om — skabt til dem, der ikke nøjes.",
+    "heroTitle": "Klæd dig uden grænser.",
+    "heroText": "Løft din hverdag. Log ind eller opret en gratis konto for at få adgang til medlemstilbud.",
     "copyright": "{year} {brand}. Alle rettigheder forbeholdes.",
     "newUser": "Ny bruger?",
     "createAccountLink": "Opret en konto",
@@ -246,9 +247,9 @@
   },
   "collections": {
     "metaTitle": "Alle kollektioner | Methys",
-    "metaDescription": "Oplev vores udvalg af premium tøj og accessories. Tidløs stil, enestående kvalitet.",
+    "metaDescription": "Shop alle Methys-kollektioner: herretøj, børnetøj og accessories med rene linjer og ægte karakter. Gratis levering ved køb over 150 €.",
     "title": "Alle kollektioner",
-    "subtitle": "Oplev vores udvalg af premium tøj og accessories",
+    "subtitle": "Herretøj, børnetøj og accessories — rene linjer, ægte karakter.",
     "categoryAlt": "{name}-kollektion",
     "categoryNotFoundTitle": "Kategorien blev ikke fundet | Methys",
     "categoryNotFoundDescription": "Den kategori, du leder efter, findes ikke.",
@@ -279,18 +280,18 @@
   },
   "about": {
     "metaTitle": "Om os | Methys",
-    "metaDescription": "Lær Methys at kende — vores historie, mission og holdet bag produktet. Se hvordan vi startede, og hvor vi er på vej hen.",
+    "metaDescription": "Historien om Methys: hvordan livet i København inspirerede en græsk grundlægger til at skabe herretøj med rene linjer og ægte karakter.",
     "title": "Om os",
-    "intro": "Jeg, en person fra Grækenland, der dengang ikke vidste noget om mode, flyttede permanent til København for at arbejde. Jeg observerede folk og deres stil — jeg var overvældet og begejstret over at se velklædte mennesker gå elegant gennem gaderne. Jeg sagde til mig selv, at jeg også gerne ville være velklædt. Selvom de havde fantastisk stil, lagde jeg hele tiden mærke til små detaljer: „Den jakke ville være perfekt, hvis den var grøn,“ eller „De sko ville se bedre ud med en tyndere sål.“ Jeg indså, at jeg havde meninger, men ingen kontrol — det var ikke mig, der designede eller bar tøjet. Det ville jeg ændre. Da jeg kom tilbage til Grækenland, så jeg, at stilen manglede, og præcis i det øjeblik fik jeg idéen. Jeg måtte skabe et brand for herretøj, der så ud præcis, som jeg forestillede mig det. Selv hvis ingen valgte det, måtte jeg prøve — for det er det værd at prøve, også når man fejler.",
+    "intro": "For nogle år siden flyttede jeg fra Grækenland til København for at arbejde — uden at vide ret meget om mode. På gaderne så jeg mennesker klædt med en ubesværet elegance, og det ville jeg også have. Men jeg lagde hele tiden mærke til små detaljer, jeg ville ændre: „Den jakke ville være perfekt i grøn.“ „De sko trænger til en tyndere sål.“ Jeg havde meninger, men ingen indflydelse på, hvordan tøjet blev lavet. Da jeg vendte hjem til Grækenland, så jeg, at den slags hverdagsstil manglede. Dér begyndte Methys: et herretøjsbrand, der ser ud præcis, som jeg forestillede mig det. Jeg vidste, at det måske ikke ville lykkes. Jeg startede alligevel — for det er altid værd at prøve.",
     "videoUnsupported": "Din browser understøtter ikke videoafspilning.",
     "imageAlt": "Methys-tøj lagt frem i studiet",
     "storyTitle": "Vores historie",
-    "story": "Det hele startede med en gnist — erkendelsen af, at stil er mere end udseende; det er udtryk. I København lærte jeg at værdsætte kunsten at klæde sig med omtanke for detaljen. Da jeg vendte hjem til Grækenland, så jeg et hul — den unikke hverdagselegance manglede. Det var dér, jeg besluttede at skabe et brand, der kunne bringe stil, selvtillid og raffinement til herretøj. Methys blev født af det ønske — at designe styles, der afspejler individualitet og modet til at være anderledes."
+    "story": "Det hele begyndte med én idé: stil handler ikke kun om, hvordan du ser ud — men om, hvordan du udtrykker dig. København lærte mig at klæde mig med sans for detaljen og med et formål. Grækenland gav mig den varme og karakter, jeg ville have, at hvert stykke skulle bære. Methys forener de to: herretøj til mænd, der vil se skarpe ud hver dag og har modet til at skille sig ud."
   },
   "help": {
     "metaTitle": "Ofte stillede spørgsmål | Methys",
     "metaDescription": "Svar på de mest almindelige spørgsmål om levering, refusion og vores produkter.",
-    "title": "Alt, du skal vide om vores service",
+    "title": "Spørgsmål om levering, returnering eller størrelser? Start her.",
     "subtitle": "Ofte stillede spørgsmål",
     "noFaqs": "Ingen spørgsmål fundet."
   },
@@ -298,7 +299,7 @@
     "metaTitle": "Support | Methys",
     "metaDescription": "Send en supportanmodning om betaling, fejl, kontoproblemer eller ønsker til nye funktioner. Vores team vender hurtigt tilbage.",
     "title": "Support",
-    "intro": "Udfyld formularen nedenfor, så vender vi tilbage hurtigst muligt.",
+    "intro": "Brug for hjælp til en ordre, størrelser eller noget helt andet? Send os en besked, så svarer vi på e-mail hurtigst muligt.",
     "goToMainPage": "Gå til forsiden",
     "form": {
       "submitted": "Din henvendelse er sendt!",
@@ -320,10 +321,10 @@
   },
   "offers": {
     "metaTitle": "Tidsbegrænsede tilbud | Methys",
-    "metaDescription": "Oplev vores eksklusive tidsbegrænsede tilbud med op til 20 % rabat på udvalgte varer.",
+    "metaDescription": "Medlemstilbud hos Methys: op til 20 % rabat på udvalgte styles i en begrænset periode. Log ind for at se tilbuddene.",
     "title": "Tilbud",
     "heading": "Oplev vores tidsbegrænsede tilbud",
-    "loginRequired": "Du skal være logget ind for at se vores tilbud."
+    "loginRequired": "Vores tilbud er kun for medlemmer. Log ind eller opret en gratis konto for at se dem."
   },
   "privacy": {
     "metaTitle": "Privatlivspolitik | Methys",
@@ -425,5 +426,61 @@
     "account": "Konto",
     "feature-request": "Ønske om funktion",
     "other": "Andet"
+  },
+  "shipping": {
+    "remaining": "Du mangler {amount} for at få gratis levering",
+    "unlocked": "Du har fået gratis levering!",
+    "progressLabel": "Fremskridt mod gratis levering",
+    "standard": "Standardlevering",
+    "free": "Gratis levering"
+  },
+  "newsletter": {
+    "subscribing": "Tilmelder...",
+    "success": "Næsten færdig! Tjek din indbakke og bekræft din e-mail for at få din kode på {percent} %.",
+    "already": "Du er allerede tilmeldt. Tak fordi du er en del af Methys!",
+    "failed": "Noget gik galt. Prøv igen.",
+    "emailSubject": "Din velkomstkode på {percent} % fra Methys",
+    "emailHeading": "Velkommen til Methys",
+    "emailBody": "Tak fordi du tilmeldte dig. Her er {percent} % rabat på din første ordre — indtast koden ved kassen:",
+    "emailNote": "Koden kan bruges én gang.",
+    "emailCta": "Shop nu",
+    "consent": "Du kan til enhver tid afmelde dig. Læs vores {privacyPolicy}.",
+    "confirmEmailSubject": "Bekræft din tilmelding til Methys",
+    "confirmEmailHeading": "Ét skridt mere",
+    "confirmEmailBody": "Tryk på knappen nedenfor for at bekræfte din tilmelding og få {percent} % rabat på din første ordre.",
+    "confirmEmailButton": "Bekræft tilmelding",
+    "confirmEmailIgnore": "Har du ikke tilmeldt dig? Så ignorer bare denne e-mail — du bliver ikke tilmeldt.",
+    "metaTitle": "Nyhedsbrev | Methys",
+    "confirmPageTitle": "Bekræft din tilmelding",
+    "confirmPageText": "Klik nedenfor for at få nyheder om nye drops og medlemstilbud — og {percent} % rabat på din første ordre.",
+    "confirmButton": "Bekræft tilmelding",
+    "confirming": "Bekræfter...",
+    "confirmed": "Du er tilmeldt! Her er din velkomstkode på {percent} % — vi har også sendt den på e-mail.",
+    "alreadyConfirmed": "Du er tilmeldt. Velkommen til Methys!",
+    "invalidLink": "Linket er ugyldigt eller udløbet. Tilmeld dig igen via formularen nederst på siden."
+  },
+  "reviews": {
+    "title": "Kundeanmeldelser",
+    "count_one": "{count} anmeldelse",
+    "count_other": "{count} anmeldelser",
+    "noReviews": "Ingen anmeldelser endnu. Har du købt denne vare? Vær den første til at anmelde den.",
+    "stars": "{rating} ud af 5 stjerner",
+    "verifiedBuyer": "Verificeret køber",
+    "writeReview": "Skriv en anmeldelse",
+    "rating": "Din bedømmelse",
+    "reviewTitle": "Titel (valgfri)",
+    "body": "Din anmeldelse",
+    "bodyPlaceholder": "Hvad kunne du lide? Hvordan er pasform og kvalitet?",
+    "submit": "Send anmeldelse",
+    "submitting": "Sender...",
+    "thanks": "Tak! Din anmeldelse er offentliggjort.",
+    "loginToReview": "Log ind for at anmelde varer, du har købt.",
+    "notPurchased": "Kun kunder, der har købt denne vare, kan anmelde den.",
+    "alreadyReviewed": "Du har allerede anmeldt denne vare. Tak!",
+    "errors": {
+      "rating": "Vælg en bedømmelse.",
+      "body": "Skriv mindst 10 tegn.",
+      "failed": "Vi kunne ikke offentliggøre din anmeldelse. Prøv igen."
+    }
   }
 }

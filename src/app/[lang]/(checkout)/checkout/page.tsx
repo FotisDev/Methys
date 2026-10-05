@@ -12,6 +12,7 @@ import {
 import { useParams } from "next/navigation";
 import { useFormatPrice, useT } from "@/i18n/client";
 import { rich } from "@/i18n/rich";
+import { getShipping } from "@/_lib/utils/shipping";
 
 const Checkout = () => {
   const { cart, updateQuantity, removeFromCart, getCartTotal, getItemPrice } =
@@ -59,7 +60,9 @@ const Checkout = () => {
       ? (total * appliedPromo.percentOff) / 100
       : (appliedPromo.amountOff ?? 0)
     : 0;
-  const payableTotal = Math.max(total - discountAmount, 0);
+  // Discount codes apply to products only; shipping is added on top.
+  const shipping = getShipping(total);
+  const payableTotal = Math.max(total - discountAmount, 0) + shipping.fee;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -549,8 +552,8 @@ const Checkout = () => {
               )}
               <div className="flex justify-between text-sm text-gray-600">
                 <span>{t("cart.shipping")}</span>
-                <span className="text-gray-400">
-                  {t("checkout.calculatedNextStep")}
+                <span className={shipping.isFree ? "text-vintage-green" : ""}>
+                  {shipping.isFree ? t("cart.free") : formatPrice(shipping.fee)}
                 </span>
               </div>
               <div className="flex justify-between text-base text-gray-900 pt-2 border-t border-gray-200">

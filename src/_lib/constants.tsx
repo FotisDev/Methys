@@ -24,3 +24,5 @@ export const DEFAULT_METADATA = {
 };
 
 export const AVAILABLE_SIZES = ["XS", "S", "M", "L", "XL"];
+
+export const NEWSLETTER_DISCOUNT_PERCENT = 10;

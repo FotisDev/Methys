@@ -6,6 +6,8 @@ import { useCart } from "../providers/CartProvider";
 import type { CartItem } from "../providers/CartProvider";
 import { useFormatPrice, useT } from "@/i18n/client";
 import { translateCount } from "@/i18n/translate";
+import { getShipping } from "@/_lib/utils/shipping";
+import FreeShippingProgress from "../cart/FreeShippingProgress";
 
 interface CartSideBarProps {
   isOpen: boolean;
@@ -28,6 +30,7 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
   );
 
   const subtotal = getCartTotal ? getCartTotal() : 0;
+  const shipping = getShipping(subtotal);
 
   const handleRemoveFromCart = (
     itemId: number,
@@ -195,12 +198,19 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
                 </div>
                 <div className="flex justify-between text-sm text-vintage-green">
                   <span>{t("cart.shipping")}</span>
-                  <span>{t("cart.calculatedAtCheckout")}</span>
+                  <span>
+                    {shipping.isFree
+                      ? t("cart.free")
+                      : formatPrice(shipping.fee)}
+                  </span>
                 </div>
                 <div className="flex justify-between text-base pt-2 border-t border-gray-200 mt-2 text-vintage-green">
                   <span className="font-medium">{t("cart.total")}</span>
-                  <span className="font-medium">{formatPrice(subtotal)}</span>
+                  <span className="font-medium">
+                    {formatPrice(subtotal + shipping.fee)}
+                  </span>
                 </div>
+                <FreeShippingProgress subtotal={subtotal} className="pt-2" />
               </div>
 
               <div className="px-6 pb-6 pt-2 bg-white">

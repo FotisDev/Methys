@@ -22,6 +22,7 @@ export type CreateProductSchemaParams = {
   id: string;
   product_details?: string;
   sizeLabel?: string;
+  rating?: { average: number; count: number };
 };
 
 export function createProductSchema(p: CreateProductSchemaParams) {
@@ -32,6 +33,20 @@ export function createProductSchema(p: CreateProductSchemaParams) {
     "@id": ORGANIZATION_ID,
     name: p.brand,
   };
+
+  // Google shows review stars in results only when there is at least one review.
+  const aggregateRating =
+    p.rating && p.rating.count > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: p.rating.average.toFixed(1),
+            reviewCount: p.rating.count,
+            bestRating: "5",
+            worstRating: "1",
+          },
+        }
+      : {};
 
   const variants = p.variants.map((v) => {
     const variantSku = v.sku ?? `${p.sku}-${v.size.toUpperCase()}`;
@@ -83,6 +98,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
         name: p.brand,
       },
       category: p.category,
+      ...aggregateRating,
       offers: {
         "@type": "Offer",
         url: p.url,
@@ -110,6 +126,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
       name: p.brand,
     },
     category: p.category,
+    ...aggregateRating,
     productGroupID: p.sku,
     variesBy: ["https://schema.org/size"],
     hasVariant: variants,

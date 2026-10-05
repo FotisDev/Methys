@@ -8,6 +8,7 @@ import React, {
   useState,
 } from "react";
 import Menu from "../header/Menu";
+import AnnouncementBar from "../header/AnnouncementBar";
 import { ContactPageProps, SocialProps } from "@/_lib/interfaces";
 import { ENUM_SOCIALS } from "@/_lib/enums";
 
@@ -75,6 +76,9 @@ export function HeaderProvider({
         forceOpaque,
       }}
     >
+      <AnnouncementBar />
+      {/* Pushes the page down by the announcement bar's height (h-8). */}
+      <div className="h-8" aria-hidden="true" />
       <nav className="relative">
         {!isLoading && (
           <Menu

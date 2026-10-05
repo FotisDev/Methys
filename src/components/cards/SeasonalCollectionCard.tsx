@@ -11,6 +11,7 @@ import { HeartSvg } from "@/svgs/hearthIcon";
 import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
 import { useFormatPrice, useT } from "@/i18n/client";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
+import { getStockStatus } from "@/_lib/utils/stock";
 
 interface SeasonalCollectionCardProps {
   item: ProductInDetails;
@@ -32,6 +33,7 @@ export default function SeasonalCollectionCard({
 
   const inWishlist = isInWishlist(item.id);
   const pricing = getProductPricing(item);
+  const stock = getStockStatus(item.product_variants);
 
   const availableSizes = (item.product_variants ?? [])
     .filter((variant) => variant.quantity > 0)
@@ -109,6 +111,11 @@ export default function SeasonalCollectionCard({
         {isNew && (
           <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest  text-default-color z-10">
             {t("product.newIn")}
+          </span>
+        )}
+        {stock.isLowStock && (
+          <span className="absolute bottom-2 left-2 z-10 bg-white/90 text-red-700 text-[10px] uppercase tracking-widest px-2 py-1">
+            {t("product.onlyLeft", { count: stock.total })}
           </span>
         )}
         <button

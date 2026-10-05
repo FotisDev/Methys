@@ -16,6 +16,7 @@ import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWith
 import { getT } from "@/i18n/server";
 import { translateProducts } from "@/_lib/backend/translations/action";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
+import { getStockStatus } from "@/_lib/utils/stock";
 import {
   formatPrice,
   translateCategory,
@@ -241,6 +242,7 @@ export default async function SubcategoryPage({
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                 {(filteredProducts ?? []).map((product) => {
                   if (!product) return null;
+                  const stock = getStockStatus(product.product_variants);
 
                   return (
                     <Link
@@ -260,6 +262,11 @@ export default async function SubcategoryPage({
                         {product.is_offer && (
                           <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 rounded">
                             {t("product.offer")}
+                          </div>
+                        )}
+                        {stock.isLowStock && (
+                          <div className="absolute bottom-4 left-4 bg-white/90 text-red-700 text-xs uppercase tracking-wider px-3 py-1.5 rounded">
+                            {t("product.onlyLeft", { count: stock.total })}
                           </div>
                         )}
                         {product.price && (

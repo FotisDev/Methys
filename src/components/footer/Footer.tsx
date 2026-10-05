@@ -14,6 +14,8 @@ import FoldableSectionComponent from "../foldableComponent/FoldableSection";
 import { useAuth } from "../providers/AuthProvider";
 import { useT } from "@/i18n/client";
 import { rich } from "@/i18n/rich";
+import NewsletterForm from "./NewsletterForm";
+import { NEWSLETTER_DISCOUNT_PERCENT } from "@/_lib/constants";
 
 export default function Footer() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -83,24 +85,13 @@ export default function Footer() {
             {t("footer.joinCommunity")}
           </h3>
 
-          <p className="text-sm">{t("footer.newsletterText")}</p>
+          <p className="text-sm">
+            {t("footer.newsletterText", {
+              percent: NEWSLETTER_DISCOUNT_PERCENT,
+            })}
+          </p>
 
-          <form className="flex w-full">
-            <input
-              type="email"
-              placeholder={t("footer.emailPlaceholder")}
-              aria-label={t("footer.emailPlaceholder")}
-              required
-              className="border border-default-color w-full p-2 text-sm"
-            />
-            <button
-              type="submit"
-              className="bg-default-cold text-white w-16"
-              aria-label={t("footer.subscribe")}
-            >
-              →
-            </button>
-          </form>
+          <NewsletterForm />
 
           <div className="flex gap-4">
             {socials.map((social, index) => {

@@ -16,19 +16,19 @@
     "errorLoading": "Beim Laden dieser Seite ist ein Fehler aufgetreten."
   },
   "home": {
-    "metaTitle": "Methys - Zeitlose Styles für den modernen Menschen",
-    "metaDescription": "Ausdrucksstarke Styles für alle, die Handwerk und Charakter schätzen.",
+    "metaTitle": "Methys | Herrenmode mit Kopenhagener Stil & griechischer Seele",
+    "metaDescription": "Shoppe Herrenmode, Kinderkleidung und Accessoires von Methys — klare skandinavische Linien mit griechischem Charakter. Kostenloser Versand ab 150 €.",
     "shopNow": "Jetzt shoppen",
     "autumnCollection": "Die Herbstkollektion ist da",
     "exploreCategories": "Kategorien entdecken"
   },
   "hero": {
     "title": "Methys Kollektion",
-    "tagline": "Zeitloser Stil. Außergewöhnliche Qualität."
+    "tagline": "Kopenhagener Stil. Griechische Seele."
   },
   "photoVideo": {
     "imageAlt": "Model in Styles aus der Online-exklusiven Kollektion von Methys",
-    "exploreOnlineExclusive": "Entdecke unsere Online-exklusive Kollektion"
+    "exploreOnlineExclusive": "Shoppe die Online Exclusives — nur hier erhältlich"
   },
   "nav": {
     "about": "Über uns",
@@ -85,7 +85,7 @@
     "items": "Artikel im Warenkorb",
     "clear": "Warenkorb leeren",
     "confirmClear": "Möchtest du deinen Warenkorb wirklich leeren?",
-    "emptyHint": "Du hast noch keine Artikel in deinen Warenkorb gelegt.",
+    "emptyHint": "Dein nächstes Lieblingsstück wartet schon. Starte mit unseren Neuheiten.",
     "stockLimit": "Du kannst nicht mehr als den verfügbaren Bestand hinzufügen!",
     "sale": "Sale",
     "onSale": "Im Sale",
@@ -101,7 +101,7 @@
     "title": "Wunschliste",
     "close": "Wunschliste schließen",
     "empty": "Deine Wunschliste ist leer",
-    "emptyHint": "Speichere deine Lieblingsprodukte, um sie später anzusehen.",
+    "emptyHint": "Tippe bei einem Produkt auf das Herz, um es hier für später zu speichern.",
     "clearAll": "Alle entfernen",
     "confirmClear": "Möchtest du deine gesamte Wunschliste wirklich leeren?",
     "selectSizeFirst": "Bitte wähle zuerst eine Größe.",
@@ -127,7 +127,7 @@
     "help": "Hilfe",
     "paymentMethods": "Zahlungsarten",
     "joinCommunity": "Werde Teil der Methys Community",
-    "newsletterText": "Erfahre als Erstes von neuen Kollektionen, Events und Kollaborationen",
+    "newsletterText": "Melde dich an und erhalte {percent} % Rabatt auf deine erste Bestellung — plus frühen Zugang zu neuen Drops und Mitgliederangeboten.",
     "emailPlaceholder": "Deine E-Mail-Adresse",
     "subscribe": "Abonnieren",
     "country": "Land",
@@ -144,12 +144,12 @@
   "onlineExclusive": {
     "title": "Online-exklusiv",
     "metaTitle": "Online-exklusiv | Methys",
-    "metaDescription": "Entdecke unsere kuratierte Online-exklusive Kollektion — zeitlose Styles für jede Saison. Shoppe die neuesten Styles bei Methys."
+    "metaDescription": "Shoppe die Online Exclusives von Methys — Styles, die du nur auf unserer Website findest. Kostenloser Versand ab 150 €."
   },
   "seasonalCollection": {
     "title": "Saisonkollektion",
     "metaTitle": "Saisonkollektion | Methys",
-    "metaDescription": "Entdecke unsere kuratierte Saisonkollektion — zeitlose Styles für jede Saison. Shoppe die neuesten Styles bei Methys."
+    "metaDescription": "Entdecke die neue Saisonkollektion von Methys — frische Herrenmode mit klaren Linien und echtem Charakter. Kostenloser Versand ab 150 €."
   },
   "product": {
     "newIn": "Neu",
@@ -160,7 +160,7 @@
     "addedToCartWithSize": "„{name}“ (Größe: {size}) wurde in den Warenkorb gelegt!",
     "offer": "Angebot",
     "metaTitle": "{name} | Methys",
-    "defaultDescription": "Premium-Kleidung von Methys. Zeitloser Stil, außergewöhnliche Qualität.",
+    "defaultDescription": "Herrenmode von Methys — klare Linien, zeitloser Stil und echter Charakter. Kostenloser Versand ab 150 €.",
     "notFoundTitle": "Produkt nicht gefunden | Methys",
     "notFoundDescription": "Das gesuchte Produkt existiert nicht.",
     "newOffer": "Neues Angebot",
@@ -175,13 +175,14 @@
     "addedToCartShort": "In den Warenkorb gelegt!",
     "weAccept": "Wir akzeptieren:",
     "freeDelivery": "Kostenloser Versand ab {amount}",
-    "expectedDelivery": "Voraussichtliche Lieferung: 7 Tage nach Bestellung",
+    "expectedDelivery": "Voraussichtliche Lieferung: innerhalb von 7 Tagen nach Bestellung",
     "extendedReturns": "Verlängerte Rückgabe bis zum 23. Januar",
     "needHelp": "Brauchst du Hilfe? Kontaktiere uns oder besuche unsere Hilfeseite",
     "sizeStockInfo": "Größen & Verfügbarkeit",
     "inStock": "{count} auf Lager",
     "productId": "Produkt-ID: #{id}",
-    "recommendations": "Unsere Empfehlungen"
+    "recommendations": "Unsere Empfehlungen",
+    "onlyLeft": "Nur noch {count} verfügbar"
   },
   "filters": {
     "show": "Filter anzeigen",
@@ -197,8 +198,8 @@
   "auth": {
     "logout": "Abmelden",
     "loggingOut": "Wird abgemeldet...",
-    "heroTitle": "Kleidung ohne Grenzen..",
-    "heroText": "Werte deinen Alltag auf. Entdecke Styles, die Blicke auf sich ziehen — gemacht für alle, die sich nicht zufriedengeben.",
+    "heroTitle": "Kleide dich ohne Grenzen.",
+    "heroText": "Werte deinen Alltag auf. Melde dich an oder erstelle ein kostenloses Konto, um exklusive Mitgliederangebote freizuschalten.",
     "copyright": "{year} {brand}. Alle Rechte vorbehalten.",
     "newUser": "Neu hier?",
     "createAccountLink": "Konto erstellen",
@@ -246,9 +247,9 @@
   },
   "collections": {
     "metaTitle": "Alle Kollektionen | Methys",
-    "metaDescription": "Entdecke unsere kuratierte Auswahl an Premium-Kleidung und Accessoires. Zeitloser Stil, außergewöhnliche Qualität.",
+    "metaDescription": "Shoppe alle Methys-Kollektionen: Herrenmode, Kinderkleidung und Accessoires mit klaren Linien und echtem Charakter. Kostenloser Versand ab 150 €.",
     "title": "Alle Kollektionen",
-    "subtitle": "Entdecke unsere kuratierte Auswahl an Premium-Kleidung und Accessoires",
+    "subtitle": "Herrenmode, Kinderkleidung und Accessoires — klare Linien, echter Charakter.",
     "categoryAlt": "Kollektion {name}",
     "categoryNotFoundTitle": "Kategorie nicht gefunden | Methys",
     "categoryNotFoundDescription": "Die gesuchte Kategorie existiert nicht.",
@@ -279,18 +280,18 @@
   },
   "about": {
     "metaTitle": "Über uns | Methys",
-    "metaDescription": "Lerne Methys kennen — unsere Geschichte, unsere Mission und das Team hinter dem Produkt. Erfahre, wie wir angefangen haben und wohin wir gehen.",
+    "metaDescription": "Die Geschichte von Methys: wie das Leben in Kopenhagen einen griechischen Gründer zu Herrenmode mit klaren Linien und echtem Charakter inspirierte.",
     "title": "Über uns",
-    "intro": "Ich, damals jemand aus Griechenland ohne jede Ahnung von Mode, bin beruflich dauerhaft nach Kopenhagen gezogen. Ich habe die Menschen und ihren Stil beobachtet — ich war überwältigt und begeistert, stilvolle Menschen elegant durch die Straßen gehen zu sehen. Ich sagte mir, dass auch ich gerne stilvoll sein wollte. Obwohl diese Menschen einen großartigen Stil hatten, fielen mir immer wieder kleine Details auf: „Diese Jacke wäre perfekt, wenn sie grün wäre“ oder „Diese Schuhe sähen mit einer dünneren Sohle besser aus.“ Mir wurde klar, dass ich Meinungen hatte, aber keine Kontrolle — ich war nicht derjenige, der sie entwarf oder trug. Das wollte ich ändern. Als ich nach Griechenland zurückkam, sah ich, dass dieser Stil fehlte, und genau in diesem Moment kam mir die Idee. Ich musste eine Marke für Herrenmode schaffen, die genau so aussah, wie ich sie mir vorstellte. Auch wenn sich niemand dafür entscheiden würde, musste ich es versuchen — denn es lohnt sich, es zu versuchen, selbst wenn man scheitert.",
+    "intro": "Vor einigen Jahren zog ich beruflich von Griechenland nach Kopenhagen — und hatte kaum Ahnung von Mode. Auf den Straßen sah ich Menschen, die mit einer mühelosen Eleganz gekleidet waren, und das wollte ich auch. Doch mir fielen immer wieder kleine Details auf, die ich ändern würde: „Diese Jacke wäre in Grün perfekt.“ „Diese Schuhe bräuchten eine dünnere Sohle.“ Ich hatte eine Meinung, aber keinen Einfluss darauf, wie die Kleidung gemacht wurde. Als ich nach Griechenland zurückkehrte, sah ich, dass dieser alltägliche Stil fehlte. In diesem Moment begann Methys: eine Herrenmodemarke, die genau so aussieht, wie ich sie mir vorgestellt habe. Ich wusste, dass es vielleicht nicht klappen würde. Ich habe trotzdem angefangen — denn es lohnt sich immer, es zu versuchen.",
     "videoUnsupported": "Dein Browser unterstützt keine Videowiedergabe.",
     "imageAlt": "Methys-Kleidung im Studio ausgelegt",
     "storyTitle": "Unsere Geschichte",
-    "story": "Alles begann mit einem Funken — der Erkenntnis, dass Stil mehr ist als Aussehen; er ist Ausdruck. In Kopenhagen lernte ich die Kunst zu schätzen, sich mit Liebe zum Detail und mit Absicht zu kleiden. Zurück in Griechenland bemerkte ich die Lücke — es fehlte diese besondere alltägliche Eleganz. Da beschloss ich, eine Marke zu gründen, die Stil, Selbstbewusstsein und Raffinesse in die Herrenmode bringt. Methys entstand aus diesem Wunsch — Styles zu entwerfen, die Individualität und den Mut, anders zu sein, widerspiegeln."
+    "story": "Alles begann mit einer Idee: Stil ist nicht nur, wie du aussiehst — sondern wie du dich ausdrückst. Kopenhagen hat mich gelehrt, mich mit Liebe zum Detail und mit Absicht zu kleiden. Griechenland gab mir die Wärme und den Charakter, die jedes Stück tragen sollte. Methys vereint beides: Herrenmode für Männer, die jeden Tag gut aussehen wollen und den Mut haben, aufzufallen."
   },
   "help": {
     "metaTitle": "Häufige Fragen | Methys",
     "metaDescription": "Antworten auf die häufigsten Fragen zu Versand, Rückerstattung und unseren Produkten.",
-    "title": "Alles, was du über unseren Service wissen musst",
+    "title": "Fragen zu Versand, Rückgabe oder Größen? Hier findest du Antworten.",
     "subtitle": "Häufige Fragen",
     "noFaqs": "Keine Fragen gefunden."
   },
@@ -298,7 +299,7 @@
     "metaTitle": "Support | Methys",
     "metaDescription": "Sende eine Support-Anfrage zu Zahlungen, Fehlern, Kontoproblemen oder Funktionswünschen. Unser Team meldet sich in Kürze.",
     "title": "Support",
-    "intro": "Fülle das Formular unten aus und wir melden uns so schnell wie möglich bei dir.",
+    "intro": "Brauchst du Hilfe bei einer Bestellung, mit Größen oder etwas anderem? Schreib uns und wir antworten dir so schnell wie möglich per E-Mail.",
     "goToMainPage": "Zur Startseite",
     "form": {
       "submitted": "Anfrage gesendet!",
@@ -320,10 +321,10 @@
   },
   "offers": {
     "metaTitle": "Limitierte Angebote | Methys",
-    "metaDescription": "Entdecke unsere exklusiven, zeitlich begrenzten Angebote mit bis zu 20 % Rabatt auf ausgewählte Artikel.",
+    "metaDescription": "Exklusive Mitgliederangebote bei Methys: bis zu 20 % Rabatt auf ausgewählte Styles für kurze Zeit. Melde dich an und sichere dir die Deals.",
     "title": "Angebote",
     "heading": "Entdecke unsere limitierten Angebote",
-    "loginRequired": "Melde dich an, um unsere Angebote zu sehen."
+    "loginRequired": "Unsere Angebote gibt es nur für Mitglieder. Melde dich an oder erstelle ein kostenloses Konto, um sie freizuschalten."
   },
   "privacy": {
     "metaTitle": "Datenschutzerklärung | Methys",
@@ -425,5 +426,61 @@
     "account": "Konto",
     "feature-request": "Funktionswunsch",
     "other": "Sonstiges"
+  },
+  "shipping": {
+    "remaining": "Noch {amount} bis zum kostenlosen Versand",
+    "unlocked": "Du hast kostenlosen Versand freigeschaltet!",
+    "progressLabel": "Fortschritt zum kostenlosen Versand",
+    "standard": "Standardversand",
+    "free": "Kostenloser Versand"
+  },
+  "newsletter": {
+    "subscribing": "Wird angemeldet...",
+    "success": "Fast geschafft! Schau in dein Postfach und bestätige deine E-Mail, um deinen {percent} %-Code zu erhalten.",
+    "already": "Du bist bereits angemeldet. Danke, dass du Teil von Methys bist!",
+    "failed": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "emailSubject": "Dein {percent} %-Willkommenscode von Methys",
+    "emailHeading": "Willkommen bei Methys",
+    "emailBody": "Danke für deine Anmeldung. Hier sind {percent} % Rabatt auf deine erste Bestellung — gib diesen Code an der Kasse ein:",
+    "emailNote": "Der Code kann einmal verwendet werden.",
+    "emailCta": "Jetzt shoppen",
+    "consent": "Du kannst dich jederzeit abmelden. Lies unsere {privacyPolicy}.",
+    "confirmEmailSubject": "Bestätige deine Anmeldung bei Methys",
+    "confirmEmailHeading": "Nur noch ein Schritt",
+    "confirmEmailBody": "Tippe auf den Button unten, um deine Anmeldung zu bestätigen und {percent} % Rabatt auf deine erste Bestellung zu erhalten.",
+    "confirmEmailButton": "Anmeldung bestätigen",
+    "confirmEmailIgnore": "Du hast dich nicht angemeldet? Dann ignoriere diese E-Mail einfach — du wirst nicht angemeldet.",
+    "metaTitle": "Newsletter | Methys",
+    "confirmPageTitle": "Bestätige deine Anmeldung",
+    "confirmPageText": "Klicke unten, um News zu neuen Drops und Mitgliederangeboten zu erhalten — plus {percent} % Rabatt auf deine erste Bestellung.",
+    "confirmButton": "Anmeldung bestätigen",
+    "confirming": "Wird bestätigt...",
+    "confirmed": "Du bist angemeldet! Hier ist dein {percent} %-Willkommenscode — wir haben ihn dir auch per E-Mail geschickt.",
+    "alreadyConfirmed": "Du bist angemeldet. Willkommen bei Methys!",
+    "invalidLink": "Dieser Link ist ungültig oder abgelaufen. Melde dich über das Formular unten auf jeder Seite erneut an."
+  },
+  "reviews": {
+    "title": "Kundenbewertungen",
+    "count_one": "{count} Bewertung",
+    "count_other": "{count} Bewertungen",
+    "noReviews": "Noch keine Bewertungen. Du hast dieses Teil gekauft? Schreib die erste Bewertung.",
+    "stars": "{rating} von 5 Sternen",
+    "verifiedBuyer": "Verifizierter Kauf",
+    "writeReview": "Bewertung schreiben",
+    "rating": "Deine Bewertung",
+    "reviewTitle": "Titel (optional)",
+    "body": "Dein Kommentar",
+    "bodyPlaceholder": "Was hat dir gefallen? Wie sind Passform und Qualität?",
+    "submit": "Bewertung absenden",
+    "submitting": "Wird gesendet...",
+    "thanks": "Danke! Deine Bewertung wurde veröffentlicht.",
+    "loginToReview": "Melde dich an, um gekaufte Produkte zu bewerten.",
+    "notPurchased": "Nur Kunden, die dieses Produkt gekauft haben, können es bewerten.",
+    "alreadyReviewed": "Du hast dieses Produkt bereits bewertet. Danke!",
+    "errors": {
+      "rating": "Bitte wähle eine Bewertung.",
+      "body": "Bitte schreib mindestens 10 Zeichen.",
+      "failed": "Deine Bewertung konnte nicht veröffentlicht werden. Bitte versuche es erneut."
+    }
   }
 }

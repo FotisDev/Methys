@@ -9,6 +9,8 @@ import { DISCOUNT_PERCENT } from "@/_lib/utils/discountUtil/discountUtils";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { useFormatPrice, useLocale, useT } from "@/i18n/client";
 import { translateCount } from "@/i18n/translate";
+import { FREE_SHIPPING_THRESHOLD, getShipping } from "@/_lib/utils/shipping";
+import FreeShippingProgress from "@/components/cart/FreeShippingProgress";
 
 function productHref(item: CartItem) {
   const category = item.categoryformen;
@@ -35,6 +37,8 @@ export default function CartPageClient() {
   useEffect(() => {
     setTotal(getCartTotal());
   }, [cart, getCartTotal]);
+
+  const shipping = getShipping(total);
 
   const handleUpdateQuantity = (
     productId: number,
@@ -249,7 +253,7 @@ export default function CartPageClient() {
         </ul>
 
         {/* Summary */}
-        <aside className="lg:sticky lg:top-24 border border-gray-200 p-6 space-y-6">
+        <aside className="lg:sticky lg:top-32 border border-gray-200 p-6 space-y-6">
           <h2 className="text-sm font-medium tracking-widest uppercase">
             {t("cart.orderSummary")}
           </h2>
@@ -261,15 +265,19 @@ export default function CartPageClient() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">{t("cart.shipping")}</span>
-              <span className="text-gray-500">
-                {t("cart.calculatedAtCheckout")}
+              <span className={shipping.isFree ? "text-vintage-green" : ""}>
+                {shipping.isFree ? t("cart.free") : formatPrice(shipping.fee)}
               </span>
             </div>
             <div className="flex justify-between text-base pt-4 border-t border-gray-200">
               <span>{t("cart.total")}</span>
-              <span className="font-medium">{formatPrice(total)}</span>
+              <span className="font-medium">
+                {formatPrice(total + shipping.fee)}
+              </span>
             </div>
           </div>
+
+          <FreeShippingProgress subtotal={total} />
 
           <div className="space-y-3">
             <Link
@@ -287,7 +295,11 @@ export default function CartPageClient() {
           </div>
 
           <div className="border-t border-gray-200 pt-5 space-y-4 text-xs text-gray-500">
-            <p>{t("product.freeDelivery", { amount: formatPrice(150) })}</p>
+            <p>
+              {t("product.freeDelivery", {
+                amount: formatPrice(FREE_SHIPPING_THRESHOLD),
+              })}
+            </p>
             <div>
               <p className="text-vintage-green mb-0.5">
                 {t("checkout.freeReturns")}

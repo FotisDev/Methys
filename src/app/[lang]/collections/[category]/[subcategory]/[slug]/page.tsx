@@ -7,6 +7,7 @@ import ProductActionsInline from "./ProductActionsInline";
 import { fetchProductBySlug } from "@/_lib/backend/productBySlug/action";
 import { translateProduct } from "@/_lib/backend/translations/action";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
+import { FREE_SHIPPING_THRESHOLD } from "@/_lib/utils/shipping";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createProductSchema } from "@/components/schemas/newCollectionSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
@@ -18,8 +19,16 @@ import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionS
 import Link from "@/components/LocaleLink/LocaleLink";
 import DropDownMenu from "@/components/header/DropDownMenu";
 import { getT } from "@/i18n/server";
-import { formatPrice, translateCategory } from "@/i18n/translate";
+import {
+  formatPrice,
+  translateCategory,
+  translateCount,
+} from "@/i18n/translate";
 import { defaultLocale, isLocale } from "@/i18n.config";
+import { fetchProductReviews } from "@/_lib/backend/reviews/queries";
+import { summarizeReviews } from "@/_lib/utils/reviews";
+import ProductReviews from "@/components/reviews/ProductReviews";
+import Stars from "@/components/reviews/Stars";
 
 export const revalidate = 600;
 
@@ -152,6 +161,9 @@ export default async function ProductDetailPage({
       notFound();
     }
 
+    const reviews = await fetchProductReviews(product.id);
+    const reviewSummary = summarizeReviews(reviews);
+
     const fullUrl = absoluteUrl(
       `/collections/${categorySlug}/${subcategorySlug}/${productSlug}`,
       locale,
@@ -185,6 +197,7 @@ export default async function ProductDetailPage({
       category: categoryName,
       id: product.id.toString(),
       sizeLabel: t("sizeGuide.size"),
+      rating: reviewSummary,
     });
 
     const breadcrumbItems = [
@@ -266,12 +279,28 @@ export default async function ProductDetailPage({
               </div>
 
               {/*RIGHT BAR */}
-              <div className="lg:sticky lg:top-24 lg:h-fit space-y-8">
+              <div className="lg:sticky lg:top-32 lg:h-fit space-y-8">
                 <div>
                   {product.name && (
                     <h1 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
                       {product.name}
                     </h1>
+                  )}
+
+                  {reviewSummary.count > 0 && (
+                    <a
+                      href="#reviews"
+                      className="inline-flex items-center gap-2 text-xs mb-3 hover:underline underline-offset-4"
+                    >
+                      <Stars
+                        rating={reviewSummary.average}
+                        label={t("reviews.stars", {
+                          rating: reviewSummary.average,
+                        })}
+                        className="w-3.5 h-3.5"
+                      />
+                      {translateCount(t, "reviews.count", reviewSummary.count)}
+                    </a>
                   )}
 
                   {product.description && (
@@ -299,7 +328,7 @@ export default async function ProductDetailPage({
                     <summary className="flex justify-between items-center cursor-pointer list-none">
                       <span className="text-sm font-medium">
                         {t("product.freeDelivery", {
-                          amount: formatPrice(150, locale),
+                          amount: formatPrice(FREE_SHIPPING_THRESHOLD, locale),
                         })}
                       </span>
                       <span className="transition group-open:rotate-45">+</span>
@@ -382,6 +411,13 @@ export default async function ProductDetailPage({
 
           <Schema markup={schema} />
         </section>
+
+        <ProductReviews
+          productId={product.id}
+          reviews={reviews}
+          locale={locale}
+          t={t}
+        />
 
         <div className="px-4 sm:px-6">
           <SeasonalCollectionSection

@@ -10,6 +10,7 @@ import { useState, MouseEvent } from "react";
 import CartSvg from "@/svgs/cartSvg";
 import { HeartSvg } from "@/svgs/hearthIcon";
 import { useFormatPrice, useLocale, useT } from "@/i18n/client";
+import { getStockStatus } from "@/_lib/utils/stock";
 
 type OffersListProps = {
   offerProduct: ProductWithDiscount[];
@@ -57,6 +58,7 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
   const { addToWishlist, isInWishlist } = useWishlist();
 
   const inWishlist = isInWishlist(offer.id);
+  const stock = getStockStatus(offer.product_variants);
 
   const availableSizes = (offer.product_variants ?? [])
     .filter((variant) => variant.quantity > 0)
@@ -124,6 +126,12 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
         <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest bg-ext-vintage-green text-vintage-white px-2 py-1 z-10">
           {t("product.offer")}
         </span>
+
+        {stock.isLowStock && (
+          <span className="absolute bottom-2 left-2 z-10 bg-white/90 text-red-700 text-[10px] uppercase tracking-widest px-2 py-1">
+            {t("product.onlyLeft", { count: stock.total })}
+          </span>
+        )}
 
         <button
           onClick={handleWishlistToggle}

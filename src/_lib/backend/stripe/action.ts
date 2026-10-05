@@ -5,6 +5,8 @@ import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import Stripe from "stripe";
 import { isLocale } from "@/i18n.config";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
+import { getShipping } from "@/_lib/utils/shipping";
+import { getT } from "@/i18n/server";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -74,6 +76,14 @@ export async function createCheckoutSession(
     };
   });
 
+  // Same rule the cart shows: subtotal (before discount codes) from DB prices.
+  const subtotal = lineItems.reduce(
+    (sum, li) => sum + li.price_data.unit_amount * li.quantity,
+    0,
+  );
+  const shipping = getShipping(subtotal / 100);
+  const t = await getT(locale);
+
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     // All site locales (en, el, da, de) are supported by Stripe Checkout.
@@ -82,6 +92,21 @@ export async function createCheckoutSession(
       : "auto") as Stripe.Checkout.SessionCreateParams.Locale,
     customer_email: shippingInfo.email,
     line_items: lineItems,
+    shipping_options: [
+      {
+        shipping_rate_data: {
+          type: "fixed_amount",
+          fixed_amount: {
+            amount: Math.round(shipping.fee * 100),
+            currency: "eur",
+          },
+          display_name: shipping.isFree
+            ? t("shipping.free")
+            : t("shipping.standard"),
+          delivery_estimate: { maximum: { unit: "day", value: 7 } },
+        },
+      },
+    ],
     ...(promotionCodeId
       ? { discounts: [{ promotion_code: promotionCodeId }] }
       : {}),
