@@ -4,12 +4,12 @@ import CategoriesSwiper from "@/components/swipers/CategoriesSwiper";
 export default async function CategoriesSection() {
   const allCategories = await getAllCategoriesWithSubcategories();
 
-  const mainCategories = allCategories.filter(cat => cat.parent_id === null);
-  const subCategories = allCategories.filter(cat => cat.parent_id !== null);
+  const mainCategories = allCategories.filter((cat) => cat.parent_id === null);
+  const subCategories = allCategories.filter((cat) => cat.parent_id !== null);
 
   const slides = mainCategories.flatMap((mainCat) => {
     const categorySubcategories = subCategories.filter(
-      sub => sub.parent_id === mainCat.id
+      (sub) => sub.parent_id === mainCat.id,
     );
 
     return categorySubcategories.map((subCat) => ({

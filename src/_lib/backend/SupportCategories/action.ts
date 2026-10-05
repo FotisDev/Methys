@@ -22,9 +22,9 @@ export const getSupportCategories = unstable_cache(
 
     return data ?? [];
   },
-  ['suport-categories'],
+  ["suport-categories"],
   {
-    revalidate:90000,
-    tags:['support-categories']
-  }
+    revalidate: 90000,
+    tags: ["support-categories"],
+  },
 );

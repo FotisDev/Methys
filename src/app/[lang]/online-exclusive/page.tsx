@@ -17,16 +17,18 @@ export async function generateMetadata({ params }: PageProps) {
     MetaTitle: t("onlineExclusive.metaTitle"),
     MetaDescription: t("onlineExclusive.metaDescription"),
     canonical: "/online-exclusive",
-    OpenGraphImageUrl:
-      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+    OpenGraphImageUrl: "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   });
 }
 export default async function OnlineExclusiveProducts({ params }: PageProps) {
   const { lang } = await params;
-  const onlineProducts = await translateProducts(await fetchOnlineExclusive(), lang);
+  const onlineProducts = await translateProducts(
+    await fetchOnlineExclusive(),
+    lang,
+  );
 
   return (
-    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <section className="padding-y px-0.5 bg-white">
         <OnlineProductsPageComponent products={onlineProducts} title={""} />
       </section>

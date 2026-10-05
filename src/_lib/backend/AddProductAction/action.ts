@@ -7,11 +7,14 @@ import { revalidateTag } from "next/cache";
 
 export async function addProductAction(
   productData: ProductInsert,
-  variants: VariantInsert[]
+  variants: VariantInsert[],
 ) {
   const supabase = await createSupabaseServerClient();
 
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
   if (userError || !user) {
     throw new Error("You need to login...");
@@ -28,9 +31,7 @@ export async function addProductAction(
   }
 
   const firstImage = productData.image_url?.[0];
-  const blurDataUrl = firstImage
-    ? await generateBlurDataUrl(firstImage)
-    : null;
+  const blurDataUrl = firstImage ? await generateBlurDataUrl(firstImage) : null;
 
   const { data: product, error: productError } = await supabase
     .from("products")

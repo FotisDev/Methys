@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/_lib/supabase/admin";
 
 async function fulfillOrder(session: Stripe.Checkout.Session) {
-
   const shippingInfo = session.metadata?.shipping_info
     ? JSON.parse(session.metadata.shipping_info)
     : {};
@@ -15,7 +14,7 @@ async function fulfillOrder(session: Stripe.Checkout.Session) {
   const userId = session.metadata?.user_id;
 
   const { error } = await supabaseAdmin.from("orders").insert({
-    user_id: userId && userId.length > 0 ? userId : null, 
+    user_id: userId && userId.length > 0 ? userId : null,
     stripe_session_id: session.id,
     stripe_payment_intent_id: session.payment_intent,
     status: "paid",

@@ -13,7 +13,7 @@ import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 export type CartItem = ProductInDetails & {
   selectedSize?: string;
   quantity: number;
-  discountedPrice?: number; 
+  discountedPrice?: number;
   discountPercent?: number;
 };
 

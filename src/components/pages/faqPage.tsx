@@ -26,7 +26,9 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
           <p className="text-vintage-green text-lg font-semibold pt-20">
             {subtitle}
           </p>
-          <h1 className="text-default-cold text-2xl lg:text-5xl mb-8 pt-5 px-2">{title}</h1>
+          <h1 className="text-default-cold text-2xl lg:text-5xl mb-8 pt-5 px-2">
+            {title}
+          </h1>
 
           {faqs.length === 0 ? (
             <p>{t("help.noFaqs")}</p>
@@ -58,7 +60,9 @@ export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
                   >
                     <div className="text-vintage-brown">
                       {faq.subtitle && (
-                        <p className="font-medium mb-2 text-black">{faq.subtitle}</p>
+                        <p className="font-medium mb-2 text-black">
+                          {faq.subtitle}
+                        </p>
                       )}
                       <p className="text-black  font-semibold font-roboto text-lg">
                         {faq.description}

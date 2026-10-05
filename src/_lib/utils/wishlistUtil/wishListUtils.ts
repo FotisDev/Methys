@@ -1,14 +1,18 @@
 import { Product } from "@/_lib/types";
 
 export const addToWishlist = (product: Product): boolean => {
-  const wishlistItems = JSON.parse(localStorage.getItem("wishlistItems") || "[]");
+  const wishlistItems = JSON.parse(
+    localStorage.getItem("wishlistItems") || "[]",
+  );
 
-  const isAlreadyInWishlist = wishlistItems.some((item: Product) => item.id === product.id);
-  
+  const isAlreadyInWishlist = wishlistItems.some(
+    (item: Product) => item.id === product.id,
+  );
+
   if (isAlreadyInWishlist) {
     return false;
   }
-  
+
   wishlistItems.push(product);
   localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
   window.dispatchEvent(new Event("wishlistUpdated"));
@@ -16,14 +20,20 @@ export const addToWishlist = (product: Product): boolean => {
 };
 
 export const removeFromWishlist = (productId: number) => {
-  const wishlistItems = JSON.parse(localStorage.getItem("wishlistItems") || "[]");
-  const updatedWishlist = wishlistItems.filter((item: Product) => item.id !== productId);
+  const wishlistItems = JSON.parse(
+    localStorage.getItem("wishlistItems") || "[]",
+  );
+  const updatedWishlist = wishlistItems.filter(
+    (item: Product) => item.id !== productId,
+  );
   localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
   window.dispatchEvent(new Event("wishlistUpdated"));
 };
 
 export const isInWishlist = (productId: number): boolean => {
-  const wishlistItems = JSON.parse(localStorage.getItem("wishlistItems") || "[]");
+  const wishlistItems = JSON.parse(
+    localStorage.getItem("wishlistItems") || "[]",
+  );
   return wishlistItems.some((item: Product) => item.id === productId);
 };
 

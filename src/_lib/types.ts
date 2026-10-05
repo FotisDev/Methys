@@ -79,10 +79,10 @@ export type ProductInDetails = {
   }[];
   size_description: string;
   product_details: string;
-  is_winter?:boolean;
-  is_spring?:boolean;
-  is_summer?:boolean;
-  is_autumn?:boolean;
+  is_winter?: boolean;
+  is_spring?: boolean;
+  is_summer?: boolean;
+  is_autumn?: boolean;
   blur_data_url?: string | null;
 };
 

@@ -1,5 +1,3 @@
-
-
 export type Redirect = {
   source: string;
   destination: string;
@@ -8,19 +6,18 @@ export type Redirect = {
 
 export const redirectsArr: Redirect[] = [
   {
-    source: '/help',
-    destination: '/help',
+    source: "/help",
+    destination: "/help",
     permanent: true,
   },
   {
-    source: '/about',
-    destination: '/about',
+    source: "/about",
+    destination: "/about",
     permanent: true,
   },
   {
-    source: '/',
-    destination: '/',
-    permanent: false, 
+    source: "/",
+    destination: "/",
+    permanent: false,
   },
-  
 ];

@@ -22,9 +22,7 @@ export default function OffersPageComponent({ offerProduct }: OffersListProps) {
   if (offerProduct.length === 0) {
     return (
       <section className="font-serif text-vintage-green pt-16 min-h-[50vh]">
-        <h1 className="text-lg py-2">
-          {t("offers.title")}
-        </h1>
+        <h1 className="text-lg py-2">{t("offers.title")}</h1>
         <p className="text-gray-500">{t("offers.loginRequired")}</p>
       </section>
     );
@@ -86,7 +84,12 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
     }
 
     addToCart(offer, selectedSize);
-    alert(t("product.addedToCartWithSize", { name: offer.name, size: selectedSize }));
+    alert(
+      t("product.addedToCartWithSize", {
+        name: offer.name,
+        size: selectedSize,
+      }),
+    );
   };
 
   const handleWishlistToggle = (e: MouseEvent<HTMLButtonElement>) => {
@@ -125,7 +128,11 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
         <button
           onClick={handleWishlistToggle}
           className="absolute top-2 right-2 p-1.5 z-10"
-          aria-label={inWishlist ? t("product.removeFromWishlist") : t("product.addToWishlist")}
+          aria-label={
+            inWishlist
+              ? t("product.removeFromWishlist")
+              : t("product.addToWishlist")
+          }
         >
           <HeartSvg
             filled={inWishlist}
@@ -177,7 +184,9 @@ function OfferCard({ offer }: { offer: ProductWithDiscount }) {
                 ))}
               </div>
             ) : (
-              <span className="text-xs text-red-500">{t("product.soldOut")}</span>
+              <span className="text-xs text-red-500">
+                {t("product.soldOut")}
+              </span>
             )
           ) : offer.size_description ? (
             <p className="text-xs text-vintage-green/60 line-clamp-1">

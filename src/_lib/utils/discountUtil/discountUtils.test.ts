@@ -7,7 +7,9 @@ import {
 
 describe("calculateDiscountPrice", () => {
   it("applies the discount only to offers", () => {
-    expect(calculateDiscountPrice(100, true)).toBe(100 * (1 - DISCOUNT_PERCENT / 100));
+    expect(calculateDiscountPrice(100, true)).toBe(
+      100 * (1 - DISCOUNT_PERCENT / 100),
+    );
     expect(calculateDiscountPrice(100, false)).toBe(100);
     expect(calculateDiscountPrice(100)).toBe(100);
   });
@@ -63,7 +65,9 @@ describe("getProductPricing", () => {
   });
 
   it("handles prices stored as strings", () => {
-    expect(getProductPricing({ price: "49.90", is_offer: null }).finalPrice).toBe(49.9);
+    expect(
+      getProductPricing({ price: "49.90", is_offer: null }).finalPrice,
+    ).toBe(49.9);
   });
 
   it("rounds to whole cents so Stripe gets an exact amount", () => {

@@ -34,8 +34,16 @@ export default function CategoryCard({
 }) {
   const t = useT();
   const blurDataUrl = subcategory.blur_data_url ?? category.blur_data_url;
-  const categoryName = translateCategory(t, category.slug, category.category_name);
-  const subcategoryName = translateCategory(t, subcategory.slug, subcategory.name);
+  const categoryName = translateCategory(
+    t,
+    category.slug,
+    category.category_name,
+  );
+  const subcategoryName = translateCategory(
+    t,
+    subcategory.slug,
+    subcategory.name,
+  );
 
   return (
     <Link

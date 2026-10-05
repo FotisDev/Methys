@@ -6,7 +6,9 @@ export function rich(template: string, nodes: Record<string, ReactNode>) {
   return template.split(/(\{\w+\})/g).map((part, i) => {
     const match = part.match(/^\{(\w+)\}$/);
     return (
-      <Fragment key={i}>{match && match[1] in nodes ? nodes[match[1]] : part}</Fragment>
+      <Fragment key={i}>
+        {match && match[1] in nodes ? nodes[match[1]] : part}
+      </Fragment>
     );
   });
 }

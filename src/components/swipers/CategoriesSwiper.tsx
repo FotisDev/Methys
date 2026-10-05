@@ -38,9 +38,14 @@ export default function CategoriesSwiper({
   return (
     <div className="w-full pt-1">
       <h2 className="p-4 text-base font-normal">
-        <Link href="/collections" className="inline-flex flex-row hover:underline">
+        <Link
+          href="/collections"
+          className="inline-flex flex-row hover:underline"
+        >
           {t("home.exploreCategories")}
-          <span><RightArrowIcon className="w-5 h-5 mt-0.5"/></span>
+          <span>
+            <RightArrowIcon className="w-5 h-5 mt-0.5" />
+          </span>
         </Link>
       </h2>
       <GenericSwiper

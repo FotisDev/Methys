@@ -17,7 +17,9 @@ function resolveImageUrl(url?: string | null) {
   return url;
 }
 
-export async function createMetadata(metadata: MetadataProps): Promise<Metadata> {
+export async function createMetadata(
+  metadata: MetadataProps,
+): Promise<Metadata> {
   const metaTitle = metadata.MetaTitle || DEFAULT_METADATA.metaTitle;
   const metaDescription =
     metadata.MetaDescription || DEFAULT_METADATA.metaDescription;
@@ -75,4 +77,3 @@ export async function createMetadata(metadata: MetadataProps): Promise<Metadata>
     }),
   };
 }
-

@@ -6,7 +6,8 @@ export const fetchProducts = unstable_cache(
   async (): Promise<ProductInDetails[] | null> => {
     const { data, error } = await supabasePublic
       .from("products")
-      .select(`
+      .select(
+        `
         id,
         name,
         slug,
@@ -21,7 +22,8 @@ export const fetchProducts = unstable_cache(
           parent:parent_id!inner ( id, name, slug )
         ),
         product_variants ( size, price, quantity )
-      `)
+      `,
+      )
       .overrideTypes<ProductInDetails[], { merge: false }>();
 
     if (error) {
@@ -30,6 +32,6 @@ export const fetchProducts = unstable_cache(
     }
     return data ?? [];
   },
-  ["all-products"],         
-  { revalidate: 800, tags: ["products"] }  
+  ["all-products"],
+  { revalidate: 800, tags: ["products"] },
 );

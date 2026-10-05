@@ -18,7 +18,7 @@ interface WishlistContextType {
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
@@ -51,7 +51,6 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     setWishlist((prev) => {
       const exists = prev.find((item) => item?.id === product.id);
       if (exists) {
-       
         return prev.filter((item) => item?.id !== product.id);
       }
       return [...prev, product];

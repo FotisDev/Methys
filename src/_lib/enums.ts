@@ -14,4 +14,3 @@ export enum ENUM_TOGGLE_OPTIONS {
   OPEN = "OPEN",
   CLOSE = "CLOSE",
 }
-

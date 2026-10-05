@@ -19,7 +19,7 @@ const fetchEnglishFaqs = unstable_cache(
   },
   ["faqs"],
   {
-    revalidate: 86400, 
+    revalidate: 86400,
     tags: ["faqs"],
   },
 );

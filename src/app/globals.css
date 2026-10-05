@@ -1,19 +1,17 @@
 @import "tailwindcss";
 @tailwind utilities;
 
-
-
 @theme {
   --color-vintage-brown: #cecece;
   --color-vintage-green: #141620;
-  --color-default-color:#D1D3D4;
-  --color-default-cold:#1B3C53;
-  --color-default-yellow:#FF9D00;
-  --color-vintage-white:#E4DBDB;
-  --color-seasalt:#f8f9fa;
-  --color-gray-aca:#acacac;
-  --color-white-fb:#fbfbfb;
-  --color-white-f6:#f6f6f6;
+  --color-default-color: #d1d3d4;
+  --color-default-cold: #1b3c53;
+  --color-default-yellow: #ff9d00;
+  --color-vintage-white: #e4dbdb;
+  --color-seasalt: #f8f9fa;
+  --color-gray-aca: #acacac;
+  --color-white-fb: #fbfbfb;
+  --color-white-f6: #f6f6f6;
 }
 
 :root {
@@ -27,8 +25,6 @@
     --foreground: #ededed;
   }
 }
-
-
 
 body {
   background: var(--background);
@@ -47,7 +43,7 @@ body {
 }
 
 .custom-checkbox::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   margin: auto;
@@ -98,20 +94,19 @@ body {
   padding-right: 0.5rem;
 }
 
-@media (min-width: 640px) { 
+@media (min-width: 640px) {
   .padding-x {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 }
 
-@media (min-width: 1024px) { 
+@media (min-width: 1024px) {
   .padding-x {
     padding-left: 2rem;
     padding-right: 2rem;
   }
 }
-
 
 .padding-y {
   padding-top: 0.5rem;
@@ -131,7 +126,6 @@ body {
     padding-bottom: 2rem;
   }
 }
-
 
 .swiper-button-next,
 .swiper-button-prev {

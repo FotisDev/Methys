@@ -16,7 +16,11 @@ import { getAllCategoriesWithSubcategories } from "@/_lib/backend/CategoriesWith
 import { getT } from "@/i18n/server";
 import { translateProducts } from "@/_lib/backend/translations/action";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
-import { formatPrice, translateCategory, translateCount } from "@/i18n/translate";
+import {
+  formatPrice,
+  translateCategory,
+  translateCount,
+} from "@/i18n/translate";
 import { defaultLocale, isLocale } from "@/i18n.config";
 
 export const revalidate = 600;
@@ -68,11 +72,22 @@ export async function generateMetadata({
       });
     }
 
-    const name = translateCategory(t, currentCategory.slug, currentCategory.name);
-    const parentName = translateCategory(t, parentCategory.slug, parentCategory.name);
+    const name = translateCategory(
+      t,
+      currentCategory.slug,
+      currentCategory.name,
+    );
+    const parentName = translateCategory(
+      t,
+      parentCategory.slug,
+      parentCategory.name,
+    );
     return createMetadata({
       locale: lang,
-      MetaTitle: t("collections.subcategoryMetaTitle", { name, parent: parentName }),
+      MetaTitle: t("collections.subcategoryMetaTitle", {
+        name,
+        parent: parentName,
+      }),
       MetaDescription: t("collections.subcategoryMetaDescription", { name }),
       canonical: `/collections/${categorySlug}/${subcategorySlug}`,
       OpenGraphImageUrl:
@@ -141,13 +156,23 @@ export default async function SubcategoryPage({
 
   const filteredProducts = await translateProducts(filtered, locale);
 
-  const categoryName = translateCategory(t, currentCategory.slug, currentCategory.name);
-  const parentName = translateCategory(t, parentCategory.slug, parentCategory.name);
+  const categoryName = translateCategory(
+    t,
+    currentCategory.slug,
+    currentCategory.name,
+  );
+  const parentName = translateCategory(
+    t,
+    parentCategory.slug,
+    parentCategory.name,
+  );
   const schema = createCollectionPageSchema({
     locale,
     path: `/collections/${categorySlug}/${subcategorySlug}`,
     name: categoryName,
-    description: t("collections.subcategoryMetaDescription", { name: categoryName }),
+    description: t("collections.subcategoryMetaDescription", {
+      name: categoryName,
+    }),
     items: products.map((p) => ({
       name: p.name,
       path: `/collections/${categorySlug}/${subcategorySlug}/${p.slug}`,
@@ -206,7 +231,11 @@ export default async function SubcategoryPage({
           ) : (
             <>
               <p className="text-sm text-vintage-brown text-right mb-4 mr-4 sm:text-lg">
-                {translateCount(t, "collections.productsAvailable", (filteredProducts ?? []).length)}
+                {translateCount(
+                  t,
+                  "collections.productsAvailable",
+                  (filteredProducts ?? []).length,
+                )}
               </p>
 
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -235,7 +264,10 @@ export default async function SubcategoryPage({
                         )}
                         {product.price && (
                           <div className="absolute top-4 right-4 bg-white text-vintage-green px-3 py-1.5 rounded-lg text-sm font-medium shadow">
-                            {formatPrice(getProductPricing(product).finalPrice, locale)}
+                            {formatPrice(
+                              getProductPricing(product).finalPrice,
+                              locale,
+                            )}
                           </div>
                         )}
                       </div>
@@ -251,7 +283,12 @@ export default async function SubcategoryPage({
                         )}
                         <span className="inline-flex items-center gap-1 text-sm font-medium text-gray-500 underline-offset-4 transition-colors group-hover:text-vintage-green group-hover:underline">
                           {t("collections.viewDetails")}
-                          <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                          <span
+                            aria-hidden="true"
+                            className="transition-transform group-hover:translate-x-1"
+                          >
+                            →
+                          </span>
                         </span>
                       </div>
                     </Link>

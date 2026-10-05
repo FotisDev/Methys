@@ -1,6 +1,6 @@
 "use client";
 
-import { useState} from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabasePublic } from "@/_lib/supabase/client";
@@ -33,24 +33,27 @@ const ForgotPasswordPage = () => {
   });
 
   const onSubmit = async (data: ForgotPasswordForm) => {
-  setErrorMsg(null);
-  setSubmitted(false);
+    setErrorMsg(null);
+    setSubmitted(false);
 
-  try {
-    const { error } = await supabasePublic.auth.resetPasswordForEmail(data.email, {
-      redirectTo: `${window.location.origin}/${locale}/reset-password`,
-    });
+    try {
+      const { error } = await supabasePublic.auth.resetPasswordForEmail(
+        data.email,
+        {
+          redirectTo: `${window.location.origin}/${locale}/reset-password`,
+        },
+      );
 
-    if (error) {
-      console.error("Password reset request failed:", error.message);
+      if (error) {
+        console.error("Password reset request failed:", error.message);
+        setErrorMsg(t("auth.genericError"));
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
       setErrorMsg(t("auth.genericError"));
-    } else {
-      setSubmitted(true);
     }
-  } catch {
-    setErrorMsg(t("auth.genericError"));
-  }
-};
+  };
 
   if (showCreateAccount) return <CreateAccountPage />;
   if (showSignUpPage) return <SignUpPage />;
@@ -65,7 +68,7 @@ const ForgotPasswordPage = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-vintage-green/90 to-gray-50" />
         <div className="relative z-10 p-6 md:p-8 text-white">
-         <Link href="/" className="block mb-8 w-40 md:w-64">
+          <Link href="/" className="block mb-8 w-40 md:w-64">
             Methys
           </Link>
 
@@ -96,9 +99,9 @@ const ForgotPasswordPage = () => {
               href="/createAccount"
               onClick={() => setShowCreateAccount(true)}
               className="text-lg text-vintage-green hover:underline"
-            
             >
-              {" "}{t("auth.createAccountLink")}
+              {" "}
+              {t("auth.createAccountLink")}
             </Link>
           </span>
         </div>
@@ -118,7 +121,11 @@ const ForgotPasswordPage = () => {
           />
           {errors.email && (
             <span className="text-red-600 text-sm fond-sans">
-              {translateDynamic(t, errors.email.message ?? "", errors.email.message ?? "")}
+              {translateDynamic(
+                t,
+                errors.email.message ?? "",
+                errors.email.message ?? "",
+              )}
             </span>
           )}
           {errorMsg && <span className="text-red-600 text-sm">{errorMsg}</span>}

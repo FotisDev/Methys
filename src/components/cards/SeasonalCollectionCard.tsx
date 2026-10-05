@@ -12,12 +12,10 @@ import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
 import { useFormatPrice, useT } from "@/i18n/client";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 
-
-
 interface SeasonalCollectionCardProps {
   item: ProductInDetails;
   priority?: boolean;
-  offer?:ProductWithDiscount;
+  offer?: ProductWithDiscount;
 }
 
 export default function SeasonalCollectionCard({
@@ -58,8 +56,11 @@ export default function SeasonalCollectionCard({
 
     alert(
       selectedSize
-        ? t("product.addedToCartWithSize", { name: item.name, size: selectedSize })
-        : t("product.addedToCart", { name: item.name })
+        ? t("product.addedToCartWithSize", {
+            name: item.name,
+            size: selectedSize,
+          })
+        : t("product.addedToCart", { name: item.name }),
     );
   };
 
@@ -113,7 +114,11 @@ export default function SeasonalCollectionCard({
         <button
           onClick={handleWishlistToggle}
           className="absolute top-2 right-2 p-1.5 z-10"
-          aria-label={inWishlist ? t("product.removeFromWishlist") : t("product.addToWishlist")}
+          aria-label={
+            inWishlist
+              ? t("product.removeFromWishlist")
+              : t("product.addToWishlist")
+          }
         >
           <HeartSvg
             filled={inWishlist}
@@ -167,7 +172,9 @@ export default function SeasonalCollectionCard({
                 ))}
               </div>
             ) : (
-              <span className="text-xs text-red-500">{t("product.soldOut")}</span>
+              <span className="text-xs text-red-500">
+                {t("product.soldOut")}
+              </span>
             )
           ) : item.size_description ? (
             <p className="text-xs text-vintage-green/60 line-clamp-1">

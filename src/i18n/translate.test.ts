@@ -32,7 +32,9 @@ describe("createTranslator", () => {
   });
 
   it("returns the key itself when nothing matches", () => {
-    expect(createTranslator("el")("does.not.exist" as MessageKey)).toBe("does.not.exist");
+    expect(createTranslator("el")("does.not.exist" as MessageKey)).toBe(
+      "does.not.exist",
+    );
   });
 });
 
@@ -47,22 +49,34 @@ describe("translateCount", () => {
 
 describe("translateDynamic / translateCategory", () => {
   it("translates DB category names by slug", () => {
-    expect(translateCategory(createTranslator("el"), "jackets", "jackets")).toBe("Μπουφάν & σακάκια");
+    expect(
+      translateCategory(createTranslator("el"), "jackets", "jackets"),
+    ).toBe("Μπουφάν & σακάκια");
   });
 
   it("derives the slug from the name when there is no slug", () => {
-    expect(translateCategory(createTranslator("de"), null, "Knitwear Hoodies")).toBe("Strick & Hoodies");
-    expect(translateCategory(createTranslator("de"), null, "Scarves")).toBe("Schals");
+    expect(
+      translateCategory(createTranslator("de"), null, "Knitwear Hoodies"),
+    ).toBe("Strick & Hoodies");
+    expect(translateCategory(createTranslator("de"), null, "Scarves")).toBe(
+      "Schals",
+    );
   });
 
   it("falls back to the DB name for unknown categories", () => {
-    expect(translateCategory(createTranslator("el"), "brand-new", "Brand New")).toBe("Brand New");
+    expect(
+      translateCategory(createTranslator("el"), "brand-new", "Brand New"),
+    ).toBe("Brand New");
   });
 
   it("translates server error keys and passes other text through", () => {
     const t = createTranslator("de");
-    expect(translateDynamic(t, "validation.emailRequired", "x")).toBe("E-Mail-Adresse ist erforderlich");
-    expect(translateDynamic(t, "Some raw error", "Some raw error")).toBe("Some raw error");
+    expect(translateDynamic(t, "validation.emailRequired", "x")).toBe(
+      "E-Mail-Adresse ist erforderlich",
+    );
+    expect(translateDynamic(t, "Some raw error", "Some raw error")).toBe(
+      "Some raw error",
+    );
   });
 });
 

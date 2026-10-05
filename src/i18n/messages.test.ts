@@ -7,11 +7,14 @@ import de from "@/messages/de.json";
 type Tree = { [key: string]: string | Tree };
 
 function flatten(tree: Tree, prefix = ""): Record<string, string> {
-  return Object.entries(tree).reduce<Record<string, string>>((acc, [key, value]) => {
-    if (typeof value === "string") acc[prefix + key] = value;
-    else Object.assign(acc, flatten(value, `${prefix}${key}.`));
-    return acc;
-  }, {});
+  return Object.entries(tree).reduce<Record<string, string>>(
+    (acc, [key, value]) => {
+      if (typeof value === "string") acc[prefix + key] = value;
+      else Object.assign(acc, flatten(value, `${prefix}${key}.`));
+      return acc;
+    },
+    {},
+  );
 }
 
 const placeholders = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort();
@@ -36,13 +39,16 @@ describe.each(Object.keys(translations))("messages/%s.json", (locale) => {
     const mismatched = Object.keys(english).filter(
       (key) =>
         key in messages &&
-        placeholders(english[key]).join() !== placeholders(messages[key]).join(),
+        placeholders(english[key]).join() !==
+          placeholders(messages[key]).join(),
     );
     expect(mismatched).toEqual([]);
   });
 
   it("has no empty strings", () => {
-    const empty = Object.entries(messages).filter(([, value]) => value.trim() === "");
+    const empty = Object.entries(messages).filter(
+      ([, value]) => value.trim() === "",
+    );
     expect(empty).toEqual([]);
   });
 });

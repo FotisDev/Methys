@@ -37,7 +37,11 @@ describe("SEO urls", () => {
 
   it("makes asset paths absolute but keeps full URLs", async () => {
     const { absoluteAssetUrl } = await loadUrls("https://methys.com");
-    expect(absoluteAssetUrl("/AuthClothPhoto.jpg")).toBe("https://methys.com/AuthClothPhoto.jpg");
-    expect(absoluteAssetUrl("https://cdn.x.com/a.jpg")).toBe("https://cdn.x.com/a.jpg");
+    expect(absoluteAssetUrl("/AuthClothPhoto.jpg")).toBe(
+      "https://methys.com/AuthClothPhoto.jpg",
+    );
+    expect(absoluteAssetUrl("https://cdn.x.com/a.jpg")).toBe(
+      "https://cdn.x.com/a.jpg",
+    );
   });
 });

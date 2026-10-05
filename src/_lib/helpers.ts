@@ -1,4 +1,3 @@
-
 import { CategoryBackendType } from "./types";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
@@ -12,7 +11,6 @@ export type User = {
   telephone: string | null;
   birthday: string | null;
 };
-
 
 export const fetchCategories = cache(
   unstable_cache(

@@ -1,7 +1,9 @@
 // _lib/utils/generateBlurDataUrl.ts
 import sharp from "sharp";
 
-export async function generateBlurDataUrl(imageUrl: string): Promise<string | null> {
+export async function generateBlurDataUrl(
+  imageUrl: string,
+): Promise<string | null> {
   try {
     const res = await fetch(imageUrl, { signal: AbortSignal.timeout(5000) });
     if (!res.ok) return null;

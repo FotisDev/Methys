@@ -2,7 +2,10 @@
 
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import type { ProductInDetails } from "@/_lib/types";
-import { DISCOUNT_PERCENT, getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
+import {
+  DISCOUNT_PERCENT,
+  getProductPricing,
+} from "@/_lib/utils/discountUtil/discountUtils";
 
 export interface ProductWithDiscount extends ProductInDetails {
   discountedPrice: number;
@@ -11,7 +14,9 @@ export interface ProductWithDiscount extends ProductInDetails {
 
 export async function fetchOffers(): Promise<ProductWithDiscount[]> {
   const supabase = await createSupabaseServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     return [];
@@ -32,7 +37,6 @@ export async function fetchOffers(): Promise<ProductWithDiscount[]> {
     )
     .eq("is_offer", true)
     .overrideTypes<ProductInDetails[], { merge: false }>();
-
 
   if (error) {
     console.error("Supabase error in fetchOffers:", error.message);

@@ -11,15 +11,15 @@ import { useT } from "@/i18n/client";
 import { rich } from "@/i18n/rich";
 import { translateDynamic } from "@/i18n/translate";
 
-
 const SignInPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [onMouseOver, setOnMouseOver] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const localizePath = useLocalizedPath();
   const t = useT();
-  const tv = (message?: string) => (message ? translateDynamic(t, message, message) : "");
-  
+  const tv = (message?: string) =>
+    message ? translateDynamic(t, message, message) : "";
+
   const {
     register,
     handleSubmit,
@@ -53,7 +53,9 @@ const SignInPage = () => {
       const result = await signInAction(formData);
 
       if (result.success) {
-        window.location.href = localizePath(result.role === "admin" ? "/product-entry" : "/offers");
+        window.location.href = localizePath(
+          result.role === "admin" ? "/product-entry" : "/offers",
+        );
       } else {
         console.error("Sign in failed:", result.error);
         setError(t("auth.invalidCredentials"));
@@ -139,7 +141,7 @@ const SignInPage = () => {
             >
               <Image
                 src="/google.jpg"
-               
+
                 className="w-10 h-10 rounded-full"
                 width={40}
                 height={40}
@@ -163,7 +165,7 @@ const SignInPage = () => {
             >
               <Image
                 src="/facebook.png"
-               
+
                 className="w-9 h-9 rounded-full"
                 width={40}
                 height={40}

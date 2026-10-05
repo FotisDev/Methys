@@ -128,10 +128,13 @@ const Checkout = () => {
     if (!formData.email.trim()) errors.email = t("validation.emailRequired");
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       errors.email = t("validation.emailInvalid");
-    if (!formData.phone.trim()) errors.phone = t("validation.telephoneRequired");
-    if (!formData.address.trim()) errors.address = t("checkout.errors.addressRequired");
+    if (!formData.phone.trim())
+      errors.phone = t("validation.telephoneRequired");
+    if (!formData.address.trim())
+      errors.address = t("checkout.errors.addressRequired");
     if (!formData.city.trim()) errors.city = t("checkout.errors.cityRequired");
-    if (!formData.zipCode.trim()) errors.zipCode = t("checkout.errors.zipRequired");
+    if (!formData.zipCode.trim())
+      errors.zipCode = t("checkout.errors.zipRequired");
     if (!termsAccepted) errors.terms = t("checkout.errors.termsRequired");
 
     setFormErrors(errors);
@@ -189,9 +192,24 @@ const Checkout = () => {
     span?: "full";
     autoComplete?: string;
   }[] = [
-    { name: "name", label: t("checkout.fields.name"), type: "text", autoComplete: "name" },
-    { name: "email", label: t("checkout.fields.email"), type: "email", autoComplete: "email" },
-    { name: "phone", label: t("checkout.fields.phone"), type: "tel", autoComplete: "tel" },
+    {
+      name: "name",
+      label: t("checkout.fields.name"),
+      type: "text",
+      autoComplete: "name",
+    },
+    {
+      name: "email",
+      label: t("checkout.fields.email"),
+      type: "email",
+      autoComplete: "email",
+    },
+    {
+      name: "phone",
+      label: t("checkout.fields.phone"),
+      type: "tel",
+      autoComplete: "tel",
+    },
     {
       name: "address",
       label: t("checkout.fields.address"),
@@ -273,7 +291,9 @@ const Checkout = () => {
             </section>
 
             <section>
-              <h2 className="text-lg text-vintage-green mb-1">{t("checkout.payment")}</h2>
+              <h2 className="text-lg text-vintage-green mb-1">
+                {t("checkout.payment")}
+              </h2>
               <p className="text-xs text-gray-500 mb-4">
                 {t("checkout.secureText")}
               </p>
@@ -319,9 +339,7 @@ const Checkout = () => {
                 </span>
               </label>
               {formErrors.terms && (
-                <p className="text-red-500 text-xs mt-1">
-                  {formErrors.terms}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{formErrors.terms}</p>
               )}
             </div>
 
@@ -345,10 +363,16 @@ const Checkout = () => {
               <Link href="/privacy-policy" className="hover:text-vintage-brown">
                 {t("checkout.links.privacy")}
               </Link>
-              <Link href="/terms-conditions" className="hover:text-vintage-brown">
+              <Link
+                href="/terms-conditions"
+                className="hover:text-vintage-brown"
+              >
                 {t("checkout.links.terms")}
               </Link>
-              <Link href="/customer-support" className="hover:text-vintage-brown">
+              <Link
+                href="/customer-support"
+                className="hover:text-vintage-brown"
+              >
                 {t("checkout.links.contact")}
               </Link>
             </div>
@@ -358,12 +382,16 @@ const Checkout = () => {
         {/* Summary */}
         <div className="lg:col-span-2">
           <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 lg:sticky lg:top-6">
-            <h2 className="text-lg text-gray-800 mb-5">{t("cart.orderSummary")}</h2>
+            <h2 className="text-lg text-gray-800 mb-5">
+              {t("cart.orderSummary")}
+            </h2>
 
             {appliedPromo ? (
               <div className="flex items-center justify-between gap-3 px-3.5 py-2.5 mb-6 border border-vintage-green/40 bg-vintage-green/5 rounded-md">
                 <span className="text-sm text-vintage-green">
-                  {rich(t("checkout.codeApplied"), { code: <strong>{appliedPromo.code}</strong> })}
+                  {rich(t("checkout.codeApplied"), {
+                    code: <strong>{appliedPromo.code}</strong>,
+                  })}
                 </span>
                 <button
                   type="button"
@@ -392,13 +420,13 @@ const Checkout = () => {
                     disabled={isApplyingDiscount}
                     className="shrink-0 px-4 py-2.5 border border-gray-300 rounded-md text-sm text-gray-700 hover:border-vintage-green hover:text-vintage-green transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {isApplyingDiscount ? t("checkout.checking") : t("checkout.apply")}
+                    {isApplyingDiscount
+                      ? t("checkout.checking")
+                      : t("checkout.apply")}
                   </button>
                 </div>
                 {discountError && (
-                  <p className="text-red-500 text-xs mt-1.5">
-                    {discountError}
-                  </p>
+                  <p className="text-red-500 text-xs mt-1.5">{discountError}</p>
                 )}
               </div>
             )}
@@ -513,7 +541,9 @@ const Checkout = () => {
               </div>
               {appliedPromo && (
                 <div className="flex justify-between text-sm text-vintage-green">
-                  <span>{t("checkout.discount", { code: appliedPromo.code })}</span>
+                  <span>
+                    {t("checkout.discount", { code: appliedPromo.code })}
+                  </span>
                   <span>−{formatPrice(discountAmount)}</span>
                 </div>
               )}
@@ -532,11 +562,15 @@ const Checkout = () => {
 
           <div className="mt-6 grid grid-cols-2 gap-3 text-xs text-gray-500">
             <div className="border border-gray-200 rounded-md p-3">
-              <p className="text-gray-800 mb-0.5">{t("checkout.freeReturns")}</p>
+              <p className="text-gray-800 mb-0.5">
+                {t("checkout.freeReturns")}
+              </p>
               <p>{t("checkout.freeReturnsText")}</p>
             </div>
             <div className="border border-gray-200 rounded-md p-3">
-              <p className="text-gray-800 mb-0.5">{t("checkout.secureCheckout")}</p>
+              <p className="text-gray-800 mb-0.5">
+                {t("checkout.secureCheckout")}
+              </p>
               <p>{t("checkout.secureCheckoutText")}</p>
             </div>
           </div>

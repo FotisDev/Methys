@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 let _client: SupabaseClient | null = null;
 
@@ -12,7 +12,7 @@ function getClient(): SupabaseClient {
           autoRefreshToken: false,
           persistSession: false,
         },
-      }
+      },
     );
   }
   return _client;
@@ -24,4 +24,3 @@ export const supabaseAdmin: SupabaseClient = new Proxy({} as SupabaseClient, {
     return client[prop as keyof SupabaseClient];
   },
 });
-

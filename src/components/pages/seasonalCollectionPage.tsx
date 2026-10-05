@@ -7,7 +7,7 @@ import { useLocale, useT } from "@/i18n/client";
 
 interface SeasonalCollectionPageProps {
   products: ProductInDetails[] | null;
-  title?:string;
+  title?: string;
 }
 
 export function SeasonalCollectionPageComponent({
@@ -31,10 +31,7 @@ export function SeasonalCollectionPageComponent({
       <h1 className="text-lg py-2">{t("seasonalCollection.title")}</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <SeasonalCollectionCard
-            key={product.id}
-            item={product}
-          />
+          <SeasonalCollectionCard key={product.id} item={product} />
         ))}
       </div>
     </section>

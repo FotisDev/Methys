@@ -33,7 +33,6 @@ export async function generateMetadata({
   const t = await getT(lang);
 
   try {
-   
     const foundCategory = await getCategoryBySlug(categorySlug);
 
     if (!foundCategory || foundCategory.parent_id !== null) {
@@ -116,7 +115,11 @@ export default async function CategoryPage({
   if (error || !categoryData) {
     notFound();
   }
-  const categoryName = translateCategory(t, categoryData.slug, categoryData.name);
+  const categoryName = translateCategory(
+    t,
+    categoryData.slug,
+    categoryData.name,
+  );
   const categoryIntro = t("collections.categoryIntro", { name: categoryName });
   const schema = createCollectionPageSchema({
     locale,
@@ -137,7 +140,7 @@ export default async function CategoryPage({
   ];
 
   return (
-    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <Schema markup={schema} />
       <main className="relative w-full min-h-screen pt-24 font-roboto">
         <div className="w-full  px-4 sm:px-6 ">
@@ -192,7 +195,13 @@ export default async function CategoryPage({
                       >
                         <Image
                           src={subcategory.image_url}
-                          alt={t("collections.categoryAlt", { name: translateCategory(t, subcategory.slug, subcategory.name) })}
+                          alt={t("collections.categoryAlt", {
+                            name: translateCategory(
+                              t,
+                              subcategory.slug,
+                              subcategory.name,
+                            ),
+                          })}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -203,10 +212,17 @@ export default async function CategoryPage({
 
                         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                           <h2 className="text-2xl font-semibold  tracking-wide capitalize">
-                            {translateCategory(t, subcategory.slug, subcategory.name)}
+                            {translateCategory(
+                              t,
+                              subcategory.slug,
+                              subcategory.name,
+                            )}
                           </h2>
                           <p className="text-sm opacity-90 font-medium flex flex-row hover:underline">
-                           {t("collections.shop")} <span><RightArrowIcon className='w-5 h-5 text-white-fb'/></span>
+                            {t("collections.shop")}{" "}
+                            <span>
+                              <RightArrowIcon className="w-5 h-5 text-white-fb" />
+                            </span>
                           </p>
                         </div>
                       </Link>

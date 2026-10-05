@@ -62,7 +62,11 @@ const WishlistPage = () => {
     });
 
     if (added > 0) {
-      alert(t("wishlist.addedAllToCart", { items: translateCount(t, "common.items", added) }));
+      alert(
+        t("wishlist.addedAllToCart", {
+          items: translateCount(t, "common.items", added),
+        }),
+      );
     } else {
       alert(t("wishlist.nothingToAdd"));
     }
@@ -72,7 +76,7 @@ const WishlistPage = () => {
     if (item.product_variants?.length > 0) {
       return item.product_variants.reduce(
         (sum, v) => sum + (v.quantity || 0),
-        0
+        0,
       );
     }
     return item.product_variants[0].quantity || 0;
@@ -124,9 +128,7 @@ const WishlistPage = () => {
             </svg>
           </div>
           <h1 className="text-3xl font-bold mb-4">{t("wishlist.empty")}</h1>
-          <p className="text-gray-600 mb-8">
-            {t("wishlist.emptyHint")}
-          </p>
+          <p className="text-gray-600 mb-8">{t("wishlist.emptyHint")}</p>
           <Link
             href="/collections"
             className="bg-default-color hover:bg-default-cold text-white font-medium py-3 px-10 rounded-lg transition"
@@ -140,7 +142,9 @@ const WishlistPage = () => {
 
   return (
     <section className="container mx-auto  px-4 py-12 fond-sans">
-      <h1 className="text-4xl font-bold text-gray-800 mb-4">{t("wishlist.myWishlist")}</h1>
+      <h1 className="text-4xl font-bold text-gray-800 mb-4">
+        {t("wishlist.myWishlist")}
+      </h1>
       <nav className="text-sm text-gray-600 mb-10">
         <Breadcrumbs items={breadcrumbItems} locale={locale} />
       </nav>
@@ -251,8 +255,8 @@ const WishlistPage = () => {
                     {outOfStock
                       ? t("product.outOfStock")
                       : hasSizes(item)
-                      ? item.product_variants[0].size
-                      : t("wishlist.left", { count: stock })}
+                        ? item.product_variants[0].size
+                        : t("wishlist.left", { count: stock })}
                   </span>
                 </div>
 
@@ -267,7 +271,11 @@ const WishlistPage = () => {
 
                 {item.addedToWishlist && (
                   <p className="text-xs text-gray-500 text-center mt-4">
-                    {t("wishlist.addedOn", { date: new Date(item.addedToWishlist).toLocaleDateString(locale) })}
+                    {t("wishlist.addedOn", {
+                      date: new Date(item.addedToWishlist).toLocaleDateString(
+                        locale,
+                      ),
+                    })}
                   </p>
                 )}
               </div>

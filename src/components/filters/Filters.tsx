@@ -23,7 +23,7 @@ export default function ProductFilterClient({
   const [isPending, startTransition] = useTransition();
   const [showFilters, setShowFilters] = useState(false);
   const pathname = usePathname();
-  const locale = pathname.split('/')[1];
+  const locale = pathname.split("/")[1];
 
   const [filters, setFilters] = useState({
     min: searchParams.get("min") || "",
@@ -88,11 +88,10 @@ export default function ProductFilterClient({
       </div>
 
       {/* Sidebar + Products — same flex row */}
-     <div className="flex flex-col md:flex-row gap-8 items-start w-full">
-
+      <div className="flex flex-col md:flex-row gap-8 items-start w-full">
         {/* Sidebar */}
         {showFilters && (
-           <aside className="w-full md:w-64 flex-shrink-0 bg-white border border-gray-100 shadow-sm p-5 space-y-6">
+          <aside className="w-full md:w-64 flex-shrink-0 bg-white border border-gray-100 shadow-sm p-5 space-y-6">
             <div>
               <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
                 {t("filters.price")}
@@ -166,10 +165,7 @@ export default function ProductFilterClient({
           </aside>
         )}
 
-        <div className="flex-1 min-w-0">
-          {children}
-        </div>
-
+        <div className="flex-1 min-w-0">{children}</div>
       </div>
     </div>
   );

@@ -7,22 +7,27 @@ const JWT_SECRET = process.env.JWT_SECRET;
 export async function POST(request) {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
   );
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { data: userData } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .single()
+    .from("users")
+    .select("role")
+    .eq("id", user.id)
+    .single();
 
-  if (userData?.role !== 'admin') {
-    return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
+  if (userData?.role !== "admin") {
+    return NextResponse.json(
+      { error: "Admin access required" },
+      { status: 403 },
+    );
   }
 
   try {
@@ -32,19 +37,20 @@ export async function POST(request) {
     if (!email || !password) {
       return NextResponse.json(
         { success: false, message: "Missing fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
     if (authError || !authData.user) {
       return NextResponse.json(
         { success: false, message: "Invalid credentials" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -54,18 +60,20 @@ export async function POST(request) {
       .eq("id", authData.user.id)
       .single();
 
-    if (userError && userError.code === 'PGRST116') { 
+    if (userError && userError.code === "PGRST116") {
       console.log("User not found in users table, creating...");
-      
+
       const { data: newUser, error: createError } = await supabase
         .from("users")
-        .insert([{
-          id: authData.user.id,
-          email: authData.user.email,
-          firstname:'',
-          lastname:'',
-          role: 'admin' 
-        }])
+        .insert([
+          {
+            id: authData.user.id,
+            email: authData.user.email,
+            firstname: "",
+            lastname: "",
+            role: "admin",
+          },
+        ])
         .select()
         .single();
 
@@ -73,16 +81,16 @@ export async function POST(request) {
         console.error("Error creating user:", createError);
         return NextResponse.json(
           { success: false, message: "Failed to create user profile" },
-          { status: 500 }
+          { status: 500 },
         );
       }
-      
+
       user = newUser;
     } else if (userError) {
       console.error("Database error:", userError);
       return NextResponse.json(
         { success: false, message: "Database error" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -93,7 +101,7 @@ export async function POST(request) {
         role: user.role || "user",
       },
       JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     const response = NextResponse.json({
@@ -111,7 +119,7 @@ export async function POST(request) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, 
+      maxAge: 60 * 60 * 24 * 7,
       path: "/",
     });
 
@@ -120,7 +128,7 @@ export async function POST(request) {
     console.error("Server error:", err);
     return NextResponse.json(
       { success: false, message: "Server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

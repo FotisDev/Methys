@@ -4,9 +4,9 @@ import { ORGANIZATION_ID } from "@/_lib/schemasGenerators/createOrganizationSche
 export type ProductVariant = {
   size: string;
   quantity: number;
-  sku?: string; 
+  sku?: string;
 };
- 
+
 export type CreateProductSchemaParams = {
   url: string;
   name: string;
@@ -14,26 +14,30 @@ export type CreateProductSchemaParams = {
   images: string[];
   price: number;
   currency: string;
-  sku: string; 
+  sku: string;
   brand: string;
   variants: ProductVariant[];
-  availability?: boolean; 
+  availability?: boolean;
   category: string;
   id: string;
   product_details?: string;
   sizeLabel?: string;
 };
- 
+
 export function createProductSchema(p: CreateProductSchemaParams) {
   const baseId = `${p.url}#product-group`;
   const images = p.images.map(absoluteAssetUrl);
-  const seller = { "@type": "Organization", "@id": ORGANIZATION_ID, name: p.brand };
- 
+  const seller = {
+    "@type": "Organization",
+    "@id": ORGANIZATION_ID,
+    name: p.brand,
+  };
+
   const variants = p.variants.map((v) => {
     const variantSku = v.sku ?? `${p.sku}-${v.size.toUpperCase()}`;
     const variantUrl = `${p.url}?size=${encodeURIComponent(v.size)}`;
     const inStock = v.quantity > 0;
- 
+
     return {
       "@type": "Product",
       "@id": `${p.url}#variant-${v.size.toLowerCase()}`,
@@ -62,7 +66,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
       },
     };
   });
- 
+
   if (variants.length === 0) {
     const inStock = p.availability ?? false;
     return {
@@ -92,7 +96,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
       },
     };
   }
- 
+
   return {
     "@context": "https://schema.org",
     "@type": "ProductGroup",
@@ -106,7 +110,7 @@ export function createProductSchema(p: CreateProductSchemaParams) {
       name: p.brand,
     },
     category: p.category,
-    productGroupID: p.sku, 
+    productGroupID: p.sku,
     variesBy: ["https://schema.org/size"],
     hasVariant: variants,
   };

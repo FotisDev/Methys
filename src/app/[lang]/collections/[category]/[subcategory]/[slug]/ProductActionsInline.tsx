@@ -75,7 +75,9 @@ export default function ProductActions({ product }: ProductActionsProps) {
       {/* Color Selector */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium">{t("product.color", { color: t("product.defaultColor") })}</h3>
+          <h3 className="text-sm font-medium">
+            {t("product.color", { color: t("product.defaultColor") })}
+          </h3>
         </div>
         <div className="flex gap-2">
           <button className="relative w-16 h-16 border-2 border-vintage-green rounded overflow-hidden">
@@ -94,7 +96,9 @@ export default function ProductActions({ product }: ProductActionsProps) {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium">
-              {t("product.sizeLabel", { size: selectedSize || t("product.pleaseSelect") })}
+              {t("product.sizeLabel", {
+                size: selectedSize || t("product.pleaseSelect"),
+              })}
             </h3>
             <button
               className="text-xs underline hover:no-underline"
@@ -132,7 +136,9 @@ export default function ProductActions({ product }: ProductActionsProps) {
           </div>
 
           {showSizeError && (
-            <p className="text-red-500 text-sm mt-2">{t("product.selectSize")}</p>
+            <p className="text-red-500 text-sm mt-2">
+              {t("product.selectSize")}
+            </p>
           )}
         </div>
       )}

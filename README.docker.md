@@ -7,7 +7,7 @@ build the Dockerfile expects:
 
 ```js
 module.exports = {
-  output: 'standalone',
+  output: "standalone",
   // ...rest of your existing config
 };
 ```

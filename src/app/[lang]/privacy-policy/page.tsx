@@ -14,7 +14,10 @@ type PageProps = { params: Promise<{ lang: string }> };
 export async function generateMetadata({ params }: PageProps) {
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : defaultLocale;
-  const [privacyPolicy, t] = await Promise.all([getPrivacyPolicy(locale), getT(locale)]);
+  const [privacyPolicy, t] = await Promise.all([
+    getPrivacyPolicy(locale),
+    getT(locale),
+  ]);
 
   return createMetadata({
     locale,
@@ -32,12 +35,13 @@ export default async function PrivacyPolicy({ params }: PageProps) {
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : defaultLocale;
   const t = await getT(locale);
-  const privacyPolicy: PrivacyPolicyBackendType | null = await getPrivacyPolicy(locale);
+  const privacyPolicy: PrivacyPolicyBackendType | null =
+    await getPrivacyPolicy(locale);
 
   if (!privacyPolicy) notFound();
 
   return (
-    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <section
         aria-label={t("privacy.title")}
         className="mt-16 font-serif custom-container-4xl padding-x padding-y"

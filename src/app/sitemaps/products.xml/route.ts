@@ -13,7 +13,7 @@ type ProductRow = {
     | null;
 };
 
-const first = <T,>(value: T | T[] | null | undefined) =>
+const first = <T>(value: T | T[] | null | undefined) =>
   Array.isArray(value) ? value[0] : value;
 
 export async function GET() {

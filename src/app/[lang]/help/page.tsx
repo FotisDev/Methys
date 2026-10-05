@@ -18,8 +18,7 @@ export async function generateMetadata({ params }: PageProps) {
     MetaTitle: t("help.metaTitle"),
     MetaDescription: t("help.metaDescription"),
     canonical: "/help",
-    OpenGraphImageUrl:
-      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+    OpenGraphImageUrl: "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   });
 }
 
@@ -31,7 +30,7 @@ export default async function FAQPage({ params }: PageProps) {
   const schemaMarkup = generateFAQSchema(faqs);
 
   return (
-    <HeaderProvider  forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       {schemaMarkup && <Schema markup={schemaMarkup} />}
 
       <FaqSection

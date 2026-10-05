@@ -8,7 +8,6 @@ import { getAboutPageStructuredData } from "@/_lib/schemasGenerators/AboutPageSt
 import { getT } from "@/i18n/server";
 import { defaultLocale, isLocale } from "@/i18n.config";
 
-
 type PageProps = { params: Promise<{ lang: string }> };
 
 export async function generateMetadata({ params }: PageProps) {
@@ -19,8 +18,7 @@ export async function generateMetadata({ params }: PageProps) {
     MetaTitle: t("about.metaTitle"),
     MetaDescription: t("about.metaDescription"),
     canonical: "/about",
-    OpenGraphImageUrl:
-      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+    OpenGraphImageUrl: "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   });
 }
 
@@ -29,7 +27,7 @@ export default async function About({ params }: PageProps) {
   const locale = isLocale(lang) ? lang : defaultLocale;
   const t = await getT(locale);
   return (
-    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <Schema
         markup={getAboutPageStructuredData(locale, {
           name: t("about.metaTitle"),

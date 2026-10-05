@@ -47,14 +47,18 @@ const getProductTranslations = unstable_cache(
   async (locale: Locale): Promise<Record<string, ProductTranslation>> => {
     const { data, error } = await supabasePublic
       .from("product_translations")
-      .select("id:product_id, name, description, size_description, product_details")
+      .select(
+        "id:product_id, name, description, size_description, product_details",
+      )
       .eq("locale", locale);
 
     if (error) {
       console.error("Error fetching product translations:", error.message);
       return {};
     }
-    return byId<ProductTranslation>(data as (ProductTranslation & { id: number })[]);
+    return byId<ProductTranslation>(
+      data as (ProductTranslation & { id: number })[],
+    );
   },
   ["product-translations"],
   { revalidate: REVALIDATE, tags: ["products", "product-translations"] },

@@ -21,7 +21,9 @@ import { isLocale, defaultLocale } from "@/i18n.config";
 
 type PageProps = { params: Promise<{ lang: string }> };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { lang } = await params;
   const t = await getT(lang);
   return createMetadata({

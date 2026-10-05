@@ -3,7 +3,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
-
 import type { SwiperOptions } from "swiper/types";
 import { useT } from "@/i18n/client";
 
@@ -57,9 +56,7 @@ export default function GenericSwiper<T>({
       className={className}
     >
       {items.map((item, index) => (
-        <SwiperSlide key={index}>
-          {renderItem(item, index)}
-        </SwiperSlide>
+        <SwiperSlide key={index}>{renderItem(item, index)}</SwiperSlide>
       ))}
     </Swiper>
   );

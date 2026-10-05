@@ -1,4 +1,3 @@
-
 import { ClearCartOnSuccess } from "@/components/afterCheckoutUtils/ClearCartOnSuccess";
 import Link from "@/components/LocaleLink/LocaleLink";
 import Stripe from "stripe";
@@ -6,7 +5,6 @@ import { getT } from "@/i18n/server";
 import { formatPrice } from "@/i18n/translate";
 import { defaultLocale, isLocale } from "@/i18n.config";
 import { rich } from "@/i18n/rich";
-
 
 type SearchParams = Promise<{ session_id?: string }>;
 
@@ -25,7 +23,9 @@ export default async function SuccessPage({
   if (!session_id) {
     return (
       <div className="container mx-auto px-4 py-24 max-w-lg text-center">
-        <h1 className="text-2xl text-vintage-green mb-2">{t("success.invalidSession")}</h1>
+        <h1 className="text-2xl text-vintage-green mb-2">
+          {t("success.invalidSession")}
+        </h1>
         <p className="text-sm text-gray-500 mb-10">
           {t("success.invalidSessionText")}
         </p>
@@ -78,7 +78,9 @@ export default async function SuccessPage({
         </h1>
         {email ? (
           <p className="text-sm text-gray-500">
-            {rich(t("success.confirmedFor"), { email: <span className="text-gray-800">{email}</span> })}
+            {rich(t("success.confirmedFor"), {
+              email: <span className="text-gray-800">{email}</span>,
+            })}
           </p>
         ) : (
           <p className="text-sm text-gray-500">{t("success.orderPlaced")}</p>
@@ -105,10 +107,17 @@ export default async function SuccessPage({
                 className="flex justify-between text-sm text-gray-600"
               >
                 <span className="truncate pr-3">
-                  {item.description} {item.quantity && item.quantity > 1 ? `× ${item.quantity}` : ""}
+                  {item.description}{" "}
+                  {item.quantity && item.quantity > 1
+                    ? `× ${item.quantity}`
+                    : ""}
                 </span>
                 <span className="text-gray-900 shrink-0">
-                  {formatPrice((item.amount_total ?? 0) / 100, locale, currency)}
+                  {formatPrice(
+                    (item.amount_total ?? 0) / 100,
+                    locale,
+                    currency,
+                  )}
                 </span>
               </div>
             ))}

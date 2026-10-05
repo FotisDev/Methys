@@ -10,8 +10,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-      },
+      fontFamily: {},
 
       colors: {
         "vintage-brown": "#FFF0DD",

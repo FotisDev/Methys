@@ -20,7 +20,9 @@ export const revalidate = 600;
 const categoryPath = (cat: { name: string; slug?: string | null }) =>
   `/collections/${cat.slug ?? cat.name.replace(/\s+/g, "-").toLowerCase()}`;
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { lang } = await params;
   const t = await getT(lang);
   return createMetadata({
@@ -95,7 +97,7 @@ export default async function ProductList({ params }: PageProps) {
   ];
 
   return (
-    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu/>}>
+    <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <Schema markup={schema} />
       <section className="padding-y padding-x text-vintage-green font-roboto">
         <div className="pt-16">
@@ -126,7 +128,13 @@ export default async function ProductList({ params }: PageProps) {
                   <div className="absolute inset-0 overflow-hidden">
                     <Image
                       src={imageUrl}
-                      alt={t("collections.categoryAlt", { name: translateCategory(t, category.slug, category.name) })}
+                      alt={t("collections.categoryAlt", {
+                        name: translateCategory(
+                          t,
+                          category.slug,
+                          category.name,
+                        ),
+                      })}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
                     />

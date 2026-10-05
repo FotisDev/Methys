@@ -16,8 +16,15 @@ const initialState = {
   message: "",
 };
 
-export default function SupportForm({ categories }: { categories: Category[] }) {
-  const [state, formAction, isPending] = useActionState(submitSupportTicket, initialState);
+export default function SupportForm({
+  categories,
+}: {
+  categories: Category[];
+}) {
+  const [state, formAction, isPending] = useActionState(
+    submitSupportTicket,
+    initialState,
+  );
   const t = useT();
 
   if (state.status === "success") {
@@ -68,7 +75,7 @@ export default function SupportForm({ categories }: { categories: Category[] }) 
         </label>
         <select
           name="category_id"
-          defaultValue={''}
+          defaultValue={""}
           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="" disabled>
@@ -96,7 +103,9 @@ export default function SupportForm({ categories }: { categories: Category[] }) 
       </div>
 
       {state.status === "error" && (
-        <p className="text-red-500 text-sm">{translateDynamic(t, state.message, state.message)}</p>
+        <p className="text-red-500 text-sm">
+          {translateDynamic(t, state.message, state.message)}
+        </p>
       )}
 
       <button

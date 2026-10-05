@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 export async function LogoutAction() {
-  const cookieStore = await cookies(); 
+  const cookieStore = await cookies();
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -17,14 +17,14 @@ export async function LogoutAction() {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
+            cookieStore.set(name, value, options),
           );
         },
       },
-    }
+    },
   );
 
   await supabase.auth.signOut();
-  
-  revalidatePath('/', 'layout');
+
+  revalidatePath("/", "layout");
 }

@@ -18,7 +18,8 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
   onClose,
   getValidImage,
 }) => {
-  const { cart, updateQuantity, removeFromCart, getCartTotal, getItemPrice } = useCart();
+  const { cart, updateQuantity, removeFromCart, getCartTotal, getItemPrice } =
+    useCart();
   const t = useT();
   const formatPrice = useFormatPrice();
 
@@ -182,7 +183,13 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
               <div className="border-t border-gray-200 px-6 py-4 space-y-2 bg-white">
                 <div className="flex justify-between text-sm text-vintage-green">
                   <span>
-                    {t("cart.subtotal")} ({translateCount(t, "common.items", validCartlistItems.length)})
+                    {t("cart.subtotal")} (
+                    {translateCount(
+                      t,
+                      "common.items",
+                      validCartlistItems.length,
+                    )}
+                    )
                   </span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>

@@ -1,9 +1,7 @@
-
-
 // const whishListSvg = ({className = "w-6 h-6"}:{className:string}) => {
 //   return (
-//     <svg 
-//     xmlns="http://www.w3.org/2000/svg" 
+//     <svg
+//     xmlns="http://www.w3.org/2000/svg"
 //     viewBox="0 0 640 640"
 //     className={className}
 //     fill="currentColor"
@@ -13,45 +11,44 @@
 //   );
 // };
 
-
 interface HeartIconProps {
   filled?: boolean;
   className?: string;
   size?: number;
 }
 
-const HeartIcon = ({ 
-  filled = false, 
-  className = "w-6 h-6", 
-  size 
+const HeartIcon = ({
+  filled = false,
+  className = "w-6 h-6",
+  size,
 }: HeartIconProps) => {
   const sizeClass = size ? `w-${size} h-${size}` : className;
-  
+
   if (filled) {
     return (
-      <svg 
+      <svg
         className={sizeClass}
-        fill="currentColor" 
+        fill="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
       </svg>
     );
   }
-  
+
   return (
-    <svg 
+    <svg
       className={sizeClass}
-      fill="none" 
-      stroke="currentColor" 
+      fill="none"
+      stroke="currentColor"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        strokeWidth="2" 
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
       />
     </svg>

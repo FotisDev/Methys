@@ -87,11 +87,11 @@ export interface MetadataProps {
   OpenGraphImageUrl?: string;
   robots?: { index?: boolean; follow?: boolean };
   other?: Record<string, string>;
-  dateModified?:string;
-  datePublished?:string;
+  dateModified?: string;
+  datePublished?: string;
 }
 
- export interface ProductMetadataProps extends MetadataProps {
+export interface ProductMetadataProps extends MetadataProps {
   name: string;
   description?: string;
   slug: string;

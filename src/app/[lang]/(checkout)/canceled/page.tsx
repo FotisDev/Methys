@@ -29,9 +29,7 @@ export default async function CanceledPage({
       <h1 className="text-2xl md:text-3xl text-vintage-green mb-2">
         {t("canceled.title")}
       </h1>
-      <p className="text-sm text-gray-500 mb-10">
-        {t("canceled.text")}
-      </p>
+      <p className="text-sm text-gray-500 mb-10">{t("canceled.text")}</p>
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link

@@ -26,7 +26,6 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const clothesModalRef = useRef<HTMLDivElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
-  
 
   // const cartItemCount = getCartItemsCount
   //   ? getCartItemsCount()
@@ -90,7 +89,9 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
         clothesModalRef.current &&
         !clothesModalRef.current.contains(target)
       ) {
-        const shopLink = menuRef.current?.querySelector('a[data-nav-id="shop"]');
+        const shopLink = menuRef.current?.querySelector(
+          'a[data-nav-id="shop"]',
+        );
 
         if (shopLink && shopLink.contains(target)) {
           return;
@@ -143,7 +144,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   ];
 
   if (isOpaque) {
-    navbarClasses.push("bg-white", "text-vintage-green",);
+    navbarClasses.push("bg-white", "text-vintage-green");
   } else {
     navbarClasses.push("text-white border-none shadow-none");
   }
@@ -241,7 +242,7 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
                 />
                 {ShoppingCartCount > 0 && (
                   <span
-                    className={`absolute top-1 right-1 text-[10px] rounded-full w-3 h-3 flex items-center justify-center ${isOpaque ? "bg-vintage-green text-white" : isShoppingCartOpen ? 'text-white' : "bg-white text-vintage-green"}`}
+                    className={`absolute top-1 right-1 text-[10px] rounded-full w-3 h-3 flex items-center justify-center ${isOpaque ? "bg-vintage-green text-white" : isShoppingCartOpen ? "text-white" : "bg-white text-vintage-green"}`}
                   >
                     {ShoppingCartCount > 99 ? "99+" : ShoppingCartCount}
                   </span>

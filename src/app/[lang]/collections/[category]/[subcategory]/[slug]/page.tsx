@@ -88,7 +88,8 @@ export async function generateMetadata({
       OpenGraphImageUrl: product.image_url?.[0],
       other: {
         "product:availability": inStock ? "in stock" : "out of stock",
-        "product:price:amount": getProductPricing(product).finalPrice.toString(),
+        "product:price:amount":
+          getProductPricing(product).finalPrice.toString(),
         "product:price:currency": "EUR",
       },
     });
@@ -156,8 +157,16 @@ export default async function ProductDetailPage({
       locale,
     );
     const pricing = getProductPricing(product);
-    const parentName = translateCategory(t, parentCategory.slug, parentCategory.name);
-    const categoryName = translateCategory(t, currentCategory.slug, currentCategory.name);
+    const parentName = translateCategory(
+      t,
+      parentCategory.slug,
+      parentCategory.name,
+    );
+    const categoryName = translateCategory(
+      t,
+      currentCategory.slug,
+      currentCategory.name,
+    );
 
     const schema = createProductSchema({
       url: fullUrl,
@@ -224,7 +233,14 @@ export default async function ProductDetailPage({
                   >
                     <Image
                       src={getValidImage(img ?? "/AuthClothPhoto.jpg")}
-                      alt={i === 0 ? product.name : t("sizeGuide.imageAlt", { name: product.name, index: i + 1 })}
+                      alt={
+                        i === 0
+                          ? product.name
+                          : t("sizeGuide.imageAlt", {
+                              name: product.name,
+                              index: i + 1,
+                            })
+                      }
                       fill
                       sizes="(max-width: 1024px) 85vw, 25vw"
                       className="object-cover object-center"
@@ -282,7 +298,9 @@ export default async function ProductDetailPage({
                   <details className="group">
                     <summary className="flex justify-between items-center cursor-pointer list-none">
                       <span className="text-sm font-medium">
-                        {t("product.freeDelivery", { amount: formatPrice(150, locale) })}
+                        {t("product.freeDelivery", {
+                          amount: formatPrice(150, locale),
+                        })}
                       </span>
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
@@ -299,9 +317,7 @@ export default async function ProductDetailPage({
                       <span className="transition group-open:rotate-45">+</span>
                     </summary>
                     <div className="mt-3 text-sm text-vintage-brown leading-relaxed hover:underline">
-                      <Link href={"/help"}>
-                        {t("product.needHelp")}
-                      </Link>
+                      <Link href={"/help"}>{t("product.needHelp")}</Link>
                     </div>
                   </details>
                 </div>
@@ -335,7 +351,9 @@ export default async function ProductDetailPage({
                           key={index}
                           className="flex justify-between items-center text-sm py-2 border-b border-gray-100"
                         >
-                          <span>{t("product.sizeLabel", { size: variant.size })}</span>
+                          <span>
+                            {t("product.sizeLabel", { size: variant.size })}
+                          </span>
                           <span
                             className={
                               variant.quantity > 0
@@ -344,7 +362,9 @@ export default async function ProductDetailPage({
                             }
                           >
                             {variant.quantity > 0
-                              ? t("product.inStock", { count: variant.quantity })
+                              ? t("product.inStock", {
+                                  count: variant.quantity,
+                                })
                               : t("product.outOfStock")}
                           </span>
                         </div>

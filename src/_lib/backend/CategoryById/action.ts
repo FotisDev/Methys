@@ -32,27 +32,31 @@ export const getCategoryBySlug = cache(
 );
 
 // Derived from the shared cached category list instead of a second query/cache entry.
-export const getMainCategories = cache(async (): Promise<MainCategoryData[]> => {
-  const data = await getAllCategoriesWithSubcategories();
+export const getMainCategories = cache(
+  async (): Promise<MainCategoryData[]> => {
+    const data = await getAllCategoriesWithSubcategories();
 
-  const subcategoriesByParent = new Map<number, CategoryBackendType[]>();
-  for (const cat of data) {
-    if (cat.parent_id === null) continue;
-    const list = subcategoriesByParent.get(cat.parent_id) ?? [];
-    list.push(cat);
-    subcategoriesByParent.set(cat.parent_id, list);
-  }
+    const subcategoriesByParent = new Map<number, CategoryBackendType[]>();
+    for (const cat of data) {
+      if (cat.parent_id === null) continue;
+      const list = subcategoriesByParent.get(cat.parent_id) ?? [];
+      list.push(cat);
+      subcategoriesByParent.set(cat.parent_id, list);
+    }
 
-  return data
-    .filter((cat) => cat.parent_id === null)
-    .map((mainCat) => ({
-      id: String(mainCat.id),
-      name: mainCat.name,
-      image_url: mainCat.image_url,
-      subcategories: (subcategoriesByParent.get(mainCat.id) ?? []).map((subCat) => ({
-        id: String(subCat.id),
-        name: subCat.name,
-        parent_id: String(subCat.parent_id),
-      })),
-    }));
-});
+    return data
+      .filter((cat) => cat.parent_id === null)
+      .map((mainCat) => ({
+        id: String(mainCat.id),
+        name: mainCat.name,
+        image_url: mainCat.image_url,
+        subcategories: (subcategoriesByParent.get(mainCat.id) ?? []).map(
+          (subCat) => ({
+            id: String(subCat.id),
+            name: subCat.name,
+            parent_id: String(subCat.parent_id),
+          }),
+        ),
+      }));
+  },
+);

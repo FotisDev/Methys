@@ -21,7 +21,6 @@ export default function ButtonsInRow({
   data,
   defaultSelected,
 }: ButtonsInRowProps) {
-  
   const keys = data ? Object.keys(data) : [];
   const hasData = data && keys.length > 0;
 

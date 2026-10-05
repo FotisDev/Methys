@@ -6,7 +6,10 @@ export default function SeasonalCollectionSkeleton() {
 
       <div className="flex gap-1 overflow-hidden px-2">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="flex-1 min-w-[45%] sm:min-w-[30%] lg:min-w-[19%]">
+          <div
+            key={i}
+            className="flex-1 min-w-[45%] sm:min-w-[30%] lg:min-w-[19%]"
+          >
             <div
               className="w-full bg-gray-200 animate-pulse"
               style={{ aspectRatio: "3/4" }}

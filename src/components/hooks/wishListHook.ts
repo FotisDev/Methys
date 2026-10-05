@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export const useWishlistHook = () => {
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
@@ -11,7 +10,7 @@ export const useWishlistHook = () => {
       try {
         const parsedWishlist = JSON.parse(savedWishlist);
         setWishlistCount(parsedWishlist.length);
-      } catch{
+      } catch {
         setWishlistCount(0);
       }
     } else {
@@ -27,7 +26,8 @@ export const useWishlistHook = () => {
     };
 
     window.addEventListener("wishlistUpdated", handleWishlistUpdate);
-    return () => window.removeEventListener("wishlistUpdated", handleWishlistUpdate);
+    return () =>
+      window.removeEventListener("wishlistUpdated", handleWishlistUpdate);
   }, []);
 
   const openWishlist = () => setIsWishlistOpen(true);

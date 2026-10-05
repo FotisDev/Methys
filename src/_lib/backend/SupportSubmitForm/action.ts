@@ -13,21 +13,21 @@ type FormState = {
 
 export async function submitSupportTicket(
   _prevState: FormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormState> {
   try {
     const supabase = await createSupabaseServerClient();
 
     const name = (formData.get("name") as string)?.trim();
     const email = (formData.get("email") as string)?.trim();
-    const category_id  = formData.get("category_id") as string;
+    const category_id = formData.get("category_id") as string;
     const message = (formData.get("message") as string)?.trim();
 
-    if (!name || !email || !category_id  || !message) {
+    if (!name || !email || !category_id || !message) {
       return { status: "error", message: "support.errors.required" };
     }
 
-    if(!category_id || typeof category_id !=='string'){
+    if (!category_id || typeof category_id !== "string") {
       return { status: "error", message: "support.errors.invalidCategory" };
     }
 
@@ -54,9 +54,7 @@ export async function submitSupportTicket(
       return { status: "error", message: "support.errors.failed" };
     }
 
-    const safeMessage = message
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+    const safeMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
     // The ticket is already saved, so the notification email doesn't need to
     // hold up the response.

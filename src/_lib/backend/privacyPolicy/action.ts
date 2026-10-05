@@ -28,7 +28,7 @@ const fetchEnglishPrivacyPolicy = unstable_cache(
   },
   ["privacy-policy"],
   {
-    revalidate: 86400, 
+    revalidate: 86400,
     tags: ["privacy-policy"],
   },
 );

@@ -35,8 +35,13 @@ export async function createCheckoutSession(
     supabase.auth.getUser(),
     supabase
       .from("products")
-      .select("id, name, price, image_url, is_offer, product_variants (size, price, quantity)")
-      .in("id", cartItems.map((item) => item.id)),
+      .select(
+        "id, name, price, image_url, is_offer, product_variants (size, price, quantity)",
+      )
+      .in(
+        "id",
+        cartItems.map((item) => item.id),
+      ),
   ]);
 
   if (productsError || !products) {
@@ -55,8 +60,13 @@ export async function createCheckoutSession(
       price_data: {
         currency: "eur",
         product_data: {
-          name: item.selectedSize ? `${product.name} (${item.selectedSize})` : product.name,
-          images: (Array.isArray(product.image_url) ? product.image_url : []).slice(0, 8),
+          name: item.selectedSize
+            ? `${product.name} (${item.selectedSize})`
+            : product.name,
+          images: (Array.isArray(product.image_url)
+            ? product.image_url
+            : []
+          ).slice(0, 8),
         },
         unit_amount: Math.round(finalPrice * 100),
       },
@@ -67,7 +77,9 @@ export async function createCheckoutSession(
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     // All site locales (en, el, da, de) are supported by Stripe Checkout.
-    locale: (isLocale(locale) ? locale : "auto") as Stripe.Checkout.SessionCreateParams.Locale,
+    locale: (isLocale(locale)
+      ? locale
+      : "auto") as Stripe.Checkout.SessionCreateParams.Locale,
     customer_email: shippingInfo.email,
     line_items: lineItems,
     ...(promotionCodeId

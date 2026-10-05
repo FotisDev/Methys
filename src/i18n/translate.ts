@@ -6,7 +6,11 @@ import { defaultLocale, type Locale } from "@/i18n.config";
 
 export type Messages = typeof en;
 
-type Join<K, P> = K extends string ? (P extends string ? `${K}.${P}` : never) : never;
+type Join<K, P> = K extends string
+  ? P extends string
+    ? `${K}.${P}`
+    : never
+  : never;
 type Paths<T> = {
   [K in keyof T]: T[K] extends string ? K : Join<K, Paths<T[K]>>;
 }[keyof T];
@@ -48,11 +52,7 @@ export function createTranslator(locale: Locale): Translator {
 }
 
 // For keys built at runtime (e.g. category slugs from the DB), with a fallback text.
-export function translateDynamic(
-  t: Translator,
-  key: string,
-  fallback: string,
-) {
+export function translateDynamic(t: Translator, key: string, fallback: string) {
   const value = t(key as MessageKey);
   return value === key ? fallback : value;
 }
@@ -69,10 +69,16 @@ export function translateCategory(
 
 // Picks "<key>_one" or "<key>_other" (all supported locales use one/other plural forms).
 export function translateCount(t: Translator, baseKey: string, count: number) {
-  return t(`${baseKey}_${count === 1 ? "one" : "other"}` as MessageKey, { count });
+  return t(`${baseKey}_${count === 1 ? "one" : "other"}` as MessageKey, {
+    count,
+  });
 }
 
-export function formatPrice(amount: number | string, locale: Locale, currency = "EUR") {
+export function formatPrice(
+  amount: number | string,
+  locale: Locale,
+  currency = "EUR",
+) {
   return new Intl.NumberFormat(locale, { style: "currency", currency }).format(
     Number(amount),
   );

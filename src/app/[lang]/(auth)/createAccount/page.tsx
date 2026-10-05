@@ -21,7 +21,8 @@ const CreateAccountPage = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const t = useT();
-  const tv = (message?: string) => (message ? translateDynamic(t, message, message) : "");
+  const tv = (message?: string) =>
+    message ? translateDynamic(t, message, message) : "";
 
   const {
     register,
@@ -141,7 +142,9 @@ const CreateAccountPage = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-lg space-y-6"
         >
-          <h2 className=" text-2xl text-vintage-green mb-4">{t("auth.signUp")}</h2>
+          <h2 className=" text-2xl text-vintage-green mb-4">
+            {t("auth.signUp")}
+          </h2>
 
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
@@ -275,7 +278,10 @@ const CreateAccountPage = () => {
               <span>
                 {rich(t("auth.acceptTerms"), {
                   terms: (
-                    <Link href="/terms-conditions" className="text-default-cold hover:underline">
+                    <Link
+                      href="/terms-conditions"
+                      className="text-default-cold hover:underline"
+                    >
                       {t("footer.termsConditions")}
                     </Link>
                   ),

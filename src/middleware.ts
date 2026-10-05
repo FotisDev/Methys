@@ -12,14 +12,17 @@ export async function middleware(request: NextRequest) {
 
   // 1. Locale redirect — γρήγορο, χωρίς Supabase
   const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
   if (!pathnameHasLocale) {
     // 308 so search engines consolidate signals on the locale-prefixed URL.
     return NextResponse.redirect(
-      new URL(`/${defaultLocale}${pathname}${request.nextUrl.search}`, request.url),
-      308
+      new URL(
+        `/${defaultLocale}${pathname}${request.nextUrl.search}`,
+        request.url,
+      ),
+      308,
     );
   }
 
@@ -40,7 +43,9 @@ export async function middleware(request: NextRequest) {
   }
 
   // 3. Supabase μόνο για protected paths
-  let supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } });
+  let supabaseResponse = NextResponse.next({
+    request: { headers: requestHeaders },
+  });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -52,21 +57,28 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
+            request.cookies.set(name, value),
           );
           requestHeaders.set("cookie", request.headers.get("cookie") ?? "");
-          supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } });
+          supabaseResponse = NextResponse.next({
+            request: { headers: requestHeaders },
+          });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, options),
           );
         },
       },
-    }
+    },
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!user && protectedPaths.some((p) => pathnameWithoutLocale.startsWith(p))) {
+  if (
+    !user &&
+    protectedPaths.some((p) => pathnameWithoutLocale.startsWith(p))
+  ) {
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
   }
 

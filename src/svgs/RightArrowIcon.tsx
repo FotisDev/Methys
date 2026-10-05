@@ -1,8 +1,4 @@
-export default function RightArrowIcon({
-  className,
-}: {
-  className?: string;
-}) {
+export default function RightArrowIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}

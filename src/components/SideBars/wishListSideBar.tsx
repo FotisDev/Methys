@@ -25,13 +25,18 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
   const { addToCart } = useCart();
   const t = useT();
   const formatPrice = useFormatPrice();
-  const [selectedSizes, setSelectedSizes] = useState<Record<number, string>>({});
+  const [selectedSizes, setSelectedSizes] = useState<Record<number, string>>(
+    {},
+  );
 
   const handleSizeSelect = (itemId: number, size: string) => {
     setSelectedSizes((prev) => ({ ...prev, [itemId]: size }));
   };
 
-  const handleAddToCart = (item: ProductInDetails, availableSizes: string[]) => {
+  const handleAddToCart = (
+    item: ProductInDetails,
+    availableSizes: string[],
+  ) => {
     if (!item) return;
 
     if (availableSizes.length > 0 && !selectedSizes[item.id]) {
@@ -47,10 +52,7 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
   };
 
   const handleClearWishlist = () => {
-    if (
-      wishlist.length > 0 &&
-      window.confirm(t("wishlist.confirmClear"))
-    ) {
+    if (wishlist.length > 0 && window.confirm(t("wishlist.confirmClear"))) {
       clearWishlist();
     }
   };
@@ -60,7 +62,7 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
   };
 
   const validWishlistItems = wishlist.filter(
-    (item): item is NonNullable<ProductInDetails> => item !== null
+    (item): item is NonNullable<ProductInDetails> => item !== null,
   );
 
   return (
@@ -79,15 +81,28 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
       >
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
           <span className="text-lg text-vintage-green">
-            {t("wishlist.title")}{validWishlistItems.length > 0 ? ` (${validWishlistItems.length})` : ""}
+            {t("wishlist.title")}
+            {validWishlistItems.length > 0
+              ? ` (${validWishlistItems.length})`
+              : ""}
           </span>
           <button
             onClick={onClose}
             aria-label={t("wishlist.close")}
             className="p-1 hover:opacity-60 transition-opacity cursor-pointer"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -95,7 +110,9 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
         <div className="flex flex-col flex-1 min-h-0">
           {validWishlistItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <p className="text-lg text-gray-900 mb-2">{t("wishlist.empty")}</p>
+              <p className="text-lg text-gray-900 mb-2">
+                {t("wishlist.empty")}
+              </p>
               <p className="text-sm text-gray-600 mb-6">
                 {t("wishlist.emptyHint")}
               </p>
@@ -113,7 +130,9 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                   onClick={handleClearWishlist}
                   className="text-xs underline text-vintage-green hover:text-vintage-brown transition-colors cursor-pointer"
                 >
-                  {t("wishlist.clearAll")} ({translateCount(t, "common.items", validWishlistItems.length)})
+                  {t("wishlist.clearAll")} (
+                  {translateCount(t, "common.items", validWishlistItems.length)}
+                  )
                 </button>
               </div>
 
@@ -124,7 +143,10 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                     .map((variant) => variant.size);
 
                   return (
-                    <div key={item.id} className="flex gap-4 py-6 border-b border-gray-200">
+                    <div
+                      key={item.id}
+                      className="flex gap-4 py-6 border-b border-gray-200"
+                    >
                       <div className="w-20 h-24 relative flex-shrink-0 bg-gray-100">
                         {item.image_url && (
                           <Image
@@ -167,7 +189,9 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
 
                         <div className="flex items-center justify-between mt-3">
                           <button
-                            onClick={() => handleAddToCart(item, availableSizes)}
+                            onClick={() =>
+                              handleAddToCart(item, availableSizes)
+                            }
                             className="text-xs uppercase tracking-wide border border-vintage-green text-vintage-green px-3 py-1.5 hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
                           >
                             {t("common.addToCart")}

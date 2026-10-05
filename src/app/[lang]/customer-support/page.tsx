@@ -20,15 +20,17 @@ export async function generateMetadata({ params }: PageProps) {
     MetaTitle: t("support.metaTitle"),
     MetaDescription: t("support.metaDescription"),
     canonical: "/customer-support",
-    OpenGraphImageUrl:
-      "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
+    OpenGraphImageUrl: "/storage/v1/object/public/OpenGraphImages/about-us.jpg",
   });
 }
 
 export default async function SupportPage({ params }: PageProps) {
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : defaultLocale;
-  const [supportCategories, t] = await Promise.all([getSupportCategories(), getT(locale)]);
+  const [supportCategories, t] = await Promise.all([
+    getSupportCategories(),
+    getT(locale),
+  ]);
   const schemaMarkUp = getSupportPageStructuredData(locale, {
     name: t("support.metaTitle"),
     description: t("support.metaDescription"),
@@ -37,7 +39,7 @@ export default async function SupportPage({ params }: PageProps) {
   return (
     <>
       {schemaMarkUp && <Schema markup={schemaMarkUp} />}
-      <HeaderProvider forceOpaque={false} dropDownMenu={<DropDownMenu/>}>
+      <HeaderProvider forceOpaque={false} dropDownMenu={<DropDownMenu />}>
         <main className="relative min-h-screen flex items-center justify-center px-4">
           <Image
             src="/yo.jpg"
@@ -47,10 +49,10 @@ export default async function SupportPage({ params }: PageProps) {
           />
           <div className="fixed inset-0 bg-black/30 -z-5"></div>
           <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-8 relative z-10">
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">{t("support.title")}</h1>
-            <p className="text-gray-500 mb-6 text-sm">
-              {t("support.intro")}
-            </p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">
+              {t("support.title")}
+            </h1>
+            <p className="text-gray-500 mb-6 text-sm">{t("support.intro")}</p>
             <SupportFormPageComponent categories={supportCategories ?? []} />
             <div className="mt-6 text-center">
               <Link

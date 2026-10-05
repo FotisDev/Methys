@@ -83,9 +83,7 @@ export default function Footer() {
             {t("footer.joinCommunity")}
           </h3>
 
-          <p className="text-sm">
-            {t("footer.newsletterText")}
-          </p>
+          <p className="text-sm">{t("footer.newsletterText")}</p>
 
           <form className="flex w-full">
             <input
@@ -95,7 +93,11 @@ export default function Footer() {
               required
               className="border border-default-color w-full p-2 text-sm"
             />
-            <button type="submit" className="bg-default-cold text-white w-16" aria-label={t("footer.subscribe")}>
+            <button
+              type="submit"
+              className="bg-default-cold text-white w-16"
+              aria-label={t("footer.subscribe")}
+            >
               →
             </button>
           </form>
@@ -139,23 +141,25 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex flex-col gap-1 pt-5 ">
-            <h3 className="text-vintage-green font-bold">{t("footer.country")}</h3>
+            <h3 className="text-vintage-green font-bold">
+              {t("footer.country")}
+            </h3>
             <div className="flex items-center justify-center lg:justify-start gap-2">
               <WorldShpereSvg />
               <p className="text-sm underline">{t("footer.international")}</p>
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center lg:items-start gap-6">
-          
-        </div>
+        <div className="flex flex-col items-center lg:items-start gap-6"></div>
       </section>
-      <hr className=""/>
+      <hr className="" />
 
       <div className="relative px-4 py-6">
         <div className="text-center text-sm">
           {rich(t("footer.copyright", { year: new Date().getFullYear() }), {
-            brand: <span className="text-vintage-green font-bold">Methys.</span>,
+            brand: (
+              <span className="text-vintage-green font-bold">Methys.</span>
+            ),
           })}
         </div>
 
@@ -176,7 +180,9 @@ export default function Footer() {
           >
             <span className="text-vintage-green text-center">
               {rich(t("footer.specialOffers"), {
-                offers: <span className="text-red-500">{t("footer.offers")}</span>,
+                offers: (
+                  <span className="text-red-500">{t("footer.offers")}</span>
+                ),
               })}
             </span>
 

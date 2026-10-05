@@ -14,7 +14,9 @@ describe("localizePath", () => {
   });
 
   it("keeps query strings and hashes", () => {
-    expect(localizePath("/collections?size=M#top", "el")).toBe("/el/collections?size=M#top");
+    expect(localizePath("/collections?size=M#top", "el")).toBe(
+      "/el/collections?size=M#top",
+    );
   });
 
   it("does not double-prefix paths that already have a locale", () => {
@@ -29,12 +31,16 @@ describe("localizePath", () => {
 
   it("leaves external, relative and protocol-relative links alone", () => {
     expect(localizePath("https://stripe.com", "el")).toBe("https://stripe.com");
-    expect(localizePath("//cdn.example.com/x.js", "el")).toBe("//cdn.example.com/x.js");
+    expect(localizePath("//cdn.example.com/x.js", "el")).toBe(
+      "//cdn.example.com/x.js",
+    );
     expect(localizePath("#reviews", "el")).toBe("#reviews");
     expect(localizePath("?size=M", "el")).toBe("?size=M");
   });
 
   it("does not treat a path that merely starts with a locale as localized", () => {
-    expect(localizePath("/english-collection", "el")).toBe("/el/english-collection");
+    expect(localizePath("/english-collection", "el")).toBe(
+      "/el/english-collection",
+    );
   });
 });

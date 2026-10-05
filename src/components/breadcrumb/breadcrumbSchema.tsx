@@ -55,7 +55,11 @@ export const Breadcrumbs = ({ items, locale }: itemWithClassName) => {
               >
                 {item.name}
               </Link>
-              {!isLastItem && <span className=""><BreadcrumbArrow className={""}/></span>}
+              {!isLastItem && (
+                <span className="">
+                  <BreadcrumbArrow className={""} />
+                </span>
+              )}
             </Fragment>
           );
         })}

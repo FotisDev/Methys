@@ -95,7 +95,10 @@ export default function SizeGuideModal({
                   >
                     <Image
                       src={image}
-                      alt={t("sizeGuide.imageAlt", { name: productName, index: index + 1 })}
+                      alt={t("sizeGuide.imageAlt", {
+                        name: productName,
+                        index: index + 1,
+                      })}
                       fill
                       sizes="80px"
                       className="object-cover"
@@ -172,10 +175,10 @@ export default function SizeGuideModal({
 
             {/* How to Measure */}
             <div className="space-y-4">
-              <h3 className="text-base font-medium">{t("sizeGuide.howToMeasure")}</h3>
-              <p className="text-sm">
-                {t("sizeGuide.chestInstructions")}
-              </p>
+              <h3 className="text-base font-medium">
+                {t("sizeGuide.howToMeasure")}
+              </h3>
+              <p className="text-sm">{t("sizeGuide.chestInstructions")}</p>
 
               {/* Measurement Diagram */}
               <div className="flex justify-center py-6">

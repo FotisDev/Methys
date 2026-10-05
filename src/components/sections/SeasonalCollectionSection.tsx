@@ -25,7 +25,10 @@ export default async function SeasonalCollectionSection({
     fetcher(),
     localeProp ?? getLocale(),
   ]);
-  const [items, t] = await Promise.all([translateProducts(rawItems, locale), getT(locale)]);
+  const [items, t] = await Promise.all([
+    translateProducts(rawItems, locale),
+    getT(locale),
+  ]);
 
   if (!items || !Array.isArray(items)) {
     return <div>{t("common.noProductsFound")}</div>;
