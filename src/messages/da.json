@@ -299,7 +299,7 @@
   },
   "support": {
     "metaTitle": "Support | Methys",
-    "metaDescription": "Send en supportanmodning om betaling, fejl, kontoproblemer eller ønsker til nye funktioner. Vores team vender hurtigt tilbage.",
+    "metaDescription": "Kontakt Methys om en ordre, fragt, returnering, størrelser eller betaling. Vores team svarer dig på e-mail hurtigst muligt.",
     "title": "Support",
     "intro": "Brug for hjælp til en ordre, størrelser eller noget helt andet? Send os en besked, så svarer vi på e-mail hurtigst muligt.",
     "goToMainPage": "Gå til forsiden",
@@ -313,12 +313,16 @@
       "message": "Besked",
       "messagePlaceholder": "Beskriv dit problem så detaljeret som muligt...",
       "submitting": "Sender...",
-      "submit": "Send henvendelse"
+      "submit": "Send henvendelse",
+      "orderNumber": "Ordrenummer",
+      "optional": "(valgfrit)"
     },
     "errors": {
       "required": "Alle felter skal udfyldes.",
       "invalidCategory": "Den valgte kategori findes ikke.",
-      "failed": "Henvendelsen kunne ikke sendes. Prøv venligst igen."
+      "failed": "Henvendelsen kunne ikke sendes. Prøv venligst igen.",
+      "messageTooShort": "Skriv mindst 10 tegn.",
+      "messageTooLong": "Din besked er for lang (maks. 5000 tegn)."
     }
   },
   "offers": {
@@ -431,11 +435,16 @@
     "returnToCart": "Tilbage til kurven"
   },
   "supportCategories": {
+    "order-status": "Ordrestatus",
+    "shipping": "Fragt & levering",
+    "returns": "Returnering & bytte",
+    "billing": "Betaling & refusion",
+    "sizing": "Størrelser & produkter",
+    "discounts": "Rabatkoder",
+    "account": "Konto & login",
+    "other": "Andet",
     "bug-report": "Fejlrapport",
-    "billing": "Betaling",
-    "account": "Konto",
-    "feature-request": "Ønske om funktion",
-    "other": "Andet"
+    "feature-request": "Ønske om funktion"
   },
   "shipping": {
     "remaining": "Du mangler {amount} for at få gratis levering",

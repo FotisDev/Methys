@@ -5,8 +5,8 @@ export async function AboutPageComponent() {
   const t = await getT();
   return (
     <>
-      <div className="w-full flex flex-col font-roboto pb-10">
-        <div className="flex flex-col lg:flex-row min-h-screen lg:h-[100vh] justify-center items-center">
+      <div className="w-full flex flex-col font-roboto pt-10 lg:pt-0 pb-10">
+        <div className="flex flex-col lg:flex-row lg:min-h-screen lg:h-[100vh] justify-center items-center">
           <div className="w-full flex flex-col lg:w-1/2 h-auto lg:h-full items-start p-10 justify-center">
             <h1 className="text-vintage-green text-2xl pb-5">
               {t("about.title")}
@@ -16,21 +16,21 @@ export async function AboutPageComponent() {
             </p>
           </div>
 
-          <div className="w-full lg:w-1/2 h-auto lg:h-full flex items-center justify-center">
+          <div className="relative w-full lg:w-1/2 aspect-[4/5] lg:aspect-auto lg:h-full">
             <video
               src="/looking-down.mp4"
               autoPlay
               muted
               loop
               playsInline
-              className="w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             >
               {t("about.videoUnsupported")}
             </video>
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row min-h-screen lg:h-[100vh] bg-cover justify-center items-center overflow-hidden">
+        <div className="flex flex-col lg:flex-row lg:min-h-screen lg:h-[100vh] bg-cover justify-center items-center overflow-hidden">
           <div className="w-full lg:w-1/2 h-auto lg:h-full flex items-center justify-center">
             <Image
               src="/Articles.jpg"

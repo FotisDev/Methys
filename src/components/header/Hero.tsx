@@ -36,7 +36,7 @@ const HeroSection = () => {
           />
         </video>
 
-        <div className="relative z-10 flex items-center ml-2 w-full h-full gap-2 ">
+        <div className="relative z-10 flex flex-col sm:flex-row justify-center items-start sm:items-center px-4 sm:px-0 sm:ml-2 w-full h-full gap-1 sm:gap-2">
           <Link
             href="/collections"
             className="text-white-f6 text-md hover:underline "

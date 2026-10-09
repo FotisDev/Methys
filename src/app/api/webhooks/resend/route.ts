@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/_lib/supabase/admin";
-import { getResend } from "@/_lib/backend/newsletter/service";
+import { getResend } from "@/_lib/backend/email/resend";
 
 // Keeps Supabase in sync when someone unsubscribes through the link Resend adds
 // to broadcasts, or a contact is deleted in the Resend dashboard.

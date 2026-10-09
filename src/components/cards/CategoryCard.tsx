@@ -60,7 +60,11 @@ export default function CategoryCard({
         placeholder={blurDataUrl ? "blur" : "empty"}
         blurDataURL={blurDataUrl}
       />
-      <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 text-vintage-white fond-sans">
+      {/* The label starts halfway down the photo, then holds at the middle of
+          the screen while the photo scrolls up, so it travels down to the
+          bottom. Needs the slider to use overflow: clip (see CategoriesSwiper). */}
+      <div aria-hidden="true" className="h-1/2" />
+      <div className="sticky top-[50vh] z-10 w-fit p-3 sm:p-4 md:p-6 text-vintage-white fond-sans">
         <h3 className="text-base lg:text-xl capitalize sm:text-sm opacity-90">
           {subcategoryName}
         </h3>

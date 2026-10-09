@@ -1,28 +1,36 @@
 "use client";
 
-import CartSvg from "@/svgs/cartSvg";
 import Image from "next/image";
 import Link from "@/components/LocaleLink/LocaleLink";
-import { useState, MouseEvent } from "react";
 import { useCart } from "../providers/CartProvider";
 import { useWishlist } from "../providers/WishListProvider";
-import { ProductInDetails } from "@/_lib/types";
+import { useState, MouseEvent } from "react";
+import CartSvg from "@/svgs/cartSvg";
 import { HeartSvg } from "@/svgs/hearthIcon";
-import { ProductWithDiscount } from "@/_lib/backend/offers/actions";
 import { useFormatPrice, useT } from "@/i18n/client";
-import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 import { getStockStatus } from "@/_lib/utils/stock";
+import type { ProductInDetails } from "@/_lib/types";
 
-interface SeasonalCollectionCardProps {
-  item: ProductInDetails;
-  priority?: boolean;
-  offer?: ProductWithDiscount;
+type ProductGridCardProps = {
+  product: ProductInDetails;
+  finalPrice: number;
+  // Shown struck through next to the final price when set.
+  originalPrice?: number;
+  badge?: string;
+};
+
+export function productUrl(product: ProductInDetails) {
+  const category = product.categoryformen;
+  return `/collections/${category?.parent?.slug ?? "all"}/${category?.slug ?? "all"}/${product.slug}`;
 }
 
-export default function SeasonalCollectionCard({
-  item,
-  priority = false,
-}: SeasonalCollectionCardProps) {
+// Product tile used on the offers and wishlist grids.
+export default function ProductGridCard({
+  product,
+  finalPrice,
+  originalPrice,
+  badge,
+}: ProductGridCardProps) {
   const [hovered, setHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
@@ -31,11 +39,10 @@ export default function SeasonalCollectionCard({
   const formatPrice = useFormatPrice();
   const { addToWishlist, isInWishlist } = useWishlist();
 
-  const inWishlist = isInWishlist(item.id);
-  const pricing = getProductPricing(item);
-  const stock = getStockStatus(item.product_variants);
+  const inWishlist = isInWishlist(product.id);
+  const stock = getStockStatus(product.product_variants);
 
-  const availableSizes = (item.product_variants ?? [])
+  const availableSizes = (product.product_variants ?? [])
     .filter((variant) => variant.quantity > 0)
     .map((variant) => variant.size);
 
@@ -49,47 +56,39 @@ export default function SeasonalCollectionCard({
     e.preventDefault();
     e.stopPropagation();
 
-    if (!selectedSize && availableSizes.length > 0) {
+    if (availableSizes.length === 0) {
+      alert(t("product.outOfStock"));
+      return;
+    }
+
+    if (!selectedSize) {
+      setHovered(true);
       alert(t("wishlist.selectSizeFirst"));
       return;
     }
 
-    addToCart(item, selectedSize || undefined);
-
+    addToCart(product, selectedSize);
     alert(
-      selectedSize
-        ? t("product.addedToCartWithSize", {
-            name: item.name,
-            size: selectedSize,
-          })
-        : t("product.addedToCart", { name: item.name }),
+      t("product.addedToCartWithSize", {
+        name: product.name,
+        size: selectedSize,
+      }),
     );
   };
 
   const handleWishlistToggle = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    addToWishlist(item);
+    addToWishlist(product);
   };
 
-  const buildCategoryHref = (): string => {
-    const category = item.categoryformen;
-    const parent = category?.parent;
-    if (parent?.slug && category?.slug) {
-      return `${parent.slug}/${category.slug}`;
-    }
-    return category?.slug ?? "uncategorized";
-  };
-
-  const defaultImg = item.image_url?.[0] ?? "/Articles.jpg";
-  const hoverImg = item.image_url?.[1] ?? defaultImg;
-
-  const isNew = true;
+  const defaultImg = product.image_url?.[0] ?? "/AuthClothPhoto.jpg";
+  const hoverImg = product.image_url?.[1] ?? defaultImg;
 
   return (
     <Link
-      href={`/collections/${buildCategoryHref()}/${item.slug ?? ""}`}
-      className="font-serif  "
+      href={productUrl(product)}
+      className="font-serif"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -99,25 +98,25 @@ export default function SeasonalCollectionCard({
       >
         <Image
           src={hovered ? hoverImg : defaultImg}
-          alt={item.name}
+          alt={product.name}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
           className="object-cover object-center transition duration-500 ease-in-out"
           quality={75}
-          priority={priority}
-          placeholder={item.blur_data_url ? "blur" : "empty"}
-          blurDataURL={item.blur_data_url ?? undefined}
         />
-        {isNew && (
-          <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest  text-default-color z-10">
-            {t("product.newIn")}
+
+        {badge && (
+          <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest bg-vintage-green text-vintage-white px-2 py-1 z-10">
+            {badge}
           </span>
         )}
+
         {stock.isLowStock && (
           <span className="absolute bottom-2 left-2 z-10 bg-white/90 text-red-700 text-[10px] uppercase tracking-widest px-2 py-1">
             {t("product.onlyLeft", { count: stock.total })}
           </span>
         )}
+
         <button
           onClick={handleWishlistToggle}
           className="absolute top-2 right-2 p-1.5 z-10"
@@ -140,24 +139,22 @@ export default function SeasonalCollectionCard({
         {/* On phones the name gets its own line so it isn't cut short. */}
         <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
           <h3 className="text-sm font-medium line-clamp-1 leading-snug basis-full sm:basis-0 sm:flex-1">
-            {item.name}
+            {product.name}
           </h3>
           <p className="text-sm shrink-0 flex items-center gap-1">
-            {pricing.isDiscounted && (
+            {originalPrice !== undefined && (
               <span className="line-through text-gray-400 text-xs">
-                {formatPrice(pricing.originalPrice)}
+                {formatPrice(originalPrice)}
               </span>
             )}
-            <span className={pricing.isDiscounted ? "font-bold" : undefined}>
-              {formatPrice(pricing.finalPrice)}
-            </span>
+            <span className="font-bold">{formatPrice(finalPrice)}</span>
           </p>
           <button
             onClick={handleAddToCart}
             aria-label={t("common.addToCart")}
             className="shrink-0 text-gray-aca hover:text-black transition-opacity cursor-pointer"
           >
-            <CartSvg className="w-4 h-4 " />
+            <CartSvg className="w-4 h-4" />
           </button>
         </div>
 
@@ -184,9 +181,9 @@ export default function SeasonalCollectionCard({
                 {t("product.soldOut")}
               </span>
             )
-          ) : item.size_description ? (
+          ) : product.size_description ? (
             <p className="text-xs text-vintage-green/60 line-clamp-1">
-              {item.size_description}
+              {product.size_description}
             </p>
           ) : null}
         </div>

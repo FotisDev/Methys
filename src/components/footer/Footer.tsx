@@ -73,11 +73,10 @@ export default function Footer() {
           sm:grid-cols-1
           md:grid-cols-1
           lg:grid-cols-4
-          gap-12
+          gap-8
+          lg:gap-12
           px-3
           py-10
-         
-          
         "
       >
         <div className="flex flex-col gap-6 w-full sm:w-96 lg:w-full">
@@ -141,7 +140,6 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center lg:items-start gap-6"></div>
       </section>
       <hr className="" />
 

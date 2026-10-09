@@ -40,7 +40,7 @@ export default async function SupportPage({ params }: PageProps) {
     <>
       {schemaMarkUp && <Schema markup={schemaMarkUp} />}
       <HeaderProvider forceOpaque={false} dropDownMenu={<DropDownMenu />}>
-        <main className="relative min-h-screen flex items-center justify-center px-4">
+        <main className="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-10">
           <Image
             src="/yo.jpg"
             alt=""

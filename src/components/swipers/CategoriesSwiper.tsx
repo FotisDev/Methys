@@ -64,7 +64,9 @@ export default function CategoriesSwiper({
             priority={index === 0}
           />
         )}
-        className="h-auto max-h-[60vh] sm:max-h-[70vh] md:max-h-[80vh]"
+        // clip instead of Swiper's overflow: hidden, which would stop the
+        // card labels from sticking while the page scrolls.
+        className="h-auto max-h-[60vh] sm:max-h-[70vh] md:max-h-[80vh] overflow-clip!"
       />
     </div>
   );

@@ -299,7 +299,7 @@
   },
   "support": {
     "metaTitle": "Support | Methys",
-    "metaDescription": "Submit a support ticket for billing, bugs, account issues, or feature requests. Our team will get back to you shortly.",
+    "metaDescription": "Contact Methys about an order, shipping, returns, sizing or payments. Our team will reply by email as soon as possible.",
     "title": "Support",
     "intro": "Need help with an order, sizing or anything else? Send us a message and we'll reply by email as soon as possible.",
     "goToMainPage": "Go to main page",
@@ -313,12 +313,16 @@
       "message": "Message",
       "messagePlaceholder": "Describe your issue in detail...",
       "submitting": "Submitting...",
-      "submit": "Submit Ticket"
+      "submit": "Submit Ticket",
+      "orderNumber": "Order number",
+      "optional": "(optional)"
     },
     "errors": {
       "required": "All fields are required.",
       "invalidCategory": "Selected category does not exist.",
-      "failed": "Failed to submit ticket. Please try again."
+      "failed": "Failed to submit ticket. Please try again.",
+      "messageTooShort": "Please write at least 10 characters.",
+      "messageTooLong": "Your message is too long (max 5000 characters)."
     }
   },
   "offers": {
@@ -431,11 +435,16 @@
     "returnToCart": "Return to cart"
   },
   "supportCategories": {
+    "order-status": "Order status",
+    "shipping": "Shipping & delivery",
+    "returns": "Returns & exchanges",
+    "billing": "Payments & refunds",
+    "sizing": "Sizing & products",
+    "discounts": "Discount codes",
+    "account": "Account & login",
+    "other": "Other",
     "bug-report": "Bug Report",
-    "billing": "Billing",
-    "account": "Account",
-    "feature-request": "Feature Request",
-    "other": "Other"
+    "feature-request": "Feature Request"
   },
   "shipping": {
     "remaining": "You're {amount} away from free delivery",

@@ -11,6 +11,8 @@ import { ProductInDetails } from "@/_lib/types";
 
 interface WishlistContextType {
   wishlist: ProductInDetails[];
+  // False until the saved wishlist has been read from localStorage.
+  isLoaded: boolean;
   addToWishlist: (item: ProductInDetails) => void;
   removeFromWishlist: (itemId: number) => void;
   isInWishlist: (itemId: number) => boolean;
@@ -73,6 +75,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     <WishlistContext.Provider
       value={{
         wishlist,
+        isLoaded,
         addToWishlist,
         removeFromWishlist,
         isInWishlist,

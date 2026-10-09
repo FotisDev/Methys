@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
 import Stripe from "stripe";
-import { Resend } from "resend";
+import { FROM_EMAIL, getResend } from "@/_lib/backend/email/resend";
 import { NEWSLETTER_DISCOUNT_PERCENT } from "@/_lib/constants";
 import { SITE_URL } from "@/components/SEO/urls";
 import { getT } from "@/i18n/server";
@@ -9,19 +9,6 @@ import type { Locale } from "@/i18n.config";
 // Server-only helpers for the newsletter (Resend contacts + emails, Stripe codes).
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-// Created on first use: the constructor throws without an API key, which would
-// otherwise break every page that imports this module.
-let resendClient: Resend | null = null;
-export function getResend() {
-  resendClient ??= new Resend(process.env.RESEND_API_KEY);
-  return resendClient;
-}
-
-// Resend's test sender (onboarding@resend.dev) only delivers to the account
-// owner. Set RESEND_FROM_EMAIL to an address on a verified domain to send to
-// real subscribers.
-const FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL ?? "Methys <onboarding@resend.dev>";
 
 const COUPON_ID = `newsletter-welcome-${NEWSLETTER_DISCOUNT_PERCENT}`;
 

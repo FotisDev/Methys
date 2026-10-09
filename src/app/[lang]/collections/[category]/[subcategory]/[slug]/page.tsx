@@ -156,11 +156,12 @@ export default async function ProductDetailPage({
               {product.image_url?.map((img, i) => (
                 <div
                   key={i}
-                  className="
-                              relative bg-gray-50 overflow-hidden shrink-0
-                              w-[85vw] sm:w-[70vw] lg:w-auto
-                              snap-center lg:snap-none
-                            "
+                  // A single photo fills the width; several peek so they can be swiped.
+                  className={`relative bg-gray-50 overflow-hidden shrink-0 snap-center lg:snap-none lg:w-auto ${
+                    (product.image_url?.length ?? 0) > 1
+                      ? "w-[85vw] sm:w-[70vw]"
+                      : "w-full"
+                  }`}
                   style={{ aspectRatio: "3/4" }}
                 >
                   <Image

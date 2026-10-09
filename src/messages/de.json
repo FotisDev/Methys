@@ -299,7 +299,7 @@
   },
   "support": {
     "metaTitle": "Support | Methys",
-    "metaDescription": "Sende eine Support-Anfrage zu Zahlungen, Fehlern, Kontoproblemen oder Funktionswünschen. Unser Team meldet sich in Kürze.",
+    "metaDescription": "Kontaktiere Methys zu Bestellung, Versand, Rücksendung, Größen oder Zahlung. Unser Team antwortet dir so schnell wie möglich per E-Mail.",
     "title": "Support",
     "intro": "Brauchst du Hilfe bei einer Bestellung, mit Größen oder etwas anderem? Schreib uns und wir antworten dir so schnell wie möglich per E-Mail.",
     "goToMainPage": "Zur Startseite",
@@ -313,12 +313,16 @@
       "message": "Nachricht",
       "messagePlaceholder": "Beschreibe dein Anliegen möglichst genau...",
       "submitting": "Wird gesendet...",
-      "submit": "Anfrage senden"
+      "submit": "Anfrage senden",
+      "orderNumber": "Bestellnummer",
+      "optional": "(optional)"
     },
     "errors": {
       "required": "Alle Felder sind Pflichtfelder.",
       "invalidCategory": "Die ausgewählte Kategorie existiert nicht.",
-      "failed": "Die Anfrage konnte nicht gesendet werden. Bitte versuche es erneut."
+      "failed": "Die Anfrage konnte nicht gesendet werden. Bitte versuche es erneut.",
+      "messageTooShort": "Bitte schreib mindestens 10 Zeichen.",
+      "messageTooLong": "Deine Nachricht ist zu lang (max. 5000 Zeichen)."
     }
   },
   "offers": {
@@ -431,11 +435,16 @@
     "returnToCart": "Zurück zum Warenkorb"
   },
   "supportCategories": {
+    "order-status": "Bestellstatus",
+    "shipping": "Versand & Lieferung",
+    "returns": "Rücksendung & Umtausch",
+    "billing": "Zahlung & Erstattung",
+    "sizing": "Größen & Produkte",
+    "discounts": "Rabattcodes",
+    "account": "Konto & Anmeldung",
+    "other": "Sonstiges",
     "bug-report": "Fehlermeldung",
-    "billing": "Zahlung",
-    "account": "Konto",
-    "feature-request": "Funktionswunsch",
-    "other": "Sonstiges"
+    "feature-request": "Funktionswunsch"
   },
   "shipping": {
     "remaining": "Noch {amount} bis zum kostenlosen Versand",
