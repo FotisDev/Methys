@@ -5,6 +5,8 @@ import FaqSection from "@/components/pages/faqPage";
 import { createMetadata } from "@/components/SEO/metadata";
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import DropDownMenu from "@/components/header/DropDownMenu";
+import Footer from "@/components/footer/Footer";
+import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { getT } from "@/i18n/server";
 import { defaultLocale, isLocale } from "@/i18n.config";
 
@@ -33,11 +35,24 @@ export default async function FAQPage({ params }: PageProps) {
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       {schemaMarkup && <Schema markup={schemaMarkup} />}
 
-      <FaqSection
-        faqs={faqs}
-        title={t("help.title")}
-        subtitle={t("help.subtitle")}
-      />
+      <main className="w-full pt-20 font-roboto text-vintage-green">
+        <div className="mx-auto px-4 sm:px-6">
+          <Breadcrumbs
+            items={[
+              { name: t("breadcrumbs.home"), slug: "/" },
+              { name: t("footer.help"), slug: "/help" },
+            ]}
+            locale={locale}
+          />
+        </div>
+        <FaqSection
+          faqs={faqs}
+          title={t("help.title")}
+          subtitle={t("help.subtitle")}
+          t={t}
+        />
+      </main>
+      <Footer />
     </HeaderProvider>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "@/components/LocaleLink/LocaleLink";
 import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
@@ -18,7 +18,6 @@ const Checkout = () => {
   const { cart, updateQuantity, removeFromCart, getCartTotal, getItemPrice } =
     useCart();
 
-  const [total, setTotal] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const t = useT();
   const formatPrice = useFormatPrice();
@@ -51,9 +50,7 @@ const Checkout = () => {
 
   const [termsAccepted, setTermsAccepted] = useState(false);
 
-  useEffect(() => {
-    setTotal(getCartTotal());
-  }, [cart, getCartTotal]);
+  const total = getCartTotal();
 
   const discountAmount = appliedPromo
     ? appliedPromo.percentOff

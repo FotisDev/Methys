@@ -1,81 +1,77 @@
-"use client";
-
 import { FAQ } from "@/_lib/types";
-import { useState } from "react";
-import Footer from "../footer/Footer";
-import { useT } from "@/i18n/client";
+import Link from "@/components/LocaleLink/LocaleLink";
+import type { Translator } from "@/i18n/translate";
 
 interface FaqSectionProps {
-  title?: string;
-  subtitle?: string;
+  title: string;
+  subtitle: string;
   faqs: FAQ[];
+  t: Translator;
 }
 
-export default function FaqSection({ title, subtitle, faqs }: FaqSectionProps) {
-  const [openId, setOpenId] = useState<number | null>(null);
-  const t = useT();
-
-  const toggleFaq = (id: number) => {
-    setOpenId(openId === id ? null : id);
-  };
-
+// Native <details> so answers of any length open fully and work without JS.
+export default function FaqSection({
+  title,
+  subtitle,
+  faqs,
+  t,
+}: FaqSectionProps) {
   return (
-    <>
-      <section className="w-full custom-container-4xl padding-x padding-y fond-sans p-5 bg-white-fb pt-20 md:pt-24">
-        <div className="flex flex-col justify-center items-center">
-          <p className="text-vintage-green text-lg font-semibold pt-20">
-            {subtitle}
-          </p>
-          <h1 className="text-default-cold text-2xl lg:text-5xl mb-8 pt-5 px-2">
-            {title}
-          </h1>
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6 pb-20 md:pt-10">
+      <header className="border-b border-default-color pb-8">
+        <p className="text-xs uppercase tracking-wider text-gray-500 mb-3">
+          {subtitle}
+        </p>
+        <h1 className="text-2xl md:text-3xl font-light tracking-wide">
+          {title}
+        </h1>
+      </header>
 
-          {faqs.length === 0 ? (
-            <p>{t("help.noFaqs")}</p>
-          ) : (
-            <div className="w-full max-w-7xl bg-white-f6 px-5 rounded-xl">
-              {faqs.map((faq) => (
-                <div
-                  key={faq.id}
-                  className="border-b border-default-color py-12"
+      {faqs.length === 0 ? (
+        <p className="text-sm text-gray-600 pt-8">{t("help.noFaqs")}</p>
+      ) : (
+        <div>
+          {faqs.map((faq) => (
+            <details
+              key={faq.id}
+              className="group border-b border-default-color py-6"
+            >
+              <summary className="flex justify-between items-start gap-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <h2 className="text-sm md:text-base font-medium">
+                  {faq.title}
+                </h2>
+                <span
+                  aria-hidden="true"
+                  className="text-lg leading-none transition group-open:rotate-45"
                 >
-                  <button
-                    onClick={() => toggleFaq(faq.id)}
-                    className="flex justify-between items-start w-full text-left group"
-                  >
-                    <div className="flex-1">
-                      <h3 className="text-sm lg:text-lg font-semibold text-vintage-green transition-colors">
-                        {faq.title}
-                      </h3>
-                    </div>
-                    <span className="text-2xl font-light  text-vintage-green ml-4 transition-transform duration-300">
-                      {openId === faq.id ? "−" : "+"}
-                    </span>
-                  </button>
-
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out  rounded-3xl bg-white ${
-                      openId === faq.id ? "max-h-96 mt-4 p-5" : "max-h-0"
-                    }`}
-                  >
-                    <div className="text-vintage-brown">
-                      {faq.subtitle && (
-                        <p className="font-medium mb-2 text-black">
-                          {faq.subtitle}
-                        </p>
-                      )}
-                      <p className="text-black  font-semibold font-roboto text-lg">
-                        {faq.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+                  +
+                </span>
+              </summary>
+              <div className="mt-4 text-sm text-gray-700 leading-relaxed">
+                {faq.subtitle && (
+                  <p className="font-medium text-vintage-green mb-2">
+                    {faq.subtitle}
+                  </p>
+                )}
+                <p className="whitespace-pre-line">{faq.description}</p>
+              </div>
+            </details>
+          ))}
         </div>
-      </section>
-      <Footer />
-    </>
+      )}
+
+      <aside className="mt-16 border-t border-default-color pt-8 text-sm">
+        <p className="font-medium mb-1">{t("help.questionsTitle")}</p>
+        <p className="text-gray-600">
+          {t("help.questionsText")}{" "}
+          <Link
+            href="/customer-support"
+            className="underline underline-offset-4 hover:text-default-cold"
+          >
+            {t("legal.contactUs")}
+          </Link>
+        </p>
+      </aside>
+    </div>
   );
 }

@@ -293,7 +293,9 @@
     "metaDescription": "Answers to the most common questions about shipping, refunds and our products.",
     "title": "Questions about shipping, returns or sizing? Start here.",
     "subtitle": "Frequently Asked Questions",
-    "noFaqs": "No FAQs found."
+    "noFaqs": "No FAQs found.",
+    "questionsTitle": "Didn't find your answer?",
+    "questionsText": "Send us a message and we'll get back to you by email."
   },
   "support": {
     "metaTitle": "Support | Methys",
@@ -341,6 +343,14 @@
     "metaTitle": "Legal Notice | Methys",
     "metaDescription": "Legal information and notices for Methys.",
     "title": "Legal Notice"
+  },
+  "legal": {
+    "navLabel": "Legal",
+    "lastUpdated": "Last updated:",
+    "comingSoon": "This page is being updated. Please check back soon.",
+    "questionsTitle": "Have a question?",
+    "questionsText": "If anything here is unclear, our team is happy to help.",
+    "contactUs": "Contact us"
   },
   "validation": {
     "emailRequired": "Email is required",

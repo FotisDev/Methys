@@ -116,12 +116,13 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
               <p className="text-sm text-gray-600 mb-6">
                 {t("wishlist.emptyHint")}
               </p>
-              <button
+              <Link
+                href="/collections"
                 onClick={onClose}
                 className="py-3 px-6 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
               >
                 {t("common.startShopping")}
-              </button>
+              </Link>
             </div>
           ) : (
             <>

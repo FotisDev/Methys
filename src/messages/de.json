@@ -293,7 +293,9 @@
     "metaDescription": "Antworten auf die häufigsten Fragen zu Versand, Rückerstattung und unseren Produkten.",
     "title": "Fragen zu Versand, Rückgabe oder Größen? Hier findest du Antworten.",
     "subtitle": "Häufige Fragen",
-    "noFaqs": "Keine Fragen gefunden."
+    "noFaqs": "Keine Fragen gefunden.",
+    "questionsTitle": "Keine Antwort gefunden?",
+    "questionsText": "Schreib uns eine Nachricht und wir melden uns per E-Mail."
   },
   "support": {
     "metaTitle": "Support | Methys",
@@ -341,6 +343,14 @@
     "metaTitle": "Impressum | Methys",
     "metaDescription": "Rechtliche Informationen und Hinweise zu Methys.",
     "title": "Impressum"
+  },
+  "legal": {
+    "navLabel": "Rechtliches",
+    "lastUpdated": "Zuletzt aktualisiert:",
+    "comingSoon": "Diese Seite wird gerade aktualisiert. Bitte schau bald wieder vorbei.",
+    "questionsTitle": "Hast du eine Frage?",
+    "questionsText": "Wenn hier etwas unklar ist, hilft dir unser Team gerne weiter.",
+    "contactUs": "Kontaktiere uns"
   },
   "validation": {
     "emailRequired": "E-Mail-Adresse ist erforderlich",

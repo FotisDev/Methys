@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "@/components/LocaleLink/LocaleLink";
 import Image from "next/image";
 import { getValidImage } from "@/_lib/helpers";
@@ -29,14 +28,11 @@ export default function CartPageClient() {
     getItemPrice,
   } = useCart();
 
-  const [total, setTotal] = useState(0);
   const t = useT();
   const locale = useLocale();
   const formatPrice = useFormatPrice();
 
-  useEffect(() => {
-    setTotal(getCartTotal());
-  }, [cart, getCartTotal]);
+  const total = getCartTotal();
 
   const shipping = getShipping(total);
 

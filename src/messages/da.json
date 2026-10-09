@@ -293,7 +293,9 @@
     "metaDescription": "Svar på de mest almindelige spørgsmål om levering, refusion og vores produkter.",
     "title": "Spørgsmål om levering, returnering eller størrelser? Start her.",
     "subtitle": "Ofte stillede spørgsmål",
-    "noFaqs": "Ingen spørgsmål fundet."
+    "noFaqs": "Ingen spørgsmål fundet.",
+    "questionsTitle": "Fandt du ikke dit svar?",
+    "questionsText": "Send os en besked, så vender vi tilbage på e-mail."
   },
   "support": {
     "metaTitle": "Support | Methys",
@@ -341,6 +343,14 @@
     "metaTitle": "Juridisk meddelelse | Methys",
     "metaDescription": "Juridiske oplysninger og meddelelser for Methys.",
     "title": "Juridisk meddelelse"
+  },
+  "legal": {
+    "navLabel": "Juridisk",
+    "lastUpdated": "Senest opdateret:",
+    "comingSoon": "Denne side bliver opdateret. Kig forbi igen snart.",
+    "questionsTitle": "Har du et spørgsmål?",
+    "questionsText": "Hvis noget her er uklart, hjælper vores team gerne.",
+    "contactUs": "Kontakt os"
   },
   "validation": {
     "emailRequired": "E-mail skal udfyldes",

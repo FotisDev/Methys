@@ -53,8 +53,8 @@ const SignInPage = () => {
       const result = await signInAction(formData);
 
       if (result.success) {
-        window.location.href = localizePath(
-          result.role === "admin" ? "/product-entry" : "/offers",
+        window.location.assign(
+          localizePath(result.role === "admin" ? "/product-entry" : "/offers"),
         );
       } else {
         console.error("Sign in failed:", result.error);

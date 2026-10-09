@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { z } from "zod";
 import { supabaseAdmin } from "@/_lib/supabase/admin";
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
@@ -115,7 +115,7 @@ export async function submitReview(
       return { status: "error", message: "reviews.errors.failed" };
     }
 
-    revalidateTag(REVIEWS_TAG);
+    updateTag(REVIEWS_TAG);
     return { status: "success", message: "reviews.thanks" };
   } catch (err) {
     console.error("Review submit failed:", err);

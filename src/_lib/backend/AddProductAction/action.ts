@@ -3,7 +3,7 @@
 import { ProductInsert, VariantInsert } from "@/_lib/types";
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import { generateBlurDataUrl } from "@/_lib/utils/generateBlurDataUrl";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 
 export async function addProductAction(
   productData: ProductInsert,
@@ -52,7 +52,7 @@ export async function addProductAction(
 
   if (variantError) throw new Error(variantError.message);
 
-  revalidateTag("products");
+  updateTag("products");
 
   return product;
 }

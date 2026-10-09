@@ -7,7 +7,7 @@ import { LOCALE_HEADER } from "@/i18n/constants";
 const protectedPaths = ["/offers", "/product-entry"];
 const authPaths = ["/login", "/createAccount"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // 1. Locale redirect — γρήγορο, χωρίς Supabase

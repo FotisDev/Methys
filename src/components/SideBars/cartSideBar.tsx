@@ -88,12 +88,13 @@ const CartSideBar: React.FC<CartSideBarProps> = ({
           {validCartlistItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
               <p className="text-lg text-gray-900 mb-4">{t("cart.empty")}</p>
-              <button
+              <Link
+                href="/collections"
                 onClick={onClose}
                 className="py-3 px-6 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
               >
                 {t("common.startShopping")}
-              </button>
+              </Link>
             </div>
           ) : (
             <>
