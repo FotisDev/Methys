@@ -1,5 +1,6 @@
 import { randomBytes } from "crypto";
 import Stripe from "stripe";
+import { getStripe } from "@/_lib/backend/stripe/client";
 import { FROM_EMAIL, getResend } from "@/_lib/backend/email/resend";
 import { NEWSLETTER_DISCOUNT_PERCENT } from "@/_lib/constants";
 import { SITE_URL } from "@/components/SEO/urls";
@@ -8,7 +9,6 @@ import type { Locale } from "@/i18n.config";
 
 // Server-only helpers for the newsletter (Resend contacts + emails, Stripe codes).
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const COUPON_ID = `newsletter-welcome-${NEWSLETTER_DISCOUNT_PERCENT}`;
 
@@ -72,10 +72,10 @@ export async function subscribeContact(email: string, locale: Locale) {
 
 async function ensureWelcomeCoupon() {
   try {
-    return await stripe.coupons.retrieve(COUPON_ID);
+    return await getStripe().coupons.retrieve(COUPON_ID);
   } catch (err) {
     if (!(err instanceof Stripe.errors.StripeInvalidRequestError)) throw err;
-    return stripe.coupons.create({
+    return getStripe().coupons.create({
       id: COUPON_ID,
       name: `Newsletter welcome ${NEWSLETTER_DISCOUNT_PERCENT}%`,
       percent_off: NEWSLETTER_DISCOUNT_PERCENT,
@@ -97,7 +97,7 @@ function generateCode() {
 // A single-use Stripe promotion code for one subscriber.
 export async function createWelcomeCode(email: string) {
   await ensureWelcomeCoupon();
-  const promotionCode = await stripe.promotionCodes.create({
+  const promotionCode = await getStripe().promotionCodes.create({
     promotion: { type: "coupon", coupon: COUPON_ID },
     code: generateCode(),
     max_redemptions: 1,

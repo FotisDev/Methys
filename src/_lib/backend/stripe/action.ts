@@ -3,12 +3,12 @@
 import { CartItem } from "@/components/providers/CartProvider";
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import Stripe from "stripe";
+import { getStripe } from "@/_lib/backend/stripe/client";
 import { isLocale } from "@/i18n.config";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 import { getShipping } from "@/_lib/utils/shipping";
 import { getT } from "@/i18n/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 interface ShippingInfo {
   name: string;
@@ -84,7 +84,7 @@ export async function createCheckoutSession(
   const shipping = getShipping(subtotal / 100);
   const t = await getT(locale);
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     mode: "payment",
     // All site locales (en, el, da, de) are supported by Stripe Checkout.
     locale: (isLocale(locale)
@@ -133,7 +133,7 @@ export async function createCheckoutSession(
 }
 
 export async function validateDiscountCode(code: string) {
-  const result = await stripe.promotionCodes.list({
+  const result = await getStripe().promotionCodes.list({
     code,
     active: true,
     limit: 1,
