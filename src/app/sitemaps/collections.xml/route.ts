@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { urlSetResponse } from "@/components/SEO/sitemap";
+import { env } from "@/env";
 
 export const revalidate = 3600;
 
@@ -12,8 +13,8 @@ type CategoryRow = {
 
 export async function GET() {
   const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   );
 
   const { data, error } = await supabase

@@ -9,6 +9,7 @@ import { supabasePublic } from "@/_lib/supabase/client";
 import { ProductInsert, VariantInsert } from "@/_lib/types";
 import { getErrorMessage } from "@/_lib/helpers";
 import { AVAILABLE_SIZES } from "@/_lib/constants";
+import { cn } from "@/_lib/utils/cn";
 
 const sizeVariantSchema = z.object({
   size: z.string(),
@@ -183,50 +184,54 @@ export default function AddProductForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-6"
+      className={cn(
+        "max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-6",
+      )}
     >
-      <h1 className="text-2xl font-semibold mb-4 text-center">
+      <h1 className={cn("text-2xl font-semibold mb-4 text-center")}>
         Add new Product
       </h1>
 
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className={cn("block text-sm font-medium mb-1")}>
           Name of Product
         </label>
         <input
           {...register("name")}
-          className="border p-2 w-full rounded"
+          className={cn("border p-2 w-full rounded")}
           placeholder="Π.χ. Basic T-Shirt"
         />
         {errors.name && (
-          <p className="text-red-500 text-sm">{errors.name.message}</p>
+          <p className={cn("text-red-500 text-sm")}>{errors.name.message}</p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Description</label>
+        <label className={cn("block text-sm font-medium mb-1")}>
+          Description
+        </label>
         <textarea
           {...register("description")}
-          className="border p-2 w-full rounded"
+          className={cn("border p-2 w-full rounded")}
           rows={3}
         />
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className={cn("block text-sm font-medium mb-1")}>
           sizeDescription
         </label>
         <textarea
           {...register("size_description")}
-          className="border p-2 w-full rounded"
+          className={cn("border p-2 w-full rounded")}
           rows={3}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Category</label>
+        <label className={cn("block text-sm font-medium mb-1")}>Category</label>
         <select
           {...register("category_men_id")}
-          className="border p-2 w-full rounded"
+          className={cn("border p-2 w-full rounded")}
         >
           <option value="">Choose Category</option>
           {categories.map((cat) => (
@@ -236,41 +241,43 @@ export default function AddProductForm() {
           ))}
         </select>
         {errors.category_men_id && (
-          <p className="text-red-500 text-sm">
+          <p className={cn("text-red-500 text-sm")}>
             {errors.category_men_id.message}
           </p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className={cn("block text-sm font-medium mb-1")}>
           Price of Product (€)
         </label>
         <input
           type="number"
           step="0.01"
           {...register("basePrice")}
-          className="border p-2 w-full rounded"
+          className={cn("border p-2 w-full rounded")}
           placeholder="π.χ. 29.99"
         />
         {errors.basePrice && (
-          <p className="text-red-500 text-sm">{errors.basePrice.message}</p>
+          <p className={cn("text-red-500 text-sm")}>
+            {errors.basePrice.message}
+          </p>
         )}
-        <p className="text-xs text-gray-500 mt-1">
+        <p className={cn("text-xs text-gray-500 mt-1")}>
           Price is the same for all sizes
         </p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Image</label>
+        <label className={cn("block text-sm font-medium mb-1")}>Image</label>
         <input type="file" accept="image/*" {...register("image")} />
         {uploading && <p>Loading Image...</p>}
         {imagePreview && (
-          <div className="mt-3 relative w-40 h-40">
+          <div className={cn("mt-3 relative w-40 h-40")}>
             <Image
               src={imagePreview}
               alt="Preview"
-              className="object-cover rounded-lg shadow"
+              className={cn("object-cover rounded-lg shadow")}
               fill
               sizes="160px"
             />
@@ -279,48 +286,54 @@ export default function AddProductForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className={cn("block text-sm font-medium mb-1")}>
           Available Sizes
         </label>
-        <div className="flex flex-wrap gap-2">
+        <div className={cn("flex flex-wrap gap-2")}>
           {AVAILABLE_SIZES.map((size) => (
             <button
               type="button"
               key={size}
               onClick={() => handleAddSize(size)}
-              className="border px-3 py-1 rounded hover:bg-gray-100 transition"
+              className={cn(
+                "border px-3 py-1 rounded hover:bg-gray-100 transition",
+              )}
             >
               + {size}
             </button>
           ))}
         </div>
         {errors.sizeVariants && !Array.isArray(errors.sizeVariants) && (
-          <p className="text-red-500 text-sm mt-1">
+          <p className={cn("text-red-500 text-sm mt-1")}>
             {errors.sizeVariants.message}
           </p>
         )}
       </div>
 
       {fields.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="font-medium text-sm">Quantity per size:</h3>
+        <div className={cn("space-y-3")}>
+          <h3 className={cn("font-medium text-sm")}>Quantity per size:</h3>
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="border rounded-lg p-3 flex items-center gap-3 bg-gray-50"
+              className={cn(
+                "border rounded-lg p-3 flex items-center gap-3 bg-gray-50",
+              )}
             >
-              <span className="font-semibold text-lg w-12">{field.size}</span>
+              <span className={cn("font-semibold text-lg w-12")}>
+                {field.size}
+              </span>
               <input
                 type="number"
                 {...register(`sizeVariants.${index}.quantity`)}
                 placeholder="Quantity"
-                className="border p-2 rounded flex-1"
+                className={cn("border p-2 rounded flex-1")}
                 min="0"
               />
               <button
                 type="button"
                 onClick={() => remove(index)}
-                className="text-red-600 hover:text-red-800 font-bold"
+                className={cn("text-red-600 hover:text-red-800 font-bold")}
               >
                 ✕
               </button>
@@ -328,66 +341,68 @@ export default function AddProductForm() {
           ))}
         </div>
       )}
-      <div className=" flex flex-row gap-4">
-        <div className="space-y-3">
-          <label className="block text-sm font-medium mb-1">
+      <div className={cn("flex flex-row gap-4")}>
+        <div className={cn("space-y-3")}>
+          <label className={cn("block text-sm font-medium mb-1")}>
             winter product?
           </label>
           <input
             type="checkbox"
             {...register(`is_winter`)}
-            className="border p-2 rounded flex-1"
+            className={cn("border p-2 rounded flex-1")}
             min="0"
           />
         </div>
-        <div className="space-y-3">
-          <label className="block text-sm font-medium mb-1">
+        <div className={cn("space-y-3")}>
+          <label className={cn("block text-sm font-medium mb-1")}>
             spring product?
           </label>
           <input
             type="checkbox"
             {...register(`is_spring`)}
-            className="border p-2 rounded flex-1"
+            className={cn("border p-2 rounded flex-1")}
             min="0"
           />
         </div>
-        <div className="space-y-3">
-          <label className="block text-sm font-medium mb-1">
+        <div className={cn("space-y-3")}>
+          <label className={cn("block text-sm font-medium mb-1")}>
             summer product?
           </label>
           <input
             type="checkbox"
             {...register(`is_summer`)}
-            className="border p-2 rounded flex-1"
+            className={cn("border p-2 rounded flex-1")}
             min="0"
           />
         </div>
-        <div className="space-y-3">
-          <label className="block text-sm font-medium mb-1">
+        <div className={cn("space-y-3")}>
+          <label className={cn("block text-sm font-medium mb-1")}>
             autumn product?
           </label>
           <input
             type="checkbox"
             {...register(`is_autumn`)}
-            className="border p-2 rounded flex-1"
+            className={cn("border p-2 rounded flex-1")}
             min="0"
           />
         </div>
-        <div className="space-y-3">
-          <label className="block text-sm font-medium mb-1">
+        <div className={cn("space-y-3")}>
+          <label className={cn("block text-sm font-medium mb-1")}>
             Product on sale?
           </label>
           <input
             type="checkbox"
             {...register(`is_offer`)}
-            className="border p-2 rounded flex-1"
+            className={cn("border p-2 rounded flex-1")}
             min="0"
           />
         </div>
       </div>
       <button
         type="submit"
-        className="bg-black text-white px-6 py-3 rounded w-full hover:bg-gray-800 font-medium transition"
+        className={cn(
+          "bg-black text-white px-6 py-3 rounded w-full hover:bg-gray-800 font-medium transition",
+        )}
       >
         Καταχώρηση Προϊόντος
       </button>

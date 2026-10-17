@@ -1,7 +1,8 @@
+import { cn } from "@/_lib/utils/cn";
 const OurLocations = () => {
   return (
     <svg
-      className="ml-14 gap-2"
+      className={cn("ml-14 gap-2")}
       width={45}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 384 512"

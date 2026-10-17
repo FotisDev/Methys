@@ -9,6 +9,7 @@ import { ResetPasswordFormData, resetPasswordSchema } from "@/_lib/utils/zod";
 import Link, { useLocalizedPath } from "@/components/LocaleLink/LocaleLink";
 import { useT } from "@/i18n/client";
 import { translateDynamic } from "@/i18n/translate";
+import { cn } from "@/_lib/utils/cn";
 
 function ResetPasswordForm() {
   const {
@@ -57,59 +58,79 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center relative justify-center bg-default-color">
-      <span className="absolute top-10 text-white left-10">Methys</span>
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <div
+      className={cn(
+        "min-h-screen flex items-center relative justify-center bg-default-color",
+      )}
+    >
+      <span className={cn("absolute top-10 text-white left-10")}>Methys</span>
+      <div className={cn("max-w-md w-full bg-white p-8 rounded-lg shadow-md")}>
+        <form onSubmit={handleSubmit(onSubmit)} className={cn("space-y-6")}>
           <div>
-            <h1 className="text-2xl font-bold text-vintage-green mb-2">
+            <h1 className={cn("text-2xl font-bold text-vintage-green mb-2")}>
               {t("auth.resetPassword")}
             </h1>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-vintage-green mb-2">
+            <label
+              className={cn(
+                "block text-sm font-medium text-vintage-green mb-2",
+              )}
+            >
               {t("auth.newPassword")}
             </label>
             <input
               type="password"
               {...register("password")}
-              className="w-full px-3 py-2 border border-vintage-green rounded-md"
+              className={cn(
+                "w-full px-3 py-2 border border-vintage-green rounded-md",
+              )}
               placeholder={t("auth.enterNewPassword")}
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className={cn("text-red-500 text-sm mt-1")}>
                 {tv(errors.password.message)}
               </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              className={cn("block text-sm font-medium text-gray-700 mb-2")}
+            >
               {t("auth.confirmPassword")}
             </label>
             <input
               type="password"
               {...register("confirmPassword")}
-              className="w-full px-3 py-2 border border-vintage-green rounded-md"
+              className={cn(
+                "w-full px-3 py-2 border border-vintage-green rounded-md",
+              )}
               placeholder={t("auth.confirmNewPassword")}
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className={cn("text-red-500 text-sm mt-1")}>
                 {tv(errors.confirmPassword.message)}
               </p>
             )}
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-md p-4">
-              <p className="text-red-600 text-sm">{error}</p>
+            <div
+              className={cn("bg-red-50 border border-red-200 rounded-md p-4")}
+            >
+              <p className={cn("text-red-600 text-sm")}>{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="bg-green-50 border border-green-200 rounded-md p-4">
-              <p className="text-green-600 text-sm">
+            <div
+              className={cn(
+                "bg-green-50 border border-green-200 rounded-md p-4",
+              )}
+            >
+              <p className={cn("text-green-600 text-sm")}>
                 {t("auth.passwordUpdated")}
               </p>
             </div>
@@ -118,18 +139,20 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full hover-colors py-2 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+            className={cn(
+              "w-full hover-colors py-2 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed",
+            )}
           >
             {loading ? t("auth.updating") : t("auth.updatePassword")}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+        <div className={cn("mt-6 text-center")}>
+          <p className={cn("text-sm text-gray-600")}>
             {t("auth.rememberPassword")}
             <Link
               href={"/login"}
-              className="font-medium text-vintage-green ml-1"
+              className={cn("font-medium text-vintage-green ml-1")}
             >
               {t("auth.signIn")}
             </Link>
@@ -144,8 +167,16 @@ export default function ResetPasswordPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-vintage-green">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2"></div>
+        <div
+          className={cn(
+            "min-h-screen flex items-center justify-center bg-vintage-green",
+          )}
+        >
+          <div
+            className={cn(
+              "animate-spin rounded-full h-12 w-12 border-t-2 border-b-2",
+            )}
+          ></div>
         </div>
       }
     >

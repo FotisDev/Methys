@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { createMetadata } from "@/components/SEO/metadata";
 import DropDownMenu from "@/components/header/DropDownMenu";
 import { getT } from "@/i18n/server";
+import { cn } from "@/_lib/utils/cn";
 
 type PageProps = { params: Promise<{ lang: string }> };
 
@@ -32,7 +33,7 @@ export default async function OfferPage({ params }: PageProps) {
 
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
-      <section className="padding-y px-0.5 bg-white">
+      <section className={cn("padding-y px-0.5 bg-white")}>
         <OffersPageComponent offerProduct={offers} />
       </section>
       <Footer />

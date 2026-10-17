@@ -1,3 +1,4 @@
+import { cn } from "@/_lib/utils/cn";
 // const whishListSvg = ({className = "w-6 h-6"}:{className:string}) => {
 //   return (
 //     <svg
@@ -27,7 +28,7 @@ const HeartIcon = ({
   if (filled) {
     return (
       <svg
-        className={sizeClass}
+        className={cn(sizeClass)}
         fill="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +40,7 @@ const HeartIcon = ({
 
   return (
     <svg
-      className={sizeClass}
+      className={cn(sizeClass)}
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"

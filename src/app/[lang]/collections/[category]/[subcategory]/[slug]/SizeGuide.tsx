@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useT } from "@/i18n/client";
+import { cn } from "@/_lib/utils/cn";
 
 interface SizeGuideModalProps {
   isOpen: boolean;
@@ -45,22 +46,32 @@ export default function SizeGuideModal({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 z-50 transition-opacity"
+        className={cn("fixed inset-0 bg-black/50 z-50 transition-opacity")}
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="fixed left-4 right-4 top-24 bottom-4 z-50 flex items-start justify-center">
+      <div
+        className={cn(
+          "fixed left-4 right-4 top-24 bottom-4 z-50 flex items-start justify-center",
+        )}
+      >
         <div
-          className="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg shadow-xl relative"
+          className={cn(
+            "bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg shadow-xl relative",
+          )}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10">
-            <h2 className="text-xl font-light">{t("sizeGuide.title")}</h2>
+          <div
+            className={cn(
+              "sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10",
+            )}
+          >
+            <h2 className={cn("text-xl font-light")}>{t("sizeGuide.title")}</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full transition"
+              className={cn("p-2 hover:bg-gray-100 rounded-full transition")}
               aria-label={t("common.close")}
             >
               <svg
@@ -81,17 +92,19 @@ export default function SizeGuideModal({
           </div>
 
           {/* Content */}
-          <div className="p-6 space-y-6">
+          <div className={cn("p-6 space-y-6")}>
             {/* Product Name */}
-            <h3 className="text-lg font-normal">{productName}</h3>
+            <h3 className={cn("text-lg font-normal")}>{productName}</h3>
 
             {/* Product Images */}
             {productImages.length > 0 && (
-              <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className={cn("flex gap-2 overflow-x-auto pb-2")}>
                 {productImages.slice(0, 6).map((image, index) => (
                   <div
                     key={index}
-                    className="relative w-16 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden"
+                    className={cn(
+                      "relative w-16 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden",
+                    )}
                   >
                     <Image
                       src={image}
@@ -101,7 +114,7 @@ export default function SizeGuideModal({
                       })}
                       fill
                       sizes="80px"
-                      className="object-cover"
+                      className={cn("object-cover")}
                     />
                   </div>
                 ))}
@@ -109,33 +122,41 @@ export default function SizeGuideModal({
             )}
 
             {/* Fit Information */}
-            <div className="space-y-2 text-sm">
+            <div className={cn("space-y-2 text-sm")}>
               <p>- {t("sizeGuide.looseFit")}</p>
               <p>- {t("sizeGuide.modelInfo")}</p>
               <p>- {t("sizeGuide.fitDescription")}</p>
             </div>
 
             {/* Measurement Unit Toggle */}
-            <div className="flex items-center gap-4">
-              <span className="text-sm font-medium">{t("sizeGuide.unit")}</span>
-              <div className="flex border border-gray-300 rounded overflow-hidden">
+            <div className={cn("flex items-center gap-4")}>
+              <span className={cn("text-sm font-medium")}>
+                {t("sizeGuide.unit")}
+              </span>
+              <div
+                className={cn(
+                  "flex border border-gray-300 rounded overflow-hidden",
+                )}
+              >
                 <button
                   onClick={() => setUnit("cm")}
-                  className={`px-4 py-1.5 text-sm transition ${
+                  className={cn(
+                    "px-4 py-1.5 text-sm transition",
                     unit === "cm"
                       ? "bg-vintage-green text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
+                      : "bg-white text-gray-700 hover:bg-gray-50",
+                  )}
                 >
                   cm
                 </button>
                 <button
                   onClick={() => setUnit("inch")}
-                  className={`px-4 py-1.5 text-sm transition ${
+                  className={cn(
+                    "px-4 py-1.5 text-sm transition",
                     unit === "inch"
                       ? "bg-vintage-green text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
+                      : "bg-white text-gray-700 hover:bg-gray-50",
+                  )}
                 >
                   inch
                 </button>
@@ -143,14 +164,18 @@ export default function SizeGuideModal({
             </div>
 
             {/* Size Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
+            <div className={cn("overflow-x-auto")}>
+              <table className={cn("w-full border-collapse")}>
                 <thead>
-                  <tr className="border-b-2 border-gray-900">
-                    <th className="text-left py-3 px-4 text-sm font-medium">
+                  <tr className={cn("border-b-2 border-gray-900")}>
+                    <th
+                      className={cn("text-left py-3 px-4 text-sm font-medium")}
+                    >
                       {t("sizeGuide.size")}
                     </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium">
+                    <th
+                      className={cn("text-left py-3 px-4 text-sm font-medium")}
+                    >
                       {t("sizeGuide.chest")}
                     </th>
                   </tr>
@@ -159,14 +184,13 @@ export default function SizeGuideModal({
                   {sizeData[unit].map((row, index) => (
                     <tr
                       key={row.size}
-                      className={
-                        index !== sizeData[unit].length - 1
-                          ? "border-b border-gray-200"
-                          : ""
-                      }
+                      className={cn(
+                        index !== sizeData[unit].length - 1 &&
+                          "border-b border-gray-200",
+                      )}
                     >
-                      <td className="py-3 px-4 text-sm">{row.size}</td>
-                      <td className="py-3 px-4 text-sm">{row.chest}</td>
+                      <td className={cn("py-3 px-4 text-sm")}>{row.size}</td>
+                      <td className={cn("py-3 px-4 text-sm")}>{row.chest}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -174,19 +198,21 @@ export default function SizeGuideModal({
             </div>
 
             {/* How to Measure */}
-            <div className="space-y-4">
-              <h3 className="text-base font-medium">
+            <div className={cn("space-y-4")}>
+              <h3 className={cn("text-base font-medium")}>
                 {t("sizeGuide.howToMeasure")}
               </h3>
-              <p className="text-sm">{t("sizeGuide.chestInstructions")}</p>
+              <p className={cn("text-sm")}>
+                {t("sizeGuide.chestInstructions")}
+              </p>
 
               {/* Measurement Diagram */}
-              <div className="flex justify-center py-6">
-                <div className="relative w-48 h-64">
+              <div className={cn("flex justify-center py-6")}>
+                <div className={cn("relative w-48 h-64")}>
                   {/* Body outline */}
                   <svg
                     viewBox="0 0 200 300"
-                    className="w-full h-full text-gray-300"
+                    className={cn("w-full h-full text-gray-300")}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.5"
@@ -221,7 +247,7 @@ export default function SizeGuideModal({
                       y2="110"
                       stroke="currentColor"
                       strokeWidth="2"
-                      className="text-vintage-green"
+                      className={cn("text-vintage-green")}
                     />
 
                     {/* Measurement points A */}
@@ -232,7 +258,7 @@ export default function SizeGuideModal({
                       fill="white"
                       stroke="currentColor"
                       strokeWidth="2"
-                      className="text-vintage-green"
+                      className={cn("text-vintage-green")}
                     />
                     <circle
                       cx="140"
@@ -241,7 +267,7 @@ export default function SizeGuideModal({
                       fill="white"
                       stroke="currentColor"
                       strokeWidth="2"
-                      className="text-vintage-green"
+                      className={cn("text-vintage-green")}
                     />
 
                     {/* Labels */}
@@ -249,7 +275,7 @@ export default function SizeGuideModal({
                       x="50"
                       y="115"
                       fontSize="12"
-                      className="fill-vintage-green font-medium"
+                      className={cn("fill-vintage-green font-medium")}
                     >
                       A
                     </text>
@@ -257,7 +283,7 @@ export default function SizeGuideModal({
                       x="145"
                       y="115"
                       fontSize="12"
-                      className="fill-vintage-green font-medium"
+                      className={cn("fill-vintage-green font-medium")}
                     >
                       A
                     </text>

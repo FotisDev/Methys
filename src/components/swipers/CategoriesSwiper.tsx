@@ -4,6 +4,7 @@ import CategoryCard from "@/components/cards/CategoryCard";
 import { useT } from "@/i18n/client";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import Link from "@/components/LocaleLink/LocaleLink";
+import { cn } from "@/_lib/utils/cn";
 
 type Slide = {
   category: {
@@ -31,20 +32,22 @@ export default function CategoriesSwiper({
   const t = useT();
   if (!categories?.length) {
     return (
-      <p className="text-center text-vintage-white">{t("nav.noCategories")}</p>
+      <p className={cn("text-center text-vintage-white")}>
+        {t("nav.noCategories")}
+      </p>
     );
   }
 
   return (
-    <div className="w-full pt-1">
-      <h2 className="p-4 text-base font-normal">
+    <div className={cn("w-full pt-1")}>
+      <h2 className={cn("p-4 text-base font-normal")}>
         <Link
           href="/collections"
-          className="inline-flex flex-row hover:underline"
+          className={cn("inline-flex flex-row hover:underline")}
         >
           {t("home.exploreCategories")}
           <span>
-            <RightArrowIcon className="w-5 h-5 mt-0.5" />
+            <RightArrowIcon className={cn("w-5 h-5 mt-0.5")} />
           </span>
         </Link>
       </h2>
@@ -66,7 +69,9 @@ export default function CategoriesSwiper({
         )}
         // clip instead of Swiper's overflow: hidden, which would stop the
         // card labels from sticking while the page scrolls.
-        className="h-auto max-h-[60vh] sm:max-h-[70vh] md:max-h-[80vh] overflow-clip!"
+        className={cn(
+          "h-auto max-h-[60vh] sm:max-h-[70vh] md:max-h-[80vh] overflow-clip!",
+        )}
       />
     </div>
   );

@@ -1,4 +1,5 @@
 import { VideoPlayButtonSVGProps } from "@/_lib/interfaces";
+import { cn } from "@/_lib/utils/cn";
 
 export default function VideoPlayButtonSVG({
   circleColor = "white",
@@ -10,7 +11,7 @@ export default function VideoPlayButtonSVG({
 
   return (
     <svg
-      className={`${className}`}
+      className={cn(className)}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
       style={{ width: svgSize, height: svgSize }}

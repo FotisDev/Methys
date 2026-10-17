@@ -13,6 +13,7 @@ import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { getT } from "@/i18n/server";
 import { translateCategory } from "@/i18n/translate";
 import { defaultLocale, isLocale } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 type PageProps = { params: Promise<{ lang: string }> };
 
@@ -58,11 +59,17 @@ export default async function ProductList({ params }: PageProps) {
 
   if (parentCategories.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-vintage-green fond-sans text-xl">
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center min-h-screen text-vintage-green fond-sans text-xl",
+        )}
+      >
         <p>{t("nav.noCategories")}</p>
         <Link
           href="/"
-          className="mt-4 px-4 py-2 text-sm font-medium text-vintage-green rounded-lg transition-colors"
+          className={cn(
+            "mt-4 px-4 py-2 text-sm font-medium text-vintage-green rounded-lg transition-colors",
+          )}
         >
           {t("common.backToHomepage")}
         </Link>
@@ -90,21 +97,35 @@ export default async function ProductList({ params }: PageProps) {
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <Schema markup={schema} />
-      <main className="w-full pt-24 px-4 sm:px-6 font-roboto text-vintage-green">
+      <main
+        className={cn(
+          "w-full pt-24 px-4 sm:px-6 font-roboto text-vintage-green",
+        )}
+      >
         <Breadcrumbs items={breadcrumbItems} locale={locale} />
 
-        <header className="mt-4 mb-6 md:mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-2">
-          <h1 className="text-2xl md:text-3xl font-light">
+        <header
+          className={cn(
+            "mt-4 mb-6 md:mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-2",
+          )}
+        >
+          <h1 className={cn("text-2xl md:text-3xl font-light")}>
             {t("collections.title")}
           </h1>
-          <p className="text-sm md:text-base text-gray-500 max-w-md md:text-right">
+          <p
+            className={cn(
+              "text-sm md:text-base text-gray-500 max-w-md md:text-right",
+            )}
+          >
             {t("collections.subtitle")}
           </p>
         </header>
 
         <section
           aria-label={t("collections.title")}
-          className="grid grid-cols-1 md:grid-cols-3 gap-x-2 gap-y-10 pb-16 md:pb-24"
+          className={cn(
+            "grid grid-cols-1 md:grid-cols-3 gap-x-2 gap-y-10 pb-16 md:pb-24",
+          )}
         >
           {parentCategories.map((category) => {
             const href = categoryPath(category);
@@ -116,37 +137,63 @@ export default async function ProductList({ params }: PageProps) {
 
             return (
               <article key={category.id}>
-                <Link href={href} className="group block">
-                  <div className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-white-f6">
+                <Link href={href} className={cn("group block")}>
+                  <div
+                    className={cn(
+                      "relative aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-white-f6",
+                    )}
+                  >
                     <Image
                       src={category.image_url}
                       alt={t("collections.categoryAlt", { name })}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
+                      className={cn(
+                        "object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.03]",
+                      )}
                       priority
                     />
                   </div>
 
-                  <div className="mt-4 flex items-baseline justify-between gap-4">
-                    <h2 className="text-lg font-light capitalize">{name}</h2>
-                    <span className="inline-flex items-center gap-1 text-xs text-gray-500 group-hover:text-vintage-green group-hover:underline underline-offset-4">
+                  <div
+                    className={cn(
+                      "mt-4 flex items-baseline justify-between gap-4",
+                    )}
+                  >
+                    <h2 className={cn("text-lg font-light capitalize")}>
+                      {name}
+                    </h2>
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1 text-xs text-gray-500 group-hover:text-vintage-green group-hover:underline underline-offset-4",
+                      )}
+                    >
                       {t("home.shopNow")}
-                      <RightArrowIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      <RightArrowIcon
+                        className={cn(
+                          "w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5",
+                        )}
+                      />
                     </span>
                   </div>
                 </Link>
 
                 {subcategories.length > 0 && (
-                  <ul className="mt-1 flex flex-wrap text-sm text-gray-500">
+                  <ul
+                    className={cn("mt-1 flex flex-wrap text-sm text-gray-500")}
+                  >
                     {subcategories.map((sub) => (
                       <li
                         key={sub.id}
-                        className="not-first:before:content-['·'] not-first:before:px-2"
+                        className={cn(
+                          "not-first:before:content-['·'] not-first:before:px-2",
+                        )}
                       >
                         <Link
                           href={`${href}/${sub.slug}`}
-                          className="capitalize hover:text-vintage-green hover:underline underline-offset-4"
+                          className={cn(
+                            "capitalize hover:text-vintage-green hover:underline underline-offset-4",
+                          )}
                         >
                           {translateCategory(t, sub.slug, sub.name)}
                         </Link>

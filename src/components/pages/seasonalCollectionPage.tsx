@@ -4,6 +4,7 @@ import SeasonalCollectionCard from "@/components/cards/SeasonalCollectionCard";
 import { ProductInDetails } from "@/_lib/types";
 import { Breadcrumbs } from "../breadcrumb/breadcrumbSchema";
 import { useLocale, useT } from "@/i18n/client";
+import { cn } from "@/_lib/utils/cn";
 
 interface SeasonalCollectionPageProps {
   products: ProductInDetails[] | null;
@@ -26,10 +27,14 @@ export function SeasonalCollectionPageComponent({
   ];
 
   return (
-    <section className="font-roboto text-vintage-green pt-16">
+    <section className={cn("font-roboto text-vintage-green pt-16")}>
       <Breadcrumbs items={breadcrumbs} locale={locale} />
-      <h1 className="text-lg py-2">{t("seasonalCollection.title")}</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <h1 className={cn("text-lg py-2")}>{t("seasonalCollection.title")}</h1>
+      <div
+        className={cn(
+          "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6",
+        )}
+      >
         {products.map((product) => (
           <SeasonalCollectionCard key={product.id} item={product} />
         ))}

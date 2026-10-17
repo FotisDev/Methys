@@ -1,9 +1,10 @@
 "use client";
 import { ImageLoaderProps } from "next/image";
+import { env } from "@/env";
 
 const myImageLoader = ({ src, width, quality }: ImageLoaderProps): string => {
   if (src.startsWith("/")) {
-    return `${process.env.NEXT_PUBLIC_SITE_URL || ""}${src}`;
+    return `${env.NEXT_PUBLIC_SITE_URL || ""}${src}`;
   }
   try {
     const url = new URL(src);

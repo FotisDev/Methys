@@ -1,8 +1,7 @@
 import { defaultLocale, locales, type Locale } from "@/i18n.config";
+import { env } from "@/env";
 
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-)
+export const SITE_URL = (env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000")
   .trim()
   .replace(/\/+$/, "");
 

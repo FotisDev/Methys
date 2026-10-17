@@ -9,6 +9,7 @@ import { DEFAULT_METADATA } from "@/_lib/constants";
 import { SITE_URL } from "@/components/SEO/urls";
 import { isLocale, localeMeta } from "@/i18n.config";
 import { I18nProvider } from "@/i18n/client";
+import { cn } from "@/_lib/utils/cn";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -31,7 +32,7 @@ export default async function LangLayout({
   if (!isLocale(lang)) notFound();
 
   return (
-    <html lang={localeMeta[lang].htmlLang} className="scroll-smooth">
+    <html lang={localeMeta[lang].htmlLang} className={cn("scroll-smooth")}>
       <body id="mainHTML">
         <I18nProvider locale={lang}>
           <SpeedInsights />

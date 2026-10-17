@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/_lib/supabase/admin";
 import { getResend } from "@/_lib/backend/email/resend";
+import { env } from "@/env";
 
 // Keeps Supabase in sync when someone unsubscribes through the link Resend adds
 // to broadcasts, or a contact is deleted in the Resend dashboard.
 // Subscribe this endpoint to contact.updated and contact.deleted in Resend.
 export async function POST(req: NextRequest) {
+  const webhookSecret = env.RESEND_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    console.error("RESEND_WEBHOOK_SECRET is not set");
+    return NextResponse.json(
+      { error: "Webhook not configured" },
+      { status: 500 },
+    );
+  }
+
   const payload = await req.text();
 
   let event;
@@ -18,7 +28,7 @@ export async function POST(req: NextRequest) {
         timestamp: req.headers.get("svix-timestamp") ?? "",
         signature: req.headers.get("svix-signature") ?? "",
       },
-      webhookSecret: process.env.RESEND_WEBHOOK_SECRET!,
+      webhookSecret,
     });
   } catch (err) {
     console.error("Resend webhook verification failed:", err);

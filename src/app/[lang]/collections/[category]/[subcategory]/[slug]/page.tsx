@@ -30,6 +30,7 @@ import { fetchProductReviews } from "@/_lib/backend/reviews/queries";
 import { summarizeReviews } from "@/_lib/utils/reviews";
 import ProductReviews from "@/components/reviews/ProductReviews";
 import Stars from "@/components/reviews/Stars";
+import { cn } from "@/_lib/utils/cn";
 
 export const revalidate = 600;
 
@@ -135,33 +136,35 @@ export default async function ProductDetailPage({
 
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
-      <section className="relative w-full pt-20 font-roboto text-vintage-green">
-        <div className="mx-auto px-4 sm:px-6">
+      <section
+        className={cn("relative w-full pt-20 font-roboto text-vintage-green")}
+      >
+        <div className={cn("mx-auto px-4 sm:px-6")}>
           <Breadcrumbs items={breadcrumbItems} locale={locale} />
         </div>
 
-        <div className="mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        <div className={cn("mx-auto px-4 sm:px-6")}>
+          <div
+            className={cn(
+              "grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start",
+            )}
+          >
             {/* LEFT IMAGES */}
             <div
-              className="
-                          flex lg:grid lg:grid-cols-2
-                          gap-2
-                          overflow-x-auto lg:overflow-visible
-                          snap-x snap-mandatory lg:snap-none
-                          -mx-4 px-4 lg:mx-0 lg:px-0
-                          scrollbar-hide
-                        "
+              className={cn(
+                "flex lg:grid lg:grid-cols-2 gap-2 overflow-x-auto lg:overflow-visible snap-x snap-mandatory lg:snap-none -mx-4 px-4 lg:mx-0 lg:px-0 scrollbar-hide",
+              )}
             >
               {product.image_url?.map((img, i) => (
                 <div
                   key={i}
                   // A single photo fills the width; several peek so they can be swiped.
-                  className={`relative bg-gray-50 overflow-hidden shrink-0 snap-center lg:snap-none lg:w-auto ${
+                  className={cn(
+                    "relative bg-gray-50 overflow-hidden shrink-0 snap-center lg:snap-none lg:w-auto",
                     (product.image_url?.length ?? 0) > 1
                       ? "w-[85vw] sm:w-[70vw]"
-                      : "w-full"
-                  }`}
+                      : "w-full",
+                  )}
                   style={{ aspectRatio: "3/4" }}
                 >
                   <Image
@@ -176,12 +179,16 @@ export default async function ProductDetailPage({
                     }
                     fill
                     sizes="(max-width: 1024px) 85vw, 25vw"
-                    className="object-cover object-center"
+                    className={cn("object-cover object-center")}
                     priority={i === 0}
                   />
 
                   {i === 0 && product.is_offer && (
-                    <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 tracking-wider">
+                    <div
+                      className={cn(
+                        "absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 tracking-wider",
+                      )}
+                    >
                       {t("product.newOffer")}
                     </div>
                   )}
@@ -189,7 +196,9 @@ export default async function ProductDetailPage({
                   {i === 0 && (
                     <button
                       aria-label={t("product.addToWishlist")}
-                      className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition"
+                      className={cn(
+                        "absolute top-4 right-4 w-9 h-9 flex items-center justify-center bg-white/80 rounded-full hover:bg-white transition",
+                      )}
                     >
                       ♡
                     </button>
@@ -199,10 +208,14 @@ export default async function ProductDetailPage({
             </div>
 
             {/*RIGHT BAR */}
-            <div className="lg:sticky lg:top-32 lg:h-fit space-y-8">
+            <div className={cn("lg:sticky lg:top-32 lg:h-fit space-y-8")}>
               <div>
                 {product.name && (
-                  <h1 className="text-2xl md:text-3xl mb-2 font-light tracking-wide">
+                  <h1
+                    className={cn(
+                      "text-2xl md:text-3xl mb-2 font-light tracking-wide",
+                    )}
+                  >
                     {product.name}
                   </h1>
                 )}
@@ -210,31 +223,33 @@ export default async function ProductDetailPage({
                 {reviewSummary.count > 0 && (
                   <a
                     href="#reviews"
-                    className="inline-flex items-center gap-2 text-xs mb-3 hover:underline underline-offset-4"
+                    className={cn(
+                      "inline-flex items-center gap-2 text-xs mb-3 hover:underline underline-offset-4",
+                    )}
                   >
                     <Stars
                       rating={reviewSummary.average}
                       label={t("reviews.stars", {
                         rating: reviewSummary.average,
                       })}
-                      className="w-3.5 h-3.5"
+                      className={cn("w-3.5 h-3.5")}
                     />
                     {translateCount(t, "reviews.count", reviewSummary.count)}
                   </a>
                 )}
 
                 {product.description && (
-                  <p className="text-sm text-gray-600 mb-4">
+                  <p className={cn("text-sm text-gray-600 mb-4")}>
                     {product.description.split(" ").slice(0, 5).join(" ")}
                   </p>
                 )}
 
-                <div className="flex items-baseline gap-3">
-                  <span className="text-xl font-normal">
+                <div className={cn("flex items-baseline gap-3")}>
+                  <span className={cn("text-xl font-normal")}>
                     {formatPrice(pricing.finalPrice, locale)}
                   </span>
                   {pricing.isDiscounted && (
-                    <span className="text-sm text-gray-500 line-through">
+                    <span className={cn("text-sm text-gray-500 line-through")}>
                       {formatPrice(pricing.originalPrice, locale)}
                     </span>
                   )}
@@ -243,72 +258,94 @@ export default async function ProductDetailPage({
 
               <ProductActionsInline product={product} />
 
-              <div className="border-t pt-6 space-y-4">
-                <details className="group">
-                  <summary className="flex justify-between items-center cursor-pointer list-none">
-                    <span className="text-sm font-medium">
+              <div className={cn("border-t pt-6 space-y-4")}>
+                <details className={cn("group")}>
+                  <summary
+                    className={cn(
+                      "flex justify-between items-center cursor-pointer list-none",
+                    )}
+                  >
+                    <span className={cn("text-sm font-medium")}>
                       {t("product.freeDelivery", {
                         amount: formatPrice(FREE_SHIPPING_THRESHOLD, locale),
                       })}
                     </span>
-                    <span className="transition group-open:rotate-45">+</span>
+                    <span className={cn("transition group-open:rotate-45")}>
+                      +
+                    </span>
                   </summary>
-                  <div className="mt-3 text-sm text-gray-600 leading-relaxed">
+                  <div
+                    className={cn("mt-3 text-sm text-gray-600 leading-relaxed")}
+                  >
                     <p>{t("product.expectedDelivery")}</p>
                   </div>
                 </details>
 
-                <details className="group border-t pt-4">
-                  <summary className="flex justify-between items-center cursor-pointer list-none">
-                    <span className="text-sm font-medium">
+                <details className={cn("group border-t pt-4")}>
+                  <summary
+                    className={cn(
+                      "flex justify-between items-center cursor-pointer list-none",
+                    )}
+                  >
+                    <span className={cn("text-sm font-medium")}>
                       {t("product.extendedReturns")}
                     </span>
-                    <span className="transition group-open:rotate-45">+</span>
+                    <span className={cn("transition group-open:rotate-45")}>
+                      +
+                    </span>
                   </summary>
-                  <div className="mt-3 text-sm text-vintage-brown leading-relaxed hover:underline">
+                  <div
+                    className={cn(
+                      "mt-3 text-sm text-vintage-brown leading-relaxed hover:underline",
+                    )}
+                  >
                     <Link href={"/help"}>{t("product.needHelp")}</Link>
                   </div>
                 </details>
               </div>
 
-              <div className="border-t pt-6">
+              <div className={cn("border-t pt-6")}>
                 {product.size_description && (
-                  <p className="text-sm text-gray-700 leading-relaxed mb-6">
+                  <p
+                    className={cn("text-sm text-gray-700 leading-relaxed mb-6")}
+                  >
                     {product.size_description}
                   </p>
                 )}
                 {product.description && (
-                  <div className="space-y-2 text-sm ">
+                  <div className={cn("space-y-2 text-sm")}>
                     {product.description}
                   </div>
                 )}
                 {product.product_details && (
-                  <div className="space-y-2 text-sm">
+                  <div className={cn("space-y-2 text-sm")}>
                     {product.product_details}
                   </div>
                 )}
               </div>
 
               {product.product_variants?.length > 0 && (
-                <div className="border-t pt-6">
-                  <h3 className="text-sm font-medium mb-3">
+                <div className={cn("border-t pt-6")}>
+                  <h3 className={cn("text-sm font-medium mb-3")}>
                     {t("product.sizeStockInfo")}
                   </h3>
-                  <div className="space-y-2">
+                  <div className={cn("space-y-2")}>
                     {product.product_variants.map((variant, index) => (
                       <div
                         key={index}
-                        className="flex justify-between items-center text-sm py-2 border-b border-gray-100"
+                        className={cn(
+                          "flex justify-between items-center text-sm py-2 border-b border-gray-100",
+                        )}
                       >
                         <span>
                           {t("product.sizeLabel", { size: variant.size })}
                         </span>
                         <span
-                          className={
+                          className={cn(
                             variant.quantity > 0
                               ? "text-vintage-brown"
-                              : "text-red-600"
-                          }
+                              : "text-red-600",
+                          )}
                         >
                           {variant.quantity > 0
                             ? t("product.inStock", {
@@ -322,7 +359,7 @@ export default async function ProductDetailPage({
                 </div>
               )}
 
-              <div className="text-xs text-gray-500">
+              <div className={cn("text-xs text-gray-500")}>
                 {t("product.productId", { id: product.id })}
               </div>
             </div>
@@ -339,7 +376,7 @@ export default async function ProductDetailPage({
         t={t}
       />
 
-      <div className="px-4 sm:px-6">
+      <div className={cn("px-4 sm:px-6")}>
         <SeasonalCollectionSection
           title={t("product.recommendations")}
           fetcher={ProductBySpringSeason}

@@ -7,6 +7,7 @@ import { SeasonalCollectionPageComponent } from "@/components/pages/seasonalColl
 import { HeaderProvider } from "@/components/providers/HeaderProvider";
 import { createMetadata } from "@/components/SEO/metadata";
 import { getT } from "@/i18n/server";
+import { cn } from "@/_lib/utils/cn";
 
 type PageProps = { params: Promise<{ lang: string }> };
 
@@ -28,7 +29,7 @@ export default async function SeasonalCollection({ params }: PageProps) {
 
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
-      <section className="padding-y padding-x bg-white">
+      <section className={cn("padding-y padding-x bg-white")}>
         <SeasonalCollectionPageComponent products={products} title={""} />
       </section>
       <Footer />

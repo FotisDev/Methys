@@ -1,7 +1,8 @@
-export default function BreadcrumbArrow({ className }: { className: string }) {
+import { cn } from "@/_lib/utils/cn";
+export default function BreadcrumbArrow({ className }: { className?: string }) {
   return (
     <svg
-      className={className}
+      className={cn(className)}
       width={10}
       height={10}
       xmlns="http://www.w3.org/2000/svg"

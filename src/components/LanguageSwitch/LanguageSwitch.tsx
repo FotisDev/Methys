@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { locales } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 const LOCALE_LABELS: Record<string, string> = {
   en: "🇬🇧",
@@ -40,14 +41,19 @@ const LanguageSwitcher = () => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className={cn("relative")} ref={dropdownRef}>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex items-center gap-1 text-sm uppercase hover:opacity-80 transition-opacity cursor-pointer"
+        className={cn(
+          "flex items-center gap-1 text-sm uppercase hover:opacity-80 transition-opacity cursor-pointer",
+        )}
       >
         {LOCALE_LABELS[currentLocale] ?? currentLocale.toUpperCase()}
         <svg
-          className={`w-3 h-3 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          className={cn(
+            "w-3 h-3 transition-transform duration-200",
+            isOpen && "rotate-180",
+          )}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -62,17 +68,21 @@ const LanguageSwitcher = () => {
       </button>
 
       {isOpen && (
-        <ul className="absolute right-0 mt-2 w-32 bg-white border border-gray-100 rounded-lg shadow-lg overflow-hidden z-50">
+        <ul
+          className={cn(
+            "absolute right-0 mt-2 w-32 bg-white border border-gray-100 rounded-lg shadow-lg overflow-hidden z-50",
+          )}
+        >
           {locales.map((locale) => (
             <li key={locale}>
               <button
                 onClick={() => switchLocale(locale)}
-                className={`w-full text-left px-4 py-2 text-xs uppercase hover:bg-gray-50 transition-colors
-                  ${
-                    currentLocale === locale
-                      ? "font-bold text-vintage-green bg-gray-50"
-                      : "text-gray-700"
-                  }`}
+                className={cn(
+                  "w-full text-left px-4 py-2 text-xs uppercase hover:bg-gray-50 transition-colors",
+                  currentLocale === locale
+                    ? "font-bold text-vintage-green bg-gray-50"
+                    : "text-gray-700",
+                )}
               >
                 {LOCALE_LABELS[locale] ?? locale.toUpperCase()}
               </button>

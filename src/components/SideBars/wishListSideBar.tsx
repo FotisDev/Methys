@@ -9,6 +9,7 @@ import { ProductInDetails } from "@/_lib/types";
 import { useFormatPrice, useT } from "@/i18n/client";
 import { translateCount } from "@/i18n/translate";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
+import { cn } from "@/_lib/utils/cn";
 
 interface WishlistSidebarProps {
   isOpen: boolean;
@@ -68,19 +69,25 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black/40 transition-opacity duration-300 z-40 ${
-          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={cn(
+          "fixed inset-0 bg-black/40 transition-opacity duration-300 z-40",
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none",
+        )}
         onClick={onClose}
       />
 
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-white overflow-hidden transform transition-transform duration-300 ease-in-out z-50 flex flex-col ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={cn(
+          "fixed top-0 right-0 h-full w-full max-w-md bg-white overflow-hidden transform transition-transform duration-300 ease-in-out z-50 flex flex-col",
+          isOpen ? "translate-x-0" : "translate-x-full",
+        )}
       >
-        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
-          <span className="text-lg text-vintage-green">
+        <div
+          className={cn(
+            "flex items-center justify-between px-6 py-5 border-b border-gray-200",
+          )}
+        >
+          <span className={cn("text-lg text-vintage-green")}>
             {t("wishlist.title")}
             {validWishlistItems.length > 0
               ? ` (${validWishlistItems.length})`
@@ -89,10 +96,12 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
           <button
             onClick={onClose}
             aria-label={t("wishlist.close")}
-            className="p-1 hover:opacity-60 transition-opacity cursor-pointer"
+            className={cn(
+              "p-1 hover:opacity-60 transition-opacity cursor-pointer",
+            )}
           >
             <svg
-              className="w-5 h-5"
+              className={cn("w-5 h-5")}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -107,29 +116,37 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
           </button>
         </div>
 
-        <div className="flex flex-col flex-1 min-h-0">
+        <div className={cn("flex flex-col flex-1 min-h-0")}>
           {validWishlistItems.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <p className="text-lg text-gray-900 mb-2">
+            <div
+              className={cn(
+                "flex-1 flex flex-col items-center justify-center p-8 text-center",
+              )}
+            >
+              <p className={cn("text-lg text-gray-900 mb-2")}>
                 {t("wishlist.empty")}
               </p>
-              <p className="text-sm text-gray-600 mb-6">
+              <p className={cn("text-sm text-gray-600 mb-6")}>
                 {t("wishlist.emptyHint")}
               </p>
               <Link
                 href="/collections"
                 onClick={onClose}
-                className="py-3 px-6 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
+                className={cn(
+                  "py-3 px-6 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer",
+                )}
               >
                 {t("common.startShopping")}
               </Link>
             </div>
           ) : (
             <>
-              <div className="px-6 py-4 border-b border-gray-200">
+              <div className={cn("px-6 py-4 border-b border-gray-200")}>
                 <button
                   onClick={handleClearWishlist}
-                  className="text-xs underline text-vintage-green hover:text-vintage-brown transition-colors cursor-pointer"
+                  className={cn(
+                    "text-xs underline text-vintage-green hover:text-vintage-brown transition-colors cursor-pointer",
+                  )}
                 >
                   {t("wishlist.clearAll")} (
                   {translateCount(t, "common.items", validWishlistItems.length)}
@@ -137,7 +154,11 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain px-6">
+              <div
+                className={cn(
+                  "flex-1 overflow-y-auto min-h-0 overscroll-contain px-6",
+                )}
+              >
                 {validWishlistItems.map((item) => {
                   const availableSizes = (item.product_variants ?? [])
                     .filter((variant) => variant.quantity > 0)
@@ -146,41 +167,62 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                   return (
                     <div
                       key={item.id}
-                      className="flex gap-4 py-6 border-b border-gray-200"
+                      className={cn("flex gap-4 py-6 border-b border-gray-200")}
                     >
-                      <div className="w-20 h-24 relative flex-shrink-0 bg-gray-100">
+                      <div
+                        className={cn(
+                          "w-20 h-24 relative flex-shrink-0 bg-gray-100",
+                        )}
+                      >
                         {item.image_url && (
                           <Image
                             src={getValidImage(item.image_url?.[0])}
                             alt={item.name}
                             fill
-                            className="object-cover"
+                            className={cn("object-cover")}
                             sizes="80px"
                           />
                         )}
                       </div>
 
-                      <div className="flex-1 min-w-0 flex flex-col justify-between">
-                        <div className="flex items-start justify-between gap-3">
-                          <p className="text-sm text-vintage-green leading-snug line-clamp-2">
+                      <div
+                        className={cn(
+                          "flex-1 min-w-0 flex flex-col justify-between",
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "flex items-start justify-between gap-3",
+                          )}
+                        >
+                          <p
+                            className={cn(
+                              "text-sm text-vintage-green leading-snug line-clamp-2",
+                            )}
+                          >
                             {item.name}
                           </p>
-                          <span className="text-sm text-vintage-green shrink-0">
+                          <span
+                            className={cn(
+                              "text-sm text-vintage-green shrink-0",
+                            )}
+                          >
                             {formatPrice(getProductPricing(item).finalPrice)}
                           </span>
                         </div>
 
                         {availableSizes.length > 0 && (
-                          <div className="flex gap-1.5 flex-wrap mt-2">
+                          <div className={cn("flex gap-1.5 flex-wrap mt-2")}>
                             {availableSizes.map((size) => (
                               <button
                                 key={size}
                                 onClick={() => handleSizeSelect(item.id, size)}
-                                className={`text-[11px] px-2 py-1 border transition-colors cursor-pointer ${
+                                className={cn(
+                                  "text-[11px] px-2 py-1 border transition-colors cursor-pointer",
                                   selectedSizes[item.id] === size
                                     ? "border-vintage-green bg-vintage-green text-white"
-                                    : "border-gray-300 text-vintage-green hover:border-vintage-green"
-                                }`}
+                                    : "border-gray-300 text-vintage-green hover:border-vintage-green",
+                                )}
                               >
                                 {size}
                               </button>
@@ -188,19 +230,27 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                           </div>
                         )}
 
-                        <div className="flex items-center justify-between mt-3">
+                        <div
+                          className={cn(
+                            "flex items-center justify-between mt-3",
+                          )}
+                        >
                           <button
                             onClick={() =>
                               handleAddToCart(item, availableSizes)
                             }
-                            className="text-xs uppercase tracking-wide border border-vintage-green text-vintage-green px-3 py-1.5 hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
+                            className={cn(
+                              "text-xs uppercase tracking-wide border border-vintage-green text-vintage-green px-3 py-1.5 hover:bg-vintage-green hover:text-white transition-colors cursor-pointer",
+                            )}
                           >
                             {t("common.addToCart")}
                           </button>
 
                           <button
                             onClick={() => handleRemoveFromWishlist(item.id)}
-                            className="text-xs underline text-vintage-green hover:text-vintage-brown transition-colors cursor-pointer"
+                            className={cn(
+                              "text-xs underline text-vintage-green hover:text-vintage-brown transition-colors cursor-pointer",
+                            )}
                           >
                             {t("common.remove")}
                           </button>
@@ -211,16 +261,28 @@ const WishlistSidebar: React.FC<WishlistSidebarProps> = ({
                 })}
               </div>
 
-              <div className="px-6 py-4 bg-white border-t border-gray-200">
-                <div className="flex gap-3">
+              <div
+                className={cn("px-6 py-4 bg-white border-t border-gray-200")}
+              >
+                <div className={cn("flex gap-3")}>
                   <button
                     onClick={onClose}
-                    className="flex-1 py-3 px-4 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer"
+                    className={cn(
+                      "flex-1 py-3 px-4 border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors cursor-pointer",
+                    )}
                   >
                     {t("common.continueShopping")}
                   </button>
-                  <Link href="/Wishlist" className="flex-1" onClick={onClose}>
-                    <button className="w-full bg-vintage-green text-white py-3 px-4 hover:opacity-90 transition-opacity cursor-pointer">
+                  <Link
+                    href="/Wishlist"
+                    className={cn("flex-1")}
+                    onClick={onClose}
+                  >
+                    <button
+                      className={cn(
+                        "w-full bg-vintage-green text-white py-3 px-4 hover:opacity-90 transition-opacity cursor-pointer",
+                      )}
+                    >
                       {t("wishlist.viewAll")}
                     </button>
                   </Link>

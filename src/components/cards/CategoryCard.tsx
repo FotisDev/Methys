@@ -5,6 +5,7 @@ import Image from "next/image";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useT } from "@/i18n/client";
 import { translateCategory } from "@/i18n/translate";
+import { cn } from "@/_lib/utils/cn";
 
 type CategoryType = {
   id: number;
@@ -48,14 +49,16 @@ export default function CategoryCard({
   return (
     <Link
       href={`/collections/${category.slug}/${subcategory.slug}`}
-      className="relative block w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]"
+      className={cn(
+        "relative block w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]",
+      )}
     >
       <Image
         src={subcategory.image_url || category.image_url || "/yo.jpg"}
         alt={`${categoryName} - ${subcategoryName}`}
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
-        className="object-cover object-center"
+        className={cn("object-cover object-center")}
         priority={priority}
         placeholder={blurDataUrl ? "blur" : "empty"}
         blurDataURL={blurDataUrl}
@@ -63,15 +66,25 @@ export default function CategoryCard({
       {/* The label starts halfway down the photo, then holds at the middle of
           the screen while the photo scrolls up, so it travels down to the
           bottom. Needs the slider to use overflow: clip (see CategoriesSwiper). */}
-      <div aria-hidden="true" className="h-1/2" />
-      <div className="sticky top-[50vh] z-10 w-fit p-3 sm:p-4 md:p-6 text-vintage-white fond-sans">
-        <h3 className="text-base lg:text-xl capitalize sm:text-sm opacity-90">
+      <div aria-hidden="true" className={cn("h-1/2")} />
+      <div
+        className={cn(
+          "sticky top-[50vh] z-10 w-fit p-3 sm:p-4 md:p-6 text-vintage-white fond-sans",
+        )}
+      >
+        <h3
+          className={cn(
+            "text-base lg:text-xl capitalize sm:text-sm opacity-90",
+          )}
+        >
           {subcategoryName}
         </h3>
-        <div className=" flex flex-row">
-          <p className="text-[10px] hover:underline ">{t("home.shopNow")}</p>
+        <div className={cn("flex flex-row")}>
+          <p className={cn("text-[10px] hover:underline")}>
+            {t("home.shopNow")}
+          </p>
           <span>
-            <RightArrowIcon className="w-4 h-4" />
+            <RightArrowIcon className={cn("w-4 h-4")} />
           </span>
         </div>
       </div>

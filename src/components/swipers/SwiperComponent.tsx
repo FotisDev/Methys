@@ -7,6 +7,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { ProductInDetails } from "@/_lib/types";
 import SeasonalCollectionCard from "../cards/SeasonalCollectionCard";
+import { cn } from "@/_lib/utils/cn";
 
 interface Props {
   items: ProductInDetails[];
@@ -20,7 +21,7 @@ export default function SwiperComponent({ items }: Props) {
       navigation
       pagination={{ clickable: true }}
       modules={[]}
-      className="w-full"
+      className={cn("w-full")}
       breakpoints={{
         100: { slidesPerView: 2 },
         200: { slidesPerView: 2 },

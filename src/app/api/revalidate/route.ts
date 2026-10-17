@@ -1,8 +1,9 @@
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { env } from "@/env";
 
 export async function GET(request: NextRequest) {
-  const secret = process.env.REVALIDATE_SECRET;
+  const secret = env.REVALIDATE_SECRET;
   const provided =
     request.headers.get("x-revalidate-secret") ??
     request.nextUrl.searchParams.get("secret");

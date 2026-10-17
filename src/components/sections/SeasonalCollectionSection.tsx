@@ -3,6 +3,7 @@ import SwiperComponent from "../swipers/SwiperComponent";
 import { ProductInDetails } from "@/_lib/types";
 import { getLocale, getT } from "@/i18n/server";
 import { translateProducts } from "@/_lib/backend/translations/action";
+import { cn } from "@/_lib/utils/cn";
 
 type ProductFetcher = () => Promise<ProductInDetails[] | null>;
 
@@ -43,10 +44,14 @@ export default async function SeasonalCollectionSection({
   }
 
   return (
-    <section className="new-collection pb-1 sm:pb-12 md:pb-20 lg:pb-1 pt-5 fond-sans bg-white">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-sm font-normal pl-2">
-          <Link href={href} className="text-black hover:underline">
+    <section
+      className={cn(
+        "new-collection pb-1 sm:pb-12 md:pb-20 lg:pb-1 pt-5 fond-sans bg-white",
+      )}
+    >
+      <div className={cn("flex items-center justify-between mb-6")}>
+        <h2 className={cn("text-sm font-normal pl-2")}>
+          <Link href={href} className={cn("text-black hover:underline")}>
             {title} →
           </Link>
         </h2>

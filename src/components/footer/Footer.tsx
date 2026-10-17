@@ -16,6 +16,7 @@ import { useT } from "@/i18n/client";
 import { rich } from "@/i18n/rich";
 import NewsletterForm from "./NewsletterForm";
 import { NEWSLETTER_DISCOUNT_PERCENT } from "@/_lib/constants";
+import { cn } from "@/_lib/utils/cn";
 
 export default function Footer() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -65,26 +66,22 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full font-robboto bg-white padding-x">
+    <footer className={cn("w-full font-robboto bg-white padding-x")}>
       <section
-        className="
-          grid
-          grid-cols-1
-          sm:grid-cols-1
-          md:grid-cols-1
-          lg:grid-cols-4
-          gap-8
-          lg:gap-12
-          px-3
-          py-10
-        "
+        className={cn(
+          "grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 px-3 py-10",
+        )}
       >
-        <div className="flex flex-col gap-6 w-full sm:w-96 lg:w-full">
-          <h3 className="font-bold text-vintage-green">
+        <div
+          className={cn(
+            "flex flex-col gap-6 w-full sm:w-96 lg:w-full mx-auto lg:mx-0 text-center lg:text-left",
+          )}
+        >
+          <h3 className={cn("font-bold text-vintage-green")}>
             {t("footer.joinCommunity")}
           </h3>
 
-          <p className="text-sm">
+          <p className={cn("text-sm")}>
             {t("footer.newsletterText", {
               percent: NEWSLETTER_DISCOUNT_PERCENT,
             })}
@@ -92,34 +89,37 @@ export default function Footer() {
 
           <NewsletterForm />
 
-          <div className="flex gap-4">
+          <div className={cn("flex gap-4 justify-center lg:justify-start")}>
             {socials.map((social, index) => {
               const Icon = social.icon;
               return (
-                <div key={index} className="w-5 h-5 cursor-pointer text-black">
+                <div
+                  key={index}
+                  className={cn("w-5 h-5 cursor-pointer text-black")}
+                >
                   {Icon ? <Icon /> : social.name}
                 </div>
               );
             })}
           </div>
         </div>
-        <div className="flex flex-col gap-2 text-center lg:text-left">
+        <div className={cn("flex flex-col gap-2 text-center lg:text-left")}>
           <FoldableSectionComponent
             title={legalPolicyColumn.category}
             items={legalPolicyColumn.items}
           />
         </div>
-        <div className="flex flex-col gap-2 text-center lg:text-left">
+        <div className={cn("flex flex-col gap-2 text-center lg:text-left")}>
           <FoldableSectionComponent
             title={quickLinksColumn.category}
             items={quickLinksColumn.items}
           />
         </div>
-        <div className="flex flex-col gap-2 text-center lg:text-left">
-          <h3 className="text-vintage-green font-bold">
+        <div className={cn("flex flex-col gap-2 text-center lg:text-left")}>
+          <h3 className={cn("text-vintage-green font-bold")}>
             {paymentMethods.category}
           </h3>
-          <div className="flex gap-2 justify-center lg:justify-start">
+          <div className={cn("flex gap-2 justify-center lg:justify-start")}>
             {paymentMethods.items.map((item, index) => (
               <Image
                 key={index}
@@ -130,54 +130,57 @@ export default function Footer() {
               />
             ))}
           </div>
-          <div className="flex flex-col gap-1 pt-5 ">
-            <h3 className="text-vintage-green font-bold">
+          <div className={cn("flex flex-col gap-1 pt-5")}>
+            <h3 className={cn("text-vintage-green font-bold")}>
               {t("footer.country")}
             </h3>
-            <div className="flex items-center justify-center lg:justify-start gap-2">
+            <div
+              className={cn(
+                "flex items-center justify-center lg:justify-start gap-2",
+              )}
+            >
               <WorldShpereSvg />
-              <p className="text-sm underline">{t("footer.international")}</p>
+              <p className={cn("text-sm underline")}>
+                {t("footer.international")}
+              </p>
             </div>
           </div>
         </div>
       </section>
-      <hr className="" />
+      <hr className={cn("")} />
 
-      <div className="relative px-4 py-6">
-        <div className="text-center text-sm">
+      <div className={cn("relative px-4 py-6")}>
+        <div className={cn("text-center text-sm")}>
           {rich(t("footer.copyright", { year: new Date().getFullYear() }), {
             brand: (
-              <span className="text-vintage-green font-bold">Methys.</span>
+              <span className={cn("text-vintage-green font-bold")}>
+                Methys.
+              </span>
             ),
           })}
         </div>
 
         {!isLoading && !isAuthenticated && (
           <div
-            className="
-              flex
-              flex-col
-              sm:flex-row
-              items-center
-              gap-4
-              text-sm
-              mt-6
-              lg:absolute
-              lg:right-5
-              lg:bottom-6
-            "
+            className={cn(
+              "flex flex-col sm:flex-row items-center gap-4 text-sm mt-6 lg:absolute lg:right-5 lg:bottom-6",
+            )}
           >
-            <span className="text-vintage-green text-center">
+            <span className={cn("text-vintage-green text-center")}>
               {rich(t("footer.specialOffers"), {
                 offers: (
-                  <span className="text-red-500">{t("footer.offers")}</span>
+                  <span className={cn("text-red-500")}>
+                    {t("footer.offers")}
+                  </span>
                 ),
               })}
             </span>
 
             <Link
               href="/login"
-              className="w-[130px] h-[40px] border border-vintage-green bg-white text-vintage-green flex items-center justify-center rounded hover:bg-vintage-green hover:text-white"
+              className={cn(
+                "w-[130px] h-[40px] border border-vintage-green bg-white text-vintage-green flex items-center justify-center rounded hover:bg-vintage-green hover:text-white",
+              )}
             >
               {t("footer.signUpSignIn")}
             </Link>

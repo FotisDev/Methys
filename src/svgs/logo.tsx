@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { cn } from "@/_lib/utils/cn";
 
 const Logo = ({
   className = "",
@@ -13,7 +14,7 @@ const Logo = ({
     <Image
       src="/logo-transparent.png"
       alt="Logo"
-      className={className}
+      className={cn(className)}
       style={style}
       width={size}
       height={size * 0.22}

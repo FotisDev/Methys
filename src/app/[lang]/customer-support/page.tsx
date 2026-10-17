@@ -9,6 +9,7 @@ import Link from "@/components/LocaleLink/LocaleLink";
 import DropDownMenu from "@/components/header/DropDownMenu";
 import { getT } from "@/i18n/server";
 import { defaultLocale, isLocale } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 type PageProps = { params: Promise<{ lang: string }> };
 
@@ -40,24 +41,34 @@ export default async function SupportPage({ params }: PageProps) {
     <>
       {schemaMarkUp && <Schema markup={schemaMarkUp} />}
       <HeaderProvider forceOpaque={false} dropDownMenu={<DropDownMenu />}>
-        <main className="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-10">
+        <main
+          className={cn(
+            "relative min-h-screen flex items-center justify-center px-4 pt-20 pb-10",
+          )}
+        >
           <Image
             src="/yo.jpg"
             alt=""
-            className="fixed inset-0 w-full h-full object-cover -z-10"
+            className={cn("fixed inset-0 w-full h-full object-cover -z-10")}
             fill
           />
-          <div className="fixed inset-0 bg-black/30 -z-5"></div>
-          <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-8 relative z-10">
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">
+          <div className={cn("fixed inset-0 bg-black/30 -z-5")}></div>
+          <div
+            className={cn(
+              "w-full max-w-lg bg-white rounded-2xl shadow-md p-8 relative z-10",
+            )}
+          >
+            <h1 className={cn("text-2xl font-bold text-gray-900 mb-1")}>
               {t("support.title")}
             </h1>
-            <p className="text-gray-500 mb-6 text-sm">{t("support.intro")}</p>
+            <p className={cn("text-gray-500 mb-6 text-sm")}>
+              {t("support.intro")}
+            </p>
             <SupportFormPageComponent categories={supportCategories ?? []} />
-            <div className="mt-6 text-center">
+            <div className={cn("mt-6 text-center")}>
               <Link
                 href="/"
-                className="text-vintage-green font-bold hover:underline"
+                className={cn("text-vintage-green font-bold hover:underline")}
               >
                 {t("support.goToMainPage")}
               </Link>

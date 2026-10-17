@@ -4,6 +4,7 @@ import SchemaMarkUp from "../schemas/SchemaMarkUp";
 import BreadcrumbArrow from "@/svgs/breadcrumbArrow";
 import { absoluteUrl } from "@/components/SEO/urls";
 import type { Locale } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 type breadcrumbObject = {
   "@type": string;
@@ -40,24 +41,25 @@ export const Breadcrumbs = ({ items, locale }: itemWithClassName) => {
   };
 
   return (
-    <section id={"breadcrumbs"} className={` mb-2 sm:mb-4 `}>
+    <section id={"breadcrumbs"} className={cn("mb-2 sm:mb-4")}>
       <SchemaMarkUp markup={markup} />
-      <div className={`flex gap-2 items-center flex-wrap text-sm`}>
+      <div className={cn("flex gap-2 items-center flex-wrap text-sm")}>
         {items.map((item, index) => {
           const isLastItem = index === items.length - 1;
           return (
             <Fragment key={index}>
               <Link
-                className={`relative block ${
-                  isLastItem ? "opacity-50" : "opacity-100"
-                }`}
+                className={cn(
+                  "relative block",
+                  isLastItem ? "opacity-50" : "opacity-100",
+                )}
                 href={`${item.slug}`}
               >
                 {item.name}
               </Link>
               {!isLastItem && (
-                <span className="">
-                  <BreadcrumbArrow className={""} />
+                <span className={cn("")}>
+                  <BreadcrumbArrow />
                 </span>
               )}
             </Fragment>

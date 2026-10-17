@@ -1,7 +1,8 @@
+import { cn } from "@/_lib/utils/cn";
 export default function RightArrowIcon({ className }: { className?: string }) {
   return (
     <svg
-      className={className}
+      className={cn(className)}
       width="800px"
       height="800px"
       viewBox="0 0 24 24"

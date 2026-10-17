@@ -9,6 +9,7 @@ import Footer from "@/components/footer/Footer";
 import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { getT } from "@/i18n/server";
 import { defaultLocale, isLocale } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 type PageProps = { params: Promise<{ lang: string }> };
 
@@ -35,8 +36,8 @@ export default async function FAQPage({ params }: PageProps) {
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       {schemaMarkup && <Schema markup={schemaMarkup} />}
 
-      <main className="w-full pt-20 font-roboto text-vintage-green">
-        <div className="mx-auto px-4 sm:px-6">
+      <main className={cn("w-full pt-20 font-roboto text-vintage-green")}>
+        <div className={cn("mx-auto px-4 sm:px-6")}>
           <Breadcrumbs
             items={[
               { name: t("breadcrumbs.home"), slug: "/" },

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/components/SEO/urls";
+import { env } from "@/env";
 
 const PRIVATE_PATHS = [
   "/cart",
@@ -16,7 +17,7 @@ const PRIVATE_PATHS = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
-  if (process.env.NEXT_PUBLIC_IS_LIVE_SITE !== "true") {
+  if (!env.NEXT_PUBLIC_IS_LIVE_SITE) {
     return { rules: { userAgent: "*", disallow: "/" } };
   }
 

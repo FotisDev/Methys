@@ -12,6 +12,7 @@ import {
 import { useT } from "@/i18n/client";
 import type { MessageKey } from "@/i18n/translate";
 import { StarIcon } from "./Stars";
+import { cn } from "@/_lib/utils/cn";
 
 const initialState: ReviewFormState = { status: "idle", message: "" };
 
@@ -45,7 +46,7 @@ export default function ReviewForm({ productId }: { productId: number }) {
 
   if (state.status === "success") {
     return (
-      <p role="status" className="text-sm text-vintage-green">
+      <p role="status" className={cn("text-sm text-vintage-green")}>
         {t("reviews.thanks")}
       </p>
     );
@@ -55,7 +56,9 @@ export default function ReviewForm({ productId }: { productId: number }) {
     return (
       <Link
         href="/login"
-        className="text-sm underline underline-offset-4 hover:text-vintage-brown"
+        className={cn(
+          "text-sm underline underline-offset-4 hover:text-vintage-brown",
+        )}
       >
         {t("reviews.loginToReview")}
       </Link>
@@ -63,12 +66,16 @@ export default function ReviewForm({ productId }: { productId: number }) {
   }
 
   if (eligibility === "not-purchased") {
-    return <p className="text-sm text-gray-500">{t("reviews.notPurchased")}</p>;
+    return (
+      <p className={cn("text-sm text-gray-500")}>{t("reviews.notPurchased")}</p>
+    );
   }
 
   if (eligibility === "already-reviewed") {
     return (
-      <p className="text-sm text-gray-500">{t("reviews.alreadyReviewed")}</p>
+      <p className={cn("text-sm text-gray-500")}>
+        {t("reviews.alreadyReviewed")}
+      </p>
     );
   }
 
@@ -77,14 +84,16 @@ export default function ReviewForm({ productId }: { productId: number }) {
   const shown = hovered || rating;
 
   return (
-    <form action={formAction} className="space-y-4 max-w-xl">
-      <h3 className="text-base font-medium">{t("reviews.writeReview")}</h3>
+    <form action={formAction} className={cn("space-y-4 max-w-xl")}>
+      <h3 className={cn("text-base font-medium")}>
+        {t("reviews.writeReview")}
+      </h3>
       <input type="hidden" name="productId" value={productId} />
       <input type="hidden" name="rating" value={rating || ""} />
 
       <fieldset>
-        <legend className="text-sm mb-1">{t("reviews.rating")}</legend>
-        <div className="flex gap-1" onMouseLeave={() => setHovered(0)}>
+        <legend className={cn("text-sm mb-1")}>{t("reviews.rating")}</legend>
+        <div className={cn("flex gap-1")} onMouseLeave={() => setHovered(0)}>
           {[1, 2, 3, 4, 5].map((n) => (
             <button
               key={n}
@@ -93,7 +102,10 @@ export default function ReviewForm({ productId }: { productId: number }) {
               aria-pressed={rating === n}
               onClick={() => setRating(n)}
               onMouseEnter={() => setHovered(n)}
-              className={`w-7 h-7 cursor-pointer ${n <= shown ? "text-vintage-green" : "text-gray-300"}`}
+              className={cn(
+                "w-7 h-7 cursor-pointer",
+                n <= shown ? "text-vintage-green" : "text-gray-300",
+              )}
             >
               <StarIcon />
             </button>
@@ -101,16 +113,16 @@ export default function ReviewForm({ productId }: { productId: number }) {
         </div>
       </fieldset>
 
-      <label className="block text-sm">
+      <label className={cn("block text-sm")}>
         {t("reviews.reviewTitle")}
         <input
           name="title"
           maxLength={120}
-          className="mt-1 w-full border border-gray-300 p-2 text-sm"
+          className={cn("mt-1 w-full border border-gray-300 p-2 text-sm")}
         />
       </label>
 
-      <label className="block text-sm">
+      <label className={cn("block text-sm")}>
         {t("reviews.body")}
         <textarea
           name="body"
@@ -119,12 +131,12 @@ export default function ReviewForm({ productId }: { productId: number }) {
           maxLength={2000}
           rows={4}
           placeholder={t("reviews.bodyPlaceholder")}
-          className="mt-1 w-full border border-gray-300 p-2 text-sm"
+          className={cn("mt-1 w-full border border-gray-300 p-2 text-sm")}
         />
       </label>
 
       {state.status === "error" && (
-        <p role="alert" className="text-xs text-red-600">
+        <p role="alert" className={cn("text-xs text-red-600")}>
           {t(state.message as MessageKey)}
         </p>
       )}
@@ -132,7 +144,9 @@ export default function ReviewForm({ productId }: { productId: number }) {
       <button
         type="submit"
         disabled={isPending}
-        className="bg-vintage-green text-white px-8 py-3 text-xs uppercase tracking-widest hover:opacity-90 disabled:opacity-60 cursor-pointer"
+        className={cn(
+          "bg-vintage-green text-white px-8 py-3 text-xs uppercase tracking-widest hover:opacity-90 disabled:opacity-60 cursor-pointer",
+        )}
       >
         {isPending ? t("reviews.submitting") : t("reviews.submit")}
       </button>

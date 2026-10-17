@@ -23,6 +23,7 @@ import {
   translateCount,
 } from "@/i18n/translate";
 import { defaultLocale, isLocale } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 export const revalidate = 600;
 
@@ -197,33 +198,41 @@ export default async function SubcategoryPage({
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <Schema markup={schema} />
-      <section className="relative w-full min-h-[80vh] pt-[70px]  pb-12 font-serif text-vintage-green">
-        <div className="pl-4">
+      <section
+        className={cn(
+          "relative w-full min-h-[80vh] pt-[70px] pb-12 font-serif text-vintage-green",
+        )}
+      >
+        <div className={cn("pl-4")}>
           <Breadcrumbs items={breadcrumbItems} locale={locale} />
         </div>
 
-        <header className="flex flex-row items-center tracking-wide pl-4">
-          <h1 className="text-lg capitalize ">{categoryName}</h1>
+        <header className={cn("flex flex-row items-center tracking-wide pl-4")}>
+          <h1 className={cn("text-lg capitalize")}>{categoryName}</h1>
         </header>
 
-        <div className="flex flex-row gap-5 text-black text-xs uppercase p-4 overflow-x-auto scrollbar-hide tracking-wide whitespace-nowrap ">
+        <div
+          className={cn(
+            "flex flex-row gap-5 text-black text-xs uppercase p-4 overflow-x-auto scrollbar-hide tracking-wide whitespace-nowrap",
+          )}
+        >
           {subcategories
             .filter((item) => item.slug != subcategorySlug)
             .map((item) => (
               <Link
                 href={`/collections/${parentCategory.slug}/${item.slug}`}
                 key={item.id}
-                className="inline-block"
+                className={cn("inline-block")}
               >
                 {translateCategory(t, item.slug, item.name)}
               </Link>
             ))}
         </div>
 
-        <hr className="mt-2 mb-4 bg-vintage-green" />
+        <hr className={cn("mt-2 mb-4 bg-vintage-green")} />
 
         {/* Even side padding for the filter bar and product grid. */}
-        <div className="px-4">
+        <div className={cn("px-4")}>
           <ProductFilterClient
             initialProducts={filteredProducts || []}
             parentSlug={categorySlug}
@@ -233,7 +242,11 @@ export default async function SubcategoryPage({
               <div>{t("common.noProductsFound")}</div>
             ) : (
               <>
-                <p className="text-sm text-vintage-brown text-right mb-4 sm:text-lg">
+                <p
+                  className={cn(
+                    "text-sm text-vintage-brown text-right mb-4 sm:text-lg",
+                  )}
+                >
                   {translateCount(
                     t,
                     "collections.productsAvailable",
@@ -241,7 +254,11 @@ export default async function SubcategoryPage({
                   )}
                 </p>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+                <div
+                  className={cn(
+                    "grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6",
+                  )}
+                >
                   {(filteredProducts ?? []).map((product) => {
                     if (!product) return null;
                     const stock = getStockStatus(product.product_variants);
@@ -250,9 +267,15 @@ export default async function SubcategoryPage({
                       <Link
                         key={product.id}
                         href={`/collections/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subcategorySlug)}/${encodeURIComponent(product.slug ?? "")}`}
-                        className="group block bg-white border border-vintage-green/20 hover:border-vintage-green transition-all duration-300 overflow-hidden"
+                        className={cn(
+                          "group block bg-white border border-vintage-green/20 hover:border-vintage-green transition-all duration-300 overflow-hidden",
+                        )}
                       >
-                        <div className="relative aspect-[3/3] overflow-hidden bg-gray-50">
+                        <div
+                          className={cn(
+                            "relative aspect-[3/3] overflow-hidden bg-gray-50",
+                          )}
+                        >
                           <Image
                             src={
                               product.image_url?.[0] || "/AuthClothPhoto.jpg"
@@ -260,21 +283,35 @@ export default async function SubcategoryPage({
                             alt={product.name}
                             fill
                             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            className={cn(
+                              "object-cover group-hover:scale-105 transition-transform duration-500",
+                            )}
                             priority={false}
                           />
                           {product.is_offer && (
-                            <div className="absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 rounded">
+                            <div
+                              className={cn(
+                                "absolute top-4 left-4 bg-red-600 text-white text-xs uppercase px-3 py-1.5 rounded",
+                              )}
+                            >
                               {t("product.offer")}
                             </div>
                           )}
                           {stock.isLowStock && (
-                            <div className="absolute bottom-4 left-4 bg-white/90 text-red-700 text-xs uppercase tracking-wider px-3 py-1.5 rounded">
+                            <div
+                              className={cn(
+                                "absolute bottom-4 left-4 bg-white/90 text-red-700 text-xs uppercase tracking-wider px-3 py-1.5 rounded",
+                              )}
+                            >
                               {t("product.onlyLeft", { count: stock.total })}
                             </div>
                           )}
                           {product.price && (
-                            <div className="absolute top-4 right-4 bg-white text-vintage-green px-3 py-1.5 rounded-lg text-sm font-medium shadow">
+                            <div
+                              className={cn(
+                                "absolute top-4 right-4 bg-white text-vintage-green px-3 py-1.5 rounded-lg text-sm font-medium shadow",
+                              )}
+                            >
                               {formatPrice(
                                 getProductPricing(product).finalPrice,
                                 locale,
@@ -283,20 +320,34 @@ export default async function SubcategoryPage({
                           )}
                         </div>
 
-                        <div className="p-4">
-                          <h3 className="text-base font-medium line-clamp-2 mb-1 text-vintage-green">
+                        <div className={cn("p-4")}>
+                          <h3
+                            className={cn(
+                              "text-base font-medium line-clamp-2 mb-1 text-vintage-green",
+                            )}
+                          >
                             {product.name}
                           </h3>
                           {product.description && (
-                            <p className="text-sm text-gray-500 line-clamp-2 mb-3">
+                            <p
+                              className={cn(
+                                "text-sm text-gray-500 line-clamp-2 mb-3",
+                              )}
+                            >
                               {product.description}
                             </p>
                           )}
-                          <span className="inline-flex items-center gap-1 text-sm font-medium text-gray-500 underline-offset-4 transition-colors group-hover:text-vintage-green group-hover:underline">
+                          <span
+                            className={cn(
+                              "inline-flex items-center gap-1 text-sm font-medium text-gray-500 underline-offset-4 transition-colors group-hover:text-vintage-green group-hover:underline",
+                            )}
+                          >
                             {t("collections.viewDetails")}
                             <span
                               aria-hidden="true"
-                              className="transition-transform group-hover:translate-x-1"
+                              className={cn(
+                                "transition-transform group-hover:translate-x-1",
+                              )}
                             >
                               →
                             </span>

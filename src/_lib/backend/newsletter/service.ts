@@ -1,14 +1,14 @@
 import { randomBytes } from "crypto";
 import Stripe from "stripe";
 import { getStripe } from "@/_lib/backend/stripe/client";
-import { FROM_EMAIL, getResend } from "@/_lib/backend/email/resend";
+import { getResend } from "@/_lib/backend/email/resend";
 import { NEWSLETTER_DISCOUNT_PERCENT } from "@/_lib/constants";
 import { SITE_URL } from "@/components/SEO/urls";
+import { env } from "@/env";
 import { getT } from "@/i18n/server";
 import type { Locale } from "@/i18n.config";
 
 // Server-only helpers for the newsletter (Resend contacts + emails, Stripe codes).
-
 
 const COUPON_ID = `newsletter-welcome-${NEWSLETTER_DISCOUNT_PERCENT}`;
 
@@ -125,7 +125,7 @@ const button = (href: string, label: string) => `
 
 async function send(to: string, subject: string, html: string) {
   const { error } = await getResend().emails.send({
-    from: FROM_EMAIL,
+    from: env.RESEND_FROM_EMAIL,
     to,
     subject,
     html,

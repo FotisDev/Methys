@@ -6,6 +6,7 @@ import { OnlineProductsPageComponent } from "@/components/pages/OnlineProductsPa
 import { createMetadata } from "@/components/SEO/metadata";
 import DropDownMenu from "@/components/header/DropDownMenu";
 import { getT } from "@/i18n/server";
+import { cn } from "@/_lib/utils/cn";
 
 type PageProps = { params: Promise<{ lang: string }> };
 
@@ -29,7 +30,7 @@ export default async function OnlineExclusiveProducts({ params }: PageProps) {
 
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
-      <section className="padding-y px-0.5 bg-white">
+      <section className={cn("padding-y px-0.5 bg-white")}>
         <OnlineProductsPageComponent products={onlineProducts} title={""} />
       </section>
       <Footer />

@@ -1,4 +1,5 @@
 import Schema from "./SchemaMarkUp";
+import { env } from "@/env";
 
 type ListItem = {
   "@type": string;
@@ -50,7 +51,7 @@ export default function ItemListCollectionSchema({
     inLanguage: "en",
     description: pageDescription,
     isPartOf: {
-      "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/#website`,
+      "@id": `${env.NEXT_PUBLIC_SITE_URL}/#website`,
     },
     ...(about && { about }),
     mainEntity: {

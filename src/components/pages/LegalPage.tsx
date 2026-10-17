@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import type { ContentPageSlug, PageContent } from "@/_lib/backend/pages/action";
 import type { Translator } from "@/i18n/translate";
 import type { Locale } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 const LEGAL_LINKS = [
   { slug: "terms-conditions", label: "footer.termsConditions" },
@@ -34,8 +35,8 @@ export default function LegalPage({
 
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
-      <main className="w-full pt-20 font-roboto text-vintage-green">
-        <div className="mx-auto px-4 sm:px-6">
+      <main className={cn("w-full pt-20 font-roboto text-vintage-green")}>
+        <div className={cn("mx-auto px-4 sm:px-6")}>
           <Breadcrumbs
             items={[
               { name: t("breadcrumbs.home"), slug: "/" },
@@ -45,10 +46,14 @@ export default function LegalPage({
           />
         </div>
 
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6 pb-20 md:pt-10">
+        <div
+          className={cn("mx-auto max-w-3xl px-4 sm:px-6 pt-6 pb-20 md:pt-10")}
+        >
           <nav
             aria-label={t("legal.navLabel")}
-            className="flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-wider mb-10"
+            className={cn(
+              "flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-wider mb-10",
+            )}
           >
             {LEGAL_LINKS.map((link) => {
               const isCurrent = link.slug === slug;
@@ -57,11 +62,11 @@ export default function LegalPage({
                   key={link.slug}
                   href={`/${link.slug}`}
                   aria-current={isCurrent ? "page" : undefined}
-                  className={
+                  className={cn(
                     isCurrent
                       ? "underline underline-offset-8"
-                      : "text-gray-500 hover:text-vintage-green transition-colors"
-                  }
+                      : "text-gray-500 hover:text-vintage-green transition-colors",
+                  )}
                 >
                   {t(link.label)}
                 </Link>
@@ -69,12 +74,12 @@ export default function LegalPage({
             })}
           </nav>
 
-          <header className="border-b border-default-color pb-8 mb-10">
-            <h1 className="text-2xl md:text-3xl font-light tracking-wide">
+          <header className={cn("border-b border-default-color pb-8 mb-10")}>
+            <h1 className={cn("text-2xl md:text-3xl font-light tracking-wide")}>
               {title}
             </h1>
             {page?.updated_at && (
-              <p className="text-xs text-gray-500 mt-3">
+              <p className={cn("text-xs text-gray-500 mt-3")}>
                 {t("legal.lastUpdated")}{" "}
                 <time dateTime={page.updated_at}>
                   {new Date(page.updated_at).toLocaleDateString(locale, {
@@ -89,20 +94,28 @@ export default function LegalPage({
 
           {page?.content ? (
             <div
-              className="legal-content"
+              className={cn("legal-content")}
               dangerouslySetInnerHTML={{ __html: page.content }}
             />
           ) : (
-            <p className="text-sm text-gray-600">{t("legal.comingSoon")}</p>
+            <p className={cn("text-sm text-gray-600")}>
+              {t("legal.comingSoon")}
+            </p>
           )}
 
-          <aside className="mt-16 border-t border-default-color pt-8 text-sm">
-            <p className="font-medium mb-1">{t("legal.questionsTitle")}</p>
-            <p className="text-gray-600">
+          <aside
+            className={cn("mt-16 border-t border-default-color pt-8 text-sm")}
+          >
+            <p className={cn("font-medium mb-1")}>
+              {t("legal.questionsTitle")}
+            </p>
+            <p className={cn("text-gray-600")}>
               {t("legal.questionsText")}{" "}
               <Link
                 href="/customer-support"
-                className="underline underline-offset-4 hover:text-default-cold"
+                className={cn(
+                  "underline underline-offset-4 hover:text-default-cold",
+                )}
               >
                 {t("legal.contactUs")}
               </Link>

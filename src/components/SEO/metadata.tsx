@@ -3,8 +3,9 @@ import { DEFAULT_METADATA } from "@/_lib/constants";
 import { MetadataProps } from "@/_lib/interfaces";
 import { absoluteUrl, languageAlternates } from "./urls";
 import { defaultLocale, isLocale, localeMeta, locales } from "@/i18n.config";
+import { env } from "@/env";
 
-const isLiveSite = process.env.NEXT_PUBLIC_IS_LIVE_SITE === "true";
+const isLiveSite = env.NEXT_PUBLIC_IS_LIVE_SITE;
 
 // Supabase storage paths ("/storage/v1/...") live on the Supabase host;
 // other relative paths are files in /public, resolved via metadataBase.
@@ -12,7 +13,7 @@ function resolveImageUrl(url?: string | null) {
   if (!url) return DEFAULT_METADATA.openGraphImageUrl;
   if (url.startsWith("http")) return url;
   if (url.startsWith("/storage/")) {
-    return `${process.env.NEXT_PUBLIC_SUPABASE_URL}${url}`;
+    return `${env.NEXT_PUBLIC_SUPABASE_URL}${url}`;
   }
   return url;
 }

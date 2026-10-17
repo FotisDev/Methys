@@ -8,7 +8,7 @@ import { isLocale } from "@/i18n.config";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 import { getShipping } from "@/_lib/utils/shipping";
 import { getT } from "@/i18n/server";
-
+import { env } from "@/env";
 
 interface ShippingInfo {
   name: string;
@@ -125,8 +125,8 @@ export async function createCheckoutSession(
       ),
       ...(promotionCodeId && { promotion_code_id: promotionCodeId }),
     },
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/canceled`,
+    success_url: `${env.NEXT_PUBLIC_SITE_URL}/${locale}/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${env.NEXT_PUBLIC_SITE_URL}/${locale}/canceled`,
   });
 
   return { url: session.url };

@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/_lib/utils/cn";
 
 const DiagonalArrow = () => {
   return (
@@ -8,7 +9,7 @@ const DiagonalArrow = () => {
       height="14"
 
       fill="#D1D3D4"
-      className={`w-14 h-14 bi bi-arrow-up-right-circle-fill`}
+      className={cn("w-14 h-14 bi bi-arrow-up-right-circle-fill")}
       viewBox="0 0 16 16"
     >
       <path

@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET;
+import { env } from "@/env";
 
 export async function POST(request) {
   const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.SUPABASE_SERVICE_ROLE_KEY,
   );
 
   const {
@@ -100,7 +99,7 @@ export async function POST(request) {
         email: authData.user.email,
         role: user.role || "user",
       },
-      JWT_SECRET,
+      env.JWT_SECRET,
       { expiresIn: "7d" },
     );
 
@@ -117,7 +116,7 @@ export async function POST(request) {
 
     response.cookies.set("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7,
       path: "/",

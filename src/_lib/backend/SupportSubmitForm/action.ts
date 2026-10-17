@@ -3,16 +3,14 @@
 import { after } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/_lib/supabase/admin";
-import { FROM_EMAIL, escapeHtml, getResend } from "@/_lib/backend/email/resend";
+import { escapeHtml, getResend } from "@/_lib/backend/email/resend";
 import { isOfferedCategory } from "@/_lib/backend/SupportCategories/action";
+import { env } from "@/env";
 
 type FormState = {
   status: "idle" | "success" | "error";
   message: string;
 };
-
-// Where new-ticket notifications go.
-const SUPPORT_INBOX = process.env.SUPPORT_INBOX_EMAIL ?? "fotislir@outlook.com";
 
 const ticketSchema = z.object({
   name: z.string().trim().min(1, "support.errors.required").max(100),
@@ -82,8 +80,8 @@ export async function submitSupportTicket(
     after(async () => {
       try {
         const { error: sendError } = await getResend().emails.send({
-          from: FROM_EMAIL,
-          to: SUPPORT_INBOX,
+          from: env.RESEND_FROM_EMAIL,
+          to: env.SUPPORT_INBOX_EMAIL,
           // Hitting "Reply" answers the customer directly.
           replyTo: email,
           subject: `[${category.name}] New support ticket from ${name}`,

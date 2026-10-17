@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, locales } from "@/i18n.config";
 import { LOCALE_HEADER } from "@/i18n/constants";
+import { env } from "@/env";
 
 // Μόνο αυτά τα paths χρειάζονται auth check
 const protectedPaths = ["/offers", "/product-entry"];
@@ -48,8 +49,8 @@ export async function proxy(request: NextRequest) {
   });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {

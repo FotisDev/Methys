@@ -3,6 +3,7 @@
 import DiagonalArrow from "@/svgs/DiagonalArrow";
 import { useEffect, useState } from "react";
 import { useT } from "@/i18n/client";
+import { cn } from "@/_lib/utils/cn";
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -27,7 +28,11 @@ export default function BackToTop() {
     <a
       aria-label={t("common.backToTop")}
       href={"#mainHTML"}
-      className={`size-10 fixed bottom-[2%] right-4 z-[100] ${isVisible ? "" : "opacity-0"} transition`}
+      className={cn(
+        "size-10 fixed bottom-[2%] right-4 z-[100]",
+        !isVisible && "opacity-0",
+        "transition",
+      )}
     >
       <DiagonalArrow />
     </a>

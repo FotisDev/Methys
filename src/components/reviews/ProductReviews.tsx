@@ -4,6 +4,7 @@ import { translateCount } from "@/i18n/translate";
 import { summarizeReviews, type ProductReview } from "@/_lib/utils/reviews";
 import Stars from "./Stars";
 import ReviewForm from "./ReviewForm";
+import { cn } from "@/_lib/utils/cn";
 
 export default function ProductReviews({
   productId,
@@ -23,20 +24,23 @@ export default function ProductReviews({
     <section
       id="reviews"
       aria-labelledby="reviews-heading"
-      className="mx-auto px-4 sm:px-6 py-12 border-t mt-12"
+      className={cn("mx-auto px-4 sm:px-6 py-12 border-t mt-12")}
     >
-      <div className="flex flex-wrap items-center gap-4 mb-8">
-        <h2 id="reviews-heading" className="text-xl font-light tracking-wide">
+      <div className={cn("flex flex-wrap items-center gap-4 mb-8")}>
+        <h2
+          id="reviews-heading"
+          className={cn("text-xl font-light tracking-wide")}
+        >
           {t("reviews.title")}
         </h2>
         {count > 0 && (
-          <div className="flex items-center gap-2 text-sm">
+          <div className={cn("flex items-center gap-2 text-sm")}>
             <Stars
               rating={average}
               label={t("reviews.stars", { rating: average })}
             />
             <span>{average.toFixed(1)}</span>
-            <span className="text-gray-500">
+            <span className={cn("text-gray-500")}>
               ({translateCount(t, "reviews.count", count)})
             </span>
           </div>
@@ -44,30 +48,34 @@ export default function ProductReviews({
       </div>
 
       {count === 0 ? (
-        <p className="text-sm text-gray-600 mb-8">{t("reviews.noReviews")}</p>
+        <p className={cn("text-sm text-gray-600 mb-8")}>
+          {t("reviews.noReviews")}
+        </p>
       ) : (
-        <ul className="grid gap-6 md:grid-cols-2 mb-10">
+        <ul className={cn("grid gap-6 md:grid-cols-2 mb-10")}>
           {reviews.map((review) => (
-            <li key={review.id} className="border border-gray-200 p-5">
-              <div className="flex items-center justify-between gap-2 mb-2">
+            <li key={review.id} className={cn("border border-gray-200 p-5")}>
+              <div
+                className={cn("flex items-center justify-between gap-2 mb-2")}
+              >
                 <Stars
                   rating={review.rating}
                   label={t("reviews.stars", { rating: review.rating })}
                 />
                 <time
                   dateTime={review.created_at}
-                  className="text-xs text-gray-500"
+                  className={cn("text-xs text-gray-500")}
                 >
                   {dateFormat.format(new Date(review.created_at))}
                 </time>
               </div>
               {review.title && (
-                <p className="font-medium text-sm mb-1">{review.title}</p>
+                <p className={cn("font-medium text-sm mb-1")}>{review.title}</p>
               )}
-              <p className="text-sm text-gray-700 whitespace-pre-line">
+              <p className={cn("text-sm text-gray-700 whitespace-pre-line")}>
                 {review.body}
               </p>
-              <p className="mt-3 text-xs text-gray-500">
+              <p className={cn("mt-3 text-xs text-gray-500")}>
                 {review.author_name} · {t("reviews.verifiedBuyer")}
               </p>
             </li>

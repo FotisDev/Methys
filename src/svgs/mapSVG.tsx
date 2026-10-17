@@ -1,7 +1,8 @@
+import { cn } from "@/_lib/utils/cn";
 export function MapSVG() {
   return (
     <svg
-      className="w-full h-auto relative"
+      className={cn("w-full h-auto relative")}
       xmlns="http://www.w3.org/2000/svg"
       width="1318.712"
       height="460.576"

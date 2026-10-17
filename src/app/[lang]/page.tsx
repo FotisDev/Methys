@@ -18,6 +18,7 @@ import SeasonalCollectionSkeleton from "@/components/skeletons/SeasonalCollectio
 import DropDownMenu from "@/components/header/DropDownMenu";
 import { getT } from "@/i18n/server";
 import { isLocale, defaultLocale } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 type PageProps = { params: Promise<{ lang: string }> };
 
@@ -40,7 +41,7 @@ export default async function Home({ params }: PageProps) {
   const t = await getT(locale);
 
   return (
-    <section className="home-page">
+    <section className={cn("home-page")}>
       <Schema markup={createOrganizationSchema(locale)} />
       <Schema markup={createWebSiteSchema(locale, t("home.metaDescription"))} />
       <HeaderProvider forceOpaque={false} dropDownMenu={<DropDownMenu />}>

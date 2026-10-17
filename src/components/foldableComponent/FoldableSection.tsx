@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "@/components/LocaleLink/LocaleLink";
+import { cn } from "@/_lib/utils/cn";
 
 interface FoldableItem {
   name: string;
@@ -22,25 +23,29 @@ export default function FoldableSectionComponent({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="flex flex-col gap-2 text-center lg:text-left">
+    <div className={cn("flex flex-col gap-2 text-center lg:text-left")}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="font-bold flex items-center justify-center lg:justify-start gap-2 w-full lg:cursor-default"
+        className={cn(
+          "font-bold flex items-center justify-center lg:justify-start gap-2 w-full lg:cursor-default",
+        )}
       >
-        <span className="text-vintage-green ">{title}</span>
-        <span className="lg:hidden text-xl">{isOpen ? "−" : "+"}</span>
+        <span className={cn("text-vintage-green")}>{title}</span>
+        <span className={cn("lg:hidden text-xl")}>{isOpen ? "−" : "+"}</span>
       </button>
 
       <div
-        className={`flex flex-col gap-2 overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        } lg:max-h-none lg:opacity-100`}
+        className={cn(
+          "flex flex-col gap-2 overflow-hidden transition-all duration-300",
+          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+          "lg:max-h-none lg:opacity-100",
+        )}
       >
         {items.map((item: FoldableItem, index: number) => (
           <Link
             key={index}
             href={item.href}
-            className="hover:text-vintage-green transition-colors"
+            className={cn("hover:text-vintage-green transition-colors")}
           >
             {item.name}
           </Link>

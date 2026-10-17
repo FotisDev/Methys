@@ -9,6 +9,7 @@ import Image from "next/image";
 import SizeGuideModal from "./SizeGuide";
 import { useFormatPrice, useT } from "@/i18n/client";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
+import { cn } from "@/_lib/utils/cn";
 
 interface ProductActionsProps {
   product: ProductInDetails;
@@ -71,21 +72,25 @@ export default function ProductActions({ product }: ProductActionsProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6")}>
       {/* Color Selector */}
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium">
+        <div className={cn("flex items-center justify-between mb-3")}>
+          <h3 className={cn("text-sm font-medium")}>
             {t("product.color", { color: t("product.defaultColor") })}
           </h3>
         </div>
-        <div className="flex gap-2">
-          <button className="relative w-16 h-16 border-2 border-vintage-green rounded overflow-hidden">
+        <div className={cn("flex gap-2")}>
+          <button
+            className={cn(
+              "relative w-16 h-16 border-2 border-vintage-green rounded overflow-hidden",
+            )}
+          >
             <Image
               src={product.image_url?.[0] ?? "/Articles.jpg"}
               alt={t("product.defaultColor")}
               fill
-              className="object-cover"
+              className={cn("object-cover")}
             />
           </button>
         </div>
@@ -94,21 +99,21 @@ export default function ProductActions({ product }: ProductActionsProps) {
       {/* Size Selection */}
       {availableSizes.length > 0 && (
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-medium">
+          <div className={cn("flex items-center justify-between mb-3")}>
+            <h3 className={cn("text-sm font-medium")}>
               {t("product.sizeLabel", {
                 size: selectedSize || t("product.pleaseSelect"),
               })}
             </h3>
             <button
-              className="text-xs underline hover:no-underline"
+              className={cn("text-xs underline hover:no-underline")}
               onClick={() => setIsSizeGuideOpen(true)}
             >
               {t("product.sizeGuide")} +
             </button>
           </div>
 
-          <div className="grid grid-cols-6 gap-2">
+          <div className={cn("grid grid-cols-6 gap-2")}>
             {allSizes.map((size) => {
               const isAvailable = availableSizes.includes(size);
               const isSelected = selectedSize === size;
@@ -118,16 +123,14 @@ export default function ProductActions({ product }: ProductActionsProps) {
                   key={size}
                   onClick={() => handleSizeSelect(size)}
                   disabled={!isAvailable}
-                  className={`
-                    py-3 text-sm font-medium border transition-all
-                    ${
-                      isSelected
-                        ? "bg-vintage-green text-white border-vintage-green"
-                        : isAvailable
-                          ? "bg-white text-vintage-green border-gray-300 hover:border-vintage-green"
-                          : "bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed line-through"
-                    }
-                  `}
+                  className={cn(
+                    "py-3 text-sm font-medium border transition-all",
+                    isSelected
+                      ? "bg-vintage-green text-white border-vintage-green"
+                      : isAvailable
+                        ? "bg-white text-vintage-green border-gray-300 hover:border-vintage-green"
+                        : "bg-gray-50 text-gray-300 border-gray-200 cursor-not-allowed line-through",
+                  )}
                 >
                   {size}
                 </button>
@@ -136,7 +139,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
           </div>
 
           {showSizeError && (
-            <p className="text-red-500 text-sm mt-2">
+            <p className={cn("text-red-500 text-sm mt-2")}>
               {t("product.selectSize")}
             </p>
           )}
@@ -144,20 +147,18 @@ export default function ProductActions({ product }: ProductActionsProps) {
       )}
 
       {/* Action Buttons */}
-      <div className="space-y-3">
+      <div className={cn("space-y-3")}>
         <button
           onClick={handleAddToCart}
           disabled={availableSizes.length === 0}
-          className={`
-            w-full py-4 text-sm font-medium tracking-wider uppercase transition-colors
-            ${
-              availableSizes.length === 0
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : addedToCart
-                  ? "bg-default-cold text-white"
-                  : "bg-vintage-green text-white hover:bg-vintage-green/90"
-            }
-          `}
+          className={cn(
+            "w-full py-4 text-sm font-medium tracking-wider uppercase transition-colors",
+            availableSizes.length === 0
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : addedToCart
+                ? "bg-default-cold text-white"
+                : "bg-vintage-green text-white hover:bg-vintage-green/90",
+          )}
         >
           {availableSizes.length === 0
             ? t("product.outOfStock")
@@ -168,7 +169,9 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
         <button
           onClick={handleWishlistToggle}
-          className="w-full py-4 text-sm font-medium tracking-wider uppercase border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors flex items-center justify-center gap-2"
+          className={cn(
+            "w-full py-4 text-sm font-medium tracking-wider uppercase border border-vintage-green text-vintage-green hover:bg-vintage-green hover:text-white transition-colors flex items-center justify-center gap-2",
+          )}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +181,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
             strokeWidth={2}
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-5 h-5"
+            className={cn("w-5 h-5")}
           >
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
@@ -187,22 +190,44 @@ export default function ProductActions({ product }: ProductActionsProps) {
       </div>
 
       {/* Payment Methods */}
-      <div className="flex items-center justify-center gap-2 pt-4">
-        <span className="text-xs text-gray-500">{t("product.weAccept")}</span>
-        <div className="flex gap-2 opacity-60">
-          <div className="w-8 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+      <div className={cn("flex items-center justify-center gap-2 pt-4")}>
+        <span className={cn("text-xs text-gray-500")}>
+          {t("product.weAccept")}
+        </span>
+        <div className={cn("flex gap-2 opacity-60")}>
+          <div
+            className={cn(
+              "w-8 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold",
+            )}
+          >
             VISA
           </div>
-          <div className="w-14 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+          <div
+            className={cn(
+              "w-14 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold",
+            )}
+          >
             MASTERCARD
           </div>
-          <div className="w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+          <div
+            className={cn(
+              "w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold",
+            )}
+          >
             MAESTRO
           </div>
-          <div className="w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+          <div
+            className={cn(
+              "w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold",
+            )}
+          >
             PAYPAL
           </div>
-          <div className="w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold">
+          <div
+            className={cn(
+              "w-11 h-5 bg-gray-200 rounded text-[8px] flex items-center justify-center font-bold",
+            )}
+          >
             REVOLUT
           </div>
         </div>

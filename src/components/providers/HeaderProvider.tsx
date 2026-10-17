@@ -10,6 +10,7 @@ import React, {
 import Menu from "../header/Menu";
 import { ContactPageProps, SocialProps } from "@/_lib/interfaces";
 import { ENUM_SOCIALS } from "@/_lib/enums";
+import { cn } from "@/_lib/utils/cn";
 
 type HeaderContextType = {
   contact: ContactPageProps | null;
@@ -75,7 +76,7 @@ export function HeaderProvider({
         forceOpaque,
       }}
     >
-      <nav className="relative">
+      <nav className={cn("relative")}>
         {!isLoading && (
           <Menu
             dropDownMenu={dropDownMenu}

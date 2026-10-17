@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/_lib/supabase/admin";
+import { env } from "@/env";
 
 async function fulfillOrder(session: Stripe.Checkout.Session) {
   const shippingInfo = session.metadata?.shipping_info
@@ -31,7 +32,7 @@ async function fulfillOrder(session: Stripe.Checkout.Session) {
 }
 
 export async function POST(req: NextRequest) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
   const body = await req.text();
   const signature = req.headers.get("stripe-signature")!;
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!,
+      env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (err) {
     console.log("failed", err);

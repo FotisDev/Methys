@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductInDetails } from "@/_lib/types";
 import { useT } from "@/i18n/client";
+import { cn } from "@/_lib/utils/cn";
 
 type ProductFilterClientProps = {
   initialProducts: ProductInDetails[];
@@ -52,12 +53,18 @@ export default function ProductFilterClient({
   };
 
   return (
-    <div className="w-full">
+    <div className={cn("w-full")}>
       {/* Toolbar */}
-      <div className="flex items-center gap-4 mb-4 border-b border-vintage-green/20 pb-3">
+      <div
+        className={cn(
+          "flex items-center gap-4 mb-4 border-b border-vintage-green/20 pb-3",
+        )}
+      >
         <button
           onClick={() => setShowFilters((prev) => !prev)}
-          className="uppercase flex items-center gap-2 px-4 py-2 text-sm font-semibold text-vintage-green border border-vintage-green/40 hover:border-vintage-green transition-colors rounded"
+          className={cn(
+            "uppercase flex items-center gap-2 px-4 py-2 text-sm font-semibold text-vintage-green border border-vintage-green/40 hover:border-vintage-green transition-colors rounded",
+          )}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +87,9 @@ export default function ProductFilterClient({
         {(filters.min || filters.max || filters.size) && (
           <button
             onClick={clearFilters}
-            className="text-sm text-vintage-brown underline underline-offset-2"
+            className={cn(
+              "text-sm text-vintage-brown underline underline-offset-2",
+            )}
           >
             {t("filters.clearAll")}
           </button>
@@ -88,15 +97,23 @@ export default function ProductFilterClient({
       </div>
 
       {/* Sidebar + Products — same flex row */}
-      <div className="flex flex-col md:flex-row gap-8 items-start w-full">
+      <div className={cn("flex flex-col md:flex-row gap-8 items-start w-full")}>
         {/* Sidebar */}
         {showFilters && (
-          <aside className="w-full md:w-64 flex-shrink-0 bg-white border border-gray-100 shadow-sm p-5 space-y-6">
+          <aside
+            className={cn(
+              "w-full md:w-64 flex-shrink-0 bg-white border border-gray-100 shadow-sm p-5 space-y-6",
+            )}
+          >
             <div>
-              <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
+              <h3
+                className={cn(
+                  "text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3",
+                )}
+              >
                 {t("filters.price")}
               </h3>
-              <div className="space-y-2">
+              <div className={cn("space-y-2")}>
                 <input
                   type="number"
                   placeholder={t("filters.priceFrom")}
@@ -104,7 +121,9 @@ export default function ProductFilterClient({
                   onChange={(e) =>
                     setFilters({ ...filters, min: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-vintage-green"
+                  className={cn(
+                    "w-full px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-vintage-green",
+                  )}
                 />
                 <input
                   type="number"
@@ -113,16 +132,22 @@ export default function ProductFilterClient({
                   onChange={(e) =>
                     setFilters({ ...filters, max: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-vintage-green"
+                  className={cn(
+                    "w-full px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none focus:border-vintage-green",
+                  )}
                 />
               </div>
             </div>
 
             <div>
-              <h3 className="text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3">
+              <h3
+                className={cn(
+                  "text-xs font-semibold tracking-widest uppercase text-vintage-green mb-3",
+                )}
+              >
                 {t("filters.size")}
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className={cn("flex flex-wrap gap-2")}>
                 {["XS", "S", "M", "L", "XL", "XXL"].map((size) => {
                   const active = filters.size === size;
                   return (
@@ -132,12 +157,12 @@ export default function ProductFilterClient({
                       onClick={() =>
                         setFilters({ ...filters, size: active ? "" : size })
                       }
-                      className={`w-11 h-11 border text-xs font-medium transition-all duration-150 flex items-center justify-center
-                        ${
-                          active
-                            ? "bg-vintage-green text-white border-vintage-green"
-                            : "bg-white text-vintage-green border-gray-300 hover:border-vintage-green"
-                        }`}
+                      className={cn(
+                        "w-11 h-11 border text-xs font-medium transition-all duration-150 flex items-center justify-center",
+                        active
+                          ? "bg-vintage-green text-white border-vintage-green"
+                          : "bg-white text-vintage-green border-gray-300 hover:border-vintage-green",
+                      )}
                     >
                       {size}
                     </button>
@@ -146,18 +171,22 @@ export default function ProductFilterClient({
               </div>
             </div>
 
-            <div className="space-y-2 pt-2">
+            <div className={cn("space-y-2 pt-2")}>
               <button
                 onClick={handleFilterChange}
                 disabled={isPending}
-                className="w-full bg-vintage-green text-white py-2.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity"
+                className={cn(
+                  "w-full bg-vintage-green text-white py-2.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity",
+                )}
               >
                 {isPending ? t("common.loading") : t("filters.apply")}
               </button>
               <button
                 onClick={clearFilters}
                 disabled={isPending}
-                className="w-full bg-gray-100 text-vintage-green py-2.5 text-sm font-semibold rounded hover:bg-gray-200 transition-colors"
+                className={cn(
+                  "w-full bg-gray-100 text-vintage-green py-2.5 text-sm font-semibold rounded hover:bg-gray-200 transition-colors",
+                )}
               >
                 {t("filters.clear")}
               </button>
@@ -165,7 +194,7 @@ export default function ProductFilterClient({
           </aside>
         )}
 
-        <div className="flex-1 min-w-0">{children}</div>
+        <div className={cn("flex-1 min-w-0")}>{children}</div>
       </div>
     </div>
   );

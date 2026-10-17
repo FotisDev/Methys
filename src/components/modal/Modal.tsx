@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useT } from "@/i18n/client";
+import { cn } from "@/_lib/utils/cn";
 
 export function Modal({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -16,18 +17,22 @@ export function Modal({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className={cn("fixed inset-0 z-50 flex items-center justify-center")}>
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50"
+        className={cn("absolute inset-0 bg-black/50")}
         onClick={() => router.back()}
       />
 
       {/* Modal content */}
-      <div className="relative bg-white rounded-lg shadow-xl max-w-[95vw] max-h-[90vh] overflow-y-auto z-10 m-4">
+      <div
+        className={cn(
+          "relative bg-white rounded-lg shadow-xl max-w-[95vw] max-h-[90vh] overflow-y-auto z-10 m-4",
+        )}
+      >
         <button
           onClick={() => router.back()}
-          className="absolute top-4 right-4 text-2xl hover:text-gray-500"
+          className={cn("absolute top-4 right-4 text-2xl hover:text-gray-500")}
           aria-label={t("common.close")}
         >
           &times;

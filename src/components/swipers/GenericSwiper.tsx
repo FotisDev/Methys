@@ -5,6 +5,7 @@ import { Navigation } from "swiper/modules";
 
 import type { SwiperOptions } from "swiper/types";
 import { useT } from "@/i18n/client";
+import { cn } from "@/_lib/utils/cn";
 
 type SwiperBreakpoints = Record<number, SwiperOptions>;
 
@@ -36,8 +37,12 @@ export default function GenericSwiper<T>({
   const t = useT();
   if (!items || items.length === 0) {
     return (
-      <div className="flex justify-center items-center h-[50vh] bg-gray-50">
-        <p className="text-vintage-white text-lg">{t("common.noContent")}</p>
+      <div
+        className={cn("flex justify-center items-center h-[50vh] bg-gray-50")}
+      >
+        <p className={cn("text-vintage-white text-lg")}>
+          {t("common.noContent")}
+        </p>
       </div>
     );
   }
@@ -53,7 +58,7 @@ export default function GenericSwiper<T>({
       pagination={{ clickable: true }}
       autoplay={false}
       breakpoints={breakpoints}
-      className={className}
+      className={cn(className)}
     >
       {items.map((item, index) => (
         <SwiperSlide key={index}>{renderItem(item, index)}</SwiperSlide>

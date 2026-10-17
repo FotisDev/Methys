@@ -16,6 +16,7 @@ import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { getT } from "@/i18n/server";
 import { translateCategory } from "@/i18n/translate";
 import { defaultLocale, isLocale } from "@/i18n.config";
+import { cn } from "@/_lib/utils/cn";
 
 type SubcategoryWithImage = Omit<CategoryBackendType, "image_url"> & {
   image_url: string;
@@ -142,43 +143,51 @@ export default async function CategoryPage({
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
       <Schema markup={schema} />
-      <main className="relative w-full min-h-screen pt-24 font-roboto">
-        <div className="w-full  px-4 sm:px-6 ">
+      <main className={cn("relative w-full min-h-screen pt-24 font-roboto")}>
+        <div className={cn("w-full px-4 sm:px-6")}>
           <Breadcrumbs items={breadcrumbItems} locale={locale} />
-          <header className="mb-5">
-            <h1 className="text-3xl md:text-4xl font-light mb-4 text-vintage-green">
+          <header className={cn("mb-5")}>
+            <h1
+              className={cn(
+                "text-3xl md:text-4xl font-light mb-4 text-vintage-green",
+              )}
+            >
               {categoryName}
             </h1>
-            <p className="text-lg text-vintage-brown max-w-2xl">
+            <p className={cn("text-lg text-vintage-brown max-w-2xl")}>
               {categoryIntro}
             </p>
           </header>
 
           {subcategories.length === 0 ? (
             <section
-              className="text-center py-20"
+              className={cn("text-center py-20")}
               aria-labelledby="no-subcategories"
             >
-              <div className="text-8xl mb-6" aria-hidden="true">
+              <div className={cn("text-8xl mb-6")} aria-hidden="true">
                 📦
               </div>
               <h2
                 id="no-subcategories"
-                className="text-3xl font-semibold mb-4 text-vintage-green"
+                className={cn("text-3xl font-semibold mb-4 text-vintage-green")}
               >
                 {t("collections.noSubcategoriesTitle")}
               </h2>
-              <p className="text-lg text-gray-600 max-w-md mx-auto">
+              <p className={cn("text-lg text-gray-600 max-w-md mx-auto")}>
                 {t("collections.noSubcategoriesText")}
               </p>
             </section>
           ) : (
             <section aria-labelledby="subcategories-heading">
-              <h2 id="subcategories-heading" className="sr-only">
+              <h2 id="subcategories-heading" className={cn("sr-only")}>
                 {t("collections.subcategoriesHeading", { name: categoryName })}
               </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div
+                className={cn(
+                  "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8",
+                )}
+              >
                 {subcategories.map((subcategory, index) => {
                   const href = `/collections/${encodeURIComponent(
                     categorySlug,
@@ -187,11 +196,13 @@ export default async function CategoryPage({
                   return (
                     <article
                       key={subcategory.id}
-                      className="group relative overflow-hidden w-full"
+                      className={cn("group relative overflow-hidden w-full")}
                     >
                       <Link
                         href={href}
-                        className="block relative aspect-[3/4] bg-gray-100 h-full w-full"
+                        className={cn(
+                          "block relative aspect-[3/4] bg-gray-100 h-full w-full",
+                        )}
                       >
                         <Image
                           src={subcategory.image_url}
@@ -204,24 +215,44 @@ export default async function CategoryPage({
                           })}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          className={cn(
+                            "object-cover transition-transform duration-500 group-hover:scale-110",
+                          )}
                           priority={index < PRIORITY_IMAGE_COUNT}
                         />
 
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div
+                          className={cn(
+                            "absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent",
+                          )}
+                        />
 
-                        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                          <h2 className="text-2xl font-semibold  tracking-wide capitalize">
+                        <div
+                          className={cn(
+                            "absolute bottom-0 left-0 right-0 p-6 text-white",
+                          )}
+                        >
+                          <h2
+                            className={cn(
+                              "text-2xl font-semibold tracking-wide capitalize",
+                            )}
+                          >
                             {translateCategory(
                               t,
                               subcategory.slug,
                               subcategory.name,
                             )}
                           </h2>
-                          <p className="text-sm opacity-90 font-medium flex flex-row hover:underline">
+                          <p
+                            className={cn(
+                              "text-sm opacity-90 font-medium flex flex-row hover:underline",
+                            )}
+                          >
                             {t("collections.shop")}{" "}
                             <span>
-                              <RightArrowIcon className="w-5 h-5 text-white-fb" />
+                              <RightArrowIcon
+                                className={cn("w-5 h-5 text-white-fb")}
+                              />
                             </span>
                           </p>
                         </div>

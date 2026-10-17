@@ -14,6 +14,7 @@ import CartSideBar from "../SideBars/cartSideBar";
 import { useShoppingCartHook } from "../hooks/shoppingCartHook";
 import { useWishlistHook } from "../hooks/wishListHook";
 import { useT } from "@/i18n/client";
+import { cn } from "@/_lib/utils/cn";
 
 const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   const t = useT();
@@ -124,38 +125,17 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   const isOpaque =
     forceOpaqueFromContext || isNavbarHovered || showClothes || isScrolled;
 
-  const navbarClasses = [
-    "fixed",
-    "font-serif",
-    "top-0",
-    "z-50",
-    "grid",
-    "grid-cols-3",
-    "items-center",
-    "aspect-[60/2]",
-    "w-full",
-    "px-2",
-    "lg:px-4",
-    "text-xs",
-    "transition-all",
-    "duration-300",
-    "border-b",
-    "border-gray-aca/30",
-  ];
-
-  if (isOpaque) {
-    navbarClasses.push("bg-white", "text-vintage-green");
-  } else {
-    navbarClasses.push("text-white border-none shadow-none");
-  }
-
   return (
-    <div className="relative items-center justify-center">
+    <div className={cn("relative items-center justify-center")}>
       <div>
         <nav
-          className={navbarClasses.join(" ")}
+          className={cn(
+            "fixed font-serif top-0 z-30 grid grid-cols-3 items-center aspect-[60/2] w-full px-2 lg:px-4 text-xs transition-all duration-300 border-b border-gray-aca/30",
+            isOpaque
+              ? "bg-white text-vintage-green"
+              : "text-white border-none shadow-none",
+          )}
           ref={menuRef}
-          style={{ zIndex: 20 }}
           onMouseEnter={() => setIsNavbarHovered(true)}
           onMouseLeave={() => {
             if (!showClothes) {
@@ -164,11 +144,11 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
           }}
           aria-label={t("nav.mainNavigation")}
         >
-          <div className="flex items-center">
+          <div className={cn("flex items-center")}>
             <button
               ref={toggleButtonRef}
               aria-label={t("nav.openMobileMenu")}
-              className="lg:hidden text-2xl"
+              className={cn("lg:hidden text-2xl")}
               onClick={() => {
                 setShowBulletMenu(!showBulletMenu);
                 setShowClothes(false);
@@ -177,13 +157,13 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
               ☰
             </button>
 
-            <ul className="hidden lg:flex gap-4 items-center">
+            <ul className={cn("hidden lg:flex gap-4 items-center")}>
               {navLinks.map(({ id, href, label }) => (
                 <li key={id}>
                   <Link
                     href={href}
                     data-nav-id={id}
-                    className="uppercase hover:underline"
+                    className={cn("uppercase hover:underline")}
                     onMouseEnter={() => handleMouseEnter(id)}
                   >
                     {label}
@@ -193,20 +173,22 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
             </ul>
           </div>
 
-          <div className="flex justify-center">
-            <Link href={PAGE_URLS.HOMEPAGE} className="text-lg">
+          <div className={cn("flex justify-center")}>
+            <Link href={PAGE_URLS.HOMEPAGE} className={cn("text-lg")}>
               <div>Methys</div>
             </Link>
           </div>
-          <div className="flex items-center justify-end gap-2.5">
+          <div className={cn("flex items-center justify-end gap-2.5")}>
             <button
               onClick={toggleWishlist}
-              className="relative group cursor-pointer"
+              className={cn("relative group cursor-pointer")}
               aria-label={t("nav.wishlistWithCount", { count: wishlistCount })}
             >
-              <div className="relative p-2 rounded-full">
+              <div className={cn("relative p-2 rounded-full")}>
                 <svg
-                  className="w-5 h-5 lg:w-6 lg:h-6 group-hover:text-red-500 transition-colors"
+                  className={cn(
+                    "w-5 h-5 lg:w-6 lg:h-6 group-hover:text-red-500 transition-colors",
+                  )}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -221,7 +203,12 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
                 </svg>
                 {wishlistCount > 0 && (
                   <span
-                    className={`absolute top-1 right-1  text-[10px] rounded-full w-3 h-3 flex items-center justify-center  ${isOpaque ? "bg-vintage-green text-white" : "bg-white text-vintage-green"}`}
+                    className={cn(
+                      "absolute top-1 right-1 text-[10px] rounded-full w-3 h-3 flex items-center justify-center",
+                      isOpaque
+                        ? "bg-vintage-green text-white"
+                        : "bg-white text-vintage-green",
+                    )}
                   >
                     {wishlistCount > 99 ? "99+" : wishlistCount}
                   </span>
@@ -231,18 +218,30 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
 
             <button
               onClick={toggleShoppingCart}
-              className="relative group cursor-pointer"
+              className={cn("relative group cursor-pointer")}
               aria-label={t("nav.cartWithCount", { count: ShoppingCartCount })}
             >
-              <div className="relative p-1 sm:p-3 lg:p-2 rounded-full transition-colors group">
+              <div
+                className={cn(
+                  "relative p-1 sm:p-3 lg:p-2 rounded-full transition-colors group",
+                )}
+              >
                 <CartSvg
-                  className={`w-5 h-5 lg:w-6 lg:h-6 transition-colors ${
-                    isOpaque ? "text-vintage-green " : "text-white "
-                  }`}
+                  className={cn(
+                    "w-5 h-5 lg:w-6 lg:h-6 transition-colors",
+                    isOpaque ? "text-vintage-green" : "text-white",
+                  )}
                 />
                 {ShoppingCartCount > 0 && (
                   <span
-                    className={`absolute top-1 right-1 text-[10px] rounded-full w-3 h-3 flex items-center justify-center ${isOpaque ? "bg-vintage-green text-white" : isShoppingCartOpen ? "text-white" : "bg-white text-vintage-green"}`}
+                    className={cn(
+                      "absolute top-1 right-1 text-[10px] rounded-full w-3 h-3 flex items-center justify-center",
+                      isOpaque
+                        ? "bg-vintage-green text-white"
+                        : isShoppingCartOpen
+                          ? "text-white"
+                          : "bg-white text-vintage-green",
+                    )}
                   >
                     {ShoppingCartCount > 99 ? "99+" : ShoppingCartCount}
                   </span>
@@ -250,49 +249,55 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
               </div>
             </button>
 
-            <div className="hidden lg:flex items-center gap-4">
+            <div className={cn("hidden lg:flex items-center gap-4")}>
               {!isAuthLoading && isAuthenticated && (
-                <LogoutButton className="ml-auto" />
+                <LogoutButton className={cn("ml-auto")} />
               )}
               <LanguageSwitcher />
               {/* <BulletButtonSideBar /> */}
             </div>
           </div>
+
+          {/* Mobile Menu */}
+          {showBulletMenu && (
+            <nav
+              className={cn(
+                "block lg:hidden absolute top-full left-0 w-full bg-white shadow-md transition-all duration-300 ease-in-out cursor-pointer",
+              )}
+              aria-label={t("nav.mobileNavigation")}
+            >
+              <ul className={cn("flex flex-col px-4 py-4 gap-3")}>
+                {navLinks.map(({ id, href, label }) => (
+                  <li key={id}>
+                    <Link
+                      href={href}
+                      onClick={() => handleMobileClick(id)}
+                      className={cn(
+                        "block text-left text-black py-2 border-b border-gray-200",
+                      )}
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+
+                {!isAuthLoading && isAuthenticated && (
+                  <li>
+                    <LogoutButton className={cn("m-4 bg-default-cold!")} />
+                  </li>
+                )}
+              </ul>
+            </nav>
+          )}
         </nav>
       </div>
-
-      {/* Mobile Menu */}
-      {showBulletMenu && (
-        <nav
-          className="block lg:hidden absolute top-full pt-10 left-0 z-30 w-full bg-white shadow-md transition-all duration-300 ease-in-out cursor-pointer"
-          aria-label={t("nav.mobileNavigation")}
-        >
-          <ul className="flex flex-col px-4 py-4 gap-3">
-            {navLinks.map(({ id, href, label }) => (
-              <li key={id}>
-                <Link
-                  href={href}
-                  onClick={() => handleMobileClick(id)}
-                  className="block text-left text-black py-2 border-b border-gray-200"
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-
-            {!isAuthLoading && isAuthenticated && (
-              <li>
-                <LogoutButton className="m-4 bg-default-cold!" />
-              </li>
-            )}
-          </ul>
-        </nav>
-      )}
 
       {showClothes && (
         <div
           ref={clothesModalRef}
-          className="fixed top-16 left-0 z-40 h-auto max-h-[calc(100vh-4rem)] w-auto bg-white shadow-lg rounded-r-3xl transition-transform duration-300 transform translate-x-0 "
+          className={cn(
+            "fixed top-16 left-0 z-40 h-auto max-h-[calc(100vh-4rem)] w-auto bg-white shadow-lg rounded-r-3xl transition-transform duration-300 transform translate-x-0",
+          )}
           style={{
             transform: showClothes ? "translateX(0)" : "translateX(-100%)",
             minWidth: "320px",
@@ -300,7 +305,9 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
         >
           <button
             type="button"
-            className="absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-vintage-green"
+            className={cn(
+              "absolute top-4 right-4 text-cyan-900 text-3xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-vintage-green",
+            )}
             onClick={() => setShowClothes(false)}
             aria-label={t("nav.closeShopMenu")}
           >

@@ -2,6 +2,7 @@
 
 import { useFormatPrice, useT } from "@/i18n/client";
 import { getShipping } from "@/_lib/utils/shipping";
+import { cn } from "@/_lib/utils/cn";
 
 export default function FreeShippingProgress({
   subtotal,
@@ -15,8 +16,8 @@ export default function FreeShippingProgress({
   const { isFree, remaining, progress } = getShipping(subtotal);
 
   return (
-    <div className={`space-y-2 ${className}`}>
-      <p className="text-xs text-vintage-green">
+    <div className={cn("space-y-2", className)}>
+      <p className={cn("text-xs text-vintage-green")}>
         {isFree
           ? t("shipping.unlocked")
           : t("shipping.remaining", { amount: formatPrice(remaining) })}
@@ -27,10 +28,12 @@ export default function FreeShippingProgress({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(progress * 100)}
-        className="h-1.5 w-full bg-gray-200 overflow-hidden rounded-full"
+        className={cn("h-1.5 w-full bg-gray-200 overflow-hidden rounded-full")}
       >
         <div
-          className="h-full bg-vintage-green transition-[width] duration-500 ease-out"
+          className={cn(
+            "h-full bg-vintage-green transition-[width] duration-500 ease-out",
+          )}
           style={{ width: `${progress * 100}%` }}
         />
       </div>

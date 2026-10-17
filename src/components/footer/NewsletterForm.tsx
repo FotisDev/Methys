@@ -10,6 +10,7 @@ import { useLocale, useT } from "@/i18n/client";
 import type { MessageKey } from "@/i18n/translate";
 import { rich } from "@/i18n/rich";
 import Link from "@/components/LocaleLink/LocaleLink";
+import { cn } from "@/_lib/utils/cn";
 
 const initialState: NewsletterState = { status: "idle", message: "" };
 
@@ -23,7 +24,7 @@ export default function NewsletterForm() {
 
   if (state.status === "success" || state.status === "already") {
     return (
-      <p role="status" className="text-sm text-vintage-green">
+      <p role="status" className={cn("text-sm text-vintage-green")}>
         {t(state.message as MessageKey, {
           percent: NEWSLETTER_DISCOUNT_PERCENT,
         })}
@@ -32,8 +33,8 @@ export default function NewsletterForm() {
   }
 
   return (
-    <div className="space-y-2">
-      <form action={formAction} className="flex w-full">
+    <div className={cn("space-y-2")}>
+      <form action={formAction} className={cn("flex w-full")}>
         <input type="hidden" name="locale" value={locale} />
         <input
           type="email"
@@ -42,12 +43,12 @@ export default function NewsletterForm() {
           aria-label={t("footer.emailPlaceholder")}
           required
           disabled={isPending}
-          className="border border-default-color w-full p-2 text-sm"
+          className={cn("border border-default-color w-full p-2 text-sm")}
         />
         <button
           type="submit"
           disabled={isPending}
-          className="bg-default-cold text-white w-16 disabled:opacity-60"
+          className={cn("bg-default-cold text-white w-16 disabled:opacity-60")}
           aria-label={
             isPending ? t("newsletter.subscribing") : t("footer.subscribe")
           }
@@ -56,14 +57,14 @@ export default function NewsletterForm() {
         </button>
       </form>
       {state.status === "error" && (
-        <p role="alert" className="text-xs text-red-600">
+        <p role="alert" className={cn("text-xs text-red-600")}>
           {t(state.message as MessageKey)}
         </p>
       )}
-      <p className="text-xs text-gray-500">
+      <p className={cn("text-xs text-gray-500")}>
         {rich(t("newsletter.consent"), {
           privacyPolicy: (
-            <Link href="/privacy-policy" className="underline">
+            <Link href="/privacy-policy" className={cn("underline")}>
               {t("footer.privacyPolicy")}
             </Link>
           ),
