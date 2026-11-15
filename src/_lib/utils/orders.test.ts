@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { displayOrderStatus, orderReference, safeTrackingUrl } from "./orders";
+import { displayOrderStatus, orderReference, safeHttpUrl } from "./orders";
 
 describe("orderReference", () => {
   it("strips the test and live prefixes", () => {
@@ -9,37 +9,26 @@ describe("orderReference", () => {
 });
 
 describe("displayOrderStatus", () => {
-  it("shows refunds first", () => {
-    expect(
-      displayOrderStatus({ status: "refunded", fulfillment_status: "shipped" }),
-    ).toBe("refunded");
+  it("shows refunds", () => {
+    expect(displayOrderStatus({ status: "refunded" })).toBe("refunded");
   });
 
-  it("uses the fulfillment status", () => {
-    expect(
-      displayOrderStatus({ status: "paid", fulfillment_status: "shipped" }),
-    ).toBe("shipped");
-  });
-
-  it("defaults to processing", () => {
-    expect(displayOrderStatus({ status: "paid" })).toBe("processing");
-    expect(
-      displayOrderStatus({ status: "paid", fulfillment_status: "weird" }),
-    ).toBe("processing");
+  it("shows every other saved order as paid", () => {
+    expect(displayOrderStatus({ status: "paid" })).toBe("paid");
   });
 });
 
-describe("safeTrackingUrl", () => {
+describe("safeHttpUrl", () => {
   it("accepts http(s) links", () => {
-    expect(safeTrackingUrl(" https://track.example/123 ")).toBe(
-      "https://track.example/123",
+    expect(safeHttpUrl(" https://artist.example/work ")).toBe(
+      "https://artist.example/work",
     );
   });
 
   it("rejects other schemes and junk", () => {
-    expect(safeTrackingUrl("javascript:alert(1)")).toBeNull();
-    expect(safeTrackingUrl("not a url")).toBeNull();
-    expect(safeTrackingUrl("")).toBeNull();
-    expect(safeTrackingUrl(null)).toBeNull();
+    expect(safeHttpUrl("javascript:alert(1)")).toBeNull();
+    expect(safeHttpUrl("not a url")).toBeNull();
+    expect(safeHttpUrl("")).toBeNull();
+    expect(safeHttpUrl(null)).toBeNull();
   });
 });

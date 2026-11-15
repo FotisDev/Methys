@@ -16,7 +16,7 @@ import { getProductsByIds } from "@/_lib/backend/ProductWithStructure/action";
 import { translateProducts } from "@/_lib/backend/translations/action";
 import { getValidImage } from "@/_lib/helpers";
 import { dropPhase, parseBody } from "@/_lib/utils/content";
-import { safeTrackingUrl as safeUrl } from "@/_lib/utils/orders";
+import { safeHttpUrl } from "@/_lib/utils/orders";
 import { getT } from "@/i18n/server";
 import { defaultLocale, isLocale } from "@/i18n.config";
 import { cn } from "@/_lib/utils/cn";
@@ -70,7 +70,7 @@ export default async function DropPage({ params }: PageProps) {
     timeZone: "Europe/Athens",
     timeZoneName: "short",
   });
-  const collaboratorUrl = safeUrl(drop.collaborator_url);
+  const collaboratorUrl = safeHttpUrl(drop.collaborator_url);
 
   const schema = {
     "@context": "https://schema.org",

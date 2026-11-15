@@ -5,7 +5,7 @@ import { LOCALE_HEADER } from "@/i18n/constants";
 import { env } from "@/env";
 
 // Μόνο αυτά τα paths χρειάζονται auth check
-const protectedPaths = ["/offers", "/account", "/product-entry", "/admin"];
+const protectedPaths = ["/offers", "/account", "/product-entry"];
 const authPaths = ["/login", "/createAccount"];
 
 export async function proxy(request: NextRequest) {

@@ -7,36 +7,14 @@ export function orderReference(sessionId: string) {
     .toUpperCase();
 }
 
-export const FULFILLMENT_STATUSES = [
-  "processing",
-  "shipped",
-  "delivered",
-  "canceled",
-] as const;
-export type FulfillmentStatus = (typeof FULFILLMENT_STATUSES)[number];
-
-export function isFulfillmentStatus(
-  value: unknown,
-): value is FulfillmentStatus {
-  return (
-    typeof value === "string" &&
-    (FULFILLMENT_STATUSES as readonly string[]).includes(value)
-  );
+// What a customer sees on their account page: orders are saved once Stripe
+// confirms the payment, so an order is either paid or (later) refunded.
+export function displayOrderStatus(order: { status: string }) {
+  return order.status === "refunded" ? "refunded" : "paid";
 }
 
-// What a customer sees on their account page. A refund overrides shipping.
-export function displayOrderStatus(order: {
-  status: string;
-  fulfillment_status?: string | null;
-}): FulfillmentStatus | "refunded" {
-  if (order.status === "refunded") return "refunded";
-  return isFulfillmentStatus(order.fulfillment_status)
-    ? order.fulfillment_status
-    : "processing";
-}
-
-// Only allow http(s) links in emails and on the account page.
-export function safeTrackingUrl(value: unknown): string | null {
+// Only allow http(s) links (e.g. a collaborator's website).
+export function safeHttpUrl(value: unknown): string | null {
   if (typeof value !== "string" || !value.trim()) return null;
   try {
     const url = new URL(value.trim());

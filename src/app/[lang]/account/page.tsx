@@ -12,7 +12,6 @@ import { getValidImage } from "@/_lib/helpers";
 import {
   displayOrderStatus,
   orderReference,
-  safeTrackingUrl,
   type OrderItem,
 } from "@/_lib/utils/orders";
 import { getT } from "@/i18n/server";
@@ -34,22 +33,16 @@ type OrderRow = {
   id: string;
   stripe_session_id: string;
   status: string;
-  fulfillment_status: string | null;
-  tracking_number: string | null;
-  tracking_url: string | null;
   total_amount: number;
   currency: string;
   items: OrderItem[] | null;
   created_at: string;
 };
 
-const STATUS_STYLES: Record<string, string> = {
-  processing: "bg-amber-50 text-amber-800 border-amber-200",
-  shipped: "bg-blue-50 text-blue-800 border-blue-200",
-  delivered: "bg-green-50 text-green-800 border-green-200",
-  canceled: "bg-gray-100 text-gray-600 border-gray-200",
+const STATUS_STYLES = {
+  paid: "bg-green-50 text-green-800 border-green-200",
   refunded: "bg-gray-100 text-gray-600 border-gray-200",
-};
+} as const;
 
 export default async function AccountPage({ params }: PageProps) {
   const { lang } = await params;
@@ -62,7 +55,7 @@ export default async function AccountPage({ params }: PageProps) {
   const { data, error } = await supabaseAdmin
     .from("orders")
     .select(
-      "id, stripe_session_id, status, fulfillment_status, tracking_number, tracking_url, total_amount, currency, items, created_at",
+      "id, stripe_session_id, status, total_amount, currency, items, created_at",
     )
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
@@ -141,7 +134,6 @@ export default async function AccountPage({ params }: PageProps) {
           <ul className={cn("space-y-6")}>
             {orders.map((order) => {
               const status = displayOrderStatus(order);
-              const trackingUrl = safeTrackingUrl(order.tracking_url);
               const items = Array.isArray(order.items) ? order.items : [];
               return (
                 <li key={order.id} className={cn("border border-gray-200")}>
@@ -212,28 +204,9 @@ export default async function AccountPage({ params }: PageProps) {
 
                   <div
                     className={cn(
-                      "flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-t border-gray-200 text-sm",
+                      "flex justify-end px-5 py-4 border-t border-gray-200 text-sm",
                     )}
                   >
-                    <div className={cn("text-xs text-gray-600")}>
-                      {order.tracking_number && (
-                        <span>
-                          {t("emails.trackingNumber")}: {order.tracking_number}
-                        </span>
-                      )}
-                      {trackingUrl && (
-                        <a
-                          href={trackingUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={cn(
-                            "ml-3 underline underline-offset-4 hover:text-vintage-brown",
-                          )}
-                        >
-                          {t("emails.trackParcel")}
-                        </a>
-                      )}
-                    </div>
                     <p>
                       {t("emails.total")}:{" "}
                       <strong className={cn("font-medium")}>
