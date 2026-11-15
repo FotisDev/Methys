@@ -44,7 +44,9 @@
     "openMobileMenu": "Åbn menu",
     "closeShopMenu": "Luk shopmenu",
     "wishlistWithCount": "Ønskeliste med {count} varer",
-    "cartWithCount": "Kurv med {count} varer"
+    "cartWithCount": "Kurv med {count} varer",
+    "drops": "Drops",
+    "journal": "Journal"
   },
   "categories": {
     "clothing": "Tøj",
@@ -182,7 +184,9 @@
     "inStock": "{count} på lager",
     "productId": "Produkt-ID: #{id}",
     "recommendations": "Vores anbefalinger",
-    "onlyLeft": "Kun {count} tilbage"
+    "onlyLeft": "Kun {count} tilbage",
+    "onlyLeftInSize": "Kun {count} tilbage i {size}",
+    "completeTheLook": "Fuldend looket"
   },
   "filters": {
     "show": "Vis filtre",
@@ -417,7 +421,8 @@
     "freeReturns": "Gratis returnering",
     "freeReturnsText": "30 dage til at fortryde.",
     "secureCheckout": "Sikker betaling",
-    "secureCheckoutText": "Betalinger håndteres af Stripe."
+    "secureCheckoutText": "Betalinger håndteres af Stripe.",
+    "outOfStock": "Beklager, {item} er lige blevet udsolgt, eller der er ikke nok tilbage. Opdater din kurv og prøv igen."
   },
   "success": {
     "invalidSession": "Ugyldig session",
@@ -499,7 +504,117 @@
     "errors": {
       "rating": "Vælg en bedømmelse.",
       "body": "Skriv mindst 10 tegn.",
-      "failed": "Vi kunne ikke offentliggøre din anmeldelse. Prøv igen."
+      "failed": "Vi kunne ikke offentliggøre din anmeldelse. Prøv igen.",
+      "photoType": "Billeder skal være JPG, PNG eller WebP.",
+      "photoSize": "Hvert billede må højst være 5 MB.",
+      "photoCount": "Du kan tilføje op til 3 billeder."
+    },
+    "photos": "Tilføj billeder (valgfrit)",
+    "photosHint": "Op til 3 billeder på højst 5 MB (JPG, PNG eller WebP). Vis os, hvordan den sidder.",
+    "photoAlt": "Billede {index} fra {name}"
+  },
+  "emails": {
+    "orderSubject": "Din Methys-ordre {reference} er bekræftet",
+    "orderHeading": "Tak for din ordre",
+    "orderBody": "Hej {name}, vi har modtaget din ordre og gør den klar. Vi sender dig en ny e-mail, så snart den er afsendt.",
+    "orderNumber": "Ordrenummer",
+    "itemSize": "Størrelse {size}",
+    "total": "I alt",
+    "shippingTo": "Leveres til",
+    "viewOrders": "Se dine ordrer",
+    "shippedSubject": "Din Methys-ordre {reference} er på vej",
+    "shippedHeading": "Din ordre er afsendt",
+    "shippedBody": "Godt nyt, {name}: din ordre er på vej til dig.",
+    "trackingNumber": "Trackingnummer",
+    "trackParcel": "Følg din pakke",
+    "backInStockSubject": "{name} er tilbage i størrelse {size}",
+    "backInStockHeading": "Den er tilbage",
+    "backInStockBody": "{name} i størrelse {size} er tilbage på lager. Størrelserne går hurtigt, så vent ikke for længe.",
+    "shopNow": "Køb nu",
+    "oneTimeNotice": "Du bad om denne ene e-mail. Vi sender ikke mere om det.",
+    "cartSubject": "Du har glemt noget i din kurv",
+    "cartHeading": "Tænker du stadig over det?",
+    "cartBody": "Din kurv er gemt og venter på dig. Lageret er begrænset, så vi kan ikke holde varerne længe.",
+    "backToCart": "Tilbage til kurven",
+    "dropSubject": "{title} er ude nu",
+    "dropHeading": "Den er lige landet",
+    "dropBody": "{title} er ude. Du bad os sige til først, og antallet er begrænset.",
+    "dropCta": "Shop droppet"
+  },
+  "account": {
+    "metaTitle": "Min konto | Methys",
+    "title": "Min konto",
+    "viewOrders": "Se mine ordrer",
+    "wishlist": "Ønskeliste",
+    "memberOffers": "Medlemstilbud",
+    "ordersTitle": "Ordrer",
+    "noOrders": "Du har ikke bestilt noget endnu.",
+    "status": {
+      "processing": "Behandles",
+      "shipped": "Afsendt",
+      "delivered": "Leveret",
+      "canceled": "Annulleret",
+      "refunded": "Refunderet"
     }
+  },
+  "admin": {
+    "ordersTitle": "Ordrer",
+    "addProduct": "Tilføj produkt",
+    "backToShop": "Tilbage til butikken",
+    "all": "Alle",
+    "noOrders": "Ingen ordrer her.",
+    "status": "Status",
+    "trackingUrl": "Trackinglink",
+    "save": "Gem",
+    "shippedHint": "Første gang du sætter en ordre til Afsendt, får kunden en e-mail med trackingoplysningerne."
+  },
+  "stockAlert": {
+    "toggle": "Udsolgt i din størrelse? Få en e-mail, når den er tilbage",
+    "title": "Giv mig besked, når den er tilbage",
+    "submit": "Giv mig besked",
+    "note": "Én e-mail, når den er på lager igen. Intet andet.",
+    "success": "Klaret. Vi sender dig en e-mail, så snart den er tilbage.",
+    "inStockNow": "Godt nyt: denne størrelse er på lager lige nu.",
+    "failed": "Noget gik galt. Prøv igen."
+  },
+  "journal": {
+    "metaTitle": "Journal | Methys",
+    "metaDescription": "Lookbooks, stylingguides og historier bag kulisserne hos Methys.",
+    "title": "Journal",
+    "intro": "Lookbooks, stylingnoter og menneskene bag tøjet.",
+    "empty": "De første historier er på vej.",
+    "readMore": "Læs historien",
+    "readingTime": "{minutes} min. læsning",
+    "by": "Af {author}",
+    "shopTheLook": "Shop looket",
+    "notFound": "Historien blev ikke fundet"
+  },
+  "drops": {
+    "metaTitle": "Drops & samarbejder | Methys",
+    "metaDescription": "Begrænsede Methys-drops og samarbejder. Tilmeld dig og hør først, når det næste lander.",
+    "title": "Drops",
+    "intro": "Begrænsede oplag og samarbejder. Når de er væk, er de væk.",
+    "empty": "Ingen drops annonceret endnu. Tilmeld dig nyhedsbrevet og hør det først.",
+    "notFound": "Droppet blev ikke fundet",
+    "phase": {
+      "upcoming": "Kommer snart",
+      "live": "Ude nu",
+      "ended": "Afsluttet"
+    },
+    "withCollaborator": "Methys × {name}",
+    "launchesAt": "Lanceres {date}",
+    "days": "Dage",
+    "hours": "Timer",
+    "minutes": "Min",
+    "seconds": "Sek",
+    "notifyMe": "Giv mig besked",
+    "signupNote": "Én e-mail, i det øjeblik den er ude. Intet andet.",
+    "signupSuccess": "Du er på listen. Vi sender dig en e-mail, i det øjeblik den lander.",
+    "signupFailed": "Vi kunne ikke tilmelde dig. Prøv igen.",
+    "alreadyLive": "Den er allerede ude. Genindlæs siden for at shoppe.",
+    "endedNote": "Dette drop er afsluttet. Nogle størrelser kan stadig være tilgængelige nedenfor.",
+    "thePieces": "Styles",
+    "aboutCollaborator": "Om samarbejdspartneren",
+    "visitCollaborator": "Se deres arbejde"
   }
 }

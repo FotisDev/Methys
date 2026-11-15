@@ -34,7 +34,10 @@ function byId<T>(rows: (T & { id: Id })[] | null) {
 }
 
 // Copies only the fields that have a translation, keeping English for the rest.
-function overlay<T extends object>(item: T, translation?: object | null): T {
+export function overlay<T extends object>(
+  item: T,
+  translation?: object | null,
+): T {
   if (!translation) return item;
   const merged = { ...item } as Record<string, unknown>;
   for (const [key, value] of Object.entries(translation)) {

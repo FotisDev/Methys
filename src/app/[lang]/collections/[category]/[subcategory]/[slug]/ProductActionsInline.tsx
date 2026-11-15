@@ -10,6 +10,8 @@ import SizeGuideModal from "./SizeGuide";
 import { useFormatPrice, useT } from "@/i18n/client";
 import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 import { cn } from "@/_lib/utils/cn";
+import StockAlertForm from "@/components/products/StockAlertForm";
+import { LOW_SIZE_STOCK_THRESHOLD, getSizeQuantity } from "@/_lib/utils/stock";
 
 interface ProductActionsProps {
   product: ProductInDetails;
@@ -37,6 +39,20 @@ export default function ProductActions({ product }: ProductActionsProps) {
     product.product_variants
       ?.filter((variant) => variant.quantity > 0)
       .map((variant) => variant.size) || [];
+
+  const soldOutSizes =
+    product.product_variants
+      ?.filter((variant) => variant.quantity <= 0)
+      .map((variant) => variant.size) || [];
+
+  const selectedQuantity = getSizeQuantity(
+    product.product_variants,
+    selectedSize,
+  );
+  const isLowInSelectedSize =
+    selectedQuantity !== null &&
+    selectedQuantity > 0 &&
+    selectedQuantity <= LOW_SIZE_STOCK_THRESHOLD;
 
   const allSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
@@ -143,7 +159,31 @@ export default function ProductActions({ product }: ProductActionsProps) {
               {t("product.selectSize")}
             </p>
           )}
+
+          {isLowInSelectedSize && selectedSize && (
+            <p className={cn("text-sm text-red-700 mt-2")}>
+              {t("product.onlyLeftInSize", {
+                count: selectedQuantity,
+                size: selectedSize,
+              })}
+            </p>
+          )}
+
+          <div className={cn("mt-3")}>
+            <StockAlertForm
+              productId={product.id}
+              soldOutSizes={soldOutSizes}
+            />
+          </div>
         </div>
+      )}
+
+      {availableSizes.length === 0 && (
+        <StockAlertForm
+          productId={product.id}
+          soldOutSizes={soldOutSizes}
+          defaultOpen
+        />
       )}
 
       {/* Action Buttons */}

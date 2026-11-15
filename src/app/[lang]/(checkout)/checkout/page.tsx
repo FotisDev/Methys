@@ -149,7 +149,7 @@ const Checkout = () => {
     setIsSubmitting(true);
 
     try {
-      const { url } = await createCheckoutSession(
+      const { url, outOfStock } = await createCheckoutSession(
         cart,
         {
           name: formData.name,
@@ -163,6 +163,10 @@ const Checkout = () => {
         appliedPromo?.id,
       );
 
+      if (outOfStock) {
+        alert(t("checkout.outOfStock", { item: outOfStock }));
+        return;
+      }
       if (url) window.location.href = url;
     } catch (err) {
       console.error("Checkout failed:", err);

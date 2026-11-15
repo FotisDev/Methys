@@ -44,7 +44,9 @@
     "openMobileMenu": "Open mobile menu",
     "closeShopMenu": "Close shop menu",
     "wishlistWithCount": "Wishlist with {count} items",
-    "cartWithCount": "Cart with {count} items"
+    "cartWithCount": "Cart with {count} items",
+    "drops": "Drops",
+    "journal": "Journal"
   },
   "categories": {
     "clothing": "Clothing",
@@ -182,7 +184,9 @@
     "inStock": "{count} in stock",
     "productId": "Product ID: #{id}",
     "recommendations": "Our Recommendations",
-    "onlyLeft": "Only {count} left"
+    "onlyLeft": "Only {count} left",
+    "onlyLeftInSize": "Only {count} left in {size}",
+    "completeTheLook": "Complete the look"
   },
   "filters": {
     "show": "Show filter",
@@ -417,7 +421,8 @@
     "freeReturns": "Free returns",
     "freeReturnsText": "30 days to change your mind.",
     "secureCheckout": "Secure checkout",
-    "secureCheckoutText": "Payments handled by Stripe."
+    "secureCheckoutText": "Payments handled by Stripe.",
+    "outOfStock": "Sorry, {item} just sold out or there isn't enough left. Please update your cart and try again."
   },
   "success": {
     "invalidSession": "Invalid session",
@@ -499,7 +504,117 @@
     "errors": {
       "rating": "Please choose a rating.",
       "body": "Please write at least 10 characters.",
-      "failed": "We couldn't post your review. Please try again."
+      "failed": "We couldn't post your review. Please try again.",
+      "photoType": "Photos must be JPG, PNG or WebP images.",
+      "photoSize": "Each photo can be up to 5 MB.",
+      "photoCount": "You can add up to 3 photos."
+    },
+    "photos": "Add photos (optional)",
+    "photosHint": "Up to 3 photos, 5 MB each (JPG, PNG or WebP). Show us how it fits.",
+    "photoAlt": "Photo {index} from {name}"
+  },
+  "emails": {
+    "orderSubject": "Your Methys order {reference} is confirmed",
+    "orderHeading": "Thank you for your order",
+    "orderBody": "Hi {name}, we've received your order and we're getting it ready. We'll email you again as soon as it ships.",
+    "orderNumber": "Order number",
+    "itemSize": "Size {size}",
+    "total": "Total",
+    "shippingTo": "Shipping to",
+    "viewOrders": "View your orders",
+    "shippedSubject": "Your Methys order {reference} is on its way",
+    "shippedHeading": "Your order has shipped",
+    "shippedBody": "Good news, {name}: your order is on its way to you.",
+    "trackingNumber": "Tracking number",
+    "trackParcel": "Track your parcel",
+    "backInStockSubject": "{name} is back in size {size}",
+    "backInStockHeading": "It's back",
+    "backInStockBody": "{name} in size {size} is back in stock. Sizes go fast, so don't wait too long.",
+    "shopNow": "Shop now",
+    "oneTimeNotice": "You asked us for this one email. We won't send you anything else about it.",
+    "cartSubject": "You left something in your cart",
+    "cartHeading": "Still thinking it over?",
+    "cartBody": "Your cart is saved and waiting for you. Stock is limited, so we can't hold these pieces for long.",
+    "backToCart": "Back to your cart",
+    "dropSubject": "{title} is live now",
+    "dropHeading": "It just dropped",
+    "dropBody": "{title} is live. You asked us to tell you first, and quantities are limited.",
+    "dropCta": "Shop the drop"
+  },
+  "account": {
+    "metaTitle": "My account | Methys",
+    "title": "My account",
+    "viewOrders": "View my orders",
+    "wishlist": "Wishlist",
+    "memberOffers": "Member offers",
+    "ordersTitle": "Orders",
+    "noOrders": "You haven't ordered anything yet.",
+    "status": {
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "canceled": "Canceled",
+      "refunded": "Refunded"
     }
+  },
+  "admin": {
+    "ordersTitle": "Orders",
+    "addProduct": "Add product",
+    "backToShop": "Back to shop",
+    "all": "All",
+    "noOrders": "No orders here.",
+    "status": "Status",
+    "trackingUrl": "Tracking link",
+    "save": "Save",
+    "shippedHint": "The first time you set an order to Shipped, the customer gets an email with the tracking details."
+  },
+  "stockAlert": {
+    "toggle": "Size sold out? Get an email when it's back",
+    "title": "Email me when it's back",
+    "submit": "Notify me",
+    "note": "One email when it's back in stock. Nothing else.",
+    "success": "Done. We'll email you as soon as it's back.",
+    "inStockNow": "Good news: this size is in stock right now.",
+    "failed": "Something went wrong. Please try again."
+  },
+  "journal": {
+    "metaTitle": "Journal | Methys",
+    "metaDescription": "Lookbooks, styling guides and stories from behind the scenes at Methys.",
+    "title": "Journal",
+    "intro": "Lookbooks, styling notes and the people behind the clothes.",
+    "empty": "The first stories are on their way.",
+    "readMore": "Read the story",
+    "readingTime": "{minutes} min read",
+    "by": "By {author}",
+    "shopTheLook": "Shop the look",
+    "notFound": "Story not found"
+  },
+  "drops": {
+    "metaTitle": "Drops & collaborations | Methys",
+    "metaDescription": "Limited Methys drops and collaborations. Sign up to hear first when the next one lands.",
+    "title": "Drops",
+    "intro": "Limited runs and collaborations. When they're gone, they're gone.",
+    "empty": "No drops announced yet. Join the newsletter to hear first.",
+    "notFound": "Drop not found",
+    "phase": {
+      "upcoming": "Coming soon",
+      "live": "Live now",
+      "ended": "Ended"
+    },
+    "withCollaborator": "Methys × {name}",
+    "launchesAt": "Launches {date}",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Min",
+    "seconds": "Sec",
+    "notifyMe": "Notify me",
+    "signupNote": "One email the moment it goes live. Nothing else.",
+    "signupSuccess": "You're on the list. We'll email you the moment it drops.",
+    "signupFailed": "We couldn't sign you up. Please try again.",
+    "alreadyLive": "It's already live. Refresh the page to shop it.",
+    "endedNote": "This drop has ended. Some sizes may still be available below.",
+    "thePieces": "The pieces",
+    "aboutCollaborator": "About the collaborator",
+    "visitCollaborator": "Visit their work"
   }
 }

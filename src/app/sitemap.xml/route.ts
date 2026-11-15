@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { SITE_URL } from "@/components/SEO/urls";
 
-const SITEMAPS = ["static.xml", "collections.xml", "products.xml"];
+const SITEMAPS = [
+  "static.xml",
+  "collections.xml",
+  "products.xml",
+  "content.xml",
+];
 
 export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

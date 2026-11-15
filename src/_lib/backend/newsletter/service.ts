@@ -2,9 +2,13 @@ import { randomBytes } from "crypto";
 import Stripe from "stripe";
 import { getStripe } from "@/_lib/backend/stripe/client";
 import { getResend } from "@/_lib/backend/email/resend";
+import {
+  emailButton as button,
+  emailLayout,
+  sendEmail as send,
+} from "@/_lib/backend/email/layout";
 import { NEWSLETTER_DISCOUNT_PERCENT } from "@/_lib/constants";
 import { SITE_URL } from "@/components/SEO/urls";
-import { env } from "@/env";
 import { getT } from "@/i18n/server";
 import type { Locale } from "@/i18n.config";
 
@@ -104,33 +108,6 @@ export async function createWelcomeCode(email: string) {
     metadata: { source: "newsletter", email },
   });
   return promotionCode.code;
-}
-
-function emailLayout(content: string) {
-  return `
-    <div style="font-family: Georgia, serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #2f3e2f;">
-      <p style="font-size: 20px; letter-spacing: 4px; margin: 0 0 24px;">METHYS</p>
-      ${content}
-    </div>
-  `;
-}
-
-const button = (href: string, label: string) => `
-  <p style="margin: 28px 0;">
-    <a href="${href}" style="display: inline-block; background: #2f3e2f; color: #fff; padding: 12px 28px; text-decoration: none;">
-      ${label}
-    </a>
-  </p>
-`;
-
-async function send(to: string, subject: string, html: string) {
-  const { error } = await getResend().emails.send({
-    from: env.RESEND_FROM_EMAIL,
-    to,
-    subject,
-    html,
-  });
-  if (error) throw new Error(`Resend send: ${error.message}`);
 }
 
 export async function sendConfirmationEmail(

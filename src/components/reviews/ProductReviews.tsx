@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Locale } from "@/i18n.config";
 import type { Translator } from "@/i18n/translate";
 import { translateCount } from "@/i18n/translate";
@@ -75,6 +76,32 @@ export default function ProductReviews({
               <p className={cn("text-sm text-gray-700 whitespace-pre-line")}>
                 {review.body}
               </p>
+              {review.photo_urls && review.photo_urls.length > 0 && (
+                <div className={cn("flex gap-2 mt-3")}>
+                  {review.photo_urls.map((url, i) => (
+                    <a
+                      key={url}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        "relative block w-20 h-24 bg-gray-50 overflow-hidden",
+                      )}
+                    >
+                      <Image
+                        src={url}
+                        alt={t("reviews.photoAlt", {
+                          name: review.author_name,
+                          index: i + 1,
+                        })}
+                        fill
+                        sizes="80px"
+                        className={cn("object-cover")}
+                      />
+                    </a>
+                  ))}
+                </div>
+              )}
               <p className={cn("mt-3 text-xs text-gray-500")}>
                 {review.author_name} · {t("reviews.verifiedBuyer")}
               </p>

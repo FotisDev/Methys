@@ -12,6 +12,10 @@ import {
 import { useT } from "@/i18n/client";
 import type { MessageKey } from "@/i18n/translate";
 import { StarIcon } from "./Stars";
+import {
+  MAX_REVIEW_PHOTOS,
+  MAX_REVIEW_PHOTO_BYTES,
+} from "@/_lib/utils/reviews";
 import { cn } from "@/_lib/utils/cn";
 
 const initialState: ReviewFormState = { status: "idle", message: "" };
@@ -133,6 +137,36 @@ export default function ReviewForm({ productId }: { productId: number }) {
           placeholder={t("reviews.bodyPlaceholder")}
           className={cn("mt-1 w-full border border-gray-300 p-2 text-sm")}
         />
+      </label>
+
+      <label className={cn("block text-sm")}>
+        {t("reviews.photos")}
+        <input
+          type="file"
+          name="photos"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          onChange={(e) => {
+            // Checked again on the server; this just gives instant feedback.
+            const files = Array.from(e.target.files ?? []);
+            const tooMany = files.length > MAX_REVIEW_PHOTOS;
+            const tooBig = files.some((f) => f.size > MAX_REVIEW_PHOTO_BYTES);
+            e.target.setCustomValidity(
+              tooMany
+                ? t("reviews.errors.photoCount")
+                : tooBig
+                  ? t("reviews.errors.photoSize")
+                  : "",
+            );
+            e.target.reportValidity();
+          }}
+          className={cn(
+            "mt-1 block w-full text-xs file:mr-3 file:border file:border-gray-300 file:bg-white file:px-3 file:py-2 file:text-xs",
+          )}
+        />
+        <span className={cn("block text-xs text-gray-500 mt-1")}>
+          {t("reviews.photosHint")}
+        </span>
       </label>
 
       {state.status === "error" && (

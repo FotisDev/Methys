@@ -9,6 +9,8 @@ import { getProductPricing } from "@/_lib/utils/discountUtil/discountUtils";
 import { getShipping } from "@/_lib/utils/shipping";
 import { getT } from "@/i18n/server";
 import { env } from "@/env";
+import { packMetadata } from "@/_lib/utils/stripeMetadata";
+import { findStockProblem } from "@/_lib/utils/stock";
 
 interface ShippingInfo {
   name: string;
@@ -24,7 +26,7 @@ export async function createCheckoutSession(
   shippingInfo: ShippingInfo,
   locale: string,
   promotionCodeId?: string,
-) {
+): Promise<{ url: string | null; outOfStock?: string }> {
   const supabase = await createSupabaseServerClient();
   // Prices come from the database, never from the client's cart (localStorage
   // can be edited). getProductPricing is the same helper the storefront uses.
@@ -51,6 +53,10 @@ export async function createCheckoutSession(
   }
 
   const productsById = new Map(products.map((p) => [p.id, p]));
+
+  // Someone may have bought the last one since this cart was filled.
+  const stockProblem = findStockProblem(cartItems, productsById);
+  if (stockProblem) return { url: null, outOfStock: stockProblem };
 
   const lineItems = cartItems.map((item) => {
     const product = productsById.get(item.id);
@@ -110,17 +116,18 @@ export async function createCheckoutSession(
     ...(promotionCodeId
       ? { discounts: [{ promotion_code: promotionCodeId }] }
       : {}),
+    // Kept small: Stripe caps each value at 500 characters. The webhook rebuilds
+    // names, prices and images from the database and Stripe's line items.
     metadata: {
       ...(user?.id && { user_id: user.id }),
-      shipping_info: JSON.stringify(shippingInfo),
-      cart_items: JSON.stringify(
+      locale: isLocale(locale) ? locale : "en",
+      ...packMetadata("shipping", shippingInfo),
+      ...packMetadata(
+        "cart",
         cartItems.map((i) => ({
           id: i.id,
-          name: i.name,
-          quantity: i.quantity,
-          price: i.price,
-          selectedSize: i.selectedSize,
-          image_url: i.image_url,
+          size: i.selectedSize,
+          quantity: Math.max(1, Math.floor(i.quantity ?? 1)),
         })),
       ),
       ...(promotionCodeId && { promotion_code_id: promotionCodeId }),

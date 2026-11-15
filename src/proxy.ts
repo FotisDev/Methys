@@ -5,7 +5,7 @@ import { LOCALE_HEADER } from "@/i18n/constants";
 import { env } from "@/env";
 
 // Μόνο αυτά τα paths χρειάζονται auth check
-const protectedPaths = ["/offers", "/product-entry"];
+const protectedPaths = ["/offers", "/account", "/product-entry", "/admin"];
 const authPaths = ["/login", "/createAccount"];
 
 export async function proxy(request: NextRequest) {
@@ -84,7 +84,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (user && authPaths.some((p) => pathnameWithoutLocale === p)) {
-    return NextResponse.redirect(new URL(`/${locale}/offers`, request.url));
+    return NextResponse.redirect(new URL(`/${locale}/account`, request.url));
   }
 
   return supabaseResponse;

@@ -14,6 +14,8 @@ type SeasonalCollectionProps = {
   // Pass it when known: falling back to getLocale() reads headers(), which
   // forces the whole page to render dynamically.
   locale?: string;
+  // Render nothing instead of "No products found" (for optional sections).
+  hideWhenEmpty?: boolean;
 };
 
 export default async function SeasonalCollectionSection({
@@ -21,6 +23,7 @@ export default async function SeasonalCollectionSection({
   href = "/collections",
   fetcher,
   locale: localeProp,
+  hideWhenEmpty = false,
 }: SeasonalCollectionProps) {
   const [rawItems, locale] = await Promise.all([
     fetcher(),
@@ -32,6 +35,7 @@ export default async function SeasonalCollectionSection({
   ]);
 
   if (!items || !Array.isArray(items)) {
+    if (hideWhenEmpty) return null;
     return <div>{t("common.noProductsFound")}</div>;
   }
 
@@ -40,6 +44,7 @@ export default async function SeasonalCollectionSection({
   );
 
   if (validItems.length === 0) {
+    if (hideWhenEmpty) return null;
     return <div>{t("common.noProductsFound")}</div>;
   }
 
