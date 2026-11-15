@@ -56,7 +56,7 @@ Webhook endpoint: `https://<your-domain>/api/webhooks/stripe`, with these events
 
 The webhook saves the order once (Stripe retries are ignored), takes the sold
 sizes off stock, clears the customer's saved cart and emails the order
-confirmation.
+confirmation as soon as Stripe confirms the payment.
 
 Local testing: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
 
@@ -76,11 +76,9 @@ curl -H "Authorization: Bearer $CRON_SECRET" https://<your-domain>/api/cron/noti
 
 ## Admin
 
-Admins are users with `role = 'admin'` in `public.profiles`.
-
-- `/<lang>/admin/orders`: orders, status and tracking. Setting an order to
-  _Shipped_ the first time emails the customer.
-- `/<lang>/product-entry`: add products.
+Admins are users with `role = 'admin'` in `public.profiles`. They add
+products at `/<lang>/product-entry`. Orders are visible in the Supabase
+`orders` table and in the Stripe dashboard.
 
 ## Content: Journal and Drops
 

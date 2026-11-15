@@ -6,7 +6,7 @@ import { formatPrice } from "@/i18n/translate";
 import { isLocale, type Locale } from "@/i18n.config";
 import type { OrderItem } from "@/_lib/utils/orders";
 
-// Emails triggered by the shop itself: orders, shipping, stock, carts, drops.
+// Emails triggered by the shop itself: orders, stock, carts, drops.
 // Every value that came from a customer or the database is HTML-escaped.
 
 const toLocale = (value: unknown): Locale => (isLocale(value) ? value : "en");
@@ -82,38 +82,6 @@ export async function sendOrderConfirmation(order: OrderEmail) {
           : ""
       }
       ${emailButton(`${SITE_URL}/${locale}/account`, t("emails.viewOrders"))}
-    `),
-  );
-}
-
-export async function sendShippingNotification(order: {
-  email: string;
-  name: string;
-  locale: string;
-  reference: string;
-  trackingNumber?: string | null;
-  trackingUrl?: string | null;
-}) {
-  const locale = toLocale(order.locale);
-  const t = await getT(locale);
-
-  await sendEmail(
-    order.email,
-    t("emails.shippedSubject", { reference: order.reference }),
-    emailLayout(`
-      <h1 style="font-weight: normal;">${t("emails.shippedHeading")}</h1>
-      <p>${t("emails.shippedBody", { name: escapeHtml(order.name) })}</p>
-      <p><strong>${t("emails.orderNumber")}:</strong> ${order.reference}</p>
-      ${
-        order.trackingNumber
-          ? `<p><strong>${t("emails.trackingNumber")}:</strong> ${escapeHtml(order.trackingNumber)}</p>`
-          : ""
-      }
-      ${
-        order.trackingUrl
-          ? emailButton(escapeHtml(order.trackingUrl), t("emails.trackParcel"))
-          : emailButton(`${SITE_URL}/${locale}/account`, t("emails.viewOrders"))
-      }
     `),
   );
 }

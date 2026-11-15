@@ -516,17 +516,12 @@
   "emails": {
     "orderSubject": "Your Methys order {reference} is confirmed",
     "orderHeading": "Thank you for your order",
-    "orderBody": "Hi {name}, we've received your order and we're getting it ready. We'll email you again as soon as it ships.",
+    "orderBody": "Hi {name}, your payment went through and your order is confirmed. We're getting it ready for you.",
     "orderNumber": "Order number",
     "itemSize": "Size {size}",
     "total": "Total",
     "shippingTo": "Shipping to",
     "viewOrders": "View your orders",
-    "shippedSubject": "Your Methys order {reference} is on its way",
-    "shippedHeading": "Your order has shipped",
-    "shippedBody": "Good news, {name}: your order is on its way to you.",
-    "trackingNumber": "Tracking number",
-    "trackParcel": "Track your parcel",
     "backInStockSubject": "{name} is back in size {size}",
     "backInStockHeading": "It's back",
     "backInStockBody": "{name} in size {size} is back in stock. Sizes go fast, so don't wait too long.",
@@ -550,23 +545,9 @@
     "ordersTitle": "Orders",
     "noOrders": "You haven't ordered anything yet.",
     "status": {
-      "processing": "Processing",
-      "shipped": "Shipped",
-      "delivered": "Delivered",
-      "canceled": "Canceled",
+      "paid": "Paid",
       "refunded": "Refunded"
     }
-  },
-  "admin": {
-    "ordersTitle": "Orders",
-    "addProduct": "Add product",
-    "backToShop": "Back to shop",
-    "all": "All",
-    "noOrders": "No orders here.",
-    "status": "Status",
-    "trackingUrl": "Tracking link",
-    "save": "Save",
-    "shippedHint": "The first time you set an order to Shipped, the customer gets an email with the tracking details."
   },
   "stockAlert": {
     "toggle": "Size sold out? Get an email when it's back",

@@ -516,17 +516,12 @@
   "emails": {
     "orderSubject": "Deine Methys-Bestellung {reference} ist bestätigt",
     "orderHeading": "Danke für deine Bestellung",
-    "orderBody": "Hallo {name}, wir haben deine Bestellung erhalten und bereiten sie vor. Sobald sie verschickt ist, bekommst du eine weitere E-Mail.",
+    "orderBody": "Hallo {name}, deine Zahlung ist eingegangen und deine Bestellung ist bestätigt. Wir bereiten sie für dich vor.",
     "orderNumber": "Bestellnummer",
     "itemSize": "Größe {size}",
     "total": "Gesamt",
     "shippingTo": "Lieferung an",
     "viewOrders": "Deine Bestellungen ansehen",
-    "shippedSubject": "Deine Methys-Bestellung {reference} ist unterwegs",
-    "shippedHeading": "Deine Bestellung wurde verschickt",
-    "shippedBody": "Gute Nachrichten, {name}: deine Bestellung ist auf dem Weg zu dir.",
-    "trackingNumber": "Sendungsnummer",
-    "trackParcel": "Sendung verfolgen",
     "backInStockSubject": "{name} ist wieder in Größe {size} da",
     "backInStockHeading": "Wieder da",
     "backInStockBody": "{name} in Größe {size} ist wieder auf Lager. Die Größen sind schnell weg, also warte nicht zu lange.",
@@ -550,23 +545,9 @@
     "ordersTitle": "Bestellungen",
     "noOrders": "Du hast noch nichts bestellt.",
     "status": {
-      "processing": "In Bearbeitung",
-      "shipped": "Versandt",
-      "delivered": "Zugestellt",
-      "canceled": "Storniert",
+      "paid": "Bezahlt",
       "refunded": "Erstattet"
     }
-  },
-  "admin": {
-    "ordersTitle": "Bestellungen",
-    "addProduct": "Produkt hinzufügen",
-    "backToShop": "Zurück zum Shop",
-    "all": "Alle",
-    "noOrders": "Keine Bestellungen.",
-    "status": "Status",
-    "trackingUrl": "Tracking-Link",
-    "save": "Speichern",
-    "shippedHint": "Wenn du eine Bestellung zum ersten Mal auf Versandt setzt, bekommt die Kundin oder der Kunde eine E-Mail mit den Tracking-Daten."
   },
   "stockAlert": {
     "toggle": "Größe ausverkauft? Lass dich per E-Mail benachrichtigen",

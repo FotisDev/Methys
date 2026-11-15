@@ -516,17 +516,12 @@
   "emails": {
     "orderSubject": "Din Methys-ordre {reference} er bekræftet",
     "orderHeading": "Tak for din ordre",
-    "orderBody": "Hej {name}, vi har modtaget din ordre og gør den klar. Vi sender dig en ny e-mail, så snart den er afsendt.",
+    "orderBody": "Hej {name}, din betaling er gået igennem, og din ordre er bekræftet. Vi gør den klar til dig.",
     "orderNumber": "Ordrenummer",
     "itemSize": "Størrelse {size}",
     "total": "I alt",
     "shippingTo": "Leveres til",
     "viewOrders": "Se dine ordrer",
-    "shippedSubject": "Din Methys-ordre {reference} er på vej",
-    "shippedHeading": "Din ordre er afsendt",
-    "shippedBody": "Godt nyt, {name}: din ordre er på vej til dig.",
-    "trackingNumber": "Trackingnummer",
-    "trackParcel": "Følg din pakke",
     "backInStockSubject": "{name} er tilbage i størrelse {size}",
     "backInStockHeading": "Den er tilbage",
     "backInStockBody": "{name} i størrelse {size} er tilbage på lager. Størrelserne går hurtigt, så vent ikke for længe.",
@@ -550,23 +545,9 @@
     "ordersTitle": "Ordrer",
     "noOrders": "Du har ikke bestilt noget endnu.",
     "status": {
-      "processing": "Behandles",
-      "shipped": "Afsendt",
-      "delivered": "Leveret",
-      "canceled": "Annulleret",
+      "paid": "Betalt",
       "refunded": "Refunderet"
     }
-  },
-  "admin": {
-    "ordersTitle": "Ordrer",
-    "addProduct": "Tilføj produkt",
-    "backToShop": "Tilbage til butikken",
-    "all": "Alle",
-    "noOrders": "Ingen ordrer her.",
-    "status": "Status",
-    "trackingUrl": "Trackinglink",
-    "save": "Gem",
-    "shippedHint": "Første gang du sætter en ordre til Afsendt, får kunden en e-mail med trackingoplysningerne."
   },
   "stockAlert": {
     "toggle": "Udsolgt i din størrelse? Få en e-mail, når den er tilbage",
