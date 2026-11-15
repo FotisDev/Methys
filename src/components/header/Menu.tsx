@@ -45,6 +45,8 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
   const navLinks = [
     { id: "about", href: PAGE_URLS.ABOUT, label: t("nav.about") },
     { id: "shop", href: PAGE_URLS.PRODUCTS, label: t("nav.shop") },
+    { id: "drops", href: PAGE_URLS.DROPS, label: t("nav.drops") },
+    { id: "journal", href: PAGE_URLS.JOURNAL, label: t("nav.journal") },
     ...(!isAuthLoading && isAuthenticated
       ? [{ id: "offers", href: PAGE_URLS.OFFERS, label: t("nav.offers") }]
       : []),
@@ -179,6 +181,29 @@ const Menu = ({ dropDownMenu }: { dropDownMenu: React.ReactNode }) => {
             </Link>
           </div>
           <div className={cn("flex items-center justify-end gap-2.5")}>
+            <Link
+              href={isAuthenticated ? PAGE_URLS.ACCOUNT : "/login"}
+              aria-label={
+                isAuthenticated ? t("account.title") : t("footer.signUpSignIn")
+              }
+              className={cn("relative group p-2 rounded-full")}
+            >
+              <svg
+                className={cn(
+                  "w-5 h-5 lg:w-6 lg:h-6 transition-colors group-hover:text-vintage-brown",
+                )}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </Link>
             <button
               onClick={toggleWishlist}
               className={cn("relative group cursor-pointer")}

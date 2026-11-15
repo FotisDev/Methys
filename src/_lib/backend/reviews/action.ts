@@ -6,6 +6,11 @@ import { supabaseAdmin } from "@/_lib/supabase/admin";
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import { hasPurchasedProduct, reviewAuthorName } from "@/_lib/utils/reviews";
 import { REVIEWS_TAG } from "./queries";
+import {
+  photosFromForm,
+  removeReviewPhotos,
+  uploadReviewPhotos,
+} from "./photos";
 
 export type ReviewEligibility =
   "login" | "not-purchased" | "already-reviewed" | "eligible";
@@ -94,6 +99,13 @@ export async function submitReview(
       return { status: "error", message: messages[eligibility] };
     }
 
+    const upload = await uploadReviewPhotos(
+      photosFromForm(formData),
+      productId,
+      user.id,
+    );
+    if (!upload.ok) return { status: "error", message: upload.message };
+
     const { error } = await supabaseAdmin.from("product_reviews").insert({
       product_id: productId,
       user_id: user.id,
@@ -105,9 +117,11 @@ export async function submitReview(
       rating,
       title: title || null,
       body,
+      photo_urls: upload.urls,
     });
 
     if (error) {
+      await removeReviewPhotos(upload.paths);
       if (error.code === "23505") {
         return { status: "error", message: "reviews.alreadyReviewed" };
       }

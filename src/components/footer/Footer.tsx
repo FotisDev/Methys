@@ -50,6 +50,8 @@ export default function Footer() {
       items: [
         { name: t("footer.home"), href: "/" },
         { name: t("footer.about"), href: "/about" },
+        { name: t("nav.drops"), href: "/drops" },
+        { name: t("nav.journal"), href: "/journal" },
         { name: t("footer.help"), href: "/help" },
       ],
     },

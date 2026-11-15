@@ -44,7 +44,9 @@
     "openMobileMenu": "Menü öffnen",
     "closeShopMenu": "Shop-Menü schließen",
     "wishlistWithCount": "Wunschliste mit {count} Artikeln",
-    "cartWithCount": "Warenkorb mit {count} Artikeln"
+    "cartWithCount": "Warenkorb mit {count} Artikeln",
+    "drops": "Drops",
+    "journal": "Journal"
   },
   "categories": {
     "clothing": "Kleidung",
@@ -182,7 +184,9 @@
     "inStock": "{count} auf Lager",
     "productId": "Produkt-ID: #{id}",
     "recommendations": "Unsere Empfehlungen",
-    "onlyLeft": "Nur noch {count} verfügbar"
+    "onlyLeft": "Nur noch {count} verfügbar",
+    "onlyLeftInSize": "Nur noch {count} in {size}",
+    "completeTheLook": "Komplettiere den Look"
   },
   "filters": {
     "show": "Filter anzeigen",
@@ -417,7 +421,8 @@
     "freeReturns": "Kostenlose Rücksendung",
     "freeReturnsText": "30 Tage Bedenkzeit.",
     "secureCheckout": "Sicherer Checkout",
-    "secureCheckoutText": "Zahlungen werden über Stripe abgewickelt."
+    "secureCheckoutText": "Zahlungen werden über Stripe abgewickelt.",
+    "outOfStock": "Leider ist {item} gerade ausverkauft oder nicht mehr in ausreichender Menge vorhanden. Bitte aktualisiere deinen Warenkorb und versuche es erneut."
   },
   "success": {
     "invalidSession": "Ungültige Sitzung",
@@ -499,7 +504,117 @@
     "errors": {
       "rating": "Bitte wähle eine Bewertung.",
       "body": "Bitte schreib mindestens 10 Zeichen.",
-      "failed": "Deine Bewertung konnte nicht veröffentlicht werden. Bitte versuche es erneut."
+      "failed": "Deine Bewertung konnte nicht veröffentlicht werden. Bitte versuche es erneut.",
+      "photoType": "Fotos müssen JPG-, PNG- oder WebP-Bilder sein.",
+      "photoSize": "Jedes Foto darf höchstens 5 MB groß sein.",
+      "photoCount": "Du kannst bis zu 3 Fotos hinzufügen."
+    },
+    "photos": "Fotos hinzufügen (optional)",
+    "photosHint": "Bis zu 3 Fotos mit je 5 MB (JPG, PNG oder WebP). Zeig uns, wie es sitzt.",
+    "photoAlt": "Foto {index} von {name}"
+  },
+  "emails": {
+    "orderSubject": "Deine Methys-Bestellung {reference} ist bestätigt",
+    "orderHeading": "Danke für deine Bestellung",
+    "orderBody": "Hallo {name}, wir haben deine Bestellung erhalten und bereiten sie vor. Sobald sie verschickt ist, bekommst du eine weitere E-Mail.",
+    "orderNumber": "Bestellnummer",
+    "itemSize": "Größe {size}",
+    "total": "Gesamt",
+    "shippingTo": "Lieferung an",
+    "viewOrders": "Deine Bestellungen ansehen",
+    "shippedSubject": "Deine Methys-Bestellung {reference} ist unterwegs",
+    "shippedHeading": "Deine Bestellung wurde verschickt",
+    "shippedBody": "Gute Nachrichten, {name}: deine Bestellung ist auf dem Weg zu dir.",
+    "trackingNumber": "Sendungsnummer",
+    "trackParcel": "Sendung verfolgen",
+    "backInStockSubject": "{name} ist wieder in Größe {size} da",
+    "backInStockHeading": "Wieder da",
+    "backInStockBody": "{name} in Größe {size} ist wieder auf Lager. Die Größen sind schnell weg, also warte nicht zu lange.",
+    "shopNow": "Jetzt shoppen",
+    "oneTimeNotice": "Du hast nur diese eine E-Mail angefordert. Wir schicken dir dazu nichts weiter.",
+    "cartSubject": "Du hast etwas in deinem Warenkorb vergessen",
+    "cartHeading": "Noch am Überlegen?",
+    "cartBody": "Dein Warenkorb ist gespeichert und wartet auf dich. Der Bestand ist begrenzt, daher können wir die Teile nicht lange reservieren.",
+    "backToCart": "Zurück zum Warenkorb",
+    "dropSubject": "{title} ist jetzt live",
+    "dropHeading": "Gerade gedroppt",
+    "dropBody": "{title} ist live. Du wolltest es als Erste:r erfahren, und die Stückzahl ist begrenzt.",
+    "dropCta": "Zum Drop"
+  },
+  "account": {
+    "metaTitle": "Mein Konto | Methys",
+    "title": "Mein Konto",
+    "viewOrders": "Meine Bestellungen",
+    "wishlist": "Wunschliste",
+    "memberOffers": "Angebote für Mitglieder",
+    "ordersTitle": "Bestellungen",
+    "noOrders": "Du hast noch nichts bestellt.",
+    "status": {
+      "processing": "In Bearbeitung",
+      "shipped": "Versandt",
+      "delivered": "Zugestellt",
+      "canceled": "Storniert",
+      "refunded": "Erstattet"
     }
+  },
+  "admin": {
+    "ordersTitle": "Bestellungen",
+    "addProduct": "Produkt hinzufügen",
+    "backToShop": "Zurück zum Shop",
+    "all": "Alle",
+    "noOrders": "Keine Bestellungen.",
+    "status": "Status",
+    "trackingUrl": "Tracking-Link",
+    "save": "Speichern",
+    "shippedHint": "Wenn du eine Bestellung zum ersten Mal auf Versandt setzt, bekommt die Kundin oder der Kunde eine E-Mail mit den Tracking-Daten."
+  },
+  "stockAlert": {
+    "toggle": "Größe ausverkauft? Lass dich per E-Mail benachrichtigen",
+    "title": "Benachrichtige mich, wenn sie wieder da ist",
+    "submit": "Benachrichtigen",
+    "note": "Eine E-Mail, sobald sie wieder auf Lager ist. Sonst nichts.",
+    "success": "Erledigt. Wir schreiben dir, sobald sie wieder da ist.",
+    "inStockNow": "Gute Nachricht: Diese Größe ist gerade auf Lager.",
+    "failed": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  },
+  "journal": {
+    "metaTitle": "Journal | Methys",
+    "metaDescription": "Lookbooks, Styling-Guides und Geschichten hinter den Kulissen von Methys.",
+    "title": "Journal",
+    "intro": "Lookbooks, Styling-Notizen und die Menschen hinter der Kleidung.",
+    "empty": "Die ersten Geschichten sind unterwegs.",
+    "readMore": "Zur Geschichte",
+    "readingTime": "{minutes} Min. Lesezeit",
+    "by": "Von {author}",
+    "shopTheLook": "Shop the Look",
+    "notFound": "Geschichte nicht gefunden"
+  },
+  "drops": {
+    "metaTitle": "Drops & Kollaborationen | Methys",
+    "metaDescription": "Limitierte Methys-Drops und Kollaborationen. Melde dich an und erfahre als Erste:r vom nächsten.",
+    "title": "Drops",
+    "intro": "Limitierte Auflagen und Kollaborationen. Wenn sie weg sind, sind sie weg.",
+    "empty": "Noch keine Drops angekündigt. Abonniere den Newsletter, um es zuerst zu erfahren.",
+    "notFound": "Drop nicht gefunden",
+    "phase": {
+      "upcoming": "Demnächst",
+      "live": "Jetzt live",
+      "ended": "Beendet"
+    },
+    "withCollaborator": "Methys × {name}",
+    "launchesAt": "Start: {date}",
+    "days": "Tage",
+    "hours": "Std",
+    "minutes": "Min",
+    "seconds": "Sek",
+    "notifyMe": "Benachrichtigen",
+    "signupNote": "Eine E-Mail, sobald er live ist. Sonst nichts.",
+    "signupSuccess": "Du stehst auf der Liste. Wir schreiben dir, sobald er droppt.",
+    "signupFailed": "Die Anmeldung hat nicht geklappt. Bitte versuche es erneut.",
+    "alreadyLive": "Er ist schon live. Lade die Seite neu, um zu shoppen.",
+    "endedNote": "Dieser Drop ist beendet. Einige Größen sind unten eventuell noch verfügbar.",
+    "thePieces": "Die Teile",
+    "aboutCollaborator": "Über die Kollaboration",
+    "visitCollaborator": "Zu ihrer Arbeit"
   }
 }

@@ -4,7 +4,10 @@ export default function Schema({ markup }: { markup?: object }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(markup) }}
+      // Escaping "<" stops text from the database closing the script tag.
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(markup).replace(/</g, "\\u003c"),
+      }}
     />
   );
 }

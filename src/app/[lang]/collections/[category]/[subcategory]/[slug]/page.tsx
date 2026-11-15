@@ -12,7 +12,10 @@ import { Breadcrumbs } from "@/components/breadcrumb/breadcrumbSchema";
 import { createProductSchema } from "@/components/schemas/newCollectionSchema";
 import Schema from "@/components/schemas/SchemaMarkUp";
 import Footer from "@/components/footer/Footer";
-import { ProductBySpringSeason } from "@/_lib/backend/ProductWithStructure/action";
+import {
+  ProductBySpringSeason,
+  getCompleteTheLook,
+} from "@/_lib/backend/ProductWithStructure/action";
 import { createMetadata } from "@/components/SEO/metadata";
 import { absoluteUrl } from "@/components/SEO/urls";
 import SeasonalCollectionSection from "@/components/sections/SeasonalCollectionSection";
@@ -131,8 +134,15 @@ export default async function ProductDetailPage({
   const locale = isLocale(lang) ? lang : defaultLocale;
   const t = await getT(locale);
 
-  const { product, reviews, reviewSummary, pricing, schema, breadcrumbItems } =
-    await loadProductPage(category, subcategory, slug, locale, t);
+  const {
+    product,
+    reviews,
+    reviewSummary,
+    pricing,
+    schema,
+    breadcrumbItems,
+    look,
+  } = await loadProductPage(category, subcategory, slug, locale, t);
 
   return (
     <HeaderProvider forceOpaque={true} dropDownMenu={<DropDownMenu />}>
@@ -378,6 +388,19 @@ export default async function ProductDetailPage({
 
       <div className={cn("px-4 sm:px-6")}>
         <SeasonalCollectionSection
+          title={t("product.completeTheLook")}
+          href={`/collections/${look.parentSlug}`}
+          fetcher={() =>
+            getCompleteTheLook(
+              look.otherCategoryIds,
+              look.categoryId,
+              product.id,
+            )
+          }
+          locale={locale}
+          hideWhenEmpty
+        />
+        <SeasonalCollectionSection
           title={t("product.recommendations")}
           fetcher={ProductBySpringSeason}
           locale={locale}
@@ -482,6 +505,14 @@ async function loadProductPage(
       },
     ];
 
+    const look = {
+      parentSlug: parentCategory.slug,
+      categoryId: currentCategory.id,
+      otherCategoryIds: subcategories
+        .filter((cat) => cat.id !== currentCategory.id)
+        .map((cat) => cat.id),
+    };
+
     return {
       product,
       reviews,
@@ -489,6 +520,7 @@ async function loadProductPage(
       pricing,
       schema,
       breadcrumbItems,
+      look,
     };
   } catch (error) {
     unstable_rethrow(error);

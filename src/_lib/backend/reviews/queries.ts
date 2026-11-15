@@ -9,7 +9,7 @@ export const fetchProductReviews = unstable_cache(
   async (productId: number): Promise<ProductReview[]> => {
     const { data, error } = await supabasePublic
       .from("product_reviews")
-      .select("id, author_name, rating, title, body, created_at")
+      .select("id, author_name, rating, title, body, created_at, photo_urls")
       .eq("product_id", productId)
       .order("created_at", { ascending: false })
       .limit(50);

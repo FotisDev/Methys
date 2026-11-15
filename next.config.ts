@@ -3,6 +3,8 @@ const nextConfig = {
   output: "standalone",
   experimental: {
     agentUpgrade: "security",
+    // Review forms can carry up to 3 photos of 5 MB each (default limit: 1 MB).
+    serverActions: { bodySizeLimit: "16mb" },
   },
   images: {
     remotePatterns: [

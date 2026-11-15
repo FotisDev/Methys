@@ -55,7 +55,7 @@ const SignInPage = () => {
 
       if (result.success) {
         window.location.assign(
-          localizePath(result.role === "admin" ? "/product-entry" : "/offers"),
+          localizePath(result.role === "admin" ? "/admin/orders" : "/account"),
         );
       } else {
         console.error("Sign in failed:", result.error);

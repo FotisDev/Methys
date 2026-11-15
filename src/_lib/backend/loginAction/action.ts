@@ -2,6 +2,7 @@
 
 import { createSupabaseServerClient } from "@/_lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { getUserRole } from "@/_lib/backend/auth";
 
 type SignInSuccess = {
   success: true;
@@ -30,18 +31,12 @@ export async function signInAction(formData: FormData): Promise<SignInResult> {
     return { success: false, error: error?.message ?? "Invalid credentials" };
   }
 
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", data.user.id)
-    .single();
-
-  if (profileError || !profile?.role) {
-    return { success: false, error: "Profile not found or role missing" };
-  }
+  // A customer without a profiles row is a normal user, not a failed login.
+  const role = await getUserRole(data.user.id);
 
   revalidatePath("/offers");
+  revalidatePath("/account");
   revalidatePath("/product-entry");
 
-  return { success: true, role: profile.role as "admin" | "user" };
+  return { success: true, role };
 }

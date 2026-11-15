@@ -22,8 +22,10 @@ const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   STRIPE_SECRET_KEY: z.string().min(1),
   STRIPE_WEBHOOK_SECRET: z.string().min(1),
-  JWT_SECRET: z.string().min(1),
   REVALIDATE_SECRET: z.string().min(1).optional(),
+  // Protects /api/cron/notify (stock alerts, cart reminders, drop launches).
+  // Vercel Cron sends it automatically as "Authorization: Bearer <CRON_SECRET>".
+  CRON_SECRET: z.string().min(16).optional(),
   RESEND_API_KEY: z.string().min(1).optional(),
   // Resend's test sender only delivers to the account owner. Set this to an
   // address on a verified domain to send to real customers.

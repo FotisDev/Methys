@@ -5,6 +5,8 @@ const PAGES = [
   "/collections",
   "/online-exclusive",
   "/seasonal-collection",
+  "/journal",
+  "/drops",
   "/about",
   "/help",
   "/customer-support",

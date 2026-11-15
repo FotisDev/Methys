@@ -157,3 +157,70 @@ export const fetchOnlineExclusive = unstable_cache(
     tags: ["products", "fetch-online-exclusive"],
   },
 );
+
+const PRODUCT_CARD_SELECT = `id,name,slug,price,description,size_description,product_details,image_url,is_offer,
+  categoryformen:category_men_id!inner(id,name,slug,
+  parent:parent_id!inner(id,name,slug)),
+  product_variants(size,price,quantity)`;
+
+const inStockFirst = (products: ProductInDetails[]) =>
+  [...products].sort(
+    (a, b) =>
+      Number(b.product_variants.some((v) => v.quantity > 0)) -
+      Number(a.product_variants.some((v) => v.quantity > 0)),
+  );
+
+// "Complete the look": pieces from the other subcategories of the same parent
+// (a shirt suggests trousers and jackets), falling back to the same subcategory.
+export const getCompleteTheLook = unstable_cache(
+  async (
+    otherCategoryIds: number[],
+    sameCategoryId: number,
+    excludeProductId: number,
+  ): Promise<ProductInDetails[] | null> => {
+    const load = async (categoryIds: number[]) => {
+      if (categoryIds.length === 0) return [];
+      const { data, error } = await supabasePublic
+        .from("products")
+        .select(PRODUCT_CARD_SELECT)
+        .in("category_men_id", categoryIds)
+        .neq("id", excludeProductId)
+        .limit(12)
+        .overrideTypes<ProductInDetails[], { merge: false }>();
+      if (error) {
+        console.error("Complete the look:", error.message);
+        return [];
+      }
+      return data ?? [];
+    };
+
+    const others = await load(otherCategoryIds);
+    const results =
+      others.length >= 4
+        ? others
+        : [...others, ...(await load([sameCategoryId]))];
+    return inStockFirst(results).slice(0, 10);
+  },
+  ["complete-the-look"],
+  { revalidate: 3600, tags: ["products"] },
+);
+
+// Products for journal posts and drops, in the order given.
+export const getProductsByIds = unstable_cache(
+  async (ids: number[]): Promise<ProductInDetails[]> => {
+    if (ids.length === 0) return [];
+    const { data, error } = await supabasePublic
+      .from("products")
+      .select(PRODUCT_CARD_SELECT)
+      .in("id", ids)
+      .overrideTypes<ProductInDetails[], { merge: false }>();
+    if (error) {
+      console.error("Products by ids:", error.message);
+      return [];
+    }
+    const byId = new Map((data ?? []).map((p) => [p.id, p]));
+    return ids.flatMap((id) => byId.get(id) ?? []);
+  },
+  ["products-by-ids"],
+  { revalidate: 3600, tags: ["products"] },
+);

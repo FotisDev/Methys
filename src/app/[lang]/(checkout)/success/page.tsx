@@ -7,6 +7,7 @@ import { defaultLocale, isLocale } from "@/i18n.config";
 import { rich } from "@/i18n/rich";
 import { env } from "@/env";
 import { cn } from "@/_lib/utils/cn";
+import { orderReference } from "@/_lib/utils/orders";
 
 type SearchParams = Promise<{ session_id?: string }>;
 
@@ -54,7 +55,7 @@ export default async function SuccessPage({
     typeof session.amount_total === "number"
       ? formatPrice(session.amount_total / 100, locale, currency)
       : null;
-  const orderReference = session.id.replace("cs_test_", "").slice(0, 10);
+  const reference = orderReference(session.id);
   const lineItems = session.line_items?.data ?? [];
 
   return (
@@ -102,7 +103,7 @@ export default async function SuccessPage({
       >
         <div className={cn("flex justify-between text-sm text-gray-600 mb-2")}>
           <span>{t("success.orderReference")}</span>
-          <span className={cn("text-gray-900")}>#{orderReference}</span>
+          <span className={cn("text-gray-900")}>#{reference}</span>
         </div>
         {amountTotal && (
           <div
@@ -155,6 +156,14 @@ export default async function SuccessPage({
           )}
         >
           {t("common.continueShopping")}
+        </Link>
+        <Link
+          href="/account"
+          className={cn(
+            "w-full sm:w-auto border border-vintage-green text-vintage-green px-8 py-3 rounded-md text-sm hover:bg-vintage-green hover:text-white transition-colors",
+          )}
+        >
+          {t("account.viewOrders")}
         </Link>
       </div>
     </div>
