@@ -39,11 +39,20 @@ create index if not exists orders_user_id_created_at_idx
 
 -- Orders hold names and addresses. The server writes with the service role;
 -- a signed-in customer may read only their own rows.
+-- Production already has this policy as "Users can view own orders"; only
+-- create it on fresh setups.
 alter table public.orders enable row level security;
 
-drop policy if exists "Own orders read" on public.orders;
-create policy "Own orders read" on public.orders
-  for select using (auth.uid() = user_id);
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+     where schemaname = 'public' and tablename = 'orders' and cmd = 'SELECT'
+  ) then
+    create policy "Users can view own orders" on public.orders
+      for select using (auth.uid() = user_id);
+  end if;
+end $$;
 
 -- Takes stock off for a paid order in one statement (one transaction).
 -- items: [{ "id": 12, "size": "M", "quantity": 2 }, ...]
